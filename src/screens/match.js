@@ -1,0 +1,216 @@
+// MATCH DAY: score blocks on top, live commentary feed in the middle, clock
+// bottom-left, your rating bottom-right, quick stats and the gaffer on the side.
+// When a chance comes your way the clock stops and the moment plays in place.
+import { W, H, setCam } from '../engine/camera.js';
+import { attachInput, setInputHandlers } from '../engine/input.js';
+import { setCtx, drawBackground, wrap } from '../engine/draw.js';
+import { esc } from '../engine/util.js';
+import { clock } from '../engine/clock.js';
+import { makeKitSet, matchColours, playerKitFrom, teamKitFrom, keeperKitFor, luminance } from '../engine/kits.js';
+import { drawManager } from '../engine/manager.js';
+import { createMoment, SKILLS } from '../moments/index.js';
+import { MatchSim, managerMood } from '../sim/matchSim.js';
+import { pickR } from '../sim/text.js';
+import C from '../data/commentary.json';
+import clubsData from '../data/clubs.json';
+import { state, save, skillF, playerName } from '../state/gameState.js';
+
+const MINUTES_PER_SEC = 1.6;           // the clock "races": ~60s for 90 minutes plus your chances
+const FAST = 4;                        // fast-forward multiplier
+const HOLD = { goal: 1.6, break: 2.4, chance: 1.6, result: 1.6, pens: 1.2 };
+const PERIOD_NAME = { '1H': '1ST HALF', '2H': '2ND HALF', 'ET1': 'EXTRA TIME', 'ET2': 'EXTRA TIME', 'PENS': 'PENALTIES' };
+const PERIOD_END = { '1H': 45, '2H': 90, 'ET1': 105, 'ET2': 120 };
+const club = id => clubsData.clubs.find(c => c.id === id);
+
+export function createMatchScreen(root, go, params) {
+  const mine = club(params.clubId), them = club(params.oppId);
+  const mySide = params.venue === 'away' ? 'away' : 'home';
+  const home = mySide === 'home' ? mine : them, away = mySide === 'home' ? them : mine;
+  const colours = matchColours(home, away), myCol = colours[mySide], oppCol = colours[mySide === 'home' ? 'away' : 'home'];
+  const kits = makeKitSet(playerKitFrom(myCol), teamKitFrom(oppCol), keeperKitFor(myCol.shirt, oppCol.shirt));
+  const sim = new MatchSim({ home, away, mySide, cup: params.cup, trust: params.trust, form: params.form, playerName: playerName() });
+
+  let cv, ctx, mctx, moment = null, chanceResult = null, chanceEvent = null;
+  let phase = 'pre', acc = 0, hold = 0, lastT = null, fast = false, paused = false;
+  let mood = 'neutral', moodUntil = 0, quoteMood = null, shownScore = { home: 0, away: 0 }, ftAt = 0;
+  const $ = id => root.querySelector('#' + id);
+
+  /* ---------- layout ---------- */
+  function mount() {
+    const block = (side, c, col) => `<div class="tblock ${side}" style="--shirt:${col.shirt};--trim:${col.trim}"${luminance(col.shirt) > .62 ? ' data-light' : ''}><span class="tname">${esc(c.name)}</span><span class="tscore" id="s-${side}">0</span></div>`;
+    root.innerHTML = `
+<div id="match">
+  <div class="mtop">${block('home', home, colours.home)}${block('away', away, colours.away)}</div>
+  <div class="mcomp">${params.cup ? 'CUP TIE' : 'LEAGUE'} · ${esc(home.stadium.replace(/^the /, 'The '))}<span id="pensTag"></span></div>
+  <div class="mbody">
+    <div id="stage">
+      <canvas id="c" width="${W}" height="${H}"></canvas>
+      <div id="feed" class="feed"><div id="feedIn"></div></div>
+      <div id="pre" class="overlay"><div class="panel">
+        <h1>${esc(home.short)} <span>v</span> ${esc(away.short)}</h1>
+        <div class="sub">${esc(home.name)} v ${esc(away.name)} · ${params.cup ? 'Cup tie: extra time and penalties if level' : 'League match'}</div>
+        <div class="prenote">Chances will come to <b>${esc(playerName())}</b> during the match. When one does, the clock stops and you play it.</div>
+        <button class="btn gold big" id="ko">KICK OFF ▶</button>
+      </div></div>
+      <div id="ft" class="overlay hidden"></div>
+    </div>
+    <aside id="mside">
+      <h2>QUICK STATS</h2>
+      <div id="stats"></div>
+      <h2 class="gh">THE GAFFER</h2>
+      <canvas id="mgr" width="200" height="190"></canvas>
+      <div class="quote" id="quote"></div>
+    </aside>
+  </div>
+  <div class="mbottom">
+    <div class="clock"><span id="clk">00:00</span><small id="per">KICK-OFF</small></div>
+    <div class="ctrls"><button class="btn small" id="pause">❚❚ Pause</button><button class="btn small" id="fast">▶▶ Faster</button><button class="btn small red" id="leave">✕ Leave</button></div>
+    <div class="rating" id="ratingBox"><span id="rat">6.0</span><small>YOUR RATING</small><i id="ratDelta"></i></div>
+  </div>
+</div>`;
+    cv = $('c'); ctx = cv.getContext('2d'); mctx = $('mgr').getContext('2d');
+    attachInput(cv);
+    setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
+    $('ko').onclick = () => { $('pre').classList.add('hidden'); phase = 'running'; addEvents(sim.tick()); hold = 1.2; };
+    $('pause').onclick = () => { paused = !paused; $('pause').textContent = paused ? '▶ Play' : '❚❚ Pause'; };
+    $('fast').onclick = () => { fast = !fast; $('fast').classList.toggle('on', fast); };
+    $('leave').onclick = () => { if (phase === 'ft' || confirm('Leave the match? It won\'t count.')) { setCam('def'); go('setup'); } };
+    setCam('def'); renderStats(); setQuote(true);
+  }
+
+  /* ---------- feed ---------- */
+  function addEvents(evs) {
+    for (const e of evs) {
+      const d = document.createElement('div');
+      d.className = `fl k-${e.kind}${e.side ? ' s-' + e.side : ''}${e.mine ? ' mine' : ''}${e.side === mySide ? ' us' : e.side ? ' them' : ''}`;
+      d.innerHTML = (e.label ? `<b>${esc(e.label)}</b> ` : '') + esc(e.text);
+      $('feedIn').appendChild(d);
+      react(e);
+    }
+    const f = $('feed'); f.scrollTop = f.scrollHeight;
+    renderStats(); renderScore();
+  }
+  function react(e) {
+    const now = clock.now;
+    if (e.kind === 'goal' && phase !== 'pens') { hold = Math.max(hold, HOLD.goal / (fast ? 2 : 1)); setMood(e.side === mySide ? (e.mine ? 'ecstatic' : 'happy') : 'worried', 3.5); }
+    if (e.kind === 'break') hold = Math.max(hold, HOLD.break);
+    if (e.kind === 'result') setMood(sim.rating < 5.5 ? 'furious' : 'worried', 3);
+    if (e.kind === 'chance') { phase = 'chanceIntro'; chanceEvent = e; hold = HOLD.chance; }
+    if (e.kind === 'end') { phase = 'ft'; ftAt = now + 1.8; }
+    if (sim.period === 'PENS' && e.kind !== 'chance') hold = Math.max(hold, HOLD.pens);
+  }
+
+  /* ---------- chances ---------- */
+  function startMoment() {
+    $('feed').classList.add('hidden'); phase = 'moment';
+    moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: playerName(), onResult: r => { chanceResult = r; } });
+  }
+  function endMoment() {
+    const r = chanceResult; chanceResult = null; moment = null; setCam('def');
+    $('feed').classList.remove('hidden');
+    const before = sim.rating;
+    phase = sim.done ? phase : 'running';
+    addEvents(sim.resolveChance(r));
+    showDelta(sim.rating - before);
+    if (r.goal) setMood('ecstatic', 4);
+    if (phase === 'running') hold = Math.max(hold, HOLD.result);
+  }
+  // Moment HUD: same look as the training ground's.
+  function hud(c, m) {
+    c.save(); c.fillStyle = 'rgba(10,12,14,.72)'; c.fillRect(0, 0, 300, 36); c.fillStyle = '#ffc928'; c.font = 'italic 22px Anton, Impact, sans-serif'; c.textAlign = 'left';
+    c.fillText((chanceEvent.label ? 'CHANCE! ' + chanceEvent.label.replace('\'', '’') + ' · ' : 'SHOOTOUT · ') + m.d.t.toUpperCase(), 12, 26);
+    c.fillStyle = 'rgba(10,12,14,.72)'; c.fillRect(0, H - 58, W, 58);
+    c.fillStyle = '#fff'; c.font = 'bold 13px Roboto Condensed, Arial'; c.textAlign = 'center'; wrap(m.d.i, 330, H - 36, 450, 16);
+    c.textAlign = 'right'; c.font = 'italic 22px Anton, Impact, sans-serif'; c.fillText(`${home.short} ${sim.score.home}-${sim.score.away} ${away.short}`, W - 14, H - 20); c.restore();
+  }
+
+  /* ---------- side panel, scores, clock ---------- */
+  function renderScore() {
+    ['home', 'away'].forEach(s => { if (shownScore[s] !== sim.score[s]) { const el = $('s-' + s); el.textContent = sim.score[s]; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); } });
+    shownScore = { ...sim.score };
+    $('pensTag').textContent = sim.pens ? ` · PENS ${sim.pens.home}-${sim.pens.away}` : '';
+  }
+  function renderStats() {
+    const s = sim.stats, poss = sim.possessionPct();
+    const row = (l, a, b) => `<div class="srow"><b>${a}</b><span>${l}</span><b>${b}</b></div>`;
+    $('stats').innerHTML = `<div class="srow head"><b>${esc(home.short)}</b><span></span><b>${esc(away.short)}</b></div>
+      <div class="possbar"><i style="width:${poss}%;background:${colours.home.shirt}"></i><i style="width:${100 - poss}%;background:${colours.away.shirt}"></i></div>
+      ${row('Possession', poss + '%', (100 - poss) + '%')}${row('Shots', s.home.shots, s.away.shots)}${row('On target', s.home.onTarget, s.away.onTarget)}${row('Corners', s.home.corners, s.away.corners)}${row('Fouls', s.home.fouls, s.away.fouls)}${row('Yellow cards', s.home.yellows, s.away.yellows)}
+      <div class="you"><div><b>${sim.my.chances}</b>chances</div><div><b>${sim.my.goals}</b>goals</div><div><b>${sim.my.assists}</b>assists</div><div><b>${sim.my.onTarget}</b>on target</div></div>`;
+  }
+  function renderRating() {
+    const r = sim.rating, el = $('rat');
+    el.textContent = r.toFixed(1);
+    $('ratingBox').className = 'rating ' + (r >= 8.5 ? 'gold' : r >= 7 ? 'good' : r >= 5.5 ? 'mid' : 'bad');
+  }
+  function showDelta(d) {
+    if (Math.abs(d) < .05) return; const el = $('ratDelta');
+    el.textContent = (d > 0 ? '+' : '') + d.toFixed(1); el.className = d > 0 ? 'up' : 'down'; void el.offsetWidth; el.classList.add('show');
+  }
+  const fmt = x => { const m = Math.floor(x), s = Math.floor((x - m) * 60); return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); };
+  function renderClock() {
+    let per = 'KICK-OFF', txt = '00:00';
+    if (sim.period && sim.period !== 'PENS') {
+      const E = PERIOD_END[sim.period], cap = E + sim.stoppage[sim.period], t = Math.min(cap, sim.minute + (phase === 'running' ? Math.min(acc, .999) : 0));
+      txt = t <= E ? fmt(t) : `${E}:00 <em>+${fmt(t - E)}</em>`;
+      per = PERIOD_NAME[sim.period];
+    }
+    if (sim.period === 'PENS') { txt = '120:00'; per = 'PENALTIES'; }
+    if (phase === 'ft' || sim.done) per = 'FULL TIME';
+    else if (phase === 'chanceIntro' || phase === 'moment') per = 'CHANCE!';
+    $('clk').innerHTML = txt; $('per').textContent = per;
+  }
+  function setMood(m, secs) { mood = m; moodUntil = clock.now + secs; setQuote(); }
+  function setQuote(force) {
+    const m = currentMood();
+    if (!force && m === quoteMood) return; quoteMood = m;
+    $('quote').textContent = pickR(C.manager[m]);
+  }
+  const currentMood = () => clock.now < moodUntil ? mood : managerMood(sim);
+
+  /* ---------- full time ---------- */
+  function showFullTime() {
+    const S = sim.summary(), r = S.rating;
+    // Skill points from the match go into your training profile.
+    let gained = 0; for (const k in sim.my.gained) { state.profile.skills[k] += sim.my.gained[k]; gained += sim.my.gained[k]; } save();
+    const scorerList = side => S.scorers[side].map(g => `<li${g.me ? ' class="me"' : ''}>${esc(g.name)} ${esc(g.label)}${g.assist ? ` <small>(ast ${esc(g.assist)})</small>` : ''}</li>`).join('') || '<li class="none">No scorers</li>';
+    const resWord = { W: 'WIN', D: 'DRAW', L: 'DEFEAT' }[S.result];
+    $('ft').innerHTML = `<div class="panel ftp">
+      <h1>FULL <span>TIME</span></h1>
+      <div class="ftscore"><span>${esc(home.name)}</span><b>${S.score.home} - ${S.score.away}</b><span>${esc(away.name)}</span></div>
+      ${S.pens ? `<div class="ftpens">${esc(sim.name(sim.winner()))} win ${Math.max(S.pens.home, S.pens.away)}-${Math.min(S.pens.home, S.pens.away)} on penalties</div>` : ''}
+      <div class="scorers"><ul>${scorerList('home')}</ul><ul>${scorerList('away')}</ul></div>
+      <div class="backpage"><div class="mast">THE BACK PAGE</div><div class="head">${esc(S.headline)}</div>
+        <div class="byline">${resWord} · Rating <b>${r.toFixed(1)}</b> · ${S.my.goals} goal${S.my.goals === 1 ? '' : 's'} · ${S.my.assists} assist${S.my.assists === 1 ? '' : 's'} · ${S.my.chances} chance${S.my.chances === 1 ? '' : 's'}</div>
+        <div class="verdict">The gaffer: ${esc(S.verdict)}</div></div>
+      <div class="gain">+${gained} skill points from the match</div>
+      <div class="endBtns"><button class="btn gold" id="again">Another match</button><button class="btn red" id="toTraining">Training ground</button></div>
+    </div>`;
+    $('ft').classList.remove('hidden');
+    $('again').onclick = () => go('setup'); $('toTraining').onclick = () => go('training');
+  }
+
+  /* ---------- frame ---------- */
+  function frame() {
+    const now = clock.now, dt = lastT == null ? 0 : now - lastT; lastT = now;
+    if (moment) { moment.update(); if (chanceResult) endMoment(); }
+    if (moment) moment.render(ctx, hud); else { setCtx(ctx); drawBackground(); }
+
+    if (!paused && (phase === 'running' || phase === 'chanceIntro')) {
+      if (hold > 0) hold -= dt;
+      else if (phase === 'chanceIntro') startMoment();
+      else {
+        acc += dt * MINUTES_PER_SEC * (fast ? FAST : 1);
+        while (acc >= 1 && phase === 'running' && hold <= 0) { acc -= 1; addEvents(sim.tick()); }
+        if (phase !== 'running') acc = 0;
+      }
+    }
+    if (phase === 'ft' && ftAt && now >= ftAt) { ftAt = 0; showFullTime(); }
+    if (now >= moodUntil) setQuote();
+    renderClock(); renderRating();
+    drawManager(mctx, 200, 190, currentMood(), now, myCol.shirt);
+  }
+
+  window.__fpbpMatch = { sim, get moment() { return moment; }, get phase() { return phase; }, setFast: v => { fast = v; } };
+  return { mount, frame };
+}

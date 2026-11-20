@@ -1,0 +1,313 @@
+{
+  "_note": "Match commentary. Placeholders: {team} {opp} = the side doing it and their opponents; {player} {player2} = from {team}; {oppPlayer} = from {opp}; {gk} = {team}'s keeper; {oppGk} = {opp}'s keeper; {me} = you; {mate} = a team-mate; {def} = an opposition defender; {home} {away} {stadium} {weather} {n}.",
+  "preMatch": [
+    "Welcome to {stadium} for {home} against {away}. {weather}",
+    "Good afternoon from {stadium}, where {home} welcome {away}. {weather}",
+    "It's {home} versus {away} at {stadium}. {weather}"
+  ],
+  "weather": [
+    "It's chucking it down and the pitch looks like a ploughed field.",
+    "Bright sunshine, and the smell of fried onions drifting across from the burger van.",
+    "A biting wind is whipping in off the car park.",
+    "Drizzle. Proper, sideways, English drizzle.",
+    "Lovely conditions. Someone in the away end has already taken his shirt off.",
+    "Fog is rolling in. The far corner flag is a rumour."
+  ],
+  "lineup": [
+    "{me} leads the line for {team} today. Big afternoon for the youngster.",
+    "{me} starts up front for {team}. The gaffer has been fishing for goals all week, apparently."
+  ],
+  "kickOff": [
+    "And we're under way! {team} get us started.",
+    "The referee blows, and {team} kick off.",
+    "We're off! {team} roll it back to the centre-halves, as is tradition."
+  ],
+  "possession": [
+    "{team} knocking it about nicely.",
+    "{player} picks out {player2} with a tidy ball.",
+    "{team} are passing it sideways with real conviction.",
+    "Patient from {team}. Very patient. Some might say asleep.",
+    "{player} tries a Cruyff turn and very nearly pulls it off.",
+    "{team} enjoying a spell of pressure here."
+  ],
+  "corner": [
+    "Corner to {team}.",
+    "{player} wins a corner for {team}.",
+    "{team} win a corner. Everybody up, including the kit man by the look of it.",
+    "Corner to {team}, swung in and headed clear."
+  ],
+  "foul": [
+    "Foul by {oppPlayer} on {player}. Free kick {team}.",
+    "{oppPlayer} goes through the back of {player}. The crowd want blood.",
+    "{player} goes down a bit easily there. Free kick, though.",
+    "Free kick to {team} after {oppPlayer} leaves a bit on {player}."
+  ],
+  "yellow": [
+    "Yellow card for {oppPlayer}. Deserved, that.",
+    "{oppPlayer} is booked for a cynical trip on {player}.",
+    "Into the book goes {oppPlayer}. He's appealing to his mum in the stands.",
+    "Yellow card for {oppPlayer} for dissent. He called the referee something unrepeatable."
+  ],
+  "offside": [
+    "{player} is flagged offside.",
+    "Offside against {player}. He's still arguing about it.",
+    "The flag goes up, {player} was a yard off."
+  ],
+  "shotWide": [
+    "{player} lets fly from distance. Wide.",
+    "{player} shoots, and it's closer to the corner flag than the goal.",
+    "Half-chance for {team}, but {player} drags it wide.",
+    "{player} skies it into the stand. A man catches it in his pie."
+  ],
+  "shotSaved": [
+    "{player} tests {oppGk}. Comfortable save.",
+    "Good save! {oppGk} tips {player}'s effort round the post.",
+    "{player} fires straight at {oppGk}.",
+    "Big chance for {team}! {oppGk} spreads himself and blocks."
+  ],
+  "woodwork": [
+    "OFF THE BAR! {player} so nearly scores for {team}!",
+    "{player} hits the post! {team} so close!"
+  ],
+  "injury": [
+    "{player} is down. The physio's on with the magic sponge.",
+    "Stoppage while {oppPlayer} receives treatment. Possibly for his pride."
+  ],
+  "crowd": [
+    "The {team} fans are in fine voice.",
+    "A chant of 'Who ate all the pies?' goes up for the referee.",
+    "A dog has got onto the pitch. Play stops. The dog is booked.",
+    "Mexican wave going round. It dies in the posh seats.",
+    "The {team} end are singing about the chairman. It isn't complimentary."
+  ],
+  "sub": [
+    "Substitution for {team}: {player} off, {player2} on.",
+    "{team} make a change. {player} trudges off, {player2} sprints on."
+  ],
+  "goal": [
+    "GOAL! {player} heads in from a corner!",
+    "GOAL! {player} taps in at the far post after {player2} squares it!",
+    "GOAL! {player} cracks one in from 25 yards! What a hit!",
+    "GOAL! {player} pounces on a rebound after {oppGk} parries!",
+    "GOAL! {player} slots it into the bottom corner after a lovely move!",
+    "GOAL! {player2}'s cross takes a deflection and {player} bundles it in!",
+    "GOAL! A scrappy one, but {player} won't care. It's in off his knee!",
+    "GOAL! {player} converts from the penalty spot!",
+    "GOAL! {player} chips {oppGk}! Cheeky!"
+  ],
+  "ownGoal": [
+    "GOAL! Own goal! {oppPlayer} turns it into his own net under pressure from {player}!",
+    "GOAL! Oh dear. {oppPlayer} slices it past his own keeper!"
+  ],
+  "goalReactionFor": [
+    "The {team} fans are going berserk!",
+    "Cue limbs in the {team} end.",
+    "{team} lead the celebrations."
+  ],
+  "goalReactionAgainst": [
+    "Silence from the {team} faithful.",
+    "Heads in hands among the {team} supporters.",
+    "Someone in the {team} end has thrown a meat pie."
+  ],
+  "stoppage": [
+    "The fourth official holds up the board: {n} minutes added on.",
+    "{n} minutes of stoppage time."
+  ],
+  "halfTime": [
+    "HALF-TIME. {home} {hs}-{as} {away}.",
+    "The referee blows for half-time. {home} {hs}-{as} {away}."
+  ],
+  "secondHalf": [
+    "We're back under way for the second half.",
+    "The second half begins. Same teams, same drizzle."
+  ],
+  "fullTime": [
+    "FULL-TIME! {home} {hs}-{as} {away}.",
+    "That's it! The referee blows for full-time. {home} {hs}-{as} {away}."
+  ],
+  "extraTime": [
+    "Level after 90 minutes. We're going to extra time!",
+    "Nothing to separate them. Thirty more minutes. The physios are sharpening their sponges."
+  ],
+  "extraTimeHalf": [
+    "Half-time in extra time. {home} {hs}-{as} {away}.",
+    "Quick turnaround. Fifteen minutes to settle it."
+  ],
+  "penaltiesIntro": [
+    "Still level after extra time. It's going to PENALTIES!",
+    "It'll be settled from the spot. Somebody hold the gaffer's hand."
+  ],
+  "shootoutScored": [
+    "{player} scores. Coolly done.",
+    "{player} smashes it in. No mucking about.",
+    "{player} sends {oppGk} the wrong way."
+  ],
+  "shootoutSaved": [
+    "SAVED! {oppGk} keeps out {player}'s penalty!",
+    "{player}'s penalty is saved! {oppGk} guessed right!"
+  ],
+  "shootoutMissed": [
+    "{player} blazes it over! Oh dear.",
+    "{player} hits the post! It stays out!"
+  ],
+  "chanceIntro": {
+    "volley": [
+      "{mate} whips one in from the left... it's dropping for {me}!",
+      "Ball floated in from the left, and {me} is lurking...",
+      "{mate} hangs it up from the wing. {me} lines it up..."
+    ],
+    "snapshot": [
+      "{mate} slides it through from deep. {me} is on the end of it...",
+      "A diagonal ball from behind the play, and {me} is in!",
+      "The ball breaks forward. {me} has a sight of goal!"
+    ],
+    "header": [
+      "Cross coming in from the right. {me} is attacking it...",
+      "{mate} gets to the byline and crosses. {me} rises...",
+      "Ball into the box! {me} is waiting..."
+    ],
+    "overhead": [
+      "Flat cross across the box, and {me} has his back to goal...",
+      "It's whipped in behind {me}... is there an acrobatic option here?",
+      "{mate} drills it across, and {me} is facing the wrong way..."
+    ],
+    "penalty": [
+      "PENALTY! {mate} is brought down by {def}! {me} grabs the ball...",
+      "Handball! The referee points to the spot! {me} is taking it...",
+      "PENALTY to {team}! {def} can't believe it. {me} places the ball..."
+    ],
+    "freekick": [
+      "Free kick in a dangerous position. {me} fancies this...",
+      "{def} hacks down {mate} just outside the box. {me} stands over it...",
+      "Free kick, 25 yards out. {me} has a look at the wall..."
+    ],
+    "turn": [
+      "{me} has his back to goal with {def} right behind him...",
+      "Ball played into {me}'s feet on the edge of the box, {def} tight...",
+      "{me} receives it, {def} leaning all over him..."
+    ],
+    "passing": [
+      "{me} picks it up in midfield. {mate} is making a run...",
+      "{me} looks up. Options ahead...",
+      "{me} drops deep and spots a gap..."
+    ],
+    "crossing": [
+      "{me} drifts out wide and has time to pick a cross...",
+      "{me} is out on the right touchline. Three in the box...",
+      "{me} gets to the byline. Bodies in the middle..."
+    ]
+  },
+  "chanceGoalAssist": [
+    "{mate} scores! But what a ball from {me}!",
+    "{mate} finishes it, {me} made it."
+  ],
+  "chanceMissFlavour": [
+    "{me} holds his head in his hands.",
+    "{me} will want that one back.",
+    "The gaffer turns away in disgust.",
+    "{me} looks at the turf as if it's personally insulted him."
+  ],
+  "chanceGoalFlavour": [
+    "{me} wheels away to celebrate!",
+    "{me} slides on his knees towards the {team} fans!",
+    "{me} cups his ear to the away end. Cheeky.",
+    "What a moment for {me}!"
+  ],
+  "manager": {
+    "ecstatic": [
+      "\"That's a twenty-pound carp, that is!\"",
+      "\"HOOKED! LINE! SINKER!\"",
+      "\"I'd mount that one on the wall, son!\""
+    ],
+    "happy": [
+      "\"Nice and steady. Keep the line taut.\"",
+      "\"They're biting today, lads.\"",
+      "\"Good. Good. Don't spook them.\""
+    ],
+    "neutral": [
+      "\"Patience. The fish come to those who wait.\"",
+      "\"Keep your bait on the hook.\"",
+      "\"It's like a slow Sunday on the canal, this.\""
+    ],
+    "worried": [
+      "\"We're fishing in the wrong pond here.\"",
+      "\"Somebody check the bait, it's not working.\"",
+      "\"I've seen more bite at a vegan barbecue.\""
+    ],
+    "furious": [
+      "\"You've let the big one off the hook!\"",
+      "\"My nan could land that, and she's allergic to fish!\"",
+      "\"THAT'S A TIDDLER! THROW IT BACK!\""
+    ]
+  },
+  "halfTimeTalk": {
+    "winning": "Half-time team talk: \"We've got one in the keep net. Don't kick the bucket over.\"",
+    "drawing": "Half-time team talk: \"The fish are there, lads. Change the bait.\"",
+    "losing": "Half-time team talk: \"Right now we're the worm. Second half, we're the hook.\""
+  },
+  "headlines": {
+    "hattrick": [
+      "{NAME}'S HAT-TRICK HEROICS",
+      "THREE AND EASY FOR {NAME}",
+      "HAT'S ENTERTAINMENT: {NAME} BAGS THREE"
+    ],
+    "brace": [
+      "DOUBLE TROUBLE: {NAME} STRIKES TWICE",
+      "{NAME} SEES DOUBLE",
+      "TWO-NIL-DERFUL {NAME}"
+    ],
+    "winner": [
+      "{NAME} WINS IT",
+      "{NAME} THE HERO",
+      "SUPER {NAME} SINKS {OPP}"
+    ],
+    "scoredLost": [
+      "{NAME} SCORES BUT {TEAM} SINK",
+      "CONSOLATION FOR {NAME}"
+    ],
+    "scored": [
+      "{NAME} ON TARGET",
+      "{NAME} OFF THE MARK",
+      "{NAME} FINDS THE NET"
+    ],
+    "assist": [
+      "{NAME} THE PROVIDER",
+      "SPOON-FED: {NAME} SERVES IT UP"
+    ],
+    "blank": [
+      "{NAME} FIRES BLANKS",
+      "NO JOY FOR {NAME}",
+      "{NAME} LOSES HIS SHOOTING BOOTS"
+    ],
+    "blankWin": [
+      "{TEAM} WIN DESPITE {NAME}",
+      "{NAME} QUIET AS {TEAM} CRUISE"
+    ],
+    "shootoutWin": [
+      "SPOT ON! {TEAM} WIN ON PENS",
+      "PENALTY PERFECTION FOR {TEAM}"
+    ],
+    "shootoutLose": [
+      "SPOT OF BOTHER: {TEAM} OUT ON PENS",
+      "PEN-ALTY KICK IN THE TEETH"
+    ]
+  },
+  "verdict": {
+    "great": [
+      "\"That's a prize catch, that lad. Mount him on the wall.\"",
+      "\"Best day's fishing I've had since Skegness.\""
+    ],
+    "good": [
+      "\"Decent haul. I'll take that.\"",
+      "\"Good shift. Plenty of nibbles.\""
+    ],
+    "ok": [
+      "\"Some days the fish don't bite. Keep casting.\"",
+      "\"Average. Like a tin of sardines.\""
+    ],
+    "poor": [
+      "\"He was about as much use as a chocolate fishing rod.\"",
+      "\"I've had more threat from a pedalo.\""
+    ]
+  }
+}

@@ -32,7 +32,8 @@ src/
     camera.js           pitch projection P(x,z,h), groundAt(), the three tuned cameras
     draw.js             background, goal, players, ball, keeper, HUD primitives
     input.js            pointer → 800x600 canvas space; screens set the handlers
-    kits.js             kits, skin/hair variety, makeKitSet()
+    kits.js             kits, skin/hair variety, makeKitSet(), club colours and clashes
+    manager.js          the gaffer figure, drawn per mood
     clock.js            game time (clock.now)
     loop.js             requestAnimationFrame loop, active screen
     util.js             rand, clamp, lerp, pick, seeded PRNG
@@ -42,10 +43,18 @@ src/
     volley.js  snapshot.js  header.js  overhead.js  penalty.js
     freekick.js  turn.js  passing.js  crossing.js
     index.js            registry: MOMENTS, SKILLS, createMoment(key)
+  sim/                  game rules with no drawing or DOM (testable headless)
+    matchSim.js         the match: clock, goals, filler events, your chances, stats, rating
+    squads.js           made-up squads, same names every time for a club
+    text.js             pick a line, fill its {placeholders}
   screens/
     training.js         the training ground (5 attempts per drill)
-  data/                 game data as JSON: clubs, leagues, fixtures, match commentary
-                        (arrives with the match screen and the career)
+    matchSetup.js       pick a one-off match (until the career drives fixtures)
+    match.js            match day: score blocks, feed, clock, rating, stats, the gaffer
+  data/                 game data as JSON
+    clubs.json          clubs: name, stadium, strength, home and away kits
+    names.json          first names and surnames for squads
+    commentary.json     every line of match commentary, manager quotes, headlines
   state/
     gameState.js        the one saved state object, save(), skill helpers
     storage.js          localStorage wrapper that never throws
@@ -53,7 +62,14 @@ reference/
   training-ground-v1.1.html   the original tuned prototype, kept for comparison
 tools/
   compare.mjs           side-by-side pixel check against the prototype
+  simtest.mjs           plays thousands of simulated matches and prints the averages
 ```
+
+### How a match works
+
+`MatchSim` is ticked once per match minute; the screen races the clock at 1.6 minutes a second (4x faster with *Faster*). Goals for both sides are scheduled up front from the clubs' strengths, and the rest of the feed (corners, fouls, cards, saves, subs, the odd dog on the pitch) is filled in as the clock runs. You get 3 to 6 chances, set by manager trust and form. When one arrives, the sim returns a `chance` event, the screen stops the clock, plays that moment with the real moment module in the clubs' kits, and passes the result back through `resolveChance()`, which updates the score, feed, stats and your rating. Cup ties that are level go to extra time (maybe one more chance) and then penalties, where you take your side's first kick yourself. Skill points earned in a match go into your training profile.
+
+Writing commentary is just editing `src/data/commentary.json`; no code changes needed.
 
 ### The moment interface
 

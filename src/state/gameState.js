@@ -17,9 +17,13 @@ export const state = load();
 
 function load() {
   const saved = store.get(SAVE_KEY, null);
-  if (saved && saved.profile) { saved.profile = normaliseProfile(saved.profile); return saved; }
-  // First run: bring across anything earned in the prototype.
-  return { version: 1, profile: normaliseProfile(store.get(LEGACY_KEY, null)) };
+  const s = (saved && saved.profile) ? saved
+    // First run: bring across anything earned in the prototype.
+    : { version: 1, profile: store.get(LEGACY_KEY, null) };
+  s.profile = normaliseProfile(s.profile);
+  // Settings for one-off matches from the training ground.
+  s.friendly = Object.assign({ clubId: 'shrewsbury', oppId: 'barrow', venue: 'home', cup: false, trust: 50, form: 50 }, s.friendly || {});
+  return s;
 }
 export function save() { store.set(SAVE_KEY, state); }
 

@@ -11,7 +11,7 @@ import { state, save, skillF, skillLevel, playerName } from '../state/gameState.
 
 const ATTEMPTS = 5;
 
-export function createTrainingScreen(root) {
+export function createTrainingScreen(root, go) {
   const profile = state.profile;
   let cv, ctx, session = null, moment = null, lastDrill = 'volley';
   const $ = id => root.querySelector('#' + id);
@@ -28,6 +28,7 @@ export function createTrainingScreen(root) {
         <div class="sub"><b>FRONT PAGE, BACK PAGE</b> · Get your touch in before the real thing</div>
         <div class="namebox">Player name <input id="pname" maxlength="16" placeholder="Your name"></div>
         <div class="grid" id="drills"></div>
+        <button class="btn gold big" id="matchday">MATCH DAY ▶<small>Play a one-off match</small></button>
         <div class="hint">Five attempts per drill. Goals earn skill points, and higher skill widens your timing windows.<br>Moving drills: steer your player with the mouse. Set pieces: aim with the mouse, hold to power up, release to strike.</div>
       </div>
     </div>
@@ -47,6 +48,7 @@ export function createTrainingScreen(root) {
     setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
     $('pname').value = profile.name;
     $('pname').oninput = e => { profile.name = e.target.value.trim(); save(); renderSide(); };
+    $('matchday').onclick = () => go('setup');
     $('again').onclick = () => startDrill(lastDrill);
     $('back').onclick = () => { setCam('def'); $('end').classList.add('hidden'); $('hub').classList.remove('hidden'); renderHub(); };
     $('quit').onclick = () => { moment = null; session = null; setCam('def'); $('quit').classList.add('hidden'); $('hub').classList.remove('hidden'); renderHub(); };
