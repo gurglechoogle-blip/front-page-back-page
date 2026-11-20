@@ -45,14 +45,24 @@ src/
     index.js            registry: MOMENTS, SKILLS, createMoment(key)
   sim/                  game rules with no drawing or DOM (testable headless)
     matchSim.js         the match: clock, goals, filler events, your chances, stats, rating
+    season.js           clubs, the 2026-27 calendar, fixture generation, cup draws, quick results, tables
+    career.js           the career: academy offers, the week loop, selection, approval, money, the phone
     squads.js           made-up squads, same names every time for a club
     text.js             pick a line, fill its {placeholders}
   screens/
-    training.js         the training ground (5 attempts per drill)
+    start.js            name entry and academy offers
+    hub.js              the hub: you, your week, five category menus
+    week.js             end-of-week results
+    season.js           season review
+    training.js         the training ground (5 attempts per drill; one drill per slot in a career)
     matchSetup.js       pick a one-off match (until the career drives fixtures)
     match.js            match day: score blocks, feed, clock, rating, stats, the gaffer
   data/                 game data as JSON
-    clubs.json          clubs: name, stadium, strength, home and away kits
+    clubs.json          all 92 clubs for 2026-27 plus non-league sides: stadium, strength, kits
+    leagues.json        the four divisions: games, dates, cup entry points, promotion places
+    calendar.json       2026-27 dates: pre-season, international breaks, every cup round
+    academies.json      the four academy offer types and their trade-offs
+    messages.json       phone messages (Gran's betting tips, the kit man's prophecies)
     names.json          first names and surnames for squads
     commentary.json     every line of match commentary, manager quotes, headlines
   state/
@@ -63,6 +73,7 @@ reference/
 tools/
   compare.mjs           side-by-side pixel check against the prototype
   simtest.mjs           plays thousands of simulated matches and prints the averages
+  seasontest.mjs        plays whole careers headless (every academy type) through a season
 ```
 
 ### How a match works
@@ -70,6 +81,12 @@ tools/
 `MatchSim` is ticked once per match minute; the screen races the clock at 1.6 minutes a second (4x faster with *Faster*). Goals for both sides are scheduled up front from the clubs' strengths, and the rest of the feed (corners, fouls, cards, saves, subs, the odd dog on the pitch) is filled in as the clock runs. You get 3 to 6 chances, set by manager trust and form. When one arrives, the sim returns a `chance` event, the screen stops the clock, plays that moment with the real moment module in the clubs' kits, and passes the result back through `resolveChance()`, which updates the score, feed, stats and your rating. Cup ties that are level go to extra time (maybe one more chance) and then penalties, where you take your side's first kick yourself. Skill points earned in a match go into your training profile.
 
 Writing commentary is just editing `src/data/commentary.json`; no code changes needed.
+
+### How a career works
+
+You start at 16 in summer 2026, pick a name, and choose from 3-4 academy offers (elite academy, pathway club, money club, family club). Your training-ground skill level decides which clubs come calling. Each week you get 4 time slots (6 in pre-season) to spend on drills or rest, then matchday: the team sheet says whether you start, sit on the bench (1-2 chances if you come on) or watch from the stand, depending on the club's pathway, manager approval and form. The week ends with your rating, approval, wages in and bills out, results around the league and the table.
+
+The season is built from `season.js`: a double round-robin league on the real 2026-27 calendar (38 or 46 games, Saturdays, midweeks, Boxing Day and New Year), pre-season friendlies, and every cup your club is in: FA Cup (League One and Two from R1, the top two divisions from R3), EFL Cup (R1, R2 or R3 depending on division and Europe), and the EFL Trophy (League One and Two clubs, or the U21s of 16 big academies). Other teams' matches are simulated each week so the table works. Cup ties are drawn one round at a time.
 
 ### The moment interface
 
