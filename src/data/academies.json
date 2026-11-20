@@ -1,0 +1,46 @@
+{
+  "_note": "Academy offers at 16. Each type trades something. coaching = training skill-gain multiplier; pathway = base chance of first-team football; patience = how hard bad games hit manager approval (higher = harsher); approval = starting manager approval. Club pools: 'high' if your training-ground skill level is decent, 'low' otherwise.",
+  "minSkillForHigh": 15,
+  "types": {
+    "elite": {
+      "label": "Elite academy", "strength": "Prestige, top coaching", "catch": "Crowded pathway, likely loans, little patience",
+      "wage": 160, "signingFee": 0, "coaching": 1.25, "pathway": 0.06, "patience": 1.5, "prestige": 5, "approval": 40, "housing": false,
+      "high": ["arsenal", "liverpool", "mancity", "chelsea", "manutd", "tottenham"],
+      "low": ["brighton", "everton", "astonvilla", "fulham", "crystalpalace", "newcastle"],
+      "pitch": [
+        "\"We've produced more internationals than you've had hot dinners. Mostly because we feed them salad.\"",
+        "\"Our under-18s have a sports scientist, a chef and a man whose only job is folding towels. You'll love it.\""
+      ]
+    },
+    "pathway": {
+      "label": "Pathway club", "strength": "Clear route to the first team", "catch": "Smaller wages, lower profile",
+      "wage": 120, "signingFee": 1000, "coaching": 1.0, "pathway": 0.42, "patience": 1.0, "prestige": 2, "approval": 55, "housing": false,
+      "high": ["southampton", "norwich", "middlesbrough", "stoke", "derby", "preston"],
+      "low": ["crewe", "mkdons", "peterborough", "stevenage", "cheltenham", "walsall"],
+      "pitch": [
+        "\"Play well and you'll be on the bench by October. Play badly and you'll be on the bench by October anyway, because we've only got fourteen fit players.\"",
+        "\"Three of our first team came through the academy. A fourth came through the car park, but that's another story.\""
+      ]
+    },
+    "money": {
+      "label": "Money club", "strength": "Big signing-on fee and wages", "catch": "Pressure from day one, agent sharks circle",
+      "wage": 450, "signingFee": 15000, "coaching": 1.0, "pathway": 0.25, "patience": 1.25, "prestige": 3, "approval": 45, "housing": false,
+      "high": ["wrexham", "birmingham", "sunderland"],
+      "low": ["salford", "wrexham", "birmingham"],
+      "pitch": [
+        "\"Our owners are very ambitious. And very famous. There may be cameras. Do you have a good side?\"",
+        "\"Here's fifteen grand. Don't ask where it's from. It's from the owners. Who you mustn't ask about.\""
+      ]
+    },
+    "family": {
+      "label": "Family club", "strength": "Security, housing, patience with bad behaviour", "catch": "Slow progress, may cap your ceiling",
+      "wage": 110, "signingFee": 500, "coaching": 0.9, "pathway": 0.28, "patience": 0.6, "prestige": 1, "approval": 60, "housing": true,
+      "high": ["exeter", "mansfield", "burton", "bristolrovers"],
+      "low": ["exeter", "accrington", "tranmere", "grimsby"],
+      "pitch": [
+        "\"You'll lodge with Mrs Pemberton. She's eighty-one, makes a cracking shepherd's pie, and once broke a burglar's nose with a skillet.\"",
+        "\"Everyone here looks out for each other. The tea lady's been here since 1974. She will know if you've skipped training.\""
+      ]
+    }
+  }
+}

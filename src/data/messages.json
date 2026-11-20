@@ -1,0 +1,34 @@
+{
+  "_note": "Phone messages. {name} = you, {opp} = next opponent, {club} = your club, {odds}, {stake}, {win}, {cup}, {round}, {home}, {away}, {date}.",
+  "start": [
+    { "from": "Mum", "text": "So proud of you love. Don't forget your gumshield. Or your sandwiches. Mum x" },
+    { "from": "Gran", "text": "Your Gran's opened a betting account. Make me proud. And rich." },
+    { "from": "Dennis (kit man)", "text": "Seen a lot of lads come through here, {name}. You'll either play for England or end up selling double glazing. 50/50. Socks are in your locker." }
+  ],
+  "granOdds": "{odds} for you to score against {opp}. I've had {stake} on it. No pressure, pet.",
+  "granStakes": ["a fiver", "a tenner", "my pension", "the cat's food money", "my winter fuel allowance", "twenty quid and a Twix"],
+  "granWon": ["YOU SCORED!! I've won {win}. Getting a new hip.", "Get in!! {win} up. Your grandad's turning in his grave, he always said you were rubbish."],
+  "granLost": ["Didn't score. That's my bingo money gone. Still love you.", "No goal. I've told Ladbrokes it's a fix."],
+  "granBenched": ["Not even on the pitch?! I want my stake back.", "Sat on the bench all game. I could have done that, and I've got a bad knee."],
+  "gafferAngry": ["The Gaffer: My office. Monday. Bring a rod.", "The Gaffer: You were about as sharp as a wet sponge today, son."],
+  "gafferHappy": ["The Gaffer: That's what I call a catch, son.", "The Gaffer: Lovely stuff. Keep your line in the water."],
+  "kitman": [
+    "Dennis (kit man): Had a dream you scored with your knee. Wear knee pads, just in case.",
+    "Dennis (kit man): You'll get a nosebleed in March. Pack tissues.",
+    "Dennis (kit man): Mark my words, you'll meet someone important on a Tuesday. Probably the bus driver.",
+    "Dennis (kit man): Your left boot's unlucky. Can't explain it. I just know.",
+    "Dennis (kit man): Someone will offer you a business opportunity involving slippers. Say no."
+  ],
+  "shark": [
+    "Unknown number: Tony here. Super-agent. You don't know me but I know you. Let's do lunch. Bring your mum's bank details.",
+    "Unknown number: Kevin, Elite Global Premium Talent Management Ltd. We should talk. I've got a mate at Real Madrid. Well, he's been to Madrid."
+  ],
+  "birthday": { "from": "Mum", "text": "Happy 17th birthday love! Cake's in the fridge. Your Gran's put money on you eating all of it." },
+  "cupDraw": "{cup} {round} draw: {home} v {away}, {date}.",
+  "cupOut": "Knocked out of the {cup}. Dennis says he saw it coming.",
+  "selection": {
+    "start": "Team sheet's up. You're STARTING.",
+    "sub": "Team sheet's up. You're on the bench.",
+    "none": "Team sheet's up. You're not in the squad. You'll be watching from the stand with a Bovril."
+  }
+}

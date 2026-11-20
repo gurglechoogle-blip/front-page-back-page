@@ -1,0 +1,34 @@
+{
+  "_note": "2026-27 calendar. Premier League dates, EFL Cup R1 weekend and FA Cup final are the announced ones; other dates follow the usual pattern of an English season (EFL start, cup rounds and international windows are best estimates).",
+  "season": "2026-27",
+  "careerStart": "2026-07-06",
+  "seasonEnd": "2027-05-30",
+  "friendlies": ["2026-07-18", "2026-07-25", "2026-08-01"],
+  "internationalBreakWeekends": ["2026-09-26", "2026-10-03", "2026-11-14", "2027-03-27"],
+  "festive": ["2026-12-29", "2027-01-01"],
+  "cups": {
+    "eflcup": { "name": "Carabao Cup", "short": "EFL Cup", "extraTime": false, "rounds": [
+      { "id": "R1", "name": "First Round", "date": "2026-08-08" },
+      { "id": "R2", "name": "Second Round", "date": "2026-08-25" },
+      { "id": "R3", "name": "Third Round", "date": "2026-09-15" },
+      { "id": "R4", "name": "Fourth Round", "date": "2026-10-27" },
+      { "id": "QF", "name": "Quarter-Final", "date": "2026-12-15" },
+      { "id": "SF", "name": "Semi-Final", "date": "2027-01-12" },
+      { "id": "F", "name": "Final", "date": "2027-02-28", "neutral": "Wembley Stadium" } ] },
+    "facup": { "name": "Emirates FA Cup", "short": "FA Cup", "extraTime": true, "rounds": [
+      { "id": "R1", "name": "First Round", "date": "2026-11-07" },
+      { "id": "R2", "name": "Second Round", "date": "2026-12-05" },
+      { "id": "R3", "name": "Third Round", "date": "2027-01-09" },
+      { "id": "R4", "name": "Fourth Round", "date": "2027-02-13" },
+      { "id": "R5", "name": "Fifth Round", "date": "2027-03-03" },
+      { "id": "QF", "name": "Quarter-Final", "date": "2027-03-20" },
+      { "id": "SF", "name": "Semi-Final", "date": "2027-04-24", "neutral": "Wembley Stadium" },
+      { "id": "F", "name": "Final", "date": "2027-05-22", "neutral": "Wembley Stadium" } ] },
+    "trophy": { "name": "Vertu Trophy", "short": "EFL Trophy", "extraTime": false, "groupDates": ["2026-09-01", "2026-10-06", "2026-11-10"], "rounds": [
+      { "id": "R2", "name": "Round of 32", "date": "2026-12-01" },
+      { "id": "R3", "name": "Round of 16", "date": "2027-01-05" },
+      { "id": "QF", "name": "Quarter-Final", "date": "2027-01-26" },
+      { "id": "SF", "name": "Semi-Final", "date": "2027-02-23" },
+      { "id": "F", "name": "Final", "date": "2027-04-11", "neutral": "Wembley Stadium" } ] }
+  }
+}

@@ -1,21 +1,1697 @@
 {
-  "_note": "Starter set for the match screen. Expanded to the full English pyramid with the career (Stage 3). strength: 0-100. home/away: kit colours.",
-  "clubs": [
-    { "id": "arsenal", "name": "Arsenal", "short": "ARS", "stadium": "the Emirates", "strength": 88, "home": { "shirt": "#db0007", "trim": "#ffffff", "shorts": "#ffffff", "socks": "#ffffff" }, "away": { "shirt": "#f2d43a", "trim": "#063672", "shorts": "#063672", "socks": "#f2d43a" } },
-    { "id": "liverpool", "name": "Liverpool", "short": "LIV", "stadium": "Anfield", "strength": 88, "home": { "shirt": "#c8102e", "trim": "#f6eb61", "shorts": "#c8102e", "socks": "#c8102e" }, "away": { "shirt": "#f4f4f4", "trim": "#c8102e", "shorts": "#f4f4f4", "socks": "#f4f4f4" } },
-    { "id": "chelsea", "name": "Chelsea", "short": "CHE", "stadium": "Stamford Bridge", "strength": 84, "home": { "shirt": "#034694", "trim": "#ffffff", "shorts": "#034694", "socks": "#ffffff" }, "away": { "shirt": "#f1e8d0", "trim": "#034694", "shorts": "#f1e8d0", "socks": "#f1e8d0" } },
-    { "id": "everton", "name": "Everton", "short": "EVE", "stadium": "Hill Dickinson Stadium", "strength": 72, "home": { "shirt": "#003399", "trim": "#ffffff", "shorts": "#ffffff", "socks": "#003399" }, "away": { "shirt": "#f5a623", "trim": "#1d1d1d", "shorts": "#1d1d1d", "socks": "#f5a623" } },
-    { "id": "middlesbrough", "name": "Middlesbrough", "short": "MID", "stadium": "the Riverside", "strength": 64, "home": { "shirt": "#e11b22", "trim": "#ffffff", "shorts": "#e11b22", "socks": "#e11b22" }, "away": { "shirt": "#1b2b4b", "trim": "#7fd3f7", "shorts": "#1b2b4b", "socks": "#1b2b4b" } },
-    { "id": "norwich", "name": "Norwich City", "short": "NOR", "stadium": "Carrow Road", "strength": 62, "home": { "shirt": "#fff200", "trim": "#00a650", "shorts": "#00a650", "socks": "#fff200" }, "away": { "shirt": "#1d1d1d", "trim": "#fff200", "shorts": "#1d1d1d", "socks": "#1d1d1d" } },
-    { "id": "stoke", "name": "Stoke City", "short": "STK", "stadium": "the bet365 Stadium", "strength": 60, "home": { "shirt": "#e03a3e", "trim": "#ffffff", "shorts": "#ffffff", "socks": "#ffffff" }, "away": { "shirt": "#1b365d", "trim": "#ffffff", "shorts": "#1b365d", "socks": "#1b365d" } },
-    { "id": "sheffwed", "name": "Sheffield Wednesday", "short": "SHW", "stadium": "Hillsborough", "strength": 55, "home": { "shirt": "#2f5fbf", "trim": "#ffffff", "shorts": "#1d1d1d", "socks": "#ffffff" }, "away": { "shirt": "#f2c230", "trim": "#1d1d1d", "shorts": "#f2c230", "socks": "#f2c230" } },
-    { "id": "bolton", "name": "Bolton Wanderers", "short": "BOL", "stadium": "the Toughsheet Community Stadium", "strength": 52, "home": { "shirt": "#f4f4f4", "trim": "#1b2b5b", "shorts": "#1b2b5b", "socks": "#f4f4f4" }, "away": { "shirt": "#7a1f3d", "trim": "#f4f4f4", "shorts": "#7a1f3d", "socks": "#7a1f3d" } },
-    { "id": "wigan", "name": "Wigan Athletic", "short": "WIG", "stadium": "the Brick Community Stadium", "strength": 48, "home": { "shirt": "#1d59af", "trim": "#ffffff", "shorts": "#1d59af", "socks": "#1d59af" }, "away": { "shirt": "#e8473a", "trim": "#1d1d1d", "shorts": "#1d1d1d", "socks": "#e8473a" } },
-    { "id": "huddersfield", "name": "Huddersfield Town", "short": "HUD", "stadium": "the John Smith's Stadium", "strength": 50, "home": { "shirt": "#0e63ad", "trim": "#ffffff", "shorts": "#ffffff", "socks": "#0e63ad" }, "away": { "shirt": "#f2c230", "trim": "#0e63ad", "shorts": "#0e63ad", "socks": "#f2c230" } },
-    { "id": "shrewsbury", "name": "Shrewsbury Town", "short": "SHR", "stadium": "the New Meadow", "strength": 40, "home": { "shirt": "#1c3f94", "trim": "#f5a623", "shorts": "#1c3f94", "socks": "#1c3f94" }, "away": { "shirt": "#f5a623", "trim": "#1c3f94", "shorts": "#f5a623", "socks": "#f5a623" } },
-    { "id": "nottscounty", "name": "Notts County", "short": "NCO", "stadium": "Meadow Lane", "strength": 42, "home": { "shirt": "#1d1d1d", "trim": "#ffffff", "shorts": "#1d1d1d", "socks": "#1d1d1d" }, "away": { "shirt": "#f2c230", "trim": "#1d1d1d", "shorts": "#f2c230", "socks": "#f2c230" } },
-    { "id": "grimsby", "name": "Grimsby Town", "short": "GRI", "stadium": "Blundell Park", "strength": 40, "home": { "shirt": "#f4f4f4", "trim": "#1d1d1d", "shorts": "#1d1d1d", "socks": "#1d1d1d" }, "away": { "shirt": "#c8202f", "trim": "#f4f4f4", "shorts": "#c8202f", "socks": "#c8202f" } },
-    { "id": "crewe", "name": "Crewe Alexandra", "short": "CRE", "stadium": "Gresty Road", "strength": 38, "home": { "shirt": "#d4202c", "trim": "#ffffff", "shorts": "#ffffff", "socks": "#d4202c" }, "away": { "shirt": "#1d1d1d", "trim": "#d4202c", "shorts": "#1d1d1d", "socks": "#1d1d1d" } },
-    { "id": "barrow", "name": "Barrow", "short": "BAR", "stadium": "Holker Street", "strength": 35, "home": { "shirt": "#2a6ebb", "trim": "#ffffff", "shorts": "#ffffff", "socks": "#2a6ebb" }, "away": { "shirt": "#f4f4f4", "trim": "#2a6ebb", "shorts": "#2a6ebb", "socks": "#f4f4f4" } }
-  ]
+ "_note": "All 92 clubs in the 2026-27 English pyramid, plus non-league clubs for early FA Cup rounds. strength 0-100. home: kit colours (away kits are derived if missing). Real names for personal play; a public release would swap in made-up ones.",
+ "clubs": [
+  {
+   "id": "arsenal",
+   "name": "Arsenal",
+   "short": "ARS",
+   "stadium": "the Emirates Stadium",
+   "strength": 89,
+   "league": "PL",
+   "home": {
+    "shirt": "#db0007",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   },
+   "away": {
+    "shirt": "#f2d43a",
+    "trim": "#063672",
+    "shorts": "#063672",
+    "socks": "#f2d43a"
+   }
+  },
+  {
+   "id": "astonvilla",
+   "name": "Aston Villa",
+   "short": "AVL",
+   "stadium": "Villa Park",
+   "strength": 80,
+   "league": "PL",
+   "home": {
+    "shirt": "#670e36",
+    "trim": "#95bfe5",
+    "shorts": "#f4f4f4",
+    "socks": "#95bfe5"
+   }
+  },
+  {
+   "id": "bournemouth",
+   "name": "AFC Bournemouth",
+   "short": "BOU",
+   "stadium": "the Vitality Stadium",
+   "strength": 74,
+   "league": "PL",
+   "home": {
+    "shirt": "#da291c",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "brentford",
+   "name": "Brentford",
+   "short": "BRE",
+   "stadium": "the Gtech Community Stadium",
+   "strength": 74,
+   "league": "PL",
+   "home": {
+    "shirt": "#e30613",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#e30613"
+   }
+  },
+  {
+   "id": "brighton",
+   "name": "Brighton & Hove Albion",
+   "short": "BHA",
+   "stadium": "the Amex",
+   "strength": 76,
+   "league": "PL",
+   "home": {
+    "shirt": "#0057b8",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "chelsea",
+   "name": "Chelsea",
+   "short": "CHE",
+   "stadium": "Stamford Bridge",
+   "strength": 85,
+   "league": "PL",
+   "home": {
+    "shirt": "#034694",
+    "trim": "#f4f4f4",
+    "shorts": "#034694",
+    "socks": "#f4f4f4"
+   },
+   "away": {
+    "shirt": "#f1e8d0",
+    "trim": "#034694",
+    "shorts": "#f1e8d0",
+    "socks": "#f1e8d0"
+   }
+  },
+  {
+   "id": "coventry",
+   "name": "Coventry City",
+   "short": "COV",
+   "stadium": "the Coventry Building Society Arena",
+   "strength": 66,
+   "league": "PL",
+   "home": {
+    "shirt": "#6cabdd",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#6cabdd"
+   }
+  },
+  {
+   "id": "crystalpalace",
+   "name": "Crystal Palace",
+   "short": "CRY",
+   "stadium": "Selhurst Park",
+   "strength": 75,
+   "league": "PL",
+   "home": {
+    "shirt": "#1b458f",
+    "trim": "#c4122e",
+    "shorts": "#1b458f",
+    "socks": "#1b458f"
+   }
+  },
+  {
+   "id": "everton",
+   "name": "Everton",
+   "short": "EVE",
+   "stadium": "the Hill Dickinson Stadium",
+   "strength": 72,
+   "league": "PL",
+   "home": {
+    "shirt": "#003399",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#003399"
+   },
+   "away": {
+    "shirt": "#f5a623",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f5a623"
+   }
+  },
+  {
+   "id": "fulham",
+   "name": "Fulham",
+   "short": "FUL",
+   "stadium": "Craven Cottage",
+   "strength": 73,
+   "league": "PL",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "hull",
+   "name": "Hull City",
+   "short": "HUL",
+   "stadium": "the MKM Stadium",
+   "strength": 64,
+   "league": "PL",
+   "home": {
+    "shirt": "#f5a12d",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f5a12d"
+   }
+  },
+  {
+   "id": "ipswich",
+   "name": "Ipswich Town",
+   "short": "IPS",
+   "stadium": "Portman Road",
+   "strength": 66,
+   "league": "PL",
+   "home": {
+    "shirt": "#3a64a3",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#3a64a3"
+   }
+  },
+  {
+   "id": "leeds",
+   "name": "Leeds United",
+   "short": "LEE",
+   "stadium": "Elland Road",
+   "strength": 70,
+   "league": "PL",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d428a",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "liverpool",
+   "name": "Liverpool",
+   "short": "LIV",
+   "stadium": "Anfield",
+   "strength": 88,
+   "league": "PL",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f6eb61",
+    "shorts": "#c8102e",
+    "socks": "#c8102e"
+   },
+   "away": {
+    "shirt": "#f4f4f4",
+    "trim": "#c8102e",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "mancity",
+   "name": "Manchester City",
+   "short": "MCI",
+   "stadium": "the Etihad Stadium",
+   "strength": 87,
+   "league": "PL",
+   "home": {
+    "shirt": "#6cabdd",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#6cabdd"
+   }
+  },
+  {
+   "id": "manutd",
+   "name": "Manchester United",
+   "short": "MUN",
+   "stadium": "Old Trafford",
+   "strength": 80,
+   "league": "PL",
+   "home": {
+    "shirt": "#da291c",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "newcastle",
+   "name": "Newcastle United",
+   "short": "NEW",
+   "stadium": "St James' Park",
+   "strength": 80,
+   "league": "PL",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "nottmforest",
+   "name": "Nottingham Forest",
+   "short": "NFO",
+   "stadium": "the City Ground",
+   "strength": 74,
+   "league": "PL",
+   "home": {
+    "shirt": "#dd0000",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#dd0000"
+   }
+  },
+  {
+   "id": "sunderland",
+   "name": "Sunderland",
+   "short": "SUN",
+   "stadium": "the Stadium of Light",
+   "strength": 68,
+   "league": "PL",
+   "home": {
+    "shirt": "#eb172b",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#eb172b"
+   }
+  },
+  {
+   "id": "tottenham",
+   "name": "Tottenham Hotspur",
+   "short": "TOT",
+   "stadium": "the Tottenham Hotspur Stadium",
+   "strength": 79,
+   "league": "PL",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#132257",
+    "shorts": "#132257",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "birmingham",
+   "name": "Birmingham City",
+   "short": "BIR",
+   "stadium": "St Andrew's",
+   "strength": 64,
+   "league": "CH",
+   "home": {
+    "shirt": "#1b3fa0",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1b3fa0"
+   }
+  },
+  {
+   "id": "blackburn",
+   "name": "Blackburn Rovers",
+   "short": "BLB",
+   "stadium": "Ewood Park",
+   "strength": 58,
+   "league": "CH",
+   "home": {
+    "shirt": "#009ee0",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#009ee0"
+   }
+  },
+  {
+   "id": "bolton",
+   "name": "Bolton Wanderers",
+   "short": "BOL",
+   "stadium": "the Toughsheet Community Stadium",
+   "strength": 58,
+   "league": "CH",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1b2b5b",
+    "shorts": "#1b2b5b",
+    "socks": "#f4f4f4"
+   },
+   "away": {
+    "shirt": "#7a1f3d",
+    "trim": "#f4f4f4",
+    "shorts": "#7a1f3d",
+    "socks": "#7a1f3d"
+   }
+  },
+  {
+   "id": "bristolcity",
+   "name": "Bristol City",
+   "short": "BRC",
+   "stadium": "Ashton Gate",
+   "strength": 62,
+   "league": "CH",
+   "home": {
+    "shirt": "#e21a23",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e21a23"
+   }
+  },
+  {
+   "id": "burnley",
+   "name": "Burnley",
+   "short": "BUR",
+   "stadium": "Turf Moor",
+   "strength": 68,
+   "league": "CH",
+   "home": {
+    "shirt": "#6c1d45",
+    "trim": "#99d6ea",
+    "shorts": "#f4f4f4",
+    "socks": "#6c1d45"
+   }
+  },
+  {
+   "id": "cardiff",
+   "name": "Cardiff City",
+   "short": "CAR",
+   "stadium": "the Cardiff City Stadium",
+   "strength": 60,
+   "league": "CH",
+   "home": {
+    "shirt": "#0070b5",
+    "trim": "#f4f4f4",
+    "shorts": "#0070b5",
+    "socks": "#0070b5"
+   }
+  },
+  {
+   "id": "charlton",
+   "name": "Charlton Athletic",
+   "short": "CHA",
+   "stadium": "The Valley",
+   "strength": 58,
+   "league": "CH",
+   "home": {
+    "shirt": "#d4021d",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#d4021d"
+   }
+  },
+  {
+   "id": "derby",
+   "name": "Derby County",
+   "short": "DER",
+   "stadium": "Pride Park",
+   "strength": 60,
+   "league": "CH",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "lincoln",
+   "name": "Lincoln City",
+   "short": "LIN",
+   "stadium": "the LNER Stadium",
+   "strength": 57,
+   "league": "CH",
+   "home": {
+    "shirt": "#e2231a",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#e2231a"
+   }
+  },
+  {
+   "id": "middlesbrough",
+   "name": "Middlesbrough",
+   "short": "MBR",
+   "stadium": "the Riverside",
+   "strength": 64,
+   "league": "CH",
+   "home": {
+    "shirt": "#e11b22",
+    "trim": "#f4f4f4",
+    "shorts": "#e11b22",
+    "socks": "#e11b22"
+   },
+   "away": {
+    "shirt": "#1b2b4b",
+    "trim": "#7fd3f7",
+    "shorts": "#1b2b4b",
+    "socks": "#1b2b4b"
+   }
+  },
+  {
+   "id": "millwall",
+   "name": "Millwall",
+   "short": "MIL",
+   "stadium": "The Den",
+   "strength": 62,
+   "league": "CH",
+   "home": {
+    "shirt": "#001d5e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#001d5e"
+   }
+  },
+  {
+   "id": "norwich",
+   "name": "Norwich City",
+   "short": "NOR",
+   "stadium": "Carrow Road",
+   "strength": 62,
+   "league": "CH",
+   "home": {
+    "shirt": "#fff200",
+    "trim": "#00a650",
+    "shorts": "#00a650",
+    "socks": "#fff200"
+   },
+   "away": {
+    "shirt": "#1d1d1d",
+    "trim": "#fff200",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "portsmouth",
+   "name": "Portsmouth",
+   "short": "POR",
+   "stadium": "Fratton Park",
+   "strength": 59,
+   "league": "CH",
+   "home": {
+    "shirt": "#001489",
+    "trim": "#d4021d",
+    "shorts": "#f4f4f4",
+    "socks": "#d4021d"
+   }
+  },
+  {
+   "id": "preston",
+   "name": "Preston North End",
+   "short": "PNE",
+   "stadium": "Deepdale",
+   "strength": 60,
+   "league": "CH",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1b2b5b",
+    "shorts": "#1b2b5b",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "qpr",
+   "name": "Queens Park Rangers",
+   "short": "QPR",
+   "stadium": "Loftus Road",
+   "strength": 59,
+   "league": "CH",
+   "home": {
+    "shirt": "#1d5ba4",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "sheffutd",
+   "name": "Sheffield United",
+   "short": "SHU",
+   "stadium": "Bramall Lane",
+   "strength": 64,
+   "league": "CH",
+   "home": {
+    "shirt": "#ee2737",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#ee2737"
+   }
+  },
+  {
+   "id": "southampton",
+   "name": "Southampton",
+   "short": "SOU",
+   "stadium": "St Mary's",
+   "strength": 67,
+   "league": "CH",
+   "home": {
+    "shirt": "#d71920",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "stoke",
+   "name": "Stoke City",
+   "short": "STK",
+   "stadium": "the bet365 Stadium",
+   "strength": 60,
+   "league": "CH",
+   "home": {
+    "shirt": "#e03a3e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   },
+   "away": {
+    "shirt": "#1b365d",
+    "trim": "#ffffff",
+    "shorts": "#1b365d",
+    "socks": "#1b365d"
+   }
+  },
+  {
+   "id": "swansea",
+   "name": "Swansea City",
+   "short": "SWA",
+   "stadium": "the Swansea.com Stadium",
+   "strength": 60,
+   "league": "CH",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "watford",
+   "name": "Watford",
+   "short": "WAT",
+   "stadium": "Vicarage Road",
+   "strength": 61,
+   "league": "CH",
+   "home": {
+    "shirt": "#fbee23",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#fbee23"
+   }
+  },
+  {
+   "id": "westbrom",
+   "name": "West Bromwich Albion",
+   "short": "WBA",
+   "stadium": "The Hawthorns",
+   "strength": 63,
+   "league": "CH",
+   "home": {
+    "shirt": "#122f67",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "westham",
+   "name": "West Ham United",
+   "short": "WHU",
+   "stadium": "the London Stadium",
+   "strength": 70,
+   "league": "CH",
+   "home": {
+    "shirt": "#7a263a",
+    "trim": "#1bb1e7",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "wolves",
+   "name": "Wolverhampton Wanderers",
+   "short": "WOL",
+   "stadium": "Molineux",
+   "strength": 70,
+   "league": "CH",
+   "home": {
+    "shirt": "#fdb913",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#fdb913"
+   }
+  },
+  {
+   "id": "wrexham",
+   "name": "Wrexham",
+   "short": "WRE",
+   "stadium": "the Racecourse Ground",
+   "strength": 63,
+   "league": "CH",
+   "home": {
+    "shirt": "#d50032",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#d50032"
+   }
+  },
+  {
+   "id": "barnsley",
+   "name": "Barnsley",
+   "short": "BAR",
+   "stadium": "Oakwell",
+   "strength": 50,
+   "league": "L1",
+   "home": {
+    "shirt": "#d71920",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#d71920"
+   }
+  },
+  {
+   "id": "blackpool",
+   "name": "Blackpool",
+   "short": "BPL",
+   "stadium": "Bloomfield Road",
+   "strength": 50,
+   "league": "L1",
+   "home": {
+    "shirt": "#f68712",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f68712"
+   }
+  },
+  {
+   "id": "bradford",
+   "name": "Bradford City",
+   "short": "BRA",
+   "stadium": "Valley Parade",
+   "strength": 49,
+   "league": "L1",
+   "home": {
+    "shirt": "#f6a800",
+    "trim": "#7e1f2e",
+    "shorts": "#7e1f2e",
+    "socks": "#f6a800"
+   }
+  },
+  {
+   "id": "wimbledon",
+   "name": "AFC Wimbledon",
+   "short": "WIM",
+   "stadium": "Plough Lane",
+   "strength": 46,
+   "league": "L1",
+   "home": {
+    "shirt": "#1c3f94",
+    "trim": "#f2c230",
+    "shorts": "#1c3f94",
+    "socks": "#1c3f94"
+   }
+  },
+  {
+   "id": "burton",
+   "name": "Burton Albion",
+   "short": "BUA",
+   "stadium": "the Pirelli Stadium",
+   "strength": 46,
+   "league": "L1",
+   "home": {
+    "shirt": "#fdd20e",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#fdd20e"
+   }
+  },
+  {
+   "id": "doncaster",
+   "name": "Doncaster Rovers",
+   "short": "DON",
+   "stadium": "the Eco-Power Stadium",
+   "strength": 48,
+   "league": "L1",
+   "home": {
+    "shirt": "#e3192b",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#e3192b"
+   }
+  },
+  {
+   "id": "huddersfield",
+   "name": "Huddersfield Town",
+   "short": "HUD",
+   "stadium": "the John Smith's Stadium",
+   "strength": 54,
+   "league": "L1",
+   "home": {
+    "shirt": "#0e63ad",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#0e63ad"
+   },
+   "away": {
+    "shirt": "#f2c230",
+    "trim": "#0e63ad",
+    "shorts": "#0e63ad",
+    "socks": "#f2c230"
+   }
+  },
+  {
+   "id": "leytonorient",
+   "name": "Leyton Orient",
+   "short": "LEY",
+   "stadium": "Brisbane Road",
+   "strength": 49,
+   "league": "L1",
+   "home": {
+    "shirt": "#e2211c",
+    "trim": "#f4f4f4",
+    "shorts": "#e2211c",
+    "socks": "#e2211c"
+   }
+  },
+  {
+   "id": "luton",
+   "name": "Luton Town",
+   "short": "LUT",
+   "stadium": "Kenilworth Road",
+   "strength": 54,
+   "league": "L1",
+   "home": {
+    "shirt": "#f78f1e",
+    "trim": "#1b2b5b",
+    "shorts": "#1b2b5b",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "mansfield",
+   "name": "Mansfield Town",
+   "short": "MNS",
+   "stadium": "Field Mill",
+   "strength": 47,
+   "league": "L1",
+   "home": {
+    "shirt": "#f5a623",
+    "trim": "#1c3f94",
+    "shorts": "#1c3f94",
+    "socks": "#f5a623"
+   }
+  },
+  {
+   "id": "peterborough",
+   "name": "Peterborough United",
+   "short": "PET",
+   "stadium": "London Road",
+   "strength": 48,
+   "league": "L1",
+   "home": {
+    "shirt": "#0c4da2",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#0c4da2"
+   }
+  },
+  {
+   "id": "plymouth",
+   "name": "Plymouth Argyle",
+   "short": "PLY",
+   "stadium": "Home Park",
+   "strength": 50,
+   "league": "L1",
+   "home": {
+    "shirt": "#00573f",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#00573f"
+   }
+  },
+  {
+   "id": "reading",
+   "name": "Reading",
+   "short": "REA",
+   "stadium": "the Select Car Leasing Stadium",
+   "strength": 49,
+   "league": "L1",
+   "home": {
+    "shirt": "#004494",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "stevenage",
+   "name": "Stevenage",
+   "short": "STE",
+   "stadium": "Broadhall Way",
+   "strength": 45,
+   "league": "L1",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "stockport",
+   "name": "Stockport County",
+   "short": "STO",
+   "stadium": "Edgeley Park",
+   "strength": 53,
+   "league": "L1",
+   "home": {
+    "shirt": "#0b2f80",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#0b2f80"
+   }
+  },
+  {
+   "id": "wigan",
+   "name": "Wigan Athletic",
+   "short": "WIG",
+   "stadium": "the Brick Community Stadium",
+   "strength": 49,
+   "league": "L1",
+   "home": {
+    "shirt": "#1d59af",
+    "trim": "#f4f4f4",
+    "shorts": "#1d59af",
+    "socks": "#1d59af"
+   },
+   "away": {
+    "shirt": "#e8473a",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#e8473a"
+   }
+  },
+  {
+   "id": "wycombe",
+   "name": "Wycombe Wanderers",
+   "short": "WYC",
+   "stadium": "Adams Park",
+   "strength": 47,
+   "league": "L1",
+   "home": {
+    "shirt": "#87ceeb",
+    "trim": "#1b2b5b",
+    "shorts": "#1b2b5b",
+    "socks": "#1b2b5b"
+   }
+  },
+  {
+   "id": "oxford",
+   "name": "Oxford United",
+   "short": "OXF",
+   "stadium": "the Kassam Stadium",
+   "strength": 55,
+   "league": "L1",
+   "home": {
+    "shirt": "#fcd700",
+    "trim": "#1b2b5b",
+    "shorts": "#1b2b5b",
+    "socks": "#fcd700"
+   }
+  },
+  {
+   "id": "leicester",
+   "name": "Leicester City",
+   "short": "LEI",
+   "stadium": "the King Power Stadium",
+   "strength": 60,
+   "league": "L1",
+   "home": {
+    "shirt": "#003090",
+    "trim": "#fdbe11",
+    "shorts": "#003090",
+    "socks": "#003090"
+   }
+  },
+  {
+   "id": "sheffwed",
+   "name": "Sheffield Wednesday",
+   "short": "SHW",
+   "stadium": "Hillsborough",
+   "strength": 52,
+   "league": "L1",
+   "home": {
+    "shirt": "#2f5fbf",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   },
+   "away": {
+    "shirt": "#f2c230",
+    "trim": "#1d1d1d",
+    "shorts": "#f2c230",
+    "socks": "#f2c230"
+   }
+  },
+  {
+   "id": "bromley",
+   "name": "Bromley",
+   "short": "BRO",
+   "stadium": "Hayes Lane",
+   "strength": 44,
+   "league": "L1",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "mkdons",
+   "name": "MK Dons",
+   "short": "MKD",
+   "stadium": "Stadium MK",
+   "strength": 47,
+   "league": "L1",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#d4a017",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "cambridge",
+   "name": "Cambridge United",
+   "short": "CAM",
+   "stadium": "the Abbey Stadium",
+   "strength": 45,
+   "league": "L1",
+   "home": {
+    "shirt": "#f9a01b",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f9a01b"
+   }
+  },
+  {
+   "id": "nottscounty",
+   "name": "Notts County",
+   "short": "NCO",
+   "stadium": "Meadow Lane",
+   "strength": 47,
+   "league": "L1",
+   "home": {
+    "shirt": "#1d1d1d",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   },
+   "away": {
+    "shirt": "#f2c230",
+    "trim": "#1d1d1d",
+    "shorts": "#f2c230",
+    "socks": "#f2c230"
+   }
+  },
+  {
+   "id": "accrington",
+   "name": "Accrington Stanley",
+   "short": "ACC",
+   "stadium": "the Crown Ground",
+   "strength": 38,
+   "league": "L2",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "barnet",
+   "name": "Barnet",
+   "short": "BNT",
+   "stadium": "The Hive",
+   "strength": 40,
+   "league": "L2",
+   "home": {
+    "shirt": "#f5a623",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f5a623"
+   }
+  },
+  {
+   "id": "bristolrovers",
+   "name": "Bristol Rovers",
+   "short": "BRR",
+   "stadium": "the Memorial Stadium",
+   "strength": 42,
+   "league": "L2",
+   "home": {
+    "shirt": "#1e3d8f",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "cheltenham",
+   "name": "Cheltenham Town",
+   "short": "CHL",
+   "stadium": "Whaddon Road",
+   "strength": 40,
+   "league": "L2",
+   "home": {
+    "shirt": "#e1001a",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#e1001a"
+   }
+  },
+  {
+   "id": "chesterfield",
+   "name": "Chesterfield",
+   "short": "CHF",
+   "stadium": "the SMH Group Stadium",
+   "strength": 43,
+   "league": "L2",
+   "home": {
+    "shirt": "#0a3ea8",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#0a3ea8"
+   }
+  },
+  {
+   "id": "colchester",
+   "name": "Colchester United",
+   "short": "COL",
+   "stadium": "the JobServe Community Stadium",
+   "strength": 40,
+   "league": "L2",
+   "home": {
+    "shirt": "#1863b4",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1863b4"
+   }
+  },
+  {
+   "id": "crawley",
+   "name": "Crawley Town",
+   "short": "CRA",
+   "stadium": "the Broadfield Stadium",
+   "strength": 41,
+   "league": "L2",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#c8102e",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "crewe",
+   "name": "Crewe Alexandra",
+   "short": "CRE",
+   "stadium": "Gresty Road",
+   "strength": 40,
+   "league": "L2",
+   "home": {
+    "shirt": "#d4202c",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#d4202c"
+   },
+   "away": {
+    "shirt": "#1d1d1d",
+    "trim": "#d4202c",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "fleetwood",
+   "name": "Fleetwood Town",
+   "short": "FLE",
+   "stadium": "Highbury Stadium",
+   "strength": 40,
+   "league": "L2",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "gillingham",
+   "name": "Gillingham",
+   "short": "GIL",
+   "stadium": "Priestfield",
+   "strength": 41,
+   "league": "L2",
+   "home": {
+    "shirt": "#002f87",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#002f87"
+   }
+  },
+  {
+   "id": "grimsby",
+   "name": "Grimsby Town",
+   "short": "GRI",
+   "stadium": "Blundell Park",
+   "strength": 42,
+   "league": "L2",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   },
+   "away": {
+    "shirt": "#c8202f",
+    "trim": "#f4f4f4",
+    "shorts": "#c8202f",
+    "socks": "#c8202f"
+   }
+  },
+  {
+   "id": "newport",
+   "name": "Newport County",
+   "short": "NPT",
+   "stadium": "Rodney Parade",
+   "strength": 38,
+   "league": "L2",
+   "home": {
+    "shirt": "#f5a623",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f5a623"
+   }
+  },
+  {
+   "id": "oldham",
+   "name": "Oldham Athletic",
+   "short": "OLD",
+   "stadium": "Boundary Park",
+   "strength": 42,
+   "league": "L2",
+   "home": {
+    "shirt": "#0c4da2",
+    "trim": "#f4f4f4",
+    "shorts": "#0c4da2",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "salford",
+   "name": "Salford City",
+   "short": "SAL",
+   "stadium": "Moor Lane",
+   "strength": 44,
+   "league": "L2",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "shrewsbury",
+   "name": "Shrewsbury Town",
+   "short": "SHR",
+   "stadium": "the New Meadow",
+   "strength": 40,
+   "league": "L2",
+   "home": {
+    "shirt": "#1c3f94",
+    "trim": "#f5a623",
+    "shorts": "#1c3f94",
+    "socks": "#1c3f94"
+   },
+   "away": {
+    "shirt": "#f5a623",
+    "trim": "#1c3f94",
+    "shorts": "#f5a623",
+    "socks": "#f5a623"
+   }
+  },
+  {
+   "id": "swindon",
+   "name": "Swindon Town",
+   "short": "SWI",
+   "stadium": "the County Ground",
+   "strength": 40,
+   "league": "L2",
+   "home": {
+    "shirt": "#d6001c",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#d6001c"
+   }
+  },
+  {
+   "id": "tranmere",
+   "name": "Tranmere Rovers",
+   "short": "TRA",
+   "stadium": "Prenton Park",
+   "strength": 39,
+   "league": "L2",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#0c4da2",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "walsall",
+   "name": "Walsall",
+   "short": "WAL",
+   "stadium": "the Bescot Stadium",
+   "strength": 42,
+   "league": "L2",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "exeter",
+   "name": "Exeter City",
+   "short": "EXE",
+   "stadium": "St James Park",
+   "strength": 43,
+   "league": "L2",
+   "home": {
+    "shirt": "#d0021b",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "portvale",
+   "name": "Port Vale",
+   "short": "PVA",
+   "stadium": "Vale Park",
+   "strength": 45,
+   "league": "L2",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "rotherham",
+   "name": "Rotherham United",
+   "short": "ROT",
+   "stadium": "the New York Stadium",
+   "strength": 45,
+   "league": "L2",
+   "home": {
+    "shirt": "#d71920",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#d71920"
+   }
+  },
+  {
+   "id": "northampton",
+   "name": "Northampton Town",
+   "short": "NTH",
+   "stadium": "Sixfields",
+   "strength": 41,
+   "league": "L2",
+   "home": {
+    "shirt": "#7a1e3a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#7a1e3a"
+   }
+  },
+  {
+   "id": "york",
+   "name": "York City",
+   "short": "YOR",
+   "stadium": "the LNER Community Stadium",
+   "strength": 41,
+   "league": "L2",
+   "home": {
+    "shirt": "#d71920",
+    "trim": "#1b2b5b",
+    "shorts": "#1b2b5b",
+    "socks": "#d71920"
+   }
+  },
+  {
+   "id": "rochdale",
+   "name": "Rochdale",
+   "short": "ROC",
+   "stadium": "Spotland",
+   "strength": 39,
+   "league": "L2",
+   "home": {
+    "shirt": "#0b4ea2",
+    "trim": "#f4f4f4",
+    "shorts": "#0b4ea2",
+    "socks": "#0b4ea2"
+   }
+  },
+  {
+   "id": "barrow",
+   "name": "Barrow",
+   "short": "BRW",
+   "stadium": "Holker Street",
+   "strength": 34,
+   "league": "NL",
+   "home": {
+    "shirt": "#2a6ebb",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#2a6ebb"
+   },
+   "away": {
+    "shirt": "#f4f4f4",
+    "trim": "#2a6ebb",
+    "shorts": "#2a6ebb",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "harrogate",
+   "name": "Harrogate Town",
+   "short": "HAR",
+   "stadium": "Wetherby Road",
+   "strength": 33,
+   "league": "NL",
+   "home": {
+    "shirt": "#f2c230",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f2c230"
+   }
+  },
+  {
+   "id": "forestgreen",
+   "name": "Forest Green Rovers",
+   "short": "FGR",
+   "stadium": "The New Lawn",
+   "strength": 32,
+   "league": "NL",
+   "home": {
+    "shirt": "#7ac143",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#7ac143"
+   }
+  },
+  {
+   "id": "southend",
+   "name": "Southend United",
+   "short": "SOT",
+   "stadium": "Roots Hall",
+   "strength": 32,
+   "league": "NL",
+   "home": {
+    "shirt": "#1c3f94",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1c3f94"
+   }
+  },
+  {
+   "id": "hartlepool",
+   "name": "Hartlepool United",
+   "short": "HPL",
+   "stadium": "Victoria Park",
+   "strength": 30,
+   "league": "NL",
+   "home": {
+    "shirt": "#1c3f94",
+    "trim": "#f4f4f4",
+    "shorts": "#1c3f94",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "yeovil",
+   "name": "Yeovil Town",
+   "short": "YEO",
+   "stadium": "Huish Park",
+   "strength": 28,
+   "league": "NL",
+   "home": {
+    "shirt": "#00843d",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#00843d"
+   }
+  },
+  {
+   "id": "aldershot",
+   "name": "Aldershot Town",
+   "short": "ALD",
+   "stadium": "the Recreation Ground",
+   "strength": 29,
+   "league": "NL",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#1c3f94",
+    "shorts": "#1c3f94",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "woking",
+   "name": "Woking",
+   "short": "WOK",
+   "stadium": "Kingfield",
+   "strength": 29,
+   "league": "NL",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "sutton",
+   "name": "Sutton United",
+   "short": "SUT",
+   "stadium": "Gander Green Lane",
+   "strength": 29,
+   "league": "NL",
+   "home": {
+    "shirt": "#f2c230",
+    "trim": "#7a1e3a",
+    "shorts": "#7a1e3a",
+    "socks": "#f2c230"
+   }
+  },
+  {
+   "id": "altrincham",
+   "name": "Altrincham",
+   "short": "ALT",
+   "stadium": "Moss Lane",
+   "strength": 30,
+   "league": "NL",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "halifax",
+   "name": "FC Halifax Town",
+   "short": "HFX",
+   "stadium": "The Shay",
+   "strength": 30,
+   "league": "NL",
+   "home": {
+    "shirt": "#1c3f94",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1c3f94"
+   }
+  },
+  {
+   "id": "wealdstone",
+   "name": "Wealdstone",
+   "short": "WEA",
+   "stadium": "Grosvenor Vale",
+   "strength": 27,
+   "league": "NL",
+   "home": {
+    "shirt": "#1c3f94",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "boston",
+   "name": "Boston United",
+   "short": "BOS",
+   "stadium": "the Jakemans Community Stadium",
+   "strength": 27,
+   "league": "NL",
+   "home": {
+    "shirt": "#f2c230",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "tamworth",
+   "name": "Tamworth",
+   "short": "TAM",
+   "stadium": "The Lamb Ground",
+   "strength": 26,
+   "league": "NL",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "scunthorpe",
+   "name": "Scunthorpe United",
+   "short": "SCU",
+   "stadium": "Glanford Park",
+   "strength": 30,
+   "league": "NL",
+   "home": {
+    "shirt": "#7a1e3a",
+    "trim": "#87ceeb",
+    "shorts": "#f4f4f4",
+    "socks": "#7a1e3a"
+   }
+  },
+  {
+   "id": "gateshead",
+   "name": "Gateshead",
+   "short": "GAT",
+   "stadium": "the International Stadium",
+   "strength": 29,
+   "league": "NL",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "carlisle",
+   "name": "Carlisle United",
+   "short": "CRL",
+   "stadium": "Brunton Park",
+   "strength": 33,
+   "league": "NL",
+   "home": {
+    "shirt": "#1c3f94",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "morecambe",
+   "name": "Morecambe",
+   "short": "MOR",
+   "stadium": "the Mazuma Mobile Stadium",
+   "strength": 27,
+   "league": "NL",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "maidstone",
+   "name": "Maidstone United",
+   "short": "MAI",
+   "stadium": "the Gallagher Stadium",
+   "strength": 24,
+   "league": "NL",
+   "home": {
+    "shirt": "#f2c230",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f2c230"
+   }
+  },
+  {
+   "id": "spennymoor",
+   "name": "Spennymoor Town",
+   "short": "SPE",
+   "stadium": "the Brewery Field",
+   "strength": 22,
+   "league": "NL",
+   "home": {
+    "shirt": "#1d1d1d",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "chorley",
+   "name": "Chorley",
+   "short": "CHO",
+   "stadium": "Victory Park",
+   "strength": 23,
+   "league": "NL",
+   "home": {
+    "shirt": "#1d1d1d",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "dagenham",
+   "name": "Dagenham & Redbridge",
+   "short": "DAG",
+   "stadium": "Victoria Road",
+   "strength": 25,
+   "league": "NL",
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#1c3f94",
+    "shorts": "#1c3f94",
+    "socks": "#e2001a"
+   }
+  }
+ ]
 }

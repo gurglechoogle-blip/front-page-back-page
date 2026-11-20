@@ -22,6 +22,7 @@ function load() {
     : { version: 1, profile: store.get(LEGACY_KEY, null) };
   s.profile = normaliseProfile(s.profile);
   // Settings for one-off matches from the training ground.
+  s.career = s.career || null;
   s.friendly = Object.assign({ clubId: 'shrewsbury', oppId: 'barrow', venue: 'home', cup: false, trust: 50, form: 50 }, s.friendly || {});
   return s;
 }

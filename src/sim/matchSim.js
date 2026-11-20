@@ -26,14 +26,19 @@ export function chancesFor(trust, form, R = Math.random) {
 export class MatchSim {
   /**
    * opts: { home, away (club objects), mySide: 'home'|'away', cup: bool,
-   *         trust, form (0..1), playerName, rng? }
+   *         trust, form (0..1), playerName, rng?,
+   *         role: 'start' | 'sub' | 'none' (not in the squad: no chances),
+   *         extraTime: false for cups that go straight to penalties,
+   *         stadium: venue name for neutral grounds }
    */
   constructor(opts) {
     const R = this.R = opts.rng || Math.random;
     Object.assign(this, { home: opts.home, away: opts.away, mySide: opts.mySide || 'home', cup: !!opts.cup, me: opts.playerName || 'Player' });
+    this.role = opts.role || 'start'; this.extraTime = opts.extraTime !== false; this.stadium = opts.stadium || this.home.stadium;
+    this.onPitch = this.role === 'start';
     this.oppSide = this.mySide === 'home' ? 'away' : 'home';
     this.squads = { home: makeSquad(this.home.id), away: makeSquad(this.away.id) };
-    this.squads[this.mySide].fwd[0] = this.me;
+    if (this.role !== 'none') this.squads[this.mySide].fwd[0] = this.me;
     this.score = { home: 0, away: 0 }; this.pens = null;
     this.stats = { home: this.blankStats(), away: this.blankStats() };
     this.my = { goals: 0, assists: 0, chances: 0, onTarget: 0, gained: {}, log: [] };
@@ -43,7 +48,8 @@ export class MatchSim {
     this.possession = clamp(.5 + (this.home.strength - this.away.strength) / 200 + .03, .3, .7);
     this.possTicks = 0; this.homePossTicks = 0;
     this.stoppage = { '1H': 1 + Math.floor(R() * 4), '2H': 2 + Math.floor(R() * 5), 'ET1': Math.floor(R() * 3), 'ET2': 1 + Math.floor(R() * 3) };
-    this.nChances = chancesFor(opts.trust ?? .5, opts.form ?? .5, R);
+    this.nChances = this.role === 'none' ? 0 : this.role === 'sub' ? 1 + (R() < .45 ? 1 : 0) : chancesFor(opts.trust ?? .5, opts.form ?? .5, R);
+    this.subMinute = this.role === 'sub' ? 58 + Math.floor(R() * 18) : null;
     this.schedule = {};
     this.planRegulation();
     this.lastMoment = null; this.penTaken = false;
@@ -56,9 +62,11 @@ export class MatchSim {
   add(key, ev) { (this.schedule[key] = this.schedule[key] || []).push(ev); }
   planRegulation() {
     const R = this.R, slots = this.slots(['1H', '2H']).filter(k => !k.endsWith(':1') && k !== '2H:46');
-    // Your chances, spread out.
-    const n = this.nChances, seg = slots.length / n;
-    for (let i = 0; i < n; i++) this.add(slots[Math.floor(i * seg + R() * seg * .8 + seg * .1)], { t: 'chance' });
+    // Your chances, spread out (after you come on, if you're a sub).
+    const mine = this.subMinute ? slots.filter(k => k.startsWith('2H:') && +k.split(':')[1] > this.subMinute + 1) : slots;
+    const n = this.nChances, seg = mine.length / Math.max(1, n);
+    for (let i = 0; i < n; i++) this.add(mine[Math.floor(i * seg + R() * seg * .8 + seg * .1)], { t: 'chance' });
+    if (this.subMinute) this.add('2H:' + this.subMinute, { t: 'subOn' });
     this.planGoals(slots, 1);
     // Substitutions around the hour.
     ['home', 'away'].forEach(side => { for (let i = 0; i < 2; i++) this.add('2H:' + (58 + Math.floor(R() * 24)), { t: 'sub', side, i }); });
@@ -66,12 +74,12 @@ export class MatchSim {
   planGoals(slots, scale) {
     const R = this.R, d = (this.home.strength - this.away.strength) / 60;
     const lam = { home: 1.3 * Math.exp(d) * 1.1 * scale, away: 1.3 * Math.exp(-d) * .9 * scale };
-    lam[this.mySide] *= .5; // you are taking some of your side's chances yourself
+    lam[this.mySide] *= { start: .5, sub: .75, none: 1 }[this.role]; // you take some of your side's chances yourself
     ['home', 'away'].forEach(side => { const g = poisson(lam[side], R); for (let i = 0; i < g; i++) { let k; do { k = slots[Math.floor(R() * slots.length)]; } while ((this.schedule[k] || []).some(e => e.t === 'chance')); this.add(k, { t: 'goal', side }); } });
   }
   planExtraTime() {
     const R = this.R, slots = this.slots(['ET1', 'ET2']).filter(k => k !== 'ET1:91' && k !== 'ET2:106');
-    if (R() < .6) this.add(slots[Math.floor(R() * slots.length)], { t: 'chance' });
+    if (this.onPitch && R() < .6) this.add(slots[Math.floor(R() * slots.length)], { t: 'chance' });
     this.planGoals(slots, 1 / 3);
   }
 
@@ -83,7 +91,7 @@ export class MatchSim {
   vars(side, extra = {}) {
     const opp = side === 'home' ? 'away' : 'home';
     const player = this.outfield(side, ['def', 'mid', 'fwd'], [this.me]);
-    return Object.assign({ team: this.name(side), opp: this.name(opp), player, player2: this.outfield(side, ['mid', 'fwd'], [player, this.me]), oppPlayer: this.outfield(opp, ['def', 'mid']), gk: this.squads[side].gk, oppGk: this.squads[opp].gk, me: this.me, home: this.home.name, away: this.away.name, hs: this.score.home, as: this.score.away, stadium: this.home.stadium }, extra);
+    return Object.assign({ team: this.name(side), opp: this.name(opp), player, player2: this.outfield(side, ['mid', 'fwd'], [player, this.me]), oppPlayer: this.outfield(opp, ['def', 'mid']), gk: this.squads[side].gk, oppGk: this.squads[opp].gk, me: this.me, home: this.home.name, away: this.away.name, hs: this.score.home, as: this.score.away, stadium: this.stadium }, extra);
   }
   ev(text, kind = 'info', side = null, label = this.label()) { return { label, text, kind, side }; }
   line(key, side, extra) { return fill(pickR(C[key], this.R), this.vars(side, extra)); }
@@ -98,7 +106,8 @@ export class MatchSim {
     if (this.period === null) {
       this.period = '1H'; this.minute = 0;
       out.push(this.ev(fill(pickR(C.preMatch, this.R), this.vars('home', { weather: pickR(C.weather, this.R) })), 'info', null, ''));
-      out.push(this.ev(this.line('lineup', this.mySide), 'info', this.mySide, ''));
+      if (this.role === 'start') out.push(this.ev(this.line('lineup', this.mySide), 'info', this.mySide, ''));
+      if (this.role === 'sub') out.push(this.ev(`${this.me} starts on the bench for ${this.name(this.mySide)}. Warm-up bib on, fingers crossed.`, 'info', this.mySide, ''));
       out.push(this.ev(this.line('kickOff', 'home'), 'info', 'home', '0\''));
       return out;
     }
@@ -113,6 +122,7 @@ export class MatchSim {
     const planned = this.schedule[key] || [];
     for (const e of planned) {
       if (e.t === 'goal') out.push(...this.teamGoal(e.side));
+      else if (e.t === 'subOn') { const off = this.squads[this.mySide].fwd[1]; this.onPitch = true; out.push(this.ev(`SUBSTITUTION: ${off} off, ${this.me} ON for ${this.name(this.mySide)}. Here we go.`, 'chance', this.mySide)); out[out.length - 1].kind = 'subOn'; }
       else if (e.t === 'sub') { const sq = this.squads[e.side]; const off = sq.mid[e.i] || sq.def[e.i], on = sq.subs[e.i]; if (off && on) { out.push(this.ev(this.line('sub', e.side, { player: off, player2: on }), 'info', e.side)); sq.mid[e.i] = on; } }
     }
     if (planned.some(e => e.t === 'chance')) { out.push(this.startChance()); return out; }
@@ -148,6 +158,7 @@ export class MatchSim {
     const v = this.vars('home');
     if (p === '1H') { out.push(this.ev(fill(pickR(C.halfTime, this.R), v), 'break')); out.push(this.ev(C.halfTimeTalk[this.myState()], 'info', this.mySide, '')); out.push(this.ev(this.line('secondHalf', 'home'), 'info', null, '46\'')); this.period = '2H'; this.minute = 45; return out; }
     const level = this.score.home === this.score.away;
+    if (p === '2H' && this.cup && level && !this.extraTime) { out.push(this.ev(fill(pickR(C.penaltiesIntro, this.R), v).replace('after extra time', 'after 90 minutes'), 'break')); this.startShootout(); return out; }
     if (p === '2H' && this.cup && level) { out.push(this.ev(fill(pickR(C.extraTime, this.R), v), 'break')); this.planExtraTime(); this.period = 'ET1'; this.minute = 90; return out; }
     if (p === 'ET1') { out.push(this.ev(fill(pickR(C.extraTimeHalf, this.R), v), 'break')); this.period = 'ET2'; this.minute = 105; return out; }
     if (p === 'ET2' && level) { out.push(this.ev(fill(pickR(C.penaltiesIntro, this.R), v), 'break')); this.startShootout(); return out; }
@@ -204,12 +215,12 @@ export class MatchSim {
     this.period = 'PENS'; this.pens = { home: 0, away: 0, taken: { home: 0, away: 0 }, order: ['home', 'away'], i: 0, log: [] };
     const takers = side => { const sq = this.squads[side]; return [...sq.fwd, ...sq.mid, ...sq.def, sq.gk].filter((n, i, a) => a.indexOf(n) === i); };
     this.pens.takers = { home: takers('home'), away: takers('away') };
-    this.pens.takers[this.mySide] = [this.me, ...this.pens.takers[this.mySide].filter(n => n !== this.me)];
+    if (this.onPitch) this.pens.takers[this.mySide] = [this.me, ...this.pens.takers[this.mySide].filter(n => n !== this.me)];
   }
   shootoutKick() {
     const P = this.pens, side = P.order[P.i % 2];
     const n = P.taken[side], taker = P.takers[side][n % P.takers[side].length];
-    if (side === this.mySide && n === 0) { return [this.startChance('penalty', true)]; }
+    if (side === this.mySide && n === 0 && this.onPitch) { return [this.startChance('penalty', true)]; }
     return this.shootoutResult(side, taker, this.R() < .76, false);
   }
   shootoutResult(side, taker, scored, mine) {
@@ -257,7 +268,7 @@ export class MatchSim {
     else if (this.my.assists) hk = 'assist'; else hk = res === 'W' ? 'blankWin' : 'blank';
     const headline = fill(pickR(C.headlines[hk], R), { NAME, TEAM: team.toUpperCase(), OPP: opp.toUpperCase() });
     const r = Math.round(this.rating * 10) / 10, vk = r >= 8 ? 'great' : r >= 7 ? 'good' : r >= 6 ? 'ok' : 'poor';
-    return { result: res, headline, verdict: pickR(C.verdict[vk], R), rating: r, score: { ...this.score }, pens: this.pens && { home: this.pens.home, away: this.pens.away }, scorers: this.scorers, my: this.my };
+    return { role: this.role, result: res, headline, verdict: pickR(C.verdict[vk], R), rating: r, score: { ...this.score }, pens: this.pens && { home: this.pens.home, away: this.pens.away }, scorers: this.scorers, my: this.my };
   }
 }
 
