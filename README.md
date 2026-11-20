@@ -4,7 +4,13 @@ A browser football life-sim. What you do on the pitch makes the back pages; what
 
 The design doc is the source of truth for what the game should be. This repo is plain JavaScript modules drawing to an HTML canvas, served by Vite. No framework.
 
-## Running it
+## Play it online
+
+https://gurglechoogle-blip.github.io/front-page-back-page/
+
+Every push to `main` rebuilds and republishes it automatically (`.github/workflows/pages.yml`).
+
+## Running it locally
 
 ```bash
 npm install && npm run dev
