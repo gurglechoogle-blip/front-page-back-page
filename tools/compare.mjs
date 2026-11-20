@@ -78,7 +78,9 @@ for (const SEED of SEEDS) for (const k of DRILLS) {
     const page = await ctx.newPage();
     page.on('pageerror', e => console.log('PAGE ERROR', apiName, e.message));
     await page.route('**/fonts.googleapis.com/**', r => r.abort());
-    await page.goto(url); await page.waitForFunction(n => window[n], apiName);
+    await page.goto(url);
+    if (apiName === '__fpbp') { await page.evaluate(() => localStorage.clear()); await page.reload(); await page.click('#tg'); } // new build: start screen -> training ground
+    await page.waitForFunction(n => window[n], apiName);
     await page.evaluate(() => { for (let i = 0; i < 3; i++) window.__step(); });
     runs.push(await page.evaluate(scenario, { k, apiName }));
     await ctx.close();

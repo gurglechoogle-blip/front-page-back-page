@@ -16,6 +16,8 @@ import {
   age, myFixtures, myTeamIn, resultFor, logRest, startMatchday, selection, playHeadless, recordMatch, finishWeek, matchParams, weeklyBills,
 } from '../sim/career.js';
 import M from '../data/messages.json';
+import { playFixture } from './flow.js';
+import { exportSave, importSave } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
@@ -51,7 +53,7 @@ export function createHubScreen(root, go, params = {}) {
     <aside class="hcol" id="right"></aside>
   </div>
   <div class="hbar" id="hbar">${Object.entries(MENUS).map(([k, m]) => `<div class="hbtn-wrap"><button class="btn hbtn" data-m="${k}"><span>${m.icon}</span>${m.label}<em class="badge" id="badge-${k}"></em></button><div class="menu hidden" id="menu-${k}"></div></div>`).join('')}</div>
-  <div class="hfoot"><a href="#" id="newCareer">Start a new career</a></div>
+  <div class="hfoot"><span id="saved">Saved automatically</span> · <a href="#" id="dl">Download save file</a> · <a href="#" id="ul">Load save file</a><input type="file" id="ulf" accept=".json,application/json" hidden> · <a href="#" id="newCareer">Start a new career</a></div>
   <div id="modal" class="modal hidden"><div class="mbox"><button class="mclose" id="mclose">✕</button><div id="mbody"></div></div></div>
   <div id="toast" class="toast"></div>
 </div>`;
@@ -62,6 +64,9 @@ export function createHubScreen(root, go, params = {}) {
     $('nextfx').onclick = e => { e.stopPropagation(); matchday(); };
     $('mclose').onclick = closeModal; $('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
     $('newCareer').onclick = e => { e.preventDefault(); modal(`<h2>Start a new career?</h2><p>This one will be gone for good. Gran will be devastated.</p><div class="endBtns"><button class="btn red" id="reallyNew">Yes, start again</button><button class="btn" id="keep">Keep this one</button></div>`); $('reallyNew').onclick = () => { state.career = null; save(); go('start'); }; $('keep').onclick = closeModal; };
+    $('dl').onclick = e => { e.preventDefault(); exportSave(); toast('Save file downloaded. Keep it somewhere safe, like under the mattress.'); };
+    $('ul').onclick = e => { e.preventDefault(); $('ulf').click(); };
+    $('ulf').onchange = async e => { const f = e.target.files[0]; if (!f) return; const ok = await importSave(f); if (ok) location.reload(); else toast('That file isn\'t a Front Page, Back Page save.'); };
     setCam('def'); render();
     if (params.teamsheet) teamSheet(params.teamsheet);
     else if (c.matchday && c.matchday.queue.length) toast('Matchday in progress. Click the next fixture to carry on.');
@@ -164,10 +169,7 @@ export function createHubScreen(root, go, params = {}) {
         $('cont').onclick = () => { closeModal(); proceed(); };
       };
     } else {
-      $('toMatch').onclick = () => go('match', Object.assign(matchParams(c, f, role), {
-        playerName: c.name,
-        onDone: S => { recordMatch(c, f, S); save(); const md2 = c.matchday; if (md2 && md2.queue.length) go('hub', { teamsheet: md2.queue[0] }); else { finishWeek(c); save(); go('week'); } },
-      }));
+      $('toMatch').onclick = () => playFixture(go, f, role);
     }
   }
 

@@ -36,7 +36,17 @@ export function createMatchScreen(root, go, params) {
   const career = !!params.onDone, role = params.role || 'start', stadium = params.stadium || home.stadium, pName = params.playerName || playerName();
   const colours = matchColours(home, away), myCol = colours[mySide], oppCol = colours[mySide === 'home' ? 'away' : 'home'];
   const kits = makeKitSet(playerKitFrom(myCol), teamKitFrom(oppCol), keeperKitFor(myCol.shirt, oppCol.shirt));
-  const sim = new MatchSim({ home, away, mySide, cup: params.cup, extraTime: params.extraTime !== false, role, stadium, trust: params.trust, form: params.form, playerName: pName });
+  // Career matches save themselves as they go (params.persist) and can be resumed (params.resume).
+  const resume = params.resume || null;
+  const sim = resume ? MatchSim.restore(resume.sim) : new MatchSim({ home, away, mySide, cup: params.cup, extraTime: params.extraTime !== false, role, stadium, trust: params.trust, form: params.form, playerName: pName });
+  const feedLog = resume ? resume.feed.slice() : [];
+  let lastPersist = 0;
+  function persist(chancePending, force) {
+    if (!params.persist || !state.career) return;
+    const t = performance.now(); if (!force && t - lastPersist < 1500) return; lastPersist = t;
+    state.career.liveMatch = { fixtureId: params.fixtureId, role, sim: sim.snapshot(), feed: feedLog.slice(-120), chancePending: !!chancePending };
+    save();
+  }
 
   let cv, ctx, mctx, moment = null, chanceResult = null, chanceEvent = null;
   let phase = 'pre', acc = 0, hold = 0, lastT = null, fast = false, paused = false;
@@ -79,7 +89,25 @@ export function createMatchScreen(root, go, params) {
     cv = $('c'); ctx = cv.getContext('2d'); mctx = $('mgr').getContext('2d');
     attachInput(cv);
     setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
-    $('ko').onclick = () => { $('pre').classList.add('hidden'); phase = 'running'; addEvents(sim.tick()); hold = 1.2; };
+    $('ko').onclick = () => {
+      $('pre').classList.add('hidden');
+      if (resume) {
+        if (sim.done) { phase = 'ft'; ftAt = clock.now + .3; }
+        else if (sim.pending) { chanceEvent = { label: sim.pending.label, moment: sim.pending.key, kind: 'chance' }; if (sim.pending.shootout) chanceEvent.label = ''; phase = 'chanceIntro'; hold = .8; }
+        else { phase = 'running'; hold = .8; }
+        return;
+      }
+      phase = 'running'; addEvents(sim.tick()); hold = 1.2;
+    };
+    if (resume) {
+      $('ko').textContent = 'RESUME ▶'; $('pre').querySelector('.prenote').textContent = 'Match saved. Pick up where you left off.';
+      replayFeed(resume.feed);
+      if (resume.chancePending && sim.pending) {
+        const p = sim.pending;
+        addEvents(sim.resolveChance({ key: p.key, outcome: 'miss', goal: false, gained: 5, msg: 'The moment\'s gone! You walked off mid-chance.', q: 0 }));
+        persist(false, true);
+      }
+    }
     $('pause').onclick = () => { paused = !paused; $('pause').textContent = paused ? '▶ Play' : '❚❚ Pause'; };
     $('fast').onclick = () => { fast = !fast; $('fast').classList.toggle('on', fast); };
     if (!career) $('leave').onclick = () => { if (phase === 'ft' || confirm('Leave the match? It won\'t count.')) { setCam('def'); go('setup'); } };
@@ -87,16 +115,19 @@ export function createMatchScreen(root, go, params) {
   }
 
   /* ---------- feed ---------- */
+  function replayFeed(evs) { const keep = phase; phase = 'replay'; evs.forEach(e => addFeedLine(e)); phase = keep; renderStats(); renderScore(); const f = $('feed'); f.scrollTop = f.scrollHeight; }
+  function addFeedLine(e) {
+    const d = document.createElement('div');
+    d.className = `fl k-${e.kind}${e.side ? ' s-' + e.side : ''}${e.mine ? ' mine' : ''}${e.side === mySide ? ' us' : e.side ? ' them' : ''}`;
+    d.innerHTML = (e.label ? `<b>${esc(e.label)}</b> ` : '') + esc(e.text);
+    $('feedIn').appendChild(d);
+  }
   function addEvents(evs) {
-    for (const e of evs) {
-      const d = document.createElement('div');
-      d.className = `fl k-${e.kind}${e.side ? ' s-' + e.side : ''}${e.mine ? ' mine' : ''}${e.side === mySide ? ' us' : e.side ? ' them' : ''}`;
-      d.innerHTML = (e.label ? `<b>${esc(e.label)}</b> ` : '') + esc(e.text);
-      $('feedIn').appendChild(d);
-      react(e);
-    }
+    if (evs.length) { feedLog.push(...evs.map(e => ({ label: e.label, text: e.text, kind: e.kind, side: e.side, mine: e.mine }))); }
+    for (const e of evs) { addFeedLine(e); react(e); }
     const f = $('feed'); f.scrollTop = f.scrollHeight;
     renderStats(); renderScore();
+    if (evs.length) persist(false, evs.some(e => e.kind !== 'info'));
   }
   function react(e) {
     const now = clock.now;
@@ -111,7 +142,7 @@ export function createMatchScreen(root, go, params) {
 
   /* ---------- chances ---------- */
   function startMoment() {
-    $('feed').classList.add('hidden'); phase = 'moment';
+    $('feed').classList.add('hidden'); phase = 'moment'; persist(true, true);
     moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: pName, onResult: r => { chanceResult = r; } });
   }
   function endMoment() {
@@ -181,7 +212,8 @@ export function createMatchScreen(root, go, params) {
   function showFullTime() {
     const S = sim.summary(), r = S.rating;
     // Skill points from the match go into your training profile.
-    let gained = 0; for (const k in sim.my.gained) { state.profile.skills[k] += sim.my.gained[k]; gained += sim.my.gained[k]; } save();
+    let gained = 0; for (const k in sim.my.gained) gained += sim.my.gained[k];
+    if (!sim.skillsAwarded) { for (const k in sim.my.gained) state.profile.skills[k] += sim.my.gained[k]; sim.skillsAwarded = true; persist(false, true); save(); }
     const scorerList = side => S.scorers[side].map(g => `<li${g.me ? ' class="me"' : ''}>${esc(g.name)} ${esc(g.label)}${g.assist ? ` <small>(ast ${esc(g.assist)})</small>` : ''}</li>`).join('') || '<li class="none">No scorers</li>';
     const resWord = { W: 'WIN', D: 'DRAW', L: 'DEFEAT' }[S.result];
     $('ft').innerHTML = `<div class="panel ftp">

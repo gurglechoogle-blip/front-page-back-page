@@ -129,4 +129,9 @@ Every frame should come back identical.
 
 ## Saving
 
-Everything lives in one state object (`src/state/gameState.js`), saved to `localStorage` under `fpbp_save_v1`. On first run, skill points earned in the old prototype (`tf_profile`) are carried across.
+Everything (training profile and career) lives in one state object (`src/state/gameState.js`), saved to `localStorage` under `fpbp_save_v1` after every action: each drill, rest, team sheet, match event and week. Reloading picks up exactly where you were, including halfway through a match (the match sim snapshots itself as it goes). Leaving in the middle of a chance counts as a miss, so a reload can't buy you a second go.
+
+- A backup copy is kept each week (`fpbp_save_backup`). If the main save is ever unreadable, the backup loads and repairs it.
+- Saves carry a version number and pass through `migrate()` on load, so older saves keep working.
+- The hub footer can download the save as a file and load it back, for moving between computers.
+- On first run, skill points from the old prototype (`tf_profile`) are carried across.

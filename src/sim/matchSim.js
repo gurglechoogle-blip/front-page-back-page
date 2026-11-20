@@ -54,6 +54,10 @@ export class MatchSim {
     this.planRegulation();
     this.lastMoment = null; this.penTaken = false;
   }
+  /** Plain-data copy of the match, for saving mid-game. */
+  snapshot() { const o = {}; for (const k of Object.keys(this)) if (k !== 'R') o[k] = this[k]; return JSON.parse(JSON.stringify(o)); }
+  /** Rebuild a match from snapshot(). */
+  static restore(data, R = Math.random) { return Object.assign(Object.create(MatchSim.prototype), data, { R }); }
   blankStats() { return { shots: 0, onTarget: 0, corners: 0, fouls: 0, yellows: 0 }; }
   name(side) { return this[side].name; }
 

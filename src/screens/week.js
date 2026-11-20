@@ -1,7 +1,7 @@
 // RESULTS: the end of a week. Your matches, the gaffer's verdict on your
 // week, money in and out, results around the league and the table.
 import { esc } from '../engine/util.js';
-import { state, save } from '../state/gameState.js';
+import { state, save, backup } from '../state/gameState.js';
 import { club, compName, prettyDate, zone, DIVS } from '../sim/season.js';
 import { nextWeek, leagueTable, resultFor } from '../sim/career.js';
 
@@ -35,7 +35,7 @@ export function createWeekScreen(root, go) {
       </div>
       <div class="endBtns"><button class="btn gold big" id="next">NEXT WEEK ▶</button></div>
     </div></div>`;
-    $('next').onclick = () => { const more = nextWeek(c); save(); go(more ? 'hub' : 'season'); };
+    $('next').onclick = () => { const more = nextWeek(c); save(); backup(); go(more ? 'hub' : 'season'); };
   }
   return { mount, frame() { } };
 }
