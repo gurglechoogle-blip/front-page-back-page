@@ -1,0 +1,36 @@
+/* Base styles from the training ground prototype (v1.1). */
+*{box-sizing:border-box}
+body{margin:0;background:#121417;color:#eee;font-family:'Roboto Condensed',Arial,sans-serif;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:16px}
+#app{display:flex;gap:10px;width:100%;max-width:1040px;flex-wrap:wrap;justify-content:center}
+#stage{position:relative;flex:1 1 640px;max-width:820px;aspect-ratio:4/3;border:3px solid #2b2f35;border-radius:6px;overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(14,16,19,.86);backdrop-filter:blur(2px)}
+.hidden{display:none!important}
+.panel{width:92%;max-width:640px;text-align:center}
+h1{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(30px,6vw,54px);margin:0;letter-spacing:1px;color:#f1f1f1;font-style:italic;text-shadow:3px 3px 0 #000,0 0 18px rgba(255,200,40,.25)}
+h1 span{color:#ffc928}
+.sub{margin:4px 0 16px;color:#9aa3ad;font-size:14px}
+.namebox{display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:16px;font-weight:700}
+.namebox input{font:inherit;font-weight:700;padding:7px 10px;border-radius:6px;border:2px solid #3a4048;background:#1c2025;color:#fff;width:180px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:620px){.grid{grid-template-columns:repeat(2,1fr)}}
+.btn{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:17px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);border:2px solid #1d5a12;border-radius:10px;padding:12px 6px 10px;cursor:pointer;background:linear-gradient(#8fdc5a 0%,#55b52c 48%,#3d9a1d 52%,#2f8013 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 0 #173f0b}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 1px 0 #173f0b}
+.btn small{display:block;font-weight:400;font-size:12px;opacity:.9;margin-top:2px}
+.btn.red{border-color:#6b1010;background:linear-gradient(#ff7a6b 0%,#e0392b 48%,#c42a1d 52%,#a31d12 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 0 #5a0d08}
+.hint{color:#8a929c;font-size:13px;margin-top:16px;line-height:1.4}
+#quit{position:absolute;top:8px;right:8px;font-size:13px;padding:5px 10px;border-radius:7px}
+#side{flex:0 0 200px;background:#1b1e22;border:3px solid #2b2f35;border-radius:6px;padding:12px 12px 14px;font-size:14px;align-self:stretch}
+#side h2{font-family:Anton,Impact,sans-serif;font-weight:400;font-style:italic;color:#ffc928;margin:0 0 8px;font-size:22px;letter-spacing:.5px}
+#side .row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed #2c3036}
+#side .row b{color:#fff}
+#side .lvl{font-family:Anton,Impact,sans-serif;font-size:34px;color:#ffc928;text-align:center;margin:8px 0 0}
+#side .lvlcap{text-align:center;color:#8a929c;font-size:12px;margin-bottom:8px}
+.bar{height:8px;background:#2a2e34;border-radius:4px;overflow:hidden;margin:2px 0 6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#3d9a1d,#8fdc5a)}
+#endScore{font-family:Anton,Impact,sans-serif;font-size:64px;color:#ffc928;margin:6px 0}
+#endText{font-size:18px;margin-bottom:18px;color:#ddd}
+.endBtns{display:flex;gap:12px;justify-content:center}
+.endBtns .btn{min-width:160px}
+#root{width:100%;display:flex;justify-content:center}
