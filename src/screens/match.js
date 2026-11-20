@@ -22,13 +22,21 @@ const PERIOD_NAME = { '1H': '1ST HALF', '2H': '2ND HALF', 'ET1': 'EXTRA TIME', '
 const PERIOD_END = { '1H': 45, '2H': 90, 'ET1': 105, 'ET2': 120 };
 const club = id => clubsData.clubs.find(c => c.id === id);
 
+// params: either a career fixture { home, away (club objects), mySide, cup,
+// extraTime, role, stadium, label, trust, form, playerName, onDone(summary) }
+// or a one-off { clubId, oppId, venue, cup, trust, form } from the setup screen.
 export function createMatchScreen(root, go, params) {
-  const mine = club(params.clubId), them = club(params.oppId);
-  const mySide = params.venue === 'away' ? 'away' : 'home';
-  const home = mySide === 'home' ? mine : them, away = mySide === 'home' ? them : mine;
+  let home, away, mySide;
+  if (params.home) ({ home, away, mySide } = params);
+  else {
+    const mine = club(params.clubId), them = club(params.oppId);
+    mySide = params.venue === 'away' ? 'away' : 'home';
+    home = mySide === 'home' ? mine : them; away = mySide === 'home' ? them : mine;
+  }
+  const career = !!params.onDone, role = params.role || 'start', stadium = params.stadium || home.stadium, pName = params.playerName || playerName();
   const colours = matchColours(home, away), myCol = colours[mySide], oppCol = colours[mySide === 'home' ? 'away' : 'home'];
   const kits = makeKitSet(playerKitFrom(myCol), teamKitFrom(oppCol), keeperKitFor(myCol.shirt, oppCol.shirt));
-  const sim = new MatchSim({ home, away, mySide, cup: params.cup, trust: params.trust, form: params.form, playerName: playerName() });
+  const sim = new MatchSim({ home, away, mySide, cup: params.cup, extraTime: params.extraTime !== false, role, stadium, trust: params.trust, form: params.form, playerName: pName });
 
   let cv, ctx, mctx, moment = null, chanceResult = null, chanceEvent = null;
   let phase = 'pre', acc = 0, hold = 0, lastT = null, fast = false, paused = false;
@@ -41,15 +49,15 @@ export function createMatchScreen(root, go, params) {
     root.innerHTML = `
 <div id="match">
   <div class="mtop">${block('home', home, colours.home)}${block('away', away, colours.away)}</div>
-  <div class="mcomp">${params.cup ? 'CUP TIE' : 'LEAGUE'} · ${esc(home.stadium.replace(/^the /, 'The '))}<span id="pensTag"></span></div>
+  <div class="mcomp">${esc((params.label || (params.cup ? 'Cup tie' : 'League')).toUpperCase())} · ${esc(stadium.replace(/^the /, 'The '))}<span id="pensTag"></span></div>
   <div class="mbody">
     <div id="stage">
       <canvas id="c" width="${W}" height="${H}"></canvas>
       <div id="feed" class="feed"><div id="feedIn"></div></div>
       <div id="pre" class="overlay"><div class="panel">
         <h1>${esc(home.short)} <span>v</span> ${esc(away.short)}</h1>
-        <div class="sub">${esc(home.name)} v ${esc(away.name)} · ${params.cup ? 'Cup tie: extra time and penalties if level' : 'League match'}</div>
-        <div class="prenote">Chances will come to <b>${esc(playerName())}</b> during the match. When one does, the clock stops and you play it.</div>
+        <div class="sub">${esc(home.name)} v ${esc(away.name)} · ${params.cup ? (params.extraTime === false ? 'Level after 90? Straight to penalties' : 'Extra time and penalties if level') : esc(params.label || 'League match')}</div>
+        <div class="prenote">${role === 'sub' ? `<b>${esc(pName)}</b> starts on the bench. Get on, and a chance or two might come your way.` : `Chances will come to <b>${esc(pName)}</b> during the match. When one does, the clock stops and you play it.`}</div>
         <button class="btn gold big" id="ko">KICK OFF ▶</button>
       </div></div>
       <div id="ft" class="overlay hidden"></div>
@@ -64,7 +72,7 @@ export function createMatchScreen(root, go, params) {
   </div>
   <div class="mbottom">
     <div class="clock"><span id="clk">00:00</span><small id="per">KICK-OFF</small></div>
-    <div class="ctrls"><button class="btn small" id="pause">❚❚ Pause</button><button class="btn small" id="fast">▶▶ Faster</button><button class="btn small red" id="leave">✕ Leave</button></div>
+    <div class="ctrls"><button class="btn small" id="pause">❚❚ Pause</button><button class="btn small" id="fast">▶▶ Faster</button>${career ? '' : '<button class="btn small red" id="leave">✕ Leave</button>'}</div>
     <div class="rating" id="ratingBox"><span id="rat">6.0</span><small>YOUR RATING</small><i id="ratDelta"></i></div>
   </div>
 </div>`;
@@ -74,7 +82,7 @@ export function createMatchScreen(root, go, params) {
     $('ko').onclick = () => { $('pre').classList.add('hidden'); phase = 'running'; addEvents(sim.tick()); hold = 1.2; };
     $('pause').onclick = () => { paused = !paused; $('pause').textContent = paused ? '▶ Play' : '❚❚ Pause'; };
     $('fast').onclick = () => { fast = !fast; $('fast').classList.toggle('on', fast); };
-    $('leave').onclick = () => { if (phase === 'ft' || confirm('Leave the match? It won\'t count.')) { setCam('def'); go('setup'); } };
+    if (!career) $('leave').onclick = () => { if (phase === 'ft' || confirm('Leave the match? It won\'t count.')) { setCam('def'); go('setup'); } };
     setCam('def'); renderStats(); setQuote(true);
   }
 
@@ -96,6 +104,7 @@ export function createMatchScreen(root, go, params) {
     if (e.kind === 'break') hold = Math.max(hold, HOLD.break);
     if (e.kind === 'result') setMood(sim.rating < 5.5 ? 'furious' : 'worried', 3);
     if (e.kind === 'chance') { phase = 'chanceIntro'; chanceEvent = e; hold = HOLD.chance; }
+    if (e.kind === 'subOn') { hold = Math.max(hold, HOLD.result); setMood('happy', 3); }
     if (e.kind === 'end') { phase = 'ft'; ftAt = now + 1.8; }
     if (sim.period === 'PENS' && e.kind !== 'chance') hold = Math.max(hold, HOLD.pens);
   }
@@ -103,7 +112,7 @@ export function createMatchScreen(root, go, params) {
   /* ---------- chances ---------- */
   function startMoment() {
     $('feed').classList.add('hidden'); phase = 'moment';
-    moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: playerName(), onResult: r => { chanceResult = r; } });
+    moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: pName, onResult: r => { chanceResult = r; } });
   }
   function endMoment() {
     const r = chanceResult; chanceResult = null; moment = null; setCam('def');
@@ -181,13 +190,14 @@ export function createMatchScreen(root, go, params) {
       ${S.pens ? `<div class="ftpens">${esc(sim.name(sim.winner()))} win ${Math.max(S.pens.home, S.pens.away)}-${Math.min(S.pens.home, S.pens.away)} on penalties</div>` : ''}
       <div class="scorers"><ul>${scorerList('home')}</ul><ul>${scorerList('away')}</ul></div>
       <div class="backpage"><div class="mast">THE BACK PAGE</div><div class="head">${esc(S.headline)}</div>
-        <div class="byline">${resWord} · Rating <b>${r.toFixed(1)}</b> · ${S.my.goals} goal${S.my.goals === 1 ? '' : 's'} · ${S.my.assists} assist${S.my.assists === 1 ? '' : 's'} · ${S.my.chances} chance${S.my.chances === 1 ? '' : 's'}</div>
+        <div class="byline">${resWord}${role === 'sub' ? ' · Off the bench' : ''} · Rating <b>${r.toFixed(1)}</b> · ${S.my.goals} goal${S.my.goals === 1 ? '' : 's'} · ${S.my.assists} assist${S.my.assists === 1 ? '' : 's'} · ${S.my.chances} chance${S.my.chances === 1 ? '' : 's'}</div>
         <div class="verdict">The gaffer: ${esc(S.verdict)}</div></div>
       <div class="gain">+${gained} skill points from the match</div>
-      <div class="endBtns"><button class="btn gold" id="again">Another match</button><button class="btn red" id="toTraining">Training ground</button></div>
+      <div class="endBtns">${career ? '<button class="btn gold" id="cont">Continue ▶</button>' : '<button class="btn gold" id="again">Another match</button><button class="btn red" id="toTraining">Training ground</button>'}</div>
     </div>`;
     $('ft').classList.remove('hidden');
-    $('again').onclick = () => go('setup'); $('toTraining').onclick = () => go('training');
+    if (career) $('cont').onclick = () => params.onDone(S);
+    else { $('again').onclick = () => go('setup'); $('toTraining').onclick = () => go('training'); }
   }
 
   /* ---------- frame ---------- */

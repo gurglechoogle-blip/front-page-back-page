@@ -8,11 +8,13 @@ import { makeKitSet } from '../engine/kits.js';
 import { clock } from '../engine/clock.js';
 import { createMoment, SKILLS } from '../moments/index.js';
 import { state, save, skillF, skillLevel, playerName } from '../state/gameState.js';
+import { logTraining } from '../sim/career.js';
 
 const ATTEMPTS = 5;
 
-export function createTrainingScreen(root, go) {
-  const profile = state.profile;
+// params.drill + params.career: one drill as a career time slot, then back to the hub.
+export function createTrainingScreen(root, go, params = {}) {
+  const profile = state.profile, career = params.career ? state.career : null, gainMul = career ? career.contract.coaching : 1;
   let cv, ctx, session = null, moment = null, lastDrill = 'volley';
   const $ = id => root.querySelector('#' + id);
 
@@ -29,6 +31,7 @@ export function createTrainingScreen(root, go) {
         <div class="namebox">Player name <input id="pname" maxlength="16" placeholder="Your name"></div>
         <div class="grid" id="drills"></div>
         <button class="btn gold big" id="matchday">MATCH DAY ▶<small>Play a one-off match</small></button>
+        <div class="hint"><a href="#" id="back2start">◀ Back to the career</a></div>
         <div class="hint">Five attempts per drill. Goals earn skill points, and higher skill widens your timing windows.<br>Moving drills: steer your player with the mouse. Set pieces: aim with the mouse, hold to power up, release to strike.</div>
       </div>
     </div>
@@ -49,10 +52,12 @@ export function createTrainingScreen(root, go) {
     $('pname').value = profile.name;
     $('pname').oninput = e => { profile.name = e.target.value.trim(); save(); renderSide(); };
     $('matchday').onclick = () => go('setup');
-    $('again').onclick = () => startDrill(lastDrill);
+    if (!career) $('back2start').onclick = e => { e.preventDefault(); go('start'); };
+    $('again').onclick = () => { if (career) { logTraining(career, lastDrill, lastScore, lastGain); save(); go('hub'); } else startDrill(lastDrill); };
     $('back').onclick = () => { setCam('def'); $('end').classList.add('hidden'); $('hub').classList.remove('hidden'); renderHub(); };
-    $('quit').onclick = () => { moment = null; session = null; setCam('def'); $('quit').classList.add('hidden'); $('hub').classList.remove('hidden'); renderHub(); };
+    $('quit').onclick = () => { if (career) { go('hub'); return; } moment = null; session = null; setCam('def'); $('quit').classList.add('hidden'); $('hub').classList.remove('hidden'); renderHub(); };
     setCam('def'); renderHub(); renderSide();
+    if (career) { $('again').textContent = 'Back to the hub'; $('back').classList.add('hidden'); $('pname').disabled = true; startDrill(params.drill); }
   }
 
   function renderSide() {
@@ -81,12 +86,14 @@ export function createTrainingScreen(root, go) {
       onResult: r => { session.score += r.goal ? 1 : 0; session.gained += r.gained; nextAttempt(); },
     });
   }
+  let lastScore = 0, lastGain = 0;
   function endDrill() {
-    const k = session.k, title = moment.title;
-    profile.skills[k] += session.gained; profile.best[k] = Math.max(profile.best[k], session.score); save();
+    const k = session.k, title = moment.title, gained = Math.round(session.gained * gainMul);
+    lastScore = session.score; lastGain = gained;
+    profile.skills[k] += gained; profile.best[k] = Math.max(profile.best[k], session.score); save();
     $('endScore').textContent = session.score + ' / 5';
     $('endTitle').innerHTML = session.score >= 4 ? 'TOP <span>DRAWER</span>' : session.score >= 2 ? 'DECENT <span>SESSION</span>' : 'BACK TO <span>BASICS</span>';
-    $('endText').textContent = '+' + session.gained + ' ' + title + ' skill points';
+    $('endText').textContent = '+' + gained + ' ' + title + ' skill points' + (gainMul !== 1 ? ` (coaching x${gainMul})` : '');
     moment = null; $('quit').classList.add('hidden'); $('end').classList.remove('hidden'); renderSide();
   }
 
