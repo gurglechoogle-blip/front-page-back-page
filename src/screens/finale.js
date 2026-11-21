@@ -16,6 +16,7 @@ import { seasonsAtClub, checkAchievements, ACH } from '../sim/achievements.js';
 import { legacy, LEGACY, roadToFinal, bestShot, FINAL_SETUP, epilogue, finalStats, careerGoals } from '../sim/epilogue.js';
 import { applyEffects } from '../sim/life.js';
 import { paperHTML, paperPhotos } from './paper.js';
+import { sfx, startCrowd } from '../engine/audio.js';
 import NP from '../data/newspaper.json';
 
 export function createFinaleScreen(root, go) {
@@ -32,7 +33,7 @@ export function createFinaleScreen(root, go) {
       <div id="panel" class="overlay"><div class="panel" id="pbody"></div></div></div></div>`;
     cv = $('c'); ctx = cv.getContext('2d'); setCtx(ctx); setCam('def'); save();
     attachInput(cv);
-    setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
+    setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => { if (moment && !moment.done) { sfx.kick(); moment.onUp(); } } });
     show();
   }
   const panel = (html, btns) => {
@@ -111,7 +112,8 @@ export function createFinaleScreen(root, go) {
     if (F.phase === 'final') { const col = matchColours(club('nat-eng'), club('nat-ger')); kits = makeKitSet(playerKitFrom(col.home), teamKitFrom(col.away), keeperKitFor(col.home.shirt, col.away.shirt)); }
     else kits = makeKitSet();
     Object.assign(kits.us, lookFields(c, age(c)));
-    moment = createMoment(key).start({ kits, skillFactor: skillF, playerName: sur.toUpperCase(), onResult: r => { setTimeout(() => { moment = null; done(r); }, 900); } });
+    startCrowd(1);
+    moment = createMoment(key).start({ kits, skillFactor: skillF, playerName: sur.toUpperCase(), onResult: r => { if (r.goal) sfx.roar(1.6); else sfx.groan(); setTimeout(() => { moment = null; done(r); }, 900); } });
   }
   function hud(x, m) {
     x.save(); x.fillStyle = 'rgba(10,12,14,.75)'; x.fillRect(0, 0, W, 36); x.fillStyle = '#ffc928'; x.font = 'italic 22px Anton, Impact, sans-serif'; x.textAlign = 'center'; x.fillText(hudText || '', W / 2, 26);

@@ -16,11 +16,30 @@ import { createTournamentScreen } from './screens/tournament.js';
 import { createFinaleScreen } from './screens/finale.js';
 import { message } from './sim/career.js';
 import { save } from './state/gameState.js';
+import { unlockAudio, startMusic, stopMusic, stopCrowd, settings, setSfx, setMusic, sfx } from './engine/audio.js';
+
+// Sound and full screen: a little control bar that's always there.
+unlockAudio();
+const MUSIC_SCREENS = ['start', 'hub', 'week', 'season', 'tournament'];
+function controls() {
+  const d = document.createElement('div'); d.className = 'gctl';
+  const fs = document.documentElement.requestFullscreen ? '<button id="g-fs" title="Full screen">⛶</button>' : '';
+  d.innerHTML = `${fs}<button id="g-sfx" title="Sound effects"></button><button id="g-mus" title="Music"></button>`;
+  document.body.appendChild(d);
+  const paint = () => { d.querySelector('#g-sfx').textContent = settings.sfx ? '🔊' : '🔇'; d.querySelector('#g-mus').textContent = '🎵'; d.querySelector('#g-mus').classList.toggle('off', !settings.music); d.querySelector('#g-sfx').classList.toggle('off', !settings.sfx); };
+  d.querySelector('#g-sfx').onclick = () => { setSfx(!settings.sfx); paint(); };
+  d.querySelector('#g-mus').onclick = () => { setMusic(!settings.music); paint(); };
+  if (fs) d.querySelector('#g-fs').onclick = () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => { }); };
+  paint();
+}
+controls();
+document.addEventListener('click', e => { if (e.target.closest && e.target.closest('button.btn')) sfx.tick(); });
 
 const root = document.getElementById('root');
 const SCREENS = { start: createStartScreen, hub: createHubScreen, week: createWeekScreen, season: createSeasonScreen, casino: createCasinoScreen, tournament: createTournamentScreen, finale: createFinaleScreen, training: createTrainingScreen, setup: createMatchSetupScreen, match: createMatchScreen };
 /** Switch screen: go('match', { ...params }). */
 function go(name, params) {
+  stopCrowd(); if (MUSIC_SCREENS.includes(name)) startMusic(); else stopMusic();
   try { setScreen(SCREENS[name](root, go, params || {})); window.scrollTo(0, 0); }
   catch (err) { console.error(err); showError(err); }
 }

@@ -13,6 +13,7 @@ import { clock } from '../engine/clock.js';
 import { makeKitSet, matchColours, playerKitFrom, teamKitFrom, keeperKitFor, luminance } from '../engine/kits.js';
 import { drawManager } from '../engine/manager.js';
 import { managerFor } from '../sim/managers.js';
+import { sfx, startCrowd } from '../engine/audio.js';
 import { matchPay, gafferVerdict } from '../sim/contracts.js';
 import { createMoment, SKILLS } from '../moments/index.js';
 import { MatchSim, managerMood } from '../sim/matchSim.js';
@@ -99,7 +100,8 @@ export function createMatchScreen(root, go, params) {
     cv = $('c'); ctx = cv.getContext('2d'); mctx = $('mgr').getContext('2d');
     setVenue(matchVenue(home, away, params.stadium && params.stadium !== home.stadium ? params.stadium : null));
     attachInput(cv);
-    setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
+    setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => { if (moment && !moment.done) { sfx.kick(); moment.onUp(); } } });
+    startCrowd({ prem: 1, champ: .8, lower: .55, park: .3 }[matchVenue(home, away).tier] || .6);
     $('ko').onclick = () => {
       $('pre').classList.add('hidden');
       if (resume) {
@@ -108,7 +110,7 @@ export function createMatchScreen(root, go, params) {
         else { phase = 'running'; hold = .8; }
         return;
       }
-      phase = 'running'; addEvents(sim.tick()); hold = 1.2;
+      if (!resume) sfx.whistle(1); phase = 'running'; addEvents(sim.tick()); hold = 1.2;
     };
     if (resume) {
       $('ko').textContent = 'RESUME ▶'; $('pre').querySelector('.prenote').textContent = 'Match saved. Pick up where you left off.';
@@ -142,6 +144,8 @@ export function createMatchScreen(root, go, params) {
   }
   function react(e) {
     const now = clock.now;
+    if (e.kind === 'goal') { if (e.side === mySide) sfx.roar(e.mine ? 1.3 : 1); else sfx.groan(); }
+    if (e.kind === 'break') sfx.whistle(2); if (e.kind === 'end') sfx.whistle(3, true);
     if (e.kind === 'goal' && phase !== 'pens') { hold = Math.max(hold, HOLD.goal / (fast ? 2 : 1)); setMood(e.side === mySide ? (e.mine ? 'ecstatic' : 'happy') : 'worried', 3.5); }
     if (e.kind === 'break') hold = Math.max(hold, HOLD.break);
     if (e.kind === 'result') setMood(sim.rating < 5.5 ? 'furious' : 'worried', 3);
@@ -154,7 +158,7 @@ export function createMatchScreen(root, go, params) {
   /* ---------- chances ---------- */
   function startMoment() {
     $('feed').classList.add('hidden'); phase = 'moment'; persist(true, true);
-    moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: pName, onResult: r => { chanceResult = r; } });
+    moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: pName, onResult: r => { chanceResult = r; if (!r.goal) sfx.groan(); } });
     moment.recorder = makeRecorder(); moment.recCam = getCam().n; moment.recVenue = Object.assign({}, getVenue());
   }
   function endMoment() {

@@ -37,6 +37,7 @@ src/
     venues.js           scenery by venue: rec, lower-league ground, Championship, Premier League, training grounds
     replay.js           goal replays: record a moment's frames compactly, draw them back
     clock.js            game time (clock.now)
+    audio.js            synthesised sound: crowd, roars, whistles, kicks, an original theme tune (own RNG, never touches Math.random)
     loop.js             requestAnimationFrame loop, active screen
     util.js             rand, clamp, lerp, pick, seeded PRNG
   moments/              the nine match moments, one module each
@@ -64,7 +65,13 @@ src/
     trouble.js          injuries, bans and prison, kids, holidays, the ways back from a scandal
     fame.js             social media, community and charity, staff, merch and investments
     achievements.js     the 48 achievements and when each is checked
-    epilogue.js         legacy, the road to the 2046 final, "where are they now"
+    epilogue.js         legacy, the road to the 2046 final, "where are they now", the tabloid column
+    invites.js          friends, Mum, Gran and the squad texting you to do things
+    contracts.js        bonuses, the club's small print (enforced), the gaffer's post-match verdict
+    gaffer.js           asking the gaffer for a contract, minutes, a loan or a transfer
+    calendar.js         the diary: activities get days, results get logged
+    injuryLife.js       telly work and other things to do on a long injury
+    managers.js         a different manager for every team (club, U21s, each England side)
     text.js             pick a line, fill its {placeholders}
   screens/
     start.js            name entry and academy offers
@@ -77,6 +84,8 @@ src/
     moneyUI.js          bank, shopping, property and debt-ladder pop-ups
     fameUI.js           social media, community, staff and business pop-ups
     contractUI.js  tournament.js   transfer window and contract talks; England in the summer
+    calendarUI.js       the yesterday/today/tomorrow strip and month view
+    welcome.js          the head of development's first-day talk
     finale.js           the end: testimonial, the years passing, scrapbook montage, the 2046 final, epilogue
     casino.js           the poker and blackjack tables
     training.js         the training ground (5 attempts per drill; one drill per slot in a career)
@@ -173,6 +182,10 @@ The career rolls on past the first season: every summer all five divisions finis
 Social media followers grow towards a ceiling set by how famous you are (the fans meter and the size of your league), with posts, sponsored posts and the odd troll. Community work and charity use time slots and rebuild honour. Staff cost wages and each does something (a PA adds a time slot, a driver halves night-out trouble, a trainer boosts training) with a small chance of going wrong. A merch line and investments make (or lose) money. There are 48 achievements in a trophy cabinet (Fame → Achievements), checked after each match, each week, each season and at the end.
 
 The game ends in the summer of 2046, either when you get there still playing or when you retire (from 33; retired players fast-forward). After 10+ seasons at one club you get a testimonial. A montage of your scrapbook plays, then the England manager rings: framed as the legend, the redeemed or the has-been depending on your legacy. You sit on the bench all tournament, then in the last minute of extra time in the final against Germany you get one chance, using your best shooting skill. Then the front page, and where everyone is now.
+
+### Sound and full screen
+
+The buttons in the bottom-right corner toggle full screen, sound effects and music. Everything is synthesised with the Web Audio API (no recordings), so there is no licensing to worry about; real radio stations aren't included for the same reason. Audio uses its own random numbers, so the seeded drill comparison stays identical.
 
 ## Saving
 

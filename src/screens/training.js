@@ -10,6 +10,7 @@ import { clock } from '../engine/clock.js';
 import { createMoment, SKILLS } from '../moments/index.js';
 import { state, save, skillF, skillLevelText, playerName, addSkill, SKILL_MAX } from '../state/gameState.js';
 import { logTraining, age as careerAge } from '../sim/career.js';
+import { sfx } from '../engine/audio.js';
 import { club } from '../sim/season.js';
 
 const ATTEMPTS = 5;
@@ -50,7 +51,7 @@ export function createTrainingScreen(root, go, params = {}) {
     cv = $('c'); ctx = cv.getContext('2d');
     setVenue(career ? trainingVenue(career.clubId) : null); // free practice: the rec
     attachInput(cv);
-    setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
+    setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => { if (moment && !moment.done) { sfx.kick(); moment.onUp(); } } });
     $('pname').value = profile.name;
     $('pname').oninput = e => { profile.name = e.target.value.trim(); save(); renderSide(); };
     if (!career) $('back2start').onclick = e => { e.preventDefault(); go('start'); };
@@ -84,7 +85,7 @@ export function createTrainingScreen(root, go, params = {}) {
     if (session.attempt > ATTEMPTS) { endDrill(); return; }
     moment = createMoment(session.k).start({
       kits: session.kits, skillFactor: skillF, playerName: playerName(),
-      onResult: r => { session.score += r.goal ? 1 : 0; session.gained += r.gained; nextAttempt(); },
+      onResult: r => { if (r.goal) sfx.cheer(); session.score += r.goal ? 1 : 0; session.gained += r.gained; nextAttempt(); },
     });
   }
   let lastScore = 0, lastGain = 0;

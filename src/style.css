@@ -356,3 +356,7 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .mcell b{font-size:11px;color:#9aa3ad}.mcell.empty{background:transparent}.mcell.today{outline:2px solid #ffc928}.mcell.match{background:#1f2a1b}.mcell span.up{color:#8fdc5a}
 @media(max-width:620px){.calstrip{grid-template-columns:1fr 1fr 1fr}.calopen{display:none}.mcell{min-height:44px;font-size:9px}}
 .welcome{text-align:left}.welcome ul{margin:4px 0 10px 18px;padding:0}.welcome li{margin:3px 0;line-height:1.4}
+/* Sound and full-screen controls */
+.gctl{position:fixed;right:8px;bottom:8px;display:flex;gap:4px;z-index:80;opacity:.7}.gctl:hover{opacity:1}
+.gctl button{background:#1b1f24;border:1px solid #3a4048;color:#fff;border-radius:6px;width:34px;height:30px;font-size:15px;cursor:pointer;padding:0}
+.gctl button.off{opacity:.45;text-decoration:line-through}
