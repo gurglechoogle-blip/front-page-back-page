@@ -22,11 +22,12 @@ import { METERS, meter, EVENTS, chooseEvent, answerPress, paperByN, framePage, a
 import { paperHTML, paperPhotos } from './paper.js';
 import { showBank, showShop, showProperty, showDebt } from './moneyUI.js';
 import { FR, friend, hangOut, nightsFor, nightOut, chatPrompt, chatAnswer } from '../sim/social.js';
+import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp } from '../sim/partner.js';
 import { exportSave, importSave } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
-  life: { label: 'Life', icon: '🏠', soon: ['Partner', 'Holidays'] },
+  life: { label: 'Life', icon: '🏠', soon: ['Holidays'] },
   money: { label: 'Money', icon: '💷', soon: ['Staff', 'Businesses & merch'] },
   casino: { label: 'Casino', icon: '🎲', soon: ['Poker', 'Blackjack'] },
   fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Community & charity', 'Achievements'] },
@@ -102,7 +103,7 @@ export function createHubScreen(root, go, params = {}) {
     const bills = weeklyBills(c).reduce((a, b) => a + b.amount, 0), hb = honourBadge(c.honour);
     $('right').innerHTML = `<h2>Money</h2>${row('Wages', money(c.contract.wage) + '/wk')}${row('Bills', money(bills) + '/wk')}${row('Bank balance', money(c.bank))}${row('Net worth', money(netWorth(c)))}
       <h3>Honour</h3><div class="honour h${Math.min(4, Math.floor(c.honour / 20.01))}"><div class="medal">${Math.round(c.honour)}</div><b>${hb}</b></div>
-      <h3>Relationships</h3>${METERS.map(([k, l]) => `<div class="rel"><span>${l}</span><div class="bar"><i class="m-${k}" style="width:${Math.round(meter(c, k))}%"></i></div><b>${Math.round(meter(c, k))}</b></div>`).join('')}
+      <h3>Relationships</h3>${c.partner ? `<div class="rel"><span>${esc(c.partner.name.split(' ')[0])}</span><div class="bar"><i class="m-family" style="width:${Math.round(c.partner.meter)}%"></i></div><b>${Math.round(c.partner.meter)}</b></div>` : ''}${METERS.map(([k, l]) => `<div class="rel"><span>${l}</span><div class="bar"><i class="m-${k}" style="width:${Math.round(meter(c, k))}%"></i></div><b>${Math.round(meter(c, k))}</b></div>`).join('')}
       <h3>Club</h3>${row('Club', esc(me.name))}${row('League', esc(DIVS[c.div].short))}${row('Position', posText())}${row('Deal', esc(c.contract.label))}`;
   }
   const row = (l, v) => `<div class="row"><span>${l}</span><b>${v}</b></div>`;
@@ -224,6 +225,7 @@ export function createHubScreen(root, go, params = {}) {
   function lifeItems() {
     const called = c.weekLog.some(x => x.t === 'callMum');
     return [
+      { label: c.partner ? `Partner: ${esc(c.partner.name.split(' ')[0])}` : 'Partner', note: c.partner ? `${STAGES[c.partner.stage]} · ${Math.round(c.partner.meter)}/100` : 'Single. Very single.', go: showPartner },
       { label: 'Friends', note: `${FR.friends.length} mates · uses a slot`, go: showFriends },
       { label: 'Nights out', note: age(c) < 18 ? 'House parties (18+ for pubs and clubs)' : 'Pub, clubs, VIP tables', go: showNights },
       { label: 'Call Mum', note: called ? 'Already rung her this week' : 'Free, once a week', go: () => { if (called) return toast('You rang her already. She\'s still talking.'); c.weekLog.push({ t: 'callMum' }); applyEffects(c, { family: 3 }); save(); render(); toast(pickLine(['Mum: "Are you eating properly?" (x4)', 'Mum tells you about next door\'s extension for 25 minutes. Family +3', 'Mum: "Your Gran\'s got a tattoo." You don\'t ask.'])); } },
@@ -239,6 +241,31 @@ export function createHubScreen(root, go, params = {}) {
     const opts = nightsFor(age(c));
     modal(`<h2>Nights out</h2><p class="dim">Uses a time slot. A big night in a match week costs you on the pitch${age(c) < 18 ? '. Pubs and clubs open at 18' : ''}.</p><div class="scroll shop">${opts.map(n => `<div class="item"><div><b>${esc(n.label)}</b><span class="price">${money(n.cost)}</span></div><button class="btn small gold" data-n="${n.id}" ${slotsLeft(c) <= 0 || c.bank < n.cost ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : c.bank < n.cost ? 'Skint' : 'Go'}</button></div>`).join('')}</div>`);
     root.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { const r = nightOut(c, b.dataset.n); save(); render(); closeModal(); if (!r.ok) return toast(r.why); toast(r.line + (r.story ? ' Then the photos turn up...' : '')); });
+  }
+  function showPartner() {
+    if (!c.datePref) {
+      modal(`<h2>Love life</h2><p class="evtext">Gran wants to know if you're "courting". Who are you interested in?</p><div class="choices"><button class="btn choice" data-p="women">Women</button><button class="btn choice" data-p="men">Men</button><button class="btn choice" data-p="both">Both</button></div><p class="dim">You can't change this later. Well, you can, but Gran will need it explained.</p>`);
+      root.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { c.datePref = b.dataset.p; save(); showPartner(); });
+      return;
+    }
+    const p = c.partner, a = age(c);
+    if (!p) {
+      if (!c.cands || c.cands.week !== c.week) c.cands = { week: c.week, list: candidates(c) };
+      modal(`<h2>Meet someone</h2><p class="dim">A first date uses a time slot. New faces each week.</p><div class="scroll shop">${c.cands.list.map((x, i) => `<div class="item"><div><b>${esc(x.name)}</b> <small class="kind">${esc(x.job)}</small><p>${esc(x.meet)} ${esc(x.blurb)} Also: ${esc(x.quirk)}.</p></div><button class="btn small gold" data-c="${i}" ${slotsLeft(c) <= 0 ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : 'Ask them out'}</button></div>`).join('')}</div>${c.exes.length ? `<p class="dim">Exes: ${c.exes.map(e => esc(e.name.split(' ')[0])).join(', ')}. Gran keeps a list.</p>` : ''}`);
+      root.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { startDating(c, c.cands.list[+b.dataset.c]); c.slotsUsed++; c.weekLog.push({ t: 'date' }); c.cands = null; save(); render(); showPartner(); toast('First date: a walk, a chippy, a nervous laugh. It went well!'); });
+      return;
+    }
+    const M = Math.round(p.meter);
+    modal(`<h2>${esc(p.name)}</h2><div class="sub2">${esc(STAGES[p.stage])} · ${esc(p.job)} · ${esc(p.quirk)}</div>
+      <div class="rel"><span>Happiness</span><div class="bar"><i class="m-family" style="width:${M}%"></i></div><b>${M}</b></div>
+      <p class="dim">${c.week - p.lastDate >= 2 ? 'You haven\'t taken them out in a while. They\'ve noticed.' : 'Things are good.'} Dates use a time slot.</p>
+      <div class="scroll shop"><h3>Date night</h3>${PD.dates.filter(d => a >= d.minAge).map(d => `<div class="item"><div><b>${esc(d.label)}</b><span class="price">${money(d.cost)}</span></div><button class="btn small gold" data-d="${d.id}" ${slotsLeft(c) <= 0 || c.bank < d.cost ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : c.bank < d.cost ? 'Skint' : 'Go'}</button></div>`).join('')}
+      <h3>Gifts</h3>${PD.gifts.filter(g => !g.minAge || a >= g.minAge).map(g => `<div class="item"><div><b>${esc(g.label)}</b><span class="price">${money(g.cost)}</span></div><button class="btn small" data-g="${g.id}" ${c.bank < g.cost ? 'disabled' : ''}>${c.bank < g.cost ? 'Skint' : 'Buy'}</button></div>`).join('')}
+      <div class="endBtns"><button class="btn" id="txt">Send a soppy text (free)</button><button class="btn red" id="dump">Break up</button></div></div>`);
+    root.querySelectorAll('[data-d]').forEach(b => b.onclick = () => { const r = date(c, b.dataset.d); save(); render(); if (!r.ok) return toast(r.why); showPartner(); toast(r.line); });
+    root.querySelectorAll('[data-g]').forEach(b => b.onclick = () => { const r = gift(c, b.dataset.g); save(); render(); if (!r.ok) return toast(r.why); showPartner(); toast('They love it. Or they\'re very good at pretending.'); });
+    $('txt').onclick = () => { toast(textThem(c) ? 'You send three hearts and a pigeon emoji. They send seven hearts back.' : 'You\'ve already texted this week. Don\'t be needy.'); save(); render(); };
+    $('dump').onclick = () => { if (confirm(`Break up with ${p.name}?`)) { breakUp(c, 'you ended it'); save(); render(); closeModal(); toast('It\'s over. Mum brings a lasagne round.'); } };
   }
   function showRival() {
     const r = c.rival, rc = club(r.clubId), same = r.clubId === c.clubId;
@@ -274,10 +301,12 @@ export function createHubScreen(root, go, params = {}) {
     else if (item.type === 'chat') showChatPrompt(item, next);
     else next();
   }
-  const fmtEffects = eff => Object.entries(eff).filter(([k, v]) => v && k !== 'slot').map(([k, v]) => `<span class="${v > 0 ? 'good' : 'bad'}">${k.startsWith('friend:') ? (friend(k.slice(7)) || { name: k }).name : ({ manager: 'Gaffer', teammates: 'Teammates', fans: 'Fans', family: 'Family', honour: 'Honour', money: 'Money', energy: 'Energy' })[k] || k} ${v > 0 ? '+' : ''}${k === 'money' ? money(v) : v}</span>`).join(' ');
+  const fmtEffects = eff => Object.entries(eff).filter(([k, v]) => v && k !== 'slot').map(([k, v]) => `<span class="${v > 0 ? 'good' : 'bad'}">${k.startsWith('friend:') ? (friend(k.slice(7)) || { name: k }).name : ({ partner: c.partner ? c.partner.name.split(' ')[0] : 'Partner', manager: 'Gaffer', teammates: 'Teammates', fans: 'Fans', family: 'Family', honour: 'Honour', money: 'Money', energy: 'Energy' })[k] || k} ${v > 0 ? '+' : ''}${k === 'money' ? money(v) : v}</span>`).join(' ');
   function showEvent(id, next) {
-    const e = EVENTS.get(id); if (!e) return next();
+    let e = EVENTS.get(id); if (!e) return next();
     const via = { call: '📞 Incoming call', text: '💬 New message', moment: '⚡ Meanwhile…' }[e.via] || '';
+    if (e.needPartner && !c.partner) return next();
+    e = Object.assign({}, e, { from: e.from.replace('{PARTNER}', c.partner ? c.partner.name : 'Your ex') });
     modal(`<div class="evvia">${via}</div><h2>${esc(e.from)}</h2><p class="evtext">${esc(e.text)}</p><div class="choices">${e.choices.map((ch, i) => `<button class="btn choice" data-i="${i}" ${ch.effects && ch.effects.slot && slotsLeft(c) <= 0 ? 'disabled title="No time slots left this week"' : ''}>${esc(ch.label)}</button>`).join('')}</div>`, true);
     root.querySelectorAll('.choice').forEach(b => b.onclick = () => {
       const r = chooseEvent(c, id, +b.dataset.i); save(); render();

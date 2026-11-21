@@ -29,6 +29,7 @@ export function applyEffects(c, eff = {}) {
     else if (k === 'money') c.bank += v;
     else if (k === 'energy') c.energy = clamp(c.energy + v, 0, 100);
     else if (k === 'slot') c.slotsUsed += v;
+    else if (k === 'partner') { if (c.partner) c.partner.meter = clamp(c.partner.meter + v, 0, 100); }
     else if (k.startsWith('friend:')) { const f = c.friends && c.friends[k.slice(7)]; if (f) f.loyalty = clamp(f.loyalty + v, 0, 100); }
     else c.meters[k] = clamp((c.meters[k] ?? 50) + v, 0, 100);
     out[k] = v;
@@ -40,21 +41,24 @@ export const surname = c => c.name.trim().split(/\s+/).pop().toUpperCase();
 
 /* ---------- events ---------- */
 function eligible(c, e) {
-  if (e.followUpOnly || c.eventsSeen[e.id]) return false;
+  if (e.followUpOnly || (c.eventsSeen[e.id] && !e.repeatable)) return false;
+  if (e.repeatable && c.eventsSeen[e.id] && c.week - (c.lastSeenWeek || {})[e.id] < 20) return false;
   if (e.minWeek && c.week < e.minWeek) return false;
   if (e.maxWeek && c.week > e.maxWeek) return false;
   if (e.notPreseason && c._preseason) return false;
   if (e.needFlag && !c.flags[e.needFlag]) return false;
   if (e.notFlag && c.flags[e.notFlag]) return false;
   if (e.types && !e.types.includes(c.contract.type)) return false;
+  if (e.needPartner && !c.partner) return false;
+  if (e.minAgeYears && c._age < e.minAgeYears) return false;
   for (const [k, v] of Object.entries(e.min || {})) if (meter(c, k) < v) return false;
   for (const [k, v] of Object.entries(e.max || {})) if (meter(c, k) > v) return false;
   return true;
 }
 /** At the start of a week: follow-ups that are due, else maybe a new event. */
-export function rollEvents(c, preseason, R = Math.random) {
-  c._preseason = preseason;
-  const due = c.followUps.filter((f, i, a) => f.week <= c.week && !c.eventsSeen[f.id] && a.findIndex(x => x.id === f.id) === i);
+export function rollEvents(c, preseason, R = Math.random, age = 16) {
+  c._preseason = preseason; c._age = age;
+  const due = c.followUps.filter((f, i, a) => f.week <= c.week && (!c.eventsSeen[f.id] || (EVENTS.get(f.id) || {}).repeatable) && a.findIndex(x => x.id === f.id) === i);
   c.followUps = c.followUps.filter(f => f.week > c.week);
   due.forEach(f => c.pending.push({ type: 'event', id: f.id }));
   if (!due.length && R() < .6) {
@@ -65,17 +69,20 @@ export function rollEvents(c, preseason, R = Math.random) {
       c.pending.push({ type: 'event', id: ev.id });
     }
   }
-  delete c._preseason;
+  delete c._preseason; delete c._age;
 }
 /** Pick a choice. Returns { result, effects }. */
 export function chooseEvent(c, id, i, R = Math.random) {
   const e = EVENTS.get(id), ch = e.choices[i];
-  c.eventsSeen[id] = true;
+  if (ch.partnerStage && c.partner) { c.partner.stage = ch.partnerStage; c.partner.weeks = 0; }
+  c.eventsSeen[id] = true; (c.lastSeenWeek = c.lastSeenWeek || {})[id] = c.week;
   const eff = Object.assign({}, ch.effects); if (eff.loyalty != null) { if (e.friend) eff['friend:' + e.friend] = eff.loyalty; delete eff.loyalty; }
   const effects = applyEffects(c, eff);
   if (ch.flag) c.flags[ch.flag] = true;
   if (ch.next && R() < (ch.next.chance ?? 1)) c.followUps.push({ id: ch.next.id, week: c.week + ch.next.in });
   if (ch.news) c.weekNews.push({ page: ch.news.page, headline: fill(ch.news.headline, { NAME: surname(c) }), from: id });
+  if (ch.partnerEnd && c.partner) { c.exes.push({ name: c.partner.name, weeks: c.week - c.partner.since, why: ch.partnerEnd, stage: c.partner.stage }); c.partner = null; }
+  if (id === 'cheatingOut' && c.partner && c.partner.meter < 25) { c.exes.push({ name: c.partner.name, weeks: c.week - c.partner.since, why: 'caught cheating', stage: c.partner.stage }); c.partner = null; }
   c.lifeLog.unshift({ week: c.week, id, choice: ch.label }); if (c.lifeLog.length > 80) c.lifeLog.length = 80;
   return { result: ch.result, effects };
 }

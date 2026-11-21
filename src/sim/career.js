@@ -9,6 +9,7 @@ import {
 } from './season.js';
 import { endSeason } from './world.js';
 import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './money.js';
+import { initPartner, partnerWeek } from './partner.js';
 import { initSocial, friendsWeek, nightPenalty, rivalWeek, rivalSummer, rivalSelectionPenalty, chatWeek } from './social.js';
 import { MatchSim } from './matchSim.js';
 import { initLife, rollEvents, makePaper, pressAfter, afterMatch, honourPatience, support, familyWeek, taper } from './life.js';
@@ -47,7 +48,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   buildSeason(c, R); initLife(c); initMoney(c);
   c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
   c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
-  initSocial(c, R);
+  initSocial(c, R); initPartner(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -212,7 +213,7 @@ export function finishWeek(c, R = Math.random) {
   const dA = drills.length >= 2 ? taper(c.approval, drills.reduce((a, d) => a + (d.score >= 3 ? 1 : .6), 0)) : 0;
   c.approval = clamp(c.approval + dA, 0, 100);
   c.energy = clamp(c.energy + 12, 0, 100);
-  familyWeek(c); friendsWeek(c, R);
+  familyWeek(c); friendsWeek(c, R); partnerWeek(c, age(c), R);
   const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.
   const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);
@@ -244,7 +245,7 @@ export function nextWeek(c, R = Math.random) {
   }
   if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
-  rollEvents(c, isPreseason(c), R);
+  rollEvents(c, isPreseason(c), R, age(c));
   chatWeek(c, R);
   return true;
 }

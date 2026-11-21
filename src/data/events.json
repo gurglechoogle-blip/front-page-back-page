@@ -1303,6 +1303,216 @@
           "result": "Stan says 'right you are' and tells the same thing to the man in the newsagent."
         }
       ]
+    },
+    {
+      "id": "partnerEnds",
+      "from": "{PARTNER}",
+      "via": "call",
+      "followUpOnly": true,
+      "needPartner": true,
+      "text": "We need to talk. You're never here. When you are here, you're watching yourself on Match of the Day. I think we're done.",
+      "choices": [
+        {
+          "label": "Beg for one more chance (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "partner": 25,
+            "energy": -4
+          },
+          "result": "A long walk, a longer talk, and a chippy tea. You're still together. Just."
+        },
+        {
+          "label": "Let them go",
+          "effects": {
+            "family": -2,
+            "energy": -6
+          },
+          "partnerEnd": "drifted apart",
+          "result": "It's over. Mum brings round a lasagne. Gran says 'plenty more fish', then 'your grandad would've said that'.",
+          "news": {
+            "page": "front",
+            "headline": "HEARTBREAK FOR {NAME}: IT'S OVER"
+          }
+        }
+      ],
+      "repeatable": true
+    },
+    {
+      "id": "moveIn",
+      "from": "{PARTNER}",
+      "via": "moment",
+      "followUpOnly": true,
+      "needPartner": true,
+      "text": "They're brushing their teeth at yours. Again. 'I've basically moved in,' they say. 'Shall we make it official?'",
+      "choices": [
+        {
+          "label": "Move in together",
+          "effects": {
+            "partner": 10,
+            "family": 2
+          },
+          "partnerStage": "living",
+          "result": "Their stuff arrives. So does a ferret. Nobody mentioned a ferret."
+        },
+        {
+          "label": "Not yet",
+          "effects": {
+            "partner": -12
+          },
+          "result": "'Fine,' they say. It is not fine. They take their toothbrush home pointedly."
+        }
+      ],
+      "repeatable": true
+    },
+    {
+      "id": "propose",
+      "from": "Your inner voice",
+      "via": "moment",
+      "followUpOnly": true,
+      "needPartner": true,
+      "text": "You've got the ring. It's been in your sock drawer for three weeks. Gran knows. Dennis knows. Somehow Sid Scoop knows. It's now or never.",
+      "choices": [
+        {
+          "label": "Get down on one knee",
+          "effects": {
+            "partner": 15,
+            "family": 5,
+            "honour": 3,
+            "fans": 2,
+            "money": -3000
+          },
+          "partnerStage": "engaged",
+          "result": "They say yes before you've finished the question. You were going to say a whole poem.",
+          "flag": "engaged",
+          "news": {
+            "page": "front",
+            "headline": "DOWN ON ONE KNEE: {NAME} POPS THE QUESTION"
+          }
+        },
+        {
+          "label": "Bottle it",
+          "effects": {
+            "partner": -8
+          },
+          "result": "The ring goes back in the sock. The sock knows."
+        }
+      ],
+      "repeatable": true
+    },
+    {
+      "id": "wedding",
+      "from": "{PARTNER}",
+      "via": "moment",
+      "followUpOnly": true,
+      "needPartner": true,
+      "text": "The wedding. Big do at a stately home with a swan ice sculpture and the whole squad? Or the registry office and a pub lunch?",
+      "choices": [
+        {
+          "label": "Big do (£40,000)",
+          "effects": {
+            "money": -40000,
+            "partner": 12,
+            "fans": 4,
+            "teammates": 5,
+            "family": 4
+          },
+          "partnerStage": "married",
+          "result": "The swan melts by 3pm. Gaz catches the bouquet. Gran wins £200 on the length of the best man's speech.",
+          "flag": "married",
+          "news": {
+            "page": "front",
+            "headline": "I DO! {NAME}'S SWAN-TASTIC WEDDING"
+          }
+        },
+        {
+          "label": "Registry office and the Red Lion",
+          "effects": {
+            "money": -2000,
+            "partner": 10,
+            "family": 6,
+            "honour": 3
+          },
+          "partnerStage": "married",
+          "result": "Deano does the speech. It's mostly about dog vapes. Perfect.",
+          "flag": "married",
+          "news": {
+            "page": "front",
+            "headline": "{NAME} WEDS IN SECRET PUB DO"
+          }
+        }
+      ],
+      "repeatable": true
+    },
+    {
+      "id": "temptation",
+      "from": "Big night out",
+      "via": "moment",
+      "minWeek": 4,
+      "weight": 2,
+      "needPartner": true,
+      "minAgeYears": 18,
+      "text": "3am. A stunning stranger in the VIP bit is laughing at all your jokes, even the one about the dog vapes. 'Come back to mine?' Your partner thinks you're at Gaz's.",
+      "choices": [
+        {
+          "label": "Go back to theirs",
+          "effects": {
+            "energy": -10,
+            "fans": 1
+          },
+          "result": "It's exciting. Then it's 9am and you feel sick, and not from the Jägerbombs.",
+          "flag": "cheated",
+          "next": {
+            "id": "cheatingOut",
+            "in": 3,
+            "chance": 0.65
+          }
+        },
+        {
+          "label": "Get a taxi home",
+          "effects": {
+            "partner": 3,
+            "honour": 2
+          },
+          "result": "You're home by 3.30. Your partner's asleep with the ferret. You've never been happier."
+        }
+      ],
+      "repeatable": true
+    },
+    {
+      "id": "cheatingOut",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "followUpOnly": true,
+      "needPartner": true,
+      "text": "Sid Scoop. Got photos of you leaving a flat at 9am in last night's clothes. Not your flat. Not your partner's flat. Story runs Monday. Comment?",
+      "choices": [
+        {
+          "label": "Tell your partner before the paper does",
+          "effects": {
+            "honour": -4,
+            "partner": -40
+          },
+          "result": "There's a lot of shouting. Some crying. The ferret takes their side.",
+          "news": {
+            "page": "front",
+            "headline": "LOVE RAT {NAME} IN 9AM WALK OF SHAME"
+          }
+        },
+        {
+          "label": "Deny everything",
+          "effects": {
+            "honour": -9,
+            "partner": -60,
+            "fans": -4
+          },
+          "result": "The photos are very clear. You are very not clear.",
+          "news": {
+            "page": "front",
+            "headline": "LIAR, LIAR: CHEAT {NAME}'S DENIAL IN TATTERS"
+          }
+        }
+      ],
+      "repeatable": true
     }
   ]
 }

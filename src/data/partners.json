@@ -1,0 +1,33 @@
+{
+  "_note": "Partners. Each candidate gets a name, a job and a quirk. Jobs carry a weekly effect while you're together. Dates cost a time slot and money.",
+  "names": {
+    "women": ["Chloe", "Jade", "Amira", "Megan", "Holly", "Priyanka", "Ellie", "Kezia", "Sophie", "Niamh", "Leah", "Tasha", "Grace", "Freya", "Zara", "Bethany"],
+    "men": ["Josh", "Callum", "Aaron", "Dev", "Liam", "Kofi", "Rhys", "Ollie", "Sami", "Jamie", "Theo", "Marcus", "Ethan", "Ravi", "Connor", "Finn"]
+  },
+  "lastNames": ["Hughes", "Patel", "O'Brien", "Clarke", "Mensah", "Walsh", "Khan", "Price", "Murphy", "Reid", "Foster", "Nolan"],
+  "jobs": [
+    { "job": "nurse", "perWeek": { "honour": 0.3, "energy": 1 }, "blurb": "Works nights. Has seen things. Unbothered by your 'injuries'." },
+    { "job": "primary school teacher", "perWeek": { "honour": 0.3, "family": 0.3 }, "blurb": "Can silence a room with one look. Uses it on you." },
+    { "job": "influencer", "perWeek": { "fans": 0.4, "honour": -0.2 }, "blurb": "41k followers. Every date is content. Every meal goes cold." },
+    { "job": "vet", "perWeek": { "honour": 0.2, "energy": 1 }, "blurb": "Talks about cows a lot. More than you'd think. More than you'd want." },
+    { "job": "estate agent", "perWeek": { "family": 0.2 }, "blurb": "Describes your bedroom as 'compact, with character'." },
+    { "job": "DJ", "perWeek": { "energy": -1, "teammates": 0.3 }, "blurb": "Never sleeps. Somehow always has a gig in Ibiza." },
+    { "job": "PhD student", "perWeek": { "honour": 0.2 }, "blurb": "Studying the mating habits of snails. Brings it up on dates." },
+    { "job": "hairdresser", "perWeek": { "fans": 0.2 }, "blurb": "Has strong opinions about your fringe. Correct opinions." }
+  ],
+  "quirks": ["only eats beige food", "has a pet ferret called Gary", "is terrifyingly competitive at Monopoly", "cries at adverts", "knows every word of Mamma Mia", "is a reality TV superfan", "supports your club's biggest rivals", "names every pigeon they see", "has never seen a single film", "is weirdly good at darts"],
+  "meet": ["You met at Shaz's party, by the foam machine.", "You matched on an app. Their first message was a picture of a sausage roll. Bold.", "Deano set you up. Deano's never been right about anything. Until now?", "You bumped trolleys in the big Tesco. Coco Pops everywhere."],
+  "dates": [
+    { "id": "chippy", "label": "Chippy tea on the seafront", "cost": 15, "gain": 6, "minAge": 16, "lines": ["A seagull takes your fishcake. They laugh so hard they snort. You're in love."] },
+    { "id": "nandos", "label": "Nando's (extra hot, to impress)", "cost": 45, "gain": 8, "minAge": 16, "lines": ["You order extra hot. You cry. They hold your hand. It's lovely, actually."] },
+    { "id": "cinema", "label": "Cinema date", "cost": 30, "gain": 7, "minAge": 16, "lines": ["You both fall asleep. Best date ever."] },
+    { "id": "posh", "label": "Posh restaurant", "cost": 180, "gain": 11, "minAge": 18, "lines": ["The starter is a single pea on a spoon. You go to McDonald's after."] },
+    { "id": "away", "label": "Weekend away", "cost": 900, "gain": 16, "minAge": 18, "lines": ["A cottage in the Lake District. It rains for 48 hours. You don't notice."] }
+  ],
+  "gifts": [
+    { "id": "flowers", "label": "Flowers from the garage", "cost": 12, "gain": 2 },
+    { "id": "proper", "label": "Proper flowers and chocolates", "cost": 60, "gain": 4 },
+    { "id": "jewellery", "label": "Jewellery", "cost": 700, "gain": 8, "minAge": 18 },
+    { "id": "designerBag", "label": "Designer handbag or watch", "cost": 3500, "gain": 12, "minAge": 18 }
+  ]
+}
