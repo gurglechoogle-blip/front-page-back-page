@@ -18,14 +18,16 @@ import {
 } from '../sim/career.js';
 import M from '../data/messages.json';
 import { playFixture } from './flow.js';
+import { METERS, meter, EVENTS, chooseEvent, answerPress, paperByN, framePage, applyEffects } from '../sim/life.js';
+import { paperHTML, paperPhotos } from './paper.js';
 import { exportSave, importSave } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
-  life: { label: 'Life', icon: '🏠', soon: ['Partner', 'Family', 'Friends', 'Nights out', 'Holidays'] },
+  life: { label: 'Life', icon: '🏠', soon: ['Partner', 'Friends', 'Nights out', 'Holidays'] },
   money: { label: 'Money', icon: '💷', soon: ['Bank & loans', 'Property & shopping', 'Staff', 'Businesses & merch'] },
   casino: { label: 'Casino', icon: '🎲', soon: ['Poker', 'Blackjack'] },
-  fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Press', 'Community & charity', 'Achievements'] },
+  fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Community & charity', 'Achievements'] },
 };
 const money = n => (n < 0 ? '-£' : '£') + Math.abs(Math.round(n)).toLocaleString('en-GB');
 const oppOf = (c, f) => { const me = myTeamIn(c, f); return club(f.home === me ? f.away : f.home); };
@@ -69,8 +71,12 @@ export function createHubScreen(root, go, params = {}) {
     $('ul').onclick = e => { e.preventDefault(); $('ulf').click(); };
     $('ulf').onchange = async e => { const f = e.target.files[0]; if (!f) return; const ok = await importSave(f); if (ok) location.reload(); else toast('That file isn\'t a Front Page, Back Page save.'); };
     setCam('def'); render();
-    if (params.teamsheet) teamSheet(params.teamsheet);
-    else if (c.matchday && c.matchday.queue.length) toast('Matchday in progress. Click the next fixture to carry on.');
+    // Monday's paper, events and press conferences come first.
+    runPending(() => {
+      if (params.thenFinish) { finishWeek(c); save(); go('week'); }
+      else if (params.teamsheet) teamSheet(params.teamsheet);
+      else if (c.matchday && c.matchday.queue.length) toast('Matchday in progress. Click the next fixture to carry on.');
+    });
   }
 
   /* ---------- panels ---------- */
@@ -94,6 +100,7 @@ export function createHubScreen(root, go, params = {}) {
     const bills = weeklyBills(c).reduce((a, b) => a + b.amount, 0), hb = honourBadge(c.honour);
     $('right').innerHTML = `<h2>Money</h2>${row('Wages', money(c.contract.wage) + '/wk')}${row('Bills', money(bills) + '/wk')}${row('Bank balance', money(c.bank))}${row('Net worth', money(netWorth(c)))}
       <h3>Honour</h3><div class="honour h${Math.min(4, Math.floor(c.honour / 20.01))}"><div class="medal">${Math.round(c.honour)}</div><b>${hb}</b></div>
+      <h3>Relationships</h3>${METERS.map(([k, l]) => `<div class="rel"><span>${l}</span><div class="bar"><i class="m-${k}" style="width:${Math.round(meter(c, k))}%"></i></div><b>${Math.round(meter(c, k))}</b></div>`).join('')}
       <h3>Club</h3>${row('Club', esc(me.name))}${row('League', esc(DIVS[c.div].short))}${row('Position', posText())}${row('Deal', esc(c.contract.label))}`;
   }
   const row = (l, v) => `<div class="row"><span>${l}</span><b>${v}</b></div>`;
@@ -105,7 +112,7 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('.menu').forEach(m => m.classList.add('hidden'));
     if (!k || k === openMenu) { openMenu = null; return; }
     openMenu = k; const el = $('menu-' + k);
-    const items = k === 'football' ? footballItems() : MENUS[k].soon.map(s => ({ label: s, soon: true }));
+    const items = k === 'football' ? footballItems() : [...(k === 'life' ? lifeItems() : k === 'fame' ? fameItems() : []), ...MENUS[k].soon.map(s => ({ label: s, soon: true }))];
     el.innerHTML = `<h4>${MENUS[k].label}</h4>` + items.map((it, i) => `<button data-i="${i}" class="${it.soon ? 'soon' : ''}${it.main ? ' main' : ''}">${it.label}${it.soon ? '<small>coming soon</small>' : it.note ? `<small>${it.note}</small>` : ''}</button>`).join('');
     el.querySelectorAll('button').forEach(b => b.onclick = e => { e.stopPropagation(); const it = items[+b.dataset.i]; toggleMenu(null); if (it.soon) toast(`${it.label}: coming soon. Your agent says it's "in development". He hasn't got an agent yet either.`); else it.go(); });
     el.classList.remove('hidden');
@@ -206,6 +213,69 @@ export function createHubScreen(root, go, params = {}) {
     const list = c.inbox.map(m => `<div class="msg ${m.read ? '' : 'new'}"><b>${esc(m.from)}</b><span>Week ${m.week + 1}</span><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">No messages. Nobody loves you yet.</p>';
     modal(`<h2>Phone</h2><div class="scroll phone-list">${list}</div>`);
     c.inbox.forEach(m => m.read = true); save(); render();
+  }
+
+  /* ---------- life and fame ---------- */
+  function lifeItems() {
+    const called = c.weekLog.some(x => x.t === 'callMum');
+    return [
+      { label: 'Call Mum', note: called ? 'Already rung her this week' : 'Free, once a week', go: () => { if (called) return toast('You rang her already. She\'s still talking.'); c.weekLog.push({ t: 'callMum' }); applyEffects(c, { family: 3 }); save(); render(); toast(pickLine(['Mum: "Are you eating properly?" (x4)', 'Mum tells you about next door\'s extension for 25 minutes. Family +3', 'Mum: "Your Gran\'s got a tattoo." You don\'t ask.'])); } },
+      { label: 'Visit Gran', note: 'Uses a slot · family, energy', go: () => { if (slotsLeft(c) <= 0) return toast('No time slots left this week.'); c.slotsUsed++; c.weekLog.push({ t: 'gran' }); applyEffects(c, { family: 6, energy: 4 }); save(); render(); toast(pickLine(['Gran makes you a fry-up and asks for a tip on the 3.40 at Kempton.', 'Gran shows you her new betting app. She\'s up £340.', 'You watch Countdown with Gran. She gets a nine-letter word. It\'s rude.'])); } },
+    ];
+  }
+  function fameItems() {
+    return [
+      { label: 'Newspapers', note: c.papers.length ? `${c.papers.length} issue${c.papers.length === 1 ? '' : 's'} · ${c.framed.length} framed` : 'The first issue lands Monday', go: showArchive },
+      { label: 'Press cuttings', note: c.quotes.length ? `${c.quotes.length} quote${c.quotes.length === 1 ? '' : 's'}` : 'Nothing said yet', go: () => modal(`<h2>Press cuttings</h2><div class="scroll">${c.quotes.map(q => `<div class="msg"><b>${esc(q.journo)}</b><span>Week ${q.week + 1}</span><p class="dim">${esc(q.q)}</p><p>${esc(q.a)}</p></div>`).join('') || '<p class="dim">You haven\'t faced the press yet.</p>'}</div>`) },
+    ];
+  }
+
+  /* ---------- pending: newspaper, events, press ---------- */
+  function runPending(done) {
+    const item = c.pending[0];
+    if (!item) return done();
+    const next = () => { c.pending.shift(); save(); render(); closeModal(); runPending(done); };
+    if (item.type === 'paper') showPaper(item.n, next);
+    else if (item.type === 'event') showEvent(item.id, next);
+    else if (item.type === 'press') showPress(item, next);
+    else next();
+  }
+  const fmtEffects = eff => Object.entries(eff).filter(([k, v]) => v && k !== 'slot').map(([k, v]) => `<span class="${v > 0 ? 'good' : 'bad'}">${({ manager: 'Gaffer', teammates: 'Teammates', fans: 'Fans', family: 'Family', honour: 'Honour', money: 'Money', energy: 'Energy' })[k] || k} ${v > 0 ? '+' : ''}${k === 'money' ? money(v) : v}</span>`).join(' ');
+  function showEvent(id, next) {
+    const e = EVENTS.get(id); if (!e) return next();
+    const via = { call: '📞 Incoming call', text: '💬 New message', moment: '⚡ Meanwhile…' }[e.via] || '';
+    modal(`<div class="evvia">${via}</div><h2>${esc(e.from)}</h2><p class="evtext">${esc(e.text)}</p><div class="choices">${e.choices.map((ch, i) => `<button class="btn choice" data-i="${i}" ${ch.effects && ch.effects.slot && slotsLeft(c) <= 0 ? 'disabled title="No time slots left this week"' : ''}>${esc(ch.label)}</button>`).join('')}</div>`, true);
+    root.querySelectorAll('.choice').forEach(b => b.onclick = () => {
+      const r = chooseEvent(c, id, +b.dataset.i); save(); render();
+      modal(`<div class="evvia">${via}</div><h2>${esc(e.from)}</h2><p class="evtext">${esc(r.result)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
+      $('evok').onclick = next;
+    });
+  }
+  function showPress(item, next) {
+    modal(`<div class="evvia">🎤 Press conference</div><h2>${esc(item.journo)}</h2><p class="evtext">"${esc(item.q)}"</p><div class="choices">${item.answers.map((a, i) => `<button class="btn choice" data-i="${i}">${esc(a.text)}<small>${a.tone}</small></button>`).join('')}</div>`, true);
+    root.querySelectorAll('.choice').forEach(b => b.onclick = () => {
+      const r = answerPress(c, item, +b.dataset.i); save(); render();
+      modal(`<div class="evvia">🎤 Press conference</div><h2>Quote noted</h2><p class="evtext">That'll be in Monday's paper.</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
+      $('evok').onclick = next;
+    });
+  }
+  function showPaper(n, next, startPage) {
+    const p = paperByN(c, n); if (!p) return next && next();
+    let page = startPage || 'front';
+    const draw = () => {
+      const framed = c.framed.some(f => f.n === n && f.page === page);
+      modal(`${paperHTML(p, page, c)}<div class="endBtns paperbtns"><button class="btn" id="flip">${page === 'front' ? 'Turn to the back page ▶' : '◀ Front page'}</button><button class="btn gold" id="frame" ${framed ? 'disabled' : ''}>${framed ? 'Framed ✓' : '🖼 Frame this page'}</button>${next ? '<button class="btn red" id="done">Put it down</button>' : ''}</div>`, !!next);
+      paperPhotos(root, p, page, c);
+      $('flip').onclick = () => { page = page === 'front' ? 'back' : 'front'; draw(); };
+      $('frame').onclick = () => { framePage(c, n, page); save(); toast('Framed. It\'ll go in the trophy room when you\'ve got one. For now, Mum\'s fridge.'); draw(); };
+      if (next) $('done').onclick = next;
+    };
+    draw();
+  }
+  function showArchive() {
+    const card = (p, page) => `<button class="paperthumb" data-n="${p.n}" data-p="${page || 'front'}"><small>No. ${p.n} · ${prettyDate(p.date)}${page ? ' · framed' : ''}</small><b>${esc((page === 'back' ? p.back : p.front).headline)}</b>${page ? '' : `<i>${esc(p.back.headline)}</i>`}</button>`;
+    modal(`<h2>Newspapers</h2><div class="scroll">${c.framed.length ? `<h3>Framed (Mum's fridge)</h3><div class="thumbs">${c.framed.map(p => card(p, p.page)).join('')}</div>` : ''}<h3>Every issue</h3><div class="thumbs">${c.papers.map(p => card(p)).join('') || '<p class="dim">Your first issue lands on Monday.</p>'}</div></div>`);
+    root.querySelectorAll('.paperthumb').forEach(b => b.onclick = () => showPaper(+b.dataset.n, null, b.dataset.p));
   }
 
   /* ---------- modal / toast ---------- */

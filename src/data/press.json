@@ -1,0 +1,54 @@
+{
+  "_note": "Post-match press questions. Context picks the pool: scored, missed (played, no goal, low rating), won, lost, benched, rumour, gaffer. Each answer has a tone (humble, cocky, funny, dig), effects on meters, and a quote for Monday's paper ({NAME}, {OPP}, {TEAM}).",
+  "journalists": ["Sid Scoop (Weekly Splash)", "Brenda Banter (Radio Bantam)", "Clive from the Echo", "A teenager with a podcast"],
+  "questions": {
+    "scored": [
+      { "q": "What a goal against {OPP}. Where does that rank in your career so far?", "answers": [
+        { "tone": "humble", "text": "\"It's all about the team. The lads made it easy for me.\"", "effects": { "teammates": 3, "honour": 2 } },
+        { "tone": "cocky", "text": "\"Top of the list. Then again, I'm only 16, so it's a short list.\"", "effects": { "fans": 3, "honour": -2, "teammates": -1 } },
+        { "tone": "funny", "text": "\"I was aiming for the corner flag, to be honest.\"", "effects": { "fans": 4, "honour": 1 } } ] },
+      { "q": "The fans were singing your name. How did that feel?", "answers": [
+        { "tone": "humble", "text": "\"Unreal. I'll never take that for granted.\"", "effects": { "fans": 4, "honour": 2 } },
+        { "tone": "cocky", "text": "\"They'd better get used to it.\"", "effects": { "fans": 2, "honour": -3 } },
+        { "tone": "dig", "text": "\"Louder than they sing for some of the others, that's for sure.\"", "effects": { "teammates": -7, "fans": 3, "honour": -3 } } ] }
+    ],
+    "missed": [
+      { "q": "You had chances today. What went wrong?", "answers": [
+        { "tone": "humble", "text": "\"I should have done better. I'll be back on the training ground Monday.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "dig", "text": "\"The service wasn't great, if I'm honest.\"", "effects": { "teammates": -8, "honour": -3 } },
+        { "tone": "funny", "text": "\"The goal moved. I've got video evidence.\"", "effects": { "fans": 3 } } ] },
+      { "q": "Some fans are saying you're not ready. Are they right?", "answers": [
+        { "tone": "humble", "text": "\"I've got a lot to learn. I'll prove them wrong.\"", "effects": { "fans": 3, "honour": 2 } },
+        { "tone": "cocky", "text": "\"Some fans also think the Earth is flat.\"", "effects": { "fans": -5, "honour": -2 } } ] }
+    ],
+    "won": [
+      { "q": "Big win. How's the mood in the dressing room?", "answers": [
+        { "tone": "humble", "text": "\"Buzzing. Credit to the gaffer, he had us ready.\"", "effects": { "manager": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"Gaz is doing his dance. It's horrific. Send help.\"", "effects": { "teammates": 3, "fans": 2 } },
+        { "tone": "cocky", "text": "\"We'll beat anyone playing like that. Anyone.\"", "effects": { "fans": 3, "honour": -1 } } ] }
+    ],
+    "lost": [
+      { "q": "Tough afternoon. Is the gaffer getting it wrong?", "answers": [
+        { "tone": "humble", "text": "\"No chance. That's on us players.\"", "effects": { "manager": 6, "teammates": 1, "honour": 2 } },
+        { "tone": "dig", "text": "\"I'm not paid to pick the team. If I was, I'd be in it more.\"", "effects": { "manager": -10, "fans": 3, "honour": -4 } },
+        { "tone": "funny", "text": "\"Honestly, I was just thinking about my tea.\"", "effects": { "fans": 1, "manager": -1 } } ] }
+    ],
+    "benched": [
+      { "q": "You didn't start today. Frustrated?", "answers": [
+        { "tone": "humble", "text": "\"The gaffer picks the team. I'll keep working.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "dig", "text": "\"Frustrated? I've been sat so long I've got splinters.\"", "effects": { "manager": -7, "fans": 4, "honour": -2 } } ] }
+    ],
+    "rumour": [
+      { "q": "There's talk of bigger clubs watching you. Would you be tempted?", "answers": [
+        { "tone": "humble", "text": "\"I'm happy here. I just want to play.\"", "effects": { "fans": 4, "manager": 3, "honour": 2 } },
+        { "tone": "cocky", "text": "\"Never say never. My agent's got a fax machine.\"", "effects": { "fans": -6, "manager": -5, "honour": -2 } },
+        { "tone": "funny", "text": "\"The only club I'm joining is Gran's bingo club.\"", "effects": { "fans": 3, "family": 2 } } ] }
+    ],
+    "gaffer": [
+      { "q": "What's the gaffer like to work for?", "answers": [
+        { "tone": "humble", "text": "\"He's taught me loads. Mostly about fish, but loads.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "dig", "text": "\"Bit old school. Thinks a tactics board is for drawing trout.\"", "effects": { "manager": -9, "fans": 2, "honour": -3 } },
+        { "tone": "funny", "text": "\"Don't get him started on carp. Seriously. Don't.\"", "effects": { "manager": 2, "fans": 2 } } ] }
+    ]
+  }
+}

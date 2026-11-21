@@ -5,8 +5,9 @@ import { matchParams, recordMatch, finishWeek } from '../sim/career.js';
 function onDone(go, c, f) {
   return S => {
     c.liveMatch = null; recordMatch(c, f, S); save();
-    const md = c.matchday;
-    if (md && md.queue.length) go('hub', { teamsheet: md.queue[0] });
+    const md = c.matchday, more = md && md.queue.length;
+    if (c.pending && c.pending.length) go('hub', more ? { teamsheet: md.queue[0] } : { thenFinish: true }); // press conference first
+    else if (more) go('hub', { teamsheet: md.queue[0] });
     else { finishWeek(c); save(); go('week'); }
   };
 }

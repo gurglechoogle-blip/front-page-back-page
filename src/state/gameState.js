@@ -3,6 +3,7 @@
 // if the main save is ever unreadable, the backup is loaded instead.
 import { store } from './storage.js';
 import { SKILLS } from '../moments/index.js';
+import { initLife } from '../sim/life.js';
 
 export const SAVE_VERSION = 3;
 export const SAVE_KEY = 'fpbp_save_v1';
@@ -27,7 +28,7 @@ export function migrate(s) {
   s.friendly = Object.assign({ clubId: 'shrewsbury', oppId: 'barrow', venue: 'home', cup: false, trust: 50, form: 50 }, s.friendly || {});
   if (s.career) {
     const c = s.career;
-    c.liveMatch = c.liveMatch || null; c.history = c.history || []; c.inbox = c.inbox || []; c.weekLog = c.weekLog || [];
+    initLife(c); c.liveMatch = c.liveMatch || null; c.history = c.history || []; c.inbox = c.inbox || []; c.weekLog = c.weekLog || [];
   }
   s.version = SAVE_VERSION;
   return s;

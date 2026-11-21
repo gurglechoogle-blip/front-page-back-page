@@ -7,6 +7,7 @@ import {
   quickResult, winnerOf, weekStart, weekOf, lastWeek, prettyDate, addDays, table, compName, roundName, pickR,
 } from './season.js';
 import { MatchSim } from './matchSim.js';
+import { initLife, rollEvents, makePaper, pressAfter, afterMatch, honourPatience, support, familyWeek, taper } from './life.js';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const fill = (t, v) => t.replace(/\{(\w+)\}/g, (m, k) => (v[k] != null ? v[k] : m));
@@ -38,7 +39,7 @@ export function createCareer(name, offer, R = Math.random) {
     stats: { apps: 0, starts: 0, subs: 0, goals: 0, assists: 0, ratings: [], u21: 0 },
     fixtures: [], cups: {}, trophyGroup: null, inbox: [], msgId: 0, matchday: null, lastWeek: null, history: [], seasonOver: false,
   };
-  buildSeason(c, R);
+  buildSeason(c, R); initLife(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -121,6 +122,7 @@ export function matchParams(c, f, role) {
   return {
     home: club(f.home), away: club(f.away), mySide, cup: !!f.knockout, extraTime: !!f.extraTime, role,
     stadium: f.neutral || null, label: compName(f), trust: c.approval / 100, form: effectiveForm(c), fixtureId: f.id,
+    support: support(c), fans: c.meters.fans,
   };
 }
 /** Play a match nobody's watching (you're not in the squad). */
@@ -141,8 +143,8 @@ export function recordMatch(c, f, S, R = Math.random) {
       const st = c.stats; st.apps++; if (S.role === 'start') st.starts++; else st.subs++; st.goals += S.my.goals; st.assists += S.my.assists; st.ratings.push(S.rating);
       if (myTeamIn(c, f).endsWith('-u21')) st.u21++;
     }
-    let d = (S.rating - 6.6) * 3; if (d < 0) d *= c.contract.patience; if (f.comp === 'friendly' || myTeamIn(c, f).endsWith('-u21')) d *= .5;
-    c.approval = clamp(c.approval + d, 0, 100); res.approval = d;
+    let d = (S.rating - 6.6) * 3; if (d < 0) d *= c.contract.patience * honourPatience(c); if (f.comp === 'friendly' || myTeamIn(c, f).endsWith('-u21')) d *= .5;
+    d = taper(c.approval, d); c.approval = clamp(c.approval + d, 0, 100); res.approval = d;
     c.energy = clamp(c.energy - (S.role === 'start' ? 18 : 8), 0, 100);
     if (S.rating < 5.5) message(c, 'The Gaffer', pickR(M.gafferAngry, R).replace(/^The Gaffer: /, ''));
     if (S.rating >= 8) message(c, 'The Gaffer', pickR(M.gafferHappy, R).replace(/^The Gaffer: /, ''));
@@ -150,7 +152,10 @@ export function recordMatch(c, f, S, R = Math.random) {
   if (c.granBet && c.granBet.fixture === f.id) {
     const g = c.granBet; c.granBet = null;
     message(c, 'Gran', !played ? pickR(M.granBenched, R) : S.my.goals > 0 ? fill(pickR(M.granWon, R), { win: '£' + g.win }) : pickR(M.granLost, R));
+    if (played && S.my.goals > 0) c.flags.granWon = true;
   }
+  afterMatch(c, S);
+  const press = pressAfter(c, f, S, myTeamIn(c, f), R); if (press) c.pending.push(press);
   // Form: your last five ratings.
   const recent = myFixtures(c).filter(x => x.rating != null).slice(-5).map(x => x.rating);
   if (recent.length) c.form = clamp(50 + (recent.reduce((a, b) => a + b, 0) / recent.length - 6.4) * 22, 0, 100);
@@ -192,9 +197,10 @@ export function finishWeek(c, R = Math.random) {
   const log = c.weekLog, drills = log.filter(x => x.t === 'train'), rests = log.filter(x => x.t === 'rest').length, unused = Math.max(0, slotsTotal(c) - c.slotsUsed);
   // Training only ever helps: two or more drills a week and the gaffer notices.
   // Skipping it costs nothing here, you just don't improve.
-  const dA = drills.length >= 2 ? drills.reduce((a, d) => a + (d.score >= 3 ? 1 : .6), 0) : 0;
+  const dA = drills.length >= 2 ? taper(c.approval, drills.reduce((a, d) => a + (d.score >= 3 ? 1 : .6), 0)) : 0;
   c.approval = clamp(c.approval + dA, 0, 100);
   c.energy = clamp(c.energy + 12, 0, 100);
+  familyWeek(c);
   // Money.
   const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);
   c.bank += c.contract.wage - out;
@@ -210,6 +216,7 @@ export function finishWeek(c, R = Math.random) {
 /** Roll on to next week; returns false when the season is over. */
 export function nextWeek(c, R = Math.random) {
   c.week++; c.slotsUsed = 0; c.weekLog = [];
+  if (c.lastWeek) makePaper(c, R);
   if (c.week > lastWeek() || !myFixtures(c).some(f => !f.played) && weekStart(c.week) > CAL.seasonEnd) { c.seasonOver = true; return false; }
   const ws = weekStart(c.week), we = addDays(ws, 6);
   if (c.dob.slice(5) >= ws.slice(5) && c.dob.slice(5) <= we.slice(5) && age(c, we) === 17) message(c, M.birthday.from, M.birthday.text);
@@ -222,6 +229,7 @@ export function nextWeek(c, R = Math.random) {
   }
   if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
+  rollEvents(c, isPreseason(c), R);
   return true;
 }
 export function seasonSummary(c) {

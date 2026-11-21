@@ -48,7 +48,9 @@ export class MatchSim {
     this.possession = clamp(.5 + (this.home.strength - this.away.strength) / 200 + .03, .3, .7);
     this.possTicks = 0; this.homePossTicks = 0;
     this.stoppage = { '1H': 1 + Math.floor(R() * 4), '2H': 2 + Math.floor(R() * 5), 'ET1': Math.floor(R() * 3), 'ET2': 1 + Math.floor(R() * 3) };
-    this.nChances = this.role === 'none' ? 0 : this.role === 'sub' ? 1 + (R() < .45 ? 1 : 0) : chancesFor(opts.trust ?? .5, opts.form ?? .5, R);
+    // Team-mates who rate you pass to you more: support (-1..1) is worth up to a chance either way.
+    this.fans = opts.fans ?? 50;
+    this.nChances = this.role === 'none' ? 0 : this.role === 'sub' ? 1 + (R() < .45 ? 1 : 0) : clamp(chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0), 3, 6);
     this.subMinute = this.role === 'sub' ? 58 + Math.floor(R() * 18) : null;
     this.schedule = {};
     this.planRegulation();
@@ -111,6 +113,7 @@ export class MatchSim {
       this.period = '1H'; this.minute = 0;
       out.push(this.ev(fill(pickR(C.preMatch, this.R), this.vars('home', { weather: pickR(C.weather, this.R) })), 'info', null, ''));
       if (this.role === 'start') out.push(this.ev(this.line('lineup', this.mySide), 'info', this.mySide, ''));
+      if (this.role !== 'none' && (this.fans >= 68 || this.fans <= 32)) out.push(this.ev(fill(pickR(this.fans >= 68 ? C.fansHigh : C.fansLow, this.R), this.vars(this.mySide)), 'info', this.mySide, ''));
       if (this.role === 'sub') out.push(this.ev(`${this.me} starts on the bench for ${this.name(this.mySide)}. Warm-up bib on, fingers crossed.`, 'info', this.mySide, ''));
       out.push(this.ev(this.line('kickOff', 'home'), 'info', 'home', '0\''));
       return out;
@@ -201,7 +204,7 @@ export class MatchSim {
     if (result.goal) {
       this.score[side]++;
       if (assist) { this.my.assists++; this.scorers[side].push({ name: P.mate, label: P.label, assist: this.me }); this.bump(.6); text += ' ' + fill(pickR(C.chanceGoalAssist, this.R), v); }
-      else { this.my.goals++; this.scorers[side].push({ name: this.me, label: P.label, me: true }); this.bump(.8 + .4 * (result.q || 0)); text += ' ' + fill(pickR(C.chanceGoalFlavour, this.R), v); }
+      else { this.my.goals++; this.scorers[side].push({ name: this.me, label: P.label, me: true }); this.bump(.8 + .4 * (result.q || 0)); text += ' ' + fill(pickR(C.chanceGoalFlavour, this.R), v); if (this.fans >= 60) text += ' ' + fill(pickR(C.fansChant, this.R), v); }
       if (P.key === 'penalty') text = text.replace(/^GOAL!/, 'GOAL! Penalty converted!');
       out.push({ label: P.label, text: text + ' ' + this.scoreLine(), kind: 'goal', side, mine: true });
     } else {

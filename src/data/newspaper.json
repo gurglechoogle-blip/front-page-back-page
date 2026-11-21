@@ -1,0 +1,239 @@
+{
+  "_note": "The Weekly Splash: every Monday. Back page = football, front page = life. Verbs are alliterative with your surname's first letter. {NAME} {VERB} {OPP} {TEAM} {N}.",
+  "masthead": "THE WEEKLY SPLASH",
+  "price": [
+    "90p",
+    "95p",
+    "£1.00 (inflation, innit)"
+  ],
+  "verbs": {
+    "A": [
+      "ACES",
+      "AMBUSHES"
+    ],
+    "B": [
+      "BLASTS",
+      "BAGS",
+      "BANGS IN"
+    ],
+    "C": [
+      "CRACKS",
+      "CURLS",
+      "CRASHES"
+    ],
+    "D": [
+      "DRILLS",
+      "DINKS",
+      "DISPATCHES"
+    ],
+    "E": [
+      "EASES",
+      "ERUPTS"
+    ],
+    "F": [
+      "FIRES",
+      "FLICKS"
+    ],
+    "G": [
+      "GRABS",
+      "GUIDES",
+      "GOBBLES"
+    ],
+    "H": [
+      "HAMMERS",
+      "HEADS",
+      "HITS"
+    ],
+    "I": [
+      "IGNITES"
+    ],
+    "J": [
+      "JABS",
+      "JOLTS"
+    ],
+    "K": [
+      "KNOCKS",
+      "KILLS OFF"
+    ],
+    "L": [
+      "LASHES",
+      "LOBS",
+      "LAUNCHES"
+    ],
+    "M": [
+      "MAULS",
+      "MUSCLES",
+      "MASTERMINDS"
+    ],
+    "N": [
+      "NETS",
+      "NODS",
+      "NICKS"
+    ],
+    "O": [
+      "OUTFOXES"
+    ],
+    "P": [
+      "POWERS",
+      "POKES",
+      "PINGS"
+    ],
+    "Q": [
+      "QUELLS"
+    ],
+    "R": [
+      "RIFLES",
+      "ROCKETS",
+      "RAMS"
+    ],
+    "S": [
+      "SLAMS",
+      "SMASHES",
+      "SLOTS"
+    ],
+    "T": [
+      "THUMPS",
+      "TUCKS",
+      "TONKS"
+    ],
+    "U": [
+      "UNLEASHES"
+    ],
+    "V": [
+      "VOLLEYS",
+      "VAPOURISES"
+    ],
+    "W": [
+      "WALLOPS",
+      "WHIPS",
+      "WELLIES"
+    ],
+    "X": [
+      "X-CELS"
+    ],
+    "Y": [
+      "YANKS"
+    ],
+    "Z": [
+      "ZAPS",
+      "ZINGS"
+    ]
+  },
+  "back": {
+    "hattrick": [
+      "{NAME}'S HAT-TRICK HEROICS",
+      "HAT'S ENTERTAINMENT: {NAME} BAGS THREE",
+      "THREE AND EASY FOR {NAME}"
+    ],
+    "brace": [
+      "{NAME} {VERB} TWO PAST {OPP}",
+      "DOUBLE TROUBLE: {NAME} STRIKES TWICE",
+      "TWO-DERFUL {NAME}"
+    ],
+    "winner": [
+      "{NAME} {VERB} IN LATE WINNER",
+      "SUPER {NAME} SINKS {OPP}",
+      "{NAME}-DEMONIUM!"
+    ],
+    "scored": [
+      "{NAME} {VERB} ONE IN",
+      "{NAME} OFF THE MARK",
+      "{NAME} FINDS THE NET"
+    ],
+    "scoredLost": [
+      "{NAME} STRIKES BUT {TEAM} SINK",
+      "CONSOLATION FOR {NAME}"
+    ],
+    "assist": [
+      "{NAME} THE PROVIDER",
+      "SPOON-FED: {NAME} SERVES IT UP"
+    ],
+    "blank": [
+      "{NAME} FIRES BLANKS",
+      "NO JOY FOR {NAME}",
+      "{NAME} LOSES SHOOTING BOOTS"
+    ],
+    "bench": [
+      "BENCH WARMER {NAME} BIDES HIS TIME",
+      "{NAME} KEPT ON ICE"
+    ],
+    "dropped": [
+      "{NAME} NOT EVEN ON THE BUS",
+      "WHERE'S {NAME}? GAFFER LEAVES KID OUT"
+    ],
+    "u21": [
+      "KID {NAME} SHINES FOR THE STIFFS",
+      "{NAME} {VERB} FOR UNDER-21S"
+    ],
+    "cupOut": [
+      "CUP OF WOE: {TEAM} CRASH OUT",
+      "{TEAM} DUMPED OUT"
+    ],
+    "quiet": [
+      "{NAME} PUTS IN THE HOURS",
+      "QUIET WEEK FOR {NAME}",
+      "{NAME} IN TRAINING-GROUND GRIND"
+    ],
+    "preseason": [
+      "{NAME} GETS THE PRE-SEASON SWEATS",
+      "BLEEP TEST HELL FOR {NAME}"
+    ],
+    "played": [
+      "{NAME} PUTS IN A SHIFT",
+      "WORKHORSE {NAME} DOES HIS BIT",
+      "{NAME} RUNS HIMSELF RAGGED"
+    ]
+  },
+  "frontFillers": [
+    "SEAGULL STEALS MAYOR'S CHIPS AGAIN",
+    "MAN FINDS POTATO SHAPED LIKE {NAME}'S GAFFER",
+    "SHOCK AS BUS ARRIVES ON TIME",
+    "WEATHERMAN PREDICTS RAIN, GETS IT RIGHT, RETIRES",
+    "LOCAL DOG ELECTED TO PARISH COUNCIL",
+    "PIGEON CAUSES 4-MILE TAILBACK",
+    "PENSIONER, 92, STILL WAITING FOR THE PLUMBER",
+    "TEA SHORTAGE: BRITAIN ON ALERT",
+    "COUNCIL BANS FUN (AGAIN)",
+    "LOCAL MAN'S SHED VOTED 'BEST SHED'",
+    "ROUNDABOUT TURNS 50: NOBODY CELEBRATES",
+    "WOMAN, 84, BEATS SNOOKER PRO IN PUB",
+    "GIANT TURNIP WINS COUNTY SHOW",
+    "VICAR IN BIN STRIKE STAND-OFF",
+    "CHIP SHOP SAUSAGE 'LONGEST IN BRITAIN'",
+    "TRAINS DELAYED BY 'WRONG KIND OF CLOUDS'",
+    "SQUIRREL STEALS GOLF BALL, MAKES BIRDIE",
+    "PARKING WARDEN TICKETS HIMSELF",
+    "SHOCK AS PIER STILL STANDING",
+    "LOCAL CAT 'RUNS' CORNER SHOP"
+  ],
+  "dennis": [
+    "Dennis the kit man predicts: rain, and an own goal. Possibly the same thing.",
+    "Dennis the kit man predicts: someone will lose a shin pad. It'll be Gaz.",
+    "Dennis the kit man predicts: a big week for anyone born in a month.",
+    "Dennis the kit man predicts: beware of men called Tony."
+  ],
+  "tone": {
+    "good": [
+      "Golden boy",
+      "Fans' favourite",
+      "Local hero"
+    ],
+    "bad": [
+      "Bad boy",
+      "Troubled teen",
+      "Controversial kid"
+    ]
+  },
+  "sightings": [
+    "{NAME} SPOTTED BUYING SIX SAUSAGE ROLLS AT GREGGS",
+    "{NAME} SEEN AT GARDEN CENTRE WITH MUM: 'HE CHOSE A FERN'",
+    "{NAME}'S NEW HAIRCUT: FANS DIVIDED",
+    "{NAME} IN SHOCK BUS APPEARANCE",
+    "EXCLUSIVE: {NAME} PREFERS CUSTARD CREAMS",
+    "{NAME} SPOTTED PARALLEL PARKING. BADLY",
+    "{NAME} AND GRAN IN BINGO HALL SHOWDOWN",
+    "WHAT'S IN {NAME}'S SHOPPING TROLLEY? (MOSTLY COCO POPS)",
+    "{NAME} GIVES DIRECTIONS TO LOST TOURIST: 'HE WAS LOVELY'",
+    "{NAME} LOSES TO 9-YEAR-OLD AT CRAZY GOLF"
+  ]
+}

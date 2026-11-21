@@ -309,5 +309,19 @@
       "\"He was about as much use as a chocolate fishing rod.\"",
       "\"I've had more threat from a pedalo.\""
     ]
-  }
+  },
+  "fansHigh": [
+    "The {team} fans are singing {me}'s name before a ball's been kicked.",
+    "A banner in the {team} end: '{me} IS OUR GOD'. Spelling slightly off.",
+    "'There's only one {me}!' rings round the ground."
+  ],
+  "fansLow": [
+    "A smattering of boos when {me}'s name is read out.",
+    "Someone in the {team} end holds up a sign: '{me} OUT'. It's quite a small sign.",
+    "The {team} fans are muttering about {me}. Loudly."
+  ],
+  "fansChant": [
+    "The {team} fans: 'One {me}, there's only one {me}!'",
+    "They're singing {me}'s name. Gran will be unbearable."
+  ]
 }

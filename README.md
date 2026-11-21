@@ -34,6 +34,7 @@ src/
     input.js            pointer → 800x600 canvas space; screens set the handlers
     kits.js             kits, skin/hair variety, makeKitSet(), club colours and clashes
     manager.js          the gaffer figure, drawn per mood
+    venues.js           scenery by venue: rec, lower-league ground, Championship, Premier League, training grounds
     clock.js            game time (clock.now)
     loop.js             requestAnimationFrame loop, active screen
     util.js             rand, clamp, lerp, pick, seeded PRNG
@@ -47,6 +48,7 @@ src/
     matchSim.js         the match: clock, goals, filler events, your chances, stats, rating
     season.js           clubs, the 2026-27 calendar, fixture generation, cup draws, quick results, tables
     career.js           the career: academy offers, the week loop, selection, approval, money, the phone
+    life.js             honour, relationship meters, events with choices, press, the weekly newspaper
     squads.js           made-up squads, same names every time for a club
     text.js             pick a line, fill its {placeholders}
   screens/
@@ -54,6 +56,9 @@ src/
     hub.js              the hub: you, your week, five category menus
     week.js             end-of-week results
     season.js           season review
+    paper.js            The Weekly Splash: front and back pages with drawn photos
+    flow.js             playing (and resuming) a career fixture
+    venue.js            which scenery a match or screen uses
     training.js         the training ground (5 attempts per drill; one drill per slot in a career)
     matchSetup.js       pick a one-off match (until the career drives fixtures)
     match.js            match day: score blocks, feed, clock, rating, stats, the gaffer
@@ -63,6 +68,9 @@ src/
     calendar.json       2026-27 dates: pre-season, international breaks, every cup round
     academies.json      the four academy offer types and their trade-offs
     messages.json       phone messages (Gran's betting tips, the kit man's prophecies)
+    events.json         life events: choices, effects, follow-ups, newspaper stories
+    press.json          press-conference questions and answers
+    newspaper.json      headline templates, alliterative verbs, fillers and sightings
     names.json          first names and surnames for squads
     commentary.json     every line of match commentary, manager quotes, headlines
   state/
@@ -126,6 +134,10 @@ node tools/compare.mjs   # optional: node tools/compare.mjs <url> <seed,seed,...
 ```
 
 Every frame should come back identical, except where the mechanics were deliberately changed after Stage 3: volleys only miss on a bad click or when the ball leaves the screen, and the penalty keeper saves about 1 in 5.
+
+### Honour, relationships and the newspaper
+
+Honour is public; the meters are private: manager (approval), teammates, fans and family. Teammates who like you pass to you more (up to a chance either way), the fans' mood shows up in the commentary, honour makes the gaffer more or less forgiving, and a stable family helps you recover. Each week may bring an event (a call, a text or a dressing-room moment) from `events.json`: every choice costs something, some use a time slot, and some come back weeks later. After some matches you face the press. Every Monday *The Weekly Splash* lands: the back page covers your football and the front page covers your life, with headlines built from what you actually did and alliterative puns on your surname. Pages can be framed.
 
 ## Saving
 
