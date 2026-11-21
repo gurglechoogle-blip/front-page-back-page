@@ -28,6 +28,10 @@ import { showAgents, showWindow, showDeadline } from './contractUI.js';
 import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
 import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble.js';
 import { ACH, achCount } from '../sim/achievements.js';
+import { clause } from '../sim/contracts.js';
+import { REQUESTS, cantAsk, odds, ask as askGaffer, raiseOffer } from '../sim/gaffer.js';
+import { managerFor } from '../sim/managers.js';
+import { showTalks } from './contractUI.js';
 import { inviteText, inviteFrom, inviteData, acceptInvite, declineInvite } from '../sim/invites.js';
 import { showSocial, showTroll, showCommunity, showInvite, showStaff, showBusiness } from './fameUI.js';
 import { reputation, inWindow, agentOf } from '../sim/transfers.js';
@@ -146,6 +150,7 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'League table', go: showTable },
       { label: `Rival: ${esc(c.rival.name)}`, note: `${esc(club(c.rival.clubId).short)} · ${c.rival.seasonGoals} goals this season`, go: showRival },
       { label: 'Contract & transfers', go: showContract },
+      { label: 'Talk to the gaffer', note: 'Contract, minutes, loans, transfers', go: showGaffer },
       { label: 'Agent', note: agentOf(c) ? agentOf(c).name : age(c) < 17 ? 'At 17' : 'Sign one', go: () => age(c) < 17 ? modal(`<h2>Agent</h2><p>You haven't got one. At 16, agents are mostly blokes in car parks with lanyards they printed themselves. Come back at 17.</p>`) : showAgents(c, () => { save(); render(); }) },
     ];
   }
@@ -188,7 +193,7 @@ export function createHubScreen(root, go, params = {}) {
     const mine = club(myTeamIn(c, f));
     modal(`<h2 class="ts">TEAM SHEET</h2><div class="tsfix"><small>${esc(compName(f))} · ${prettyDate(f.date, true)}${f.neutral ? ' · ' + esc(f.neutral) : ''}</small>
       <b>${esc(club(f.home).name)} v ${esc(club(f.away).name)}</b></div>
-      <p class="tsrole ${role}">${esc(role === 'none' && c.injury ? `You're injured (${c.injury.name}). The club channel wants you on co-commentary.` : role === 'none' && c.ban > 0 ? `You're banned (${c.ban} more week${c.ban > 1 ? 's' : ''}). ${c.flags.prison && !c.flags.servedBan ? 'You\'re listening on the radio in your cell.' : 'You\'re watching from your sofa.'}` : role === 'none' && c.intlWeek === c.week && f.comp !== 'intl' ? 'You\'re away with England this week.' : M.selection[role])}</p>
+      <p class="tsrole ${role}">${esc(role === 'none' && (md.why || {})[id] === 'rest' ? `You played on ${prettyDate(c.lastPlayed, true)}. That's under 60 hours ago, so the physio has hidden your boots. You're resting this one.` : role === 'none' && c.injury ? `You're injured (${c.injury.name}). The club channel wants you on co-commentary.` : role === 'none' && c.ban > 0 ? `You're banned (${c.ban} more week${c.ban > 1 ? 's' : ''}). ${c.flags.prison && !c.flags.servedBan ? 'You\'re listening on the radio in your cell.' : 'You\'re watching from your sofa.'}` : role === 'none' && c.intlWeek === c.week && f.comp !== 'intl' ? 'You\'re away with England this week.' : M.selection[role])}</p>
       ${mine.id.endsWith('-u21') ? `<p class="dim">It's the under-21s. Proper game though: the ${esc(CAL.cups.trophy.short)} puts you up against men with mortgages.</p>` : ''}
       <div class="endBtns">${role === 'none' ? `<button class="btn" id="watch">See how they get on</button>` : `<button class="btn gold" id="toMatch">TO THE MATCH ▶</button>`}</div>`, true);
     if (role === 'none' && c.injury) { $('watch').textContent = 'Co-commentate 🎙'; $('watch').onclick = () => coCommentary(f); }
@@ -228,9 +233,21 @@ export function createHubScreen(root, go, params = {}) {
     const mine = root.querySelector('.lt tr.me'); if (mine) mine.scrollIntoView({ block: 'center' });
   }
   const rep = () => reputation(c, skillLevelExact(), age(c));
+  function showGaffer() {
+    const boss = managerFor(c.clubId), o = odds(c, avgRating(c)), mood = o > .6 ? 'He rates you. Strike while it\'s hot.' : o > .35 ? 'He\'s on the fence about you.' : 'He\'s not your biggest fan right now.';
+    modal(`<h2>${esc(boss.name)}'s office</h2><p class="evtext">The door says "KNOCK". Underneath, in smaller writing: "THEN GO AWAY". ${esc(mood)}</p><div class="choices">${REQUESTS.map(r => { const why = cantAsk(c, r.id, age(c)); return `<button class="btn choice" data-q="${r.id}" ${why ? 'disabled' : ''}>${esc(r.label)}${why ? `<small>${esc(why)}</small>` : ''}</button>`; }).join('')}</div><p class="dim">Your chances depend on his approval of you and how you've been playing.${!agentOf(c) ? ' Without an agent you\'ll get whatever he offers.' : ''}</p>`);
+    root.querySelectorAll('[data-q]').forEach(b => b.onclick = () => {
+      const id = b.dataset.q, r = askGaffer(c, id, avgRating(c)); save(); render();
+      const win = inWindow(c);
+      modal(`<h2>${r.yes ? 'He says yes' : 'He says no'}</h2><p class="evtext">${esc(r.line)}</p>${id === 'loan' && r.yes ? `<p>${win ? 'The window\'s open, so let\'s see who wants you.' : 'He\'ll find you a club when the next window opens.'}</p>` : ''}${id === 'minutes' && r.yes ? '<p>You\'ll get more chances over the next six weeks.</p>' : ''}${id === 'transfer' && r.yes ? '<p>You\'re on the transfer list. Expect more offers in the next window, and fewer minutes until then.</p>' : ''}<div class="endBtns">${r.raise ? '<button class="btn gold" id="talks">Talk terms</button>' : ''}${id === 'loan' && r.yes && win ? '<button class="btn gold" id="win">See loan offers</button>' : ''}<button class="btn" id="ok">Leave his office</button></div>`);
+      $('ok').onclick = closeModal;
+      if ($('talks')) $('talks').onclick = () => { closeModal(); showTalks(c, raiseOffer(c, rep()), { midSeason: !c.summer }, () => { save(); render(); }); };
+      if ($('win')) $('win').onclick = () => { closeModal(); showWindow(c, { rep: rep(), age: age(c), window: win, midSeason: win === 'january' || !c.summer, onDone: () => { save(); go('hub'); } }); };
+    });
+  }
   function showContract() {
     const k = c.contract, star = n => '★'.repeat(n) + '☆'.repeat(5 - n), cl = k.clauses || {}, win = inWindow(c);
-    const extra = `${cl.imageRights ? row('Image rights', 'Yes') : ''}${cl.goalBonus ? row('Goal bonus', money(cl.goalBonus) + ' a goal') : ''}${cl.releaseClause ? row('Release clause', money(cl.releaseClause)) : ''}${cl.silly ? row('Special request', esc(cl.silly)) : ''}${c.loan ? row('On loan from', esc(club(c.loan.parent).name)) : ''}`;
+    const extra = `${cl.imageRights ? row('Image rights', 'Yes') : ''}${cl.appearanceFee ? row('Appearance fee', money(cl.appearanceFee)) : ''}${cl.winBonus ? row('Win bonus', money(cl.winBonus)) : ''}${cl.goalBonus ? row('Goal bonus', money(cl.goalBonus) + ' a goal') : ''}${cl.assistBonus ? row('Assist bonus', money(cl.assistBonus) + ' an assist') : ''}${cl.releaseClause ? row('Release clause', money(cl.releaseClause)) : ''}${cl.silly ? row('Special request', esc(cl.silly)) : ''}${c.loan ? row('On loan from', esc(club(c.loan.parent).name)) : ''}${(cl.club || []).length ? `<div class="smallprint"><b>The small print (the club will hold you to it)</b>${cl.club.map(id => `<div>• ${esc(clause(id).text)}</div>`).join('')}</div>` : ''}`;
     if (age(c) >= 17 || c.week > 60) {
       modal(`<h2>Contract & transfers</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind))}${row('Wages', money(k.wage) + ' a week')}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${extra}${row('Reputation', Math.round(rep()) + '/100')}
         <h3>Transfers</h3>${win ? `<p>The ${win} window is open.</p><div class="endBtns"><button class="btn gold" id="offers">See offers</button></div>` : '<p class="dim">Windows: summer (June to 1 September) and January (to 2 February). Offers depend on your reputation, and your agent.</p>'}`);

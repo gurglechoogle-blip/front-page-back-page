@@ -32,7 +32,7 @@ export function createTrainingScreen(root, go, params = {}) {
         <div class="sub"><b>FRONT PAGE, BACK PAGE</b> · Get your touch in before the real thing</div>
         <div class="namebox">Player name <input id="pname" maxlength="16" placeholder="Your name"></div>
         <div class="grid" id="drills"></div>
-        <div class="hint"><a href="#" id="back2start">◀ Back to the career</a></div>
+        <div class="hint"><a href="#" id="back2start">${state.career ? "◀ Back to the career" : "◀ Back to the scouts"}</a></div>
         <div class="hint">Five attempts per drill. Goals earn skill points, and higher skill widens your timing windows.<br>Moving drills: steer your player with the mouse. Set pieces: aim with the mouse, hold to power up, release to strike.</div>
       </div>
     </div>
@@ -90,7 +90,7 @@ export function createTrainingScreen(root, go, params = {}) {
   let lastScore = 0, lastGain = 0;
   function endDrill() {
     const k = session.k, title = moment.title, gained = addSkill(k, session.gained, gainMul);
-    lastScore = session.score; lastGain = gained; profile.best[k] = Math.max(profile.best[k], session.score); save();
+    lastScore = session.score; lastGain = gained; profile.best[k] = Math.max(profile.best[k], session.score); (profile.tried = profile.tried || {})[k] = true; save();
     $('endScore').textContent = session.score + ' / 5';
     $('endTitle').innerHTML = session.score >= 4 ? 'TOP <span>DRAWER</span>' : session.score >= 2 ? 'DECENT <span>SESSION</span>' : 'BACK TO <span>BASICS</span>';
     $('endText').textContent = '+' + gained + ' ' + title + ' skill points' + (gainMul !== 1 ? ` (coaching x${gainMul})` : '');

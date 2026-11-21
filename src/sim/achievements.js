@@ -17,7 +17,7 @@ export const ACH = [
   ['double', 'bronze', 'Double Figures', '10 goals in a season', 'week', c => c.stats.goals >= 10],
   ['brace', 'bronze', 'Brace Yourself', 'Score twice in a cup tie', 'match', (c, x) => CUP.includes(x.f.comp) && x.S.my.goals >= 2],
   ['headBoy', 'bronze', 'Head Boy', 'Score 5 headers in a season', 'week', c => c.ach.headers >= 5],
-  ['bicycle', 'bronze', 'Bicycle Thief', 'Score an overhead kick in a match', 'match', (c, x) => x.senior && x.S.my.log.some(l => l.key === 'overhead' && l.goal)],
+  ['bicycle', 'bronze', 'Bicycle Thief', 'Score an overhead kick in a match', 'match', (c, x) => x.senior && (x.S.my.log || []).some(l => l.key === 'overhead' && l.goal)],
   ['iceCold', 'bronze', 'Ice Cold', 'Score 5 penalties in a row', 'week', c => c.ach.pensRow >= 5],
   ['signedUp', 'bronze', 'Signed Up', 'First professional contract', 'week', c => !/scholarship|academy|youth|trial/i.test(c.contract.kind || '')],
   ['loanRanger', 'bronze', 'Loan Ranger', 'Complete a loan spell', 'season', (c, x) => x.wasLoan],
@@ -79,7 +79,7 @@ export function initAch(c) {
 function track(c, x) {
   if (c.ach.headSeason !== CAL.season) { c.ach.headSeason = CAL.season; c.ach.headers = 0; }
   if (!x.senior) return;
-  x.S.my.log.forEach(l => { if (l.key === 'header' && l.goal) c.ach.headers++; if (l.key === 'penalty') c.ach.pensRow = l.goal ? c.ach.pensRow + 1 : 0; });
+  (x.S.my.log || []).forEach(l => { if (l.key === 'header' && l.goal) c.ach.headers++; if (l.key === 'penalty') c.ach.pensRow = l.goal ? c.ach.pensRow + 1 : 0; });
 }
 /** when: 'match' | 'week' | 'season' | 'end'. Returns the newly unlocked achievements. */
 export function checkAchievements(c, when, x = {}) {

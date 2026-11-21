@@ -2,6 +2,7 @@
 // pop-ups, usable from the hub and from the summer screen.
 import { esc } from '../engine/util.js';
 import { club, DIVS } from '../sim/season.js';
+import { clause, standardBonuses } from '../sim/contracts.js';
 import { AG, agentOf, makeOffers, renewalOffer, contractEnding, patience, respond, sign } from '../sim/transfers.js';
 import { applyEffects, surname } from '../sim/life.js';
 import { message } from '../sim/career.js';
@@ -63,28 +64,37 @@ export function showWindow(c, opts) {
 /* ---------- contract talks ---------- */
 export function showTalks(c, offer, opts, done) {
   const cl = club(offer.clubId), pat = patience(c, offer, opts.rep);
-  let round = 0, ask = { wage: offer.wage, years: offer.years, imageRights: false, goalBonus: 0, releaseClause: 0, silly: null };
+  let round = 0, ask = { wage: offer.wage, years: offer.years, imageRights: false, goalBonus: 0, assistBonus: 0, releaseClause: 0, silly: null };
+  const small = offer.type === 'loan' ? '' : (() => { const sb = standardBonuses(offer.wage); return `<div class="smallprint"><b>The small print</b><div>Appearance fee: ${money(sb.appearanceFee)} · Win bonus: ${money(sb.winBonus)}</div>${(offer.clubClauses || []).map(id => `<div>• ${esc(clause(id).text)}</div>`).join('')}</div>`; })();
+  // No agent, no leverage: take it or leave it.
+  if (!agentOf(c)) {
+    const p0 = pop(`<h2>${esc(cl.name)}: ${offerTitle(offer)}</h2><p class="evtext">${money(offer.wage)} a week for ${offer.years} year${offer.years > 1 ? 's' : ''}, as a ${esc(offer.role)}.</p>${small}<p class="bad">You haven't got an agent, so there's no negotiating. Their club secretary slides the contract across the table and taps where you sign. (Get an agent under Football → Agent to haggle.)</p><div class="endBtns"><button class="btn gold" id="take">Sign it</button><button class="btn red" id="back">Walk away</button></div>`, true);
+    p0.$('#take').onclick = () => { sign(c, offer, { wage: offer.wage, years: offer.years }, opts.midSeason); p0.set(`<h2>DEAL!</h2><p class="evtext">Signed. ${money(offer.wage)} a week. You didn't even read it. Nobody does.</p><div class="endBtns"><button class="btn gold" id="ok">Brilliant</button></div>`); p0.$('#ok').onclick = () => { p0.close(); done(true); }; };
+    p0.$('#back').onclick = () => { p0.close(); done(false); };
+    return;
+  }
   const bonusOpts = [0, Math.round(offer.wage * .05 / 10) * 10 || 10, Math.round(offer.wage * .15 / 10) * 10 || 20], relOpts = [0, Math.max(50000, offer.fee * 3)];
   const p = pop('', true);
   const form = (note) => {
-    p.set(`<h2>${esc(cl.name)}: ${offerTitle(offer)}</h2><p class="dim">${esc(note || `Their offer: ${money(offer.wage)} a week for ${offer.years} year${offer.years > 1 ? 's' : ''}, as a ${offer.role}. Ask for too much and they'll walk.`)}</p>
+    p.set(`<h2>${esc(cl.name)}: ${offerTitle(offer)}</h2><p class="dim">${esc(note || `Their offer: ${money(offer.wage)} a week for ${offer.years} year${offer.years > 1 ? 's' : ''}, as a ${offer.role}. Ask for too much and they'll walk.`)}</p>${small}
       <div class="talks">
         <label>Wages <b id="wv">${money(ask.wage)}/wk</b><input type="range" id="w" min="${offer.wage}" max="${offer.wage * 2}" step="10" value="${ask.wage}"></label>
         ${offer.type === 'loan' ? '' : `<label>Length <select id="y">${[1, 2, 3, 4, 5].map(y => `<option ${y === ask.years ? 'selected' : ''}>${y}</option>`).join('')}</select> years</label>
         <label class="chk"><input type="checkbox" id="ir" ${ask.imageRights ? 'checked' : ''}> Image rights (you get a cut of shirt sales)</label>
         <label>Goal bonus <select id="gb">${bonusOpts.map(v => `<option value="${v}" ${v === ask.goalBonus ? 'selected' : ''}>${v ? money(v) + ' a goal' : 'None'}</option>`).join('')}</select></label>
+        <label>Assist bonus <select id="ab">${bonusOpts.map(v => `<option value="${v}" ${v === ask.assistBonus ? 'selected' : ''}>${v ? money(v) + ' an assist' : 'None'}</option>`).join('')}</select></label>
         <label>Release clause <select id="rc">${relOpts.map(v => `<option value="${v}" ${v === ask.releaseClause ? 'selected' : ''}>${v ? money(v) : 'None'}</option>`).join('')}</select></label>`}
         <label>Special request <select id="sc"><option value="">None</option>${AG.sillyClauses.map(t => `<option ${t === ask.silly ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select></label>
       </div>
       <div class="endBtns"><button class="btn gold" id="go">Make your demands</button><button class="btn red" id="back">Walk away</button></div>`);
     p.$('#w').oninput = e => { p.$('#wv').textContent = money(+e.target.value) + '/wk'; };
     p.$('#go').onclick = () => {
-      ask = { wage: +p.$('#w').value, years: p.$('#y') ? +p.$('#y').value : 1, imageRights: p.$('#ir') ? p.$('#ir').checked : false, goalBonus: p.$('#gb') ? +p.$('#gb').value : 0, releaseClause: p.$('#rc') ? +p.$('#rc').value : 0, silly: p.$('#sc').value || null };
+      ask = { wage: +p.$('#w').value, years: p.$('#y') ? +p.$('#y').value : 1, imageRights: p.$('#ir') ? p.$('#ir').checked : false, goalBonus: p.$('#gb') ? +p.$('#gb').value : 0, assistBonus: p.$('#ab') ? +p.$('#ab').value : 0, releaseClause: p.$('#rc') ? +p.$('#rc').value : 0, silly: p.$('#sc').value || null };
       const r = respond(offer, ask, pat, round++);
       if (r.verdict === 'accept') return deal(ask);
       if (r.verdict === 'walk') { p.set(`<h2>They've walked away</h2><p class="evtext">"${esc(pick(['We\'re not paying that for someone who still gets his mum to iron his kit.', 'Our chairman laughed so hard he needed a sit-down.', 'We\'ll go another way. The other way is cheaper.']))}"</p><div class="endBtns"><button class="btn" id="ok">Back</button></div>`); p.$('#ok').onclick = () => { p.close(); done(false); }; return; }
       const k = r.counter;
-      p.set(`<h2>They've come back with a counter</h2><div class="evtext">${money(k.wage)}/wk · ${k.years} year${k.years > 1 ? 's' : ''}${k.imageRights ? ' · image rights' : ''}${k.goalBonus ? ` · ${money(k.goalBonus)} a goal` : ''}${k.releaseClause ? ` · release clause ${money(k.releaseClause)}` : ''}${k.silly ? ` · "${esc(k.silly)}"` : ' · (no special request)'}</div><div class="endBtns"><button class="btn gold" id="take">Accept their counter</button><button class="btn" id="push">Push for more</button></div>`);
+      p.set(`<h2>They've come back with a counter</h2><div class="evtext">${money(k.wage)}/wk · ${k.years} year${k.years > 1 ? 's' : ''}${k.imageRights ? ' · image rights' : ''}${k.goalBonus ? ` · ${money(k.goalBonus)} a goal` : ''}${k.assistBonus ? ` · ${money(k.assistBonus)} an assist` : ''}${k.releaseClause ? ` · release clause ${money(k.releaseClause)}` : ''}${k.silly ? ` · "${esc(k.silly)}"` : ' · (no special request)'}</div><div class="endBtns"><button class="btn gold" id="take">Accept their counter</button><button class="btn" id="push">Push for more</button></div>`);
       p.$('#take').onclick = () => deal(k);
       p.$('#push').onclick = () => { ask = k; form('Push your luck. Every round tests their patience.'); };
     };

@@ -15,6 +15,7 @@ import { initTrouble, rollInjury, troubleWeek, kidBills } from './trouble.js';
 import { initFame, staffBills, fameWeek, hasStaff } from './fame.js';
 import { initAch, checkAchievements } from './achievements.js';
 import { initInvites, inviteWeek, makeSquad } from './invites.js';
+import { matchPay, gafferVerdict, clauseWeek, clauseSummer } from './contracts.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; }
@@ -125,7 +126,15 @@ export function logRest(c) { c.slotsUsed++; c.weekLog.push({ t: 'rest' }); c.ene
 
 /* ---------- matchday ---------- */
 /** Who picks you? Start, bench or stand. U21 and early-cup games favour the kids. */
+// How good you need to be (skill level) before a club's league side will trust you.
+const LEVEL_NEEDED = { PL: 64, ES: 62, IT: 62, DE: 62, FR: 60, CH: 44, L1: 32, L2: 22, NL: 12 };
+const daysBetween = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
+/** At least 60 hours between games: anything under three days apart, you rest. */
+export const needsRest = (c, f) => !!c.lastPlayed && c.lastPlayed !== f.date && daysBetween(c.lastPlayed, f.date) < 3 && daysBetween(c.lastPlayed, f.date) >= 0 || c.lastPlayed === f.date;
+/** Chance a sub actually gets on: the gaffer's trust, your form and this week's training. */
+export const subChance = c => clamp(.5 + (c.approval - 50) / 160 + (c.form - 50) / 250 + Math.min(3, (c.weekLog || []).filter(x => x.t === 'train').length) * .05, .3, .93);
 export function selection(c, f, R = Math.random) {
+  if (needsRest(c, f)) { if (c.matchday) (c.matchday.why = c.matchday.why || {})[f.id] = 'rest'; return 'none'; }
   if (f.comp === 'friendly') return R() < .75 ? 'start' : 'sub';
   if (f.comp === 'intl') return c.injury || c.ban > 0 ? 'none' : R() < .7 ? 'start' : 'sub';
   if (c.intlWeek === c.week) return 'none'; // away with England
@@ -137,10 +146,16 @@ export function selection(c, f, R = Math.random) {
   if (f.comp !== 'league') p += ['R1', 'R2', 'G'].includes(f.round) ? .3 : .1;
   if (c.energy < 30) p -= .15;
   p -= rivalSelectionPenalty(c);
+  if (c.promised >= c.week) p += .15;
+  if (c.transferListed) p *= .75;
   p = clamp(p, .02, .92);
+  // Big clubs don't hand out league minutes: you have to be genuinely good enough.
+  let subP = clamp(.35 + c.contract.pathway, .2, .75);
+  const gap = skillLevelExact() - (LEVEL_NEEDED[club(c.clubId).league] ?? 20);
+  if (gap < 0) { const k = f.comp === 'league' ? 1 : .5; p *= Math.max(.005, 1 + gap / (14 / k)); subP *= Math.max(.02, 1 + gap / (20 / k)); }
   const r = R();
   if (r < p) return 'start';
-  return r < p + clamp(.35 + c.contract.pathway, .2, .75) * (1 - p) ? 'sub' : 'none';
+  return r < p + subP * (1 - p) ? 'sub' : 'none';
 }
 /** Effective form for the number of chances: tiredness takes the edge off. */
 export const effectiveForm = c => clamp(c.form - Math.max(0, 35 - c.energy) - nightPenalty(c), 0, 100) / 100;
@@ -154,7 +169,7 @@ export function matchParams(c, f, role) {
   const mine = myTeamIn(c, f), mySide = f.home === mine ? 'home' : 'away';
   return {
     home: club(f.home), away: club(f.away), mySide, cup: !!f.knockout, extraTime: !!f.extraTime, role,
-    stadium: f.neutral || null, label: compName(f), trust: c.approval / 100, form: effectiveForm(c), fixtureId: f.id,
+    stadium: f.neutral || null, label: compName(f), trust: c.approval / 100, form: effectiveForm(c), fixtureId: f.id, subChance: subChance(c),
     support: support(c), fans: c.meters.fans, year: +CAL.season.slice(0, 4),
   };
 }
@@ -169,10 +184,11 @@ export function recordMatch(c, f, S, R = Math.random) {
   Object.assign(f, { played: true, hs: S.score.home, as: S.score.away, role: S.role });
   if (S.pens) f.pens = [S.pens.home, S.pens.away];
   const played = S.role === 'start' || S.role === 'sub';
-  const res = { id: f.id, role: S.role, rating: played ? S.rating : null, goals: S.my.goals, assists: S.my.assists, headline: S.headline };
+  const res = { id: f.id, role: S.role, rating: played ? S.rating : null, goals: S.my.goals, assists: S.my.assists, headline: S.headline, unused: !!S.unusedSub, hooked: S.hooked || null, verdict: S.gafferLine || gafferVerdict(S, R) };
+  if (played) c.lastPlayed = f.date;
+  res.pay = matchPay(c, f, S); res.pay.forEach(x => c.bank += x.amount);
   if (played) {
     f.rating = S.rating; f.myGoals = S.my.goals; f.myAssists = S.my.assists;
-    const gb = (c.contract.clauses || {}).goalBonus; if (gb && S.my.goals && f.comp !== 'friendly') c.bank += gb * S.my.goals;
     if (f.comp === 'intl') recordIntl(c, f, S);
     else if (f.comp !== 'friendly') {
       const st = c.stats; st.apps++; if (S.role === 'start') st.starts++; else st.subs++; st.goals += S.my.goals; st.assists += S.my.assists; st.ratings.push(S.rating);
@@ -181,8 +197,6 @@ export function recordMatch(c, f, S, R = Math.random) {
     let d = (S.rating - 6.6) * 3; if (d < 0) d *= c.contract.patience * honourPatience(c); if (f.comp === 'friendly' || myTeamIn(c, f).endsWith('-u21')) d *= .5; if (f.comp === 'intl') d = 0;
     d = taper(c.approval, d); c.approval = clamp(c.approval + d, 0, 100); res.approval = d;
     c.energy = clamp(c.energy - (S.role === 'start' ? 18 : 8), 0, 100);
-    if (S.rating < 5.5) message(c, 'The Gaffer', pickR(M.gafferAngry, R).replace(/^The Gaffer: /, ''));
-    if (S.rating >= 8) message(c, 'The Gaffer', pickR(M.gafferHappy, R).replace(/^The Gaffer: /, ''));
   }
   if (c.granBet && c.granBet.fixture === f.id) {
     const g = c.granBet; c.granBet = null;
@@ -258,7 +272,10 @@ export function finishWeek(c, R = Math.random) {
   if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
   const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.
-  const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);
+  c.lastWeekDate = weekStart(c.week);
+  const [fines, fineNotes] = clauseWeek(c, (c.matchday ? c.matchday.results : []).some(r => r.role !== 'none'), R);
+  fineNotes.forEach(t => notice(c, 'Contract', t));
+  const bills = [...weeklyBills(c), ...fines], out = bills.reduce((a, b) => a + b.amount, 0);
   c.bank += c.contract.wage - out;
   // Image rights and sponsorship: the more the fans love you, the more it pays.
   const cl = c.contract.clauses || {}, ag2 = agentOf(c);
@@ -324,6 +341,7 @@ export function rollWorld(c, R = Math.random) {
     c.weekNews.push({ page: 'back', headline: up ? `${oldClub.name.toUpperCase()} GO UP!` : `${oldClub.name.toUpperCase()} GO DOWN` });
   }
   checkAchievements(c, 'season', { pos: S.pos, avg: S.avg, div: c.history[c.history.length - 1].div, wasLoan: !!c.loan, mv });
+  clauseSummer(c, mv).forEach(t => notice(c, 'Contract', t));
   if (c.loan) { const back = endLoan(c); message(c, club(back).short + ' News', `Your loan's over. Welcome back to ${club(back).name}. Your peg's still there. Someone's been using it.`); }
   const rv = rivalSummer(c, R);
   if (rv) { const to = club(rv.to); c.weekNews.push({ page: 'back', headline: `RIVAL ${c.rival.short.toUpperCase()} JOINS ${to.name.toUpperCase()}` }); message(c, 'Dennis (kit man)', rv.wanted ? `${c.rival.name}'s signed for ${to.name}. The club you turned down. I said this would happen. I didn't, but I thought it.` : `${c.rival.name}'s off to ${to.name}. Good riddance, he never put his bibs in the basket.`); }

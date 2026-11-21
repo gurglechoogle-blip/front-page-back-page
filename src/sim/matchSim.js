@@ -49,7 +49,7 @@ export class MatchSim {
     this.possTicks = 0; this.homePossTicks = 0;
     this.stoppage = { '1H': 1 + Math.floor(R() * 4), '2H': 2 + Math.floor(R() * 5), 'ET1': Math.floor(R() * 3), 'ET2': 1 + Math.floor(R() * 3) };
     // Team-mates who rate you pass to you more: support (-1..1) is worth up to a chance either way.
-    this.fans = opts.fans ?? 50; this.year = opts.year || 2026;
+    this.fans = opts.fans ?? 50; this.year = opts.year || 2026; this.subChance = opts.subChance ?? .78; this.unusedSub = false; this.hooked = null;
     this.nChances = this.role === 'none' ? 0 : this.role === 'sub' ? 1 + (R() < .45 ? 1 : 0) : clamp(chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0), 3, 6);
     this.subMinute = this.role === 'sub' ? 58 + Math.floor(R() * 18) : null;
     this.schedule = {};
@@ -129,10 +129,16 @@ export class MatchSim {
     const planned = this.schedule[key] || [];
     for (const e of planned) {
       if (e.t === 'goal') out.push(...this.teamGoal(e.side));
+      else if (e.t === 'subOn' && this.R() >= this.subChance) { this.unusedSub = true; out.push(this.ev(`${this.name(this.mySide)} make their changes. ${this.me} stays on the bench, bib still on, gently dying inside.`, 'info', this.mySide)); }
       else if (e.t === 'subOn') { const off = this.squads[this.mySide].fwd[1]; this.onPitch = true; out.push(this.ev(`SUBSTITUTION: ${off} off, ${this.me} ON for ${this.name(this.mySide)}. Here we go.`, 'chance', this.mySide)); out[out.length - 1].kind = 'subOn'; }
       else if (e.t === 'sub') { const sq = this.squads[e.side]; const off = sq.mid[e.i] || sq.def[e.i], on = sq.subs[e.i]; if (off && on) { out.push(this.ev(this.line('sub', e.side, { player: off, player2: on }), 'info', e.side)); sq.mid[e.i] = on; } }
     }
-    if (planned.some(e => e.t === 'chance')) { out.push(this.startChance()); return out; }
+    // A stinker can get you hooked, sooner if you're losing.
+    if (this.onPitch && this.role === 'start' && !this.hooked && this.period !== '1H' && this.minute >= 55 && this.rating < 5) {
+      const losing = this.score[this.mySide] < this.score[this.oppSide];
+      if (this.R() < (losing ? .07 : .03)) { this.onPitch = false; this.hooked = this.minute; const on = this.squads[this.mySide].subs[3] || 'the sub'; out.push(this.ev(`SUBSTITUTION: ${this.me} OFF, ${on} on. ${this.me} doesn't look at the bench. The bench doesn't look at ${this.me}.`, 'info', this.mySide)); return out; }
+    }
+    if (planned.some(e => e.t === 'chance') && this.onPitch) { out.push(this.startChance()); return out; }
     if (!planned.length && this.R() < .3) out.push(...this.filler(homeBall ? 'home' : 'away'));
     return out;
   }
@@ -276,7 +282,7 @@ export class MatchSim {
     else if (this.my.assists) hk = 'assist'; else hk = res === 'W' ? 'blankWin' : 'blank';
     const headline = fill(pickR(C.headlines[hk], R), { NAME, TEAM: team.toUpperCase(), OPP: opp.toUpperCase() });
     const r = Math.round(this.rating * 10) / 10, vk = r >= 8 ? 'great' : r >= 7 ? 'good' : r >= 6 ? 'ok' : 'poor';
-    return { role: this.role, result: res, headline, verdict: pickR(C.verdict[vk], R), rating: r, score: { ...this.score }, pens: this.pens && { home: this.pens.home, away: this.pens.away }, scorers: this.scorers, my: this.my };
+    return { role: this.unusedSub ? 'none' : this.role, unusedSub: this.unusedSub, hooked: this.hooked, result: res, headline, verdict: pickR(C.verdict[vk], R), rating: r, score: { ...this.score }, pens: this.pens && { home: this.pens.home, away: this.pens.away }, scorers: this.scorers, my: this.my };
   }
 }
 

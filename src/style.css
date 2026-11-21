@@ -339,3 +339,6 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .finale .panel .row{text-align:left}
 .msg.invite{border-left:3px solid #ffc928}.invbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.invbtns .btn{font-size:13px;padding:6px 10px}
 .phone-list h3{margin:8px 0 4px}
+.smallprint{background:#f3efe4;color:#222;border-radius:6px;padding:8px 12px;margin:8px 0;font-size:13px;text-align:left}.smallprint b{display:block;font-family:Georgia,serif;margin-bottom:2px}
+.ftpay{background:#1b1f24;border-radius:8px;padding:8px 12px;margin:10px auto;max-width:440px;text-align:left;font-size:14px}.ftpay>b{display:block;color:#ffc928;margin-bottom:4px}
+.wverdict{font-style:italic;font-size:13px;color:#cfd5db;margin:2px 0 8px 6px}.wpay{font-size:12px;margin:0 0 10px 6px;color:#9aa3ad}

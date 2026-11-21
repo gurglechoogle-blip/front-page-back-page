@@ -16,9 +16,9 @@ export function createWeekScreen(root, go) {
     const fx = id => c.fixtures.find(f => f.id === id);
     const mine = L.results.map(r => {
       const f = fx(r.id), res = resultFor(c, f);
-      const you = r.role === 'none' ? 'Not in the squad' : `${r.role === 'sub' ? 'Off the bench' : 'Started'} · rating <b>${r.rating.toFixed(1)}</b>${r.goals ? ` · ${r.goals} goal${r.goals > 1 ? 's' : ''}` : ''}${r.assists ? ` · ${r.assists} assist${r.assists > 1 ? 's' : ''}` : ''}`;
+      const you = r.role === 'none' ? (r.unused ? 'Unused sub' : 'Not in the squad') : `${r.hooked ? `Started, hooked on ${r.hooked}'` : r.role === 'sub' ? 'Off the bench' : 'Started'} · rating <b>${r.rating.toFixed(1)}</b>${r.goals ? ` · ${r.goals} goal${r.goals > 1 ? 's' : ''}` : ''}${r.assists ? ` · ${r.assists} assist${r.assists > 1 ? 's' : ''}` : ''}`;
       return `<div class="wres r${res}"><small>${esc(compName(f))} · ${prettyDate(f.date, true)}</small><b>${esc(club(f.home).name)} ${f.hs}-${f.as} ${esc(club(f.away).name)}${f.pens ? ` <small>(${f.pens[0]}-${f.pens[1]} pens)</small>` : ''}</b><span>${you}${r.approval != null ? ` · approval ${sign(r.approval)}` : ''}</span></div>`;
-    }).join('') || '<p class="dim">No match for you this week.</p>';
+    }).map((h, i) => { const r = L.results[i], pay = (r.pay || []).filter(p => p.amount); return h + (r.verdict && r.role !== 'none' || r.unused ? `<p class="wverdict">The gaffer: "${esc(r.verdict)}"</p>` : '') + (pay.length ? `<p class="wpay">${pay.map(p => `${esc(p.what)} <b class="good">+${money(p.amount)}</b>`).join(' · ')}</p>` : ''); }).join('') || '<p class="dim">No match for you this week.</p>';
     const trainLine = `${L.training} drill${L.training === 1 ? '' : 's'}, ${L.rests} rest${L.rests === 1 ? '' : 's'}${L.unused ? `, ${L.unused} slot${L.unused > 1 ? 's' : ''} unused` : ''}${L.approvalTraining ? ` · the gaffer noticed: approval ${sign(L.approvalTraining)}` : L.training === 1 ? ' · do two or more and the gaffer notices' : ''}`;
     const others = L.others.map(fx).map(f => `<li>${esc(club(f.home).name)} <b>${f.hs}-${f.as}</b> ${esc(club(f.away).name)}</li>`).join('');
     const t = leagueTable(c), n = t.length, i = t.findIndex(r => r.id === c.clubId);

@@ -6,6 +6,7 @@ import { state, save, scoutRating } from '../state/gameState.js';
 import { luminance } from '../engine/kits.js';
 import { club, DIVS, allClubs } from '../sim/season.js';
 import { academyOffers, createCareer, ACADEMY } from '../sim/career.js';
+import { SKILLS } from '../moments/index.js';
 
 export function createStartScreen(root, go) {
   let ctx, offers = null, boyhood = null;
@@ -15,18 +16,19 @@ export function createStartScreen(root, go) {
     ctx = $('c').getContext('2d'); setCam('def'); setVenue(null); nameStep();
   }
   function nameStep() {
-    const sc = scoutRating();
+    const sc = scoutRating(), tried = state.profile.tried || {}, todo = SKILLS.filter(([k]) => !tried[k] && !state.profile.best[k]);
     if (!boyhood) { const all = allClubs().filter(x => x.league !== 'NL'); boyhood = all[Math.floor(Math.random() * all.length)].id; }
     $('sp').innerHTML = `<h1>FRONT PAGE, <span>BACK PAGE</span></h1>
       <div class="sub">Summer 2026. You're 16, you're English, you're a striker, and the scouts have been watching.</div>
       <div class="namebox">Your name <input id="nm" maxlength="16" placeholder="Surname works best" value="${esc(state.profile.name)}"></div>
       <div class="namebox">Boyhood club <select id="boy">${['PL', 'CH', 'L1', 'L2', 'NL'].map(d => `<optgroup label="${DIVS[d].short}">${allClubs().filter(x => x.league === d).map(x => `<option value="${x.id}"${x.id === boyhood ? ' selected' : ''}>${esc(x.name)}</option>`).join('')}</optgroup>`).join('')}</select></div>
       <p class="prenote">Scout report: <b>${sc.toFixed(1)} / 5</b> (your best score in each training drill, averaged). That decides who comes calling.${sc < 2.5 ? ' Want bigger clubs? Show them some quality at the training ground first.' : ' Some big clubs have noticed.'}</p>
-      <div class="endBtns"><button class="btn gold big" id="go">FIND ME A CLUB ▶</button></div>
+      ${todo.length ? `<p class="bad">The scouts won't come until they've seen you try every drill. Still to do: <b>${todo.map(([, , t]) => esc(t)).join(', ')}</b>.</p><div class="endBtns"><button class="btn gold big" id="tg2">TO THE TRAINING GROUND ▶</button></div>` : '<div class="endBtns"><button class="btn gold big" id="go">FIND ME A CLUB ▶</button></div>'}
       <div class="hint"><a href="#" id="tg">Training ground (free practice)</a></div>`;
+    if ($('tg2')) $('tg2').onclick = () => { const n = $('nm').value.trim(); if (n) { state.profile.name = n; save(); } go('training'); };
     $('boy').onchange = e => { boyhood = e.target.value; };
-    $('go').onclick = () => { const n = $('nm').value.trim(); if (!n) { $('nm').focus(); $('nm').classList.add('shake'); return; } state.profile.name = n; save(); offerStep(); };
-    $('nm').onkeydown = e => { if (e.key === 'Enter') $('go').click(); };
+    if ($('go')) $('go').onclick = () => { const n = $('nm').value.trim(); if (!n) { $('nm').focus(); $('nm').classList.add('shake'); return; } state.profile.name = n; save(); offerStep(); };
+    $('nm').onkeydown = e => { if (e.key === 'Enter' && $('go')) $('go').click(); };
     $('tg').onclick = e => { e.preventDefault(); go('training'); };
 
   }

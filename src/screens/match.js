@@ -13,6 +13,7 @@ import { clock } from '../engine/clock.js';
 import { makeKitSet, matchColours, playerKitFrom, teamKitFrom, keeperKitFor, luminance } from '../engine/kits.js';
 import { drawManager } from '../engine/manager.js';
 import { managerFor } from '../sim/managers.js';
+import { matchPay, gafferVerdict } from '../sim/contracts.js';
 import { createMoment, SKILLS } from '../moments/index.js';
 import { MatchSim, managerMood } from '../sim/matchSim.js';
 import { pickR } from '../sim/text.js';
@@ -231,6 +232,10 @@ export function createMatchScreen(root, go, params) {
   /* ---------- full time ---------- */
   function showFullTime() {
     const S = sim.summary(), r = S.rating;
+    const cc = career && state.career, fx = cc && params.fixtureId && cc.fixtures.find(x => x.id === params.fixtureId);
+    S.gafferLine = sim.gafferLine = sim.gafferLine || gafferVerdict(S);
+    const pay = fx ? matchPay(cc, fx, S) : [], money = n => '£' + Math.round(n).toLocaleString('en-GB');
+    const payHTML = cc ? `<div class="ftpay"><b>Your pay packet</b>${pay.length ? pay.map(p => `<div class="row"><span>${esc(p.what)}</span><b>${p.amount ? '+' + money(p.amount) : '-'}</b></div>`).join('') + (pay.some(p => p.amount) ? `<div class="row tot"><span>Total bonuses</span><b>+${money(pay.reduce((a, p) => a + p.amount, 0))}</b></div>` : '') : '<p class="dim">No bonuses in your contract for this one. ' + (S.role === 'none' ? 'You have to play to get paid extra.' : 'Get an agent and ask for some.') + '</p>'}</div>` : '';
     // Skill points from the match go into your training profile.
     if (!sim.skillsAwarded) { let g = 0; for (const k in sim.my.gained) g += addSkill(k, sim.my.gained[k]); sim.skillsAwarded = g; persist(false, true); save(); }
     const gained = sim.skillsAwarded || 0;
@@ -242,8 +247,8 @@ export function createMatchScreen(root, go, params) {
       ${S.pens ? `<div class="ftpens">${esc(sim.name(sim.winner()))} win ${Math.max(S.pens.home, S.pens.away)}-${Math.min(S.pens.home, S.pens.away)} on penalties</div>` : ''}
       <div class="scorers"><ul>${scorerList('home')}</ul><ul>${scorerList('away')}</ul></div>
       <div class="backpage"><div class="mast">THE BACK PAGE</div><div class="head">${esc(S.headline)}</div>
-        <div class="byline">${resWord}${role === 'sub' ? ' · Off the bench' : ''} · Rating <b>${r.toFixed(1)}</b> · ${S.my.goals} goal${S.my.goals === 1 ? '' : 's'} · ${S.my.assists} assist${S.my.assists === 1 ? '' : 's'} · ${S.my.chances} chance${S.my.chances === 1 ? '' : 's'}</div>
-        <div class="verdict">${esc(boss.name)} (${esc(boss.role.toLowerCase())}): ${esc(S.verdict)}</div></div>
+        <div class="byline">${resWord}${S.unusedSub ? ' · Unused sub' : S.hooked ? ` · Hooked on ${S.hooked}'` : role === 'sub' ? ' · Off the bench' : ''}${S.unusedSub ? '' : ` · Rating <b>${r.toFixed(1)}</b>`} · ${S.my.goals} goal${S.my.goals === 1 ? '' : 's'} · ${S.my.assists} assist${S.my.assists === 1 ? '' : 's'} · ${S.my.chances} chance${S.my.chances === 1 ? '' : 's'}</div>
+        <div class="verdict">${esc(boss.name)} (${esc(boss.role.toLowerCase())}): "${esc(cc ? S.gafferLine : S.verdict)}"</div></div>${payHTML}
       <div class="gain">+${gained} skill points from the match</div>
       <div class="endBtns">${career ? '<button class="btn gold" id="cont">Continue ▶</button>' : '<button class="btn gold" id="again">Another match</button><button class="btn red" id="toTraining">Training ground</button>'}</div>
     </div>`;
