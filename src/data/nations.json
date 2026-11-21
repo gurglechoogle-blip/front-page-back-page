@@ -504,6 +504,370 @@
     "shorts": "#f4f4f4",
     "socks": "#f4f4f4"
    }
+  },
+  {
+   "id": "nat-cze",
+   "name": "Czechia",
+   "short": "CZE",
+   "strength": 76,
+   "league": "INT",
+   "stadium": "Czechia national stadium",
+   "home": {
+    "shirt": "#d7141a",
+    "trim": "#ffffff",
+    "shorts": "#ffffff",
+    "socks": "#d7141a"
+   }
+  },
+  {
+   "id": "nat-hun",
+   "name": "Hungary",
+   "short": "HUN",
+   "strength": 74,
+   "league": "INT",
+   "stadium": "Hungary national stadium",
+   "home": {
+    "shirt": "#ce2939",
+    "trim": "#ffffff",
+    "shorts": "#ffffff",
+    "socks": "#477050"
+   }
+  },
+  {
+   "id": "nat-gre",
+   "name": "Greece",
+   "short": "GRE",
+   "strength": 72,
+   "league": "INT",
+   "stadium": "Greece national stadium",
+   "home": {
+    "shirt": "#0d5eaf",
+    "trim": "#ffffff",
+    "shorts": "#0d5eaf",
+    "socks": "#0d5eaf"
+   }
+  },
+  {
+   "id": "nat-svk",
+   "name": "Slovakia",
+   "short": "SVK",
+   "strength": 71,
+   "league": "INT",
+   "stadium": "Slovakia national stadium",
+   "home": {
+    "shirt": "#0b4ea2",
+    "trim": "#ffffff",
+    "shorts": "#0b4ea2",
+    "socks": "#ee1c25"
+   }
+  },
+  {
+   "id": "nat-svn",
+   "name": "Slovenia",
+   "short": "SVN",
+   "strength": 70,
+   "league": "INT",
+   "stadium": "Slovenia national stadium",
+   "home": {
+    "shirt": "#ffffff",
+    "trim": "#005da4",
+    "shorts": "#005da4",
+    "socks": "#ffffff"
+   }
+  },
+  {
+   "id": "nat-rou",
+   "name": "Romania",
+   "short": "ROU",
+   "strength": 71,
+   "league": "INT",
+   "stadium": "Romania national stadium",
+   "home": {
+    "shirt": "#fcd116",
+    "trim": "#002b7f",
+    "shorts": "#002b7f",
+    "socks": "#fcd116"
+   }
+  },
+  {
+   "id": "nat-fin",
+   "name": "Finland",
+   "short": "FIN",
+   "strength": 68,
+   "league": "INT",
+   "stadium": "Finland national stadium",
+   "home": {
+    "shirt": "#ffffff",
+    "trim": "#003580",
+    "shorts": "#003580",
+    "socks": "#ffffff"
+   }
+  },
+  {
+   "id": "nat-isl",
+   "name": "Iceland",
+   "short": "ISL",
+   "strength": 66,
+   "league": "INT",
+   "stadium": "Iceland national stadium",
+   "home": {
+    "shirt": "#02529c",
+    "trim": "#dc1e35",
+    "shorts": "#ffffff",
+    "socks": "#02529c"
+   }
+  },
+  {
+   "id": "nat-bih",
+   "name": "Bosnia and Herzegovina",
+   "short": "BIH",
+   "strength": 68,
+   "league": "INT",
+   "stadium": "Bosnia and Herzegovina national stadium",
+   "home": {
+    "shirt": "#002f6c",
+    "trim": "#fecb00",
+    "shorts": "#002f6c",
+    "socks": "#002f6c"
+   }
+  },
+  {
+   "id": "nat-alb",
+   "name": "Albania",
+   "short": "ALB",
+   "strength": 69,
+   "league": "INT",
+   "stadium": "Albania national stadium",
+   "home": {
+    "shirt": "#e41e20",
+    "trim": "#000000",
+    "shorts": "#e41e20",
+    "socks": "#e41e20"
+   }
+  },
+  {
+   "id": "nat-geo",
+   "name": "Georgia",
+   "short": "GEO",
+   "strength": 70,
+   "league": "INT",
+   "stadium": "Georgia national stadium",
+   "home": {
+    "shirt": "#ffffff",
+    "trim": "#da291c",
+    "shorts": "#ffffff",
+    "socks": "#ffffff"
+   }
+  },
+  {
+   "id": "nat-nir",
+   "name": "Northern Ireland",
+   "short": "NIR",
+   "strength": 66,
+   "league": "INT",
+   "stadium": "Northern Ireland national stadium",
+   "home": {
+    "shirt": "#00843d",
+    "trim": "#ffffff",
+    "shorts": "#ffffff",
+    "socks": "#00843d"
+   }
+  },
+  {
+   "id": "nat-bul",
+   "name": "Bulgaria",
+   "short": "BUL",
+   "strength": 63,
+   "league": "INT",
+   "stadium": "Bulgaria national stadium",
+   "home": {
+    "shirt": "#ffffff",
+    "trim": "#00966e",
+    "shorts": "#00966e",
+    "socks": "#d62612"
+   }
+  },
+  {
+   "id": "nat-mkd",
+   "name": "North Macedonia",
+   "short": "MKD",
+   "strength": 62,
+   "league": "INT",
+   "stadium": "North Macedonia national stadium",
+   "home": {
+    "shirt": "#d20000",
+    "trim": "#ffe600",
+    "shorts": "#d20000",
+    "socks": "#d20000"
+   }
+  },
+  {
+   "id": "nat-mne",
+   "name": "Montenegro",
+   "short": "MNE",
+   "strength": 61,
+   "league": "INT",
+   "stadium": "Montenegro national stadium",
+   "home": {
+    "shirt": "#c40308",
+    "trim": "#d3ae3b",
+    "shorts": "#c40308",
+    "socks": "#c40308"
+   }
+  },
+  {
+   "id": "nat-arm",
+   "name": "Armenia",
+   "short": "ARM",
+   "strength": 59,
+   "league": "INT",
+   "stadium": "Armenia national stadium",
+   "home": {
+    "shirt": "#d90012",
+    "trim": "#0033a0",
+    "shorts": "#d90012",
+    "socks": "#d90012"
+   }
+  },
+  {
+   "id": "nat-kos",
+   "name": "Kosovo",
+   "short": "KOS",
+   "strength": 60,
+   "league": "INT",
+   "stadium": "Kosovo national stadium",
+   "home": {
+    "shirt": "#244aa5",
+    "trim": "#d0a650",
+    "shorts": "#244aa5",
+    "socks": "#244aa5"
+   }
+  },
+  {
+   "id": "nat-lux",
+   "name": "Luxembourg",
+   "short": "LUX",
+   "strength": 58,
+   "league": "INT",
+   "stadium": "Luxembourg national stadium",
+   "home": {
+    "shirt": "#ef3340",
+    "trim": "#00a3e0",
+    "shorts": "#ef3340",
+    "socks": "#ef3340"
+   }
+  },
+  {
+   "id": "nat-cyp",
+   "name": "Cyprus",
+   "short": "CYP",
+   "strength": 56,
+   "league": "INT",
+   "stadium": "Cyprus national stadium",
+   "home": {
+    "shirt": "#ffffff",
+    "trim": "#0047ab",
+    "shorts": "#0047ab",
+    "socks": "#ffffff"
+   }
+  },
+  {
+   "id": "nat-lva",
+   "name": "Latvia",
+   "short": "LVA",
+   "strength": 54,
+   "league": "INT",
+   "stadium": "Latvia national stadium",
+   "home": {
+    "shirt": "#9e3039",
+    "trim": "#ffffff",
+    "shorts": "#9e3039",
+    "socks": "#9e3039"
+   }
+  },
+  {
+   "id": "nat-ltu",
+   "name": "Lithuania",
+   "short": "LTU",
+   "strength": 54,
+   "league": "INT",
+   "stadium": "Lithuania national stadium",
+   "home": {
+    "shirt": "#fdb913",
+    "trim": "#006a44",
+    "shorts": "#006a44",
+    "socks": "#fdb913"
+   }
+  },
+  {
+   "id": "nat-est",
+   "name": "Estonia",
+   "short": "EST",
+   "strength": 53,
+   "league": "INT",
+   "stadium": "Estonia national stadium",
+   "home": {
+    "shirt": "#0072ce",
+    "trim": "#000000",
+    "shorts": "#000000",
+    "socks": "#ffffff"
+   }
+  },
+  {
+   "id": "nat-fro",
+   "name": "Faroe Islands",
+   "short": "FRO",
+   "strength": 52,
+   "league": "INT",
+   "stadium": "Faroe Islands national stadium",
+   "home": {
+    "shirt": "#ffffff",
+    "trim": "#0065bd",
+    "shorts": "#0065bd",
+    "socks": "#ffffff"
+   }
+  },
+  {
+   "id": "nat-mlt",
+   "name": "Malta",
+   "short": "MLT",
+   "strength": 48,
+   "league": "INT",
+   "stadium": "Malta national stadium",
+   "home": {
+    "shirt": "#cf142b",
+    "trim": "#ffffff",
+    "shorts": "#ffffff",
+    "socks": "#cf142b"
+   }
+  },
+  {
+   "id": "nat-and",
+   "name": "Andorra",
+   "short": "AND",
+   "strength": 46,
+   "league": "INT",
+   "stadium": "Andorra national stadium",
+   "home": {
+    "shirt": "#10069f",
+    "trim": "#fedf00",
+    "shorts": "#d50032",
+    "socks": "#10069f"
+   }
+  },
+  {
+   "id": "nat-smr",
+   "name": "San Marino",
+   "short": "SMR",
+   "strength": 38,
+   "league": "INT",
+   "stadium": "San Marino national stadium",
+   "home": {
+    "shirt": "#5eb6e4",
+    "trim": "#ffffff",
+    "shorts": "#5eb6e4",
+    "socks": "#5eb6e4"
+   }
   }
  ],
  "tournaments": [
@@ -598,6 +962,32 @@
   "nat-aut",
   "nat-tur",
   "nat-ukr",
-  "nat-srb"
+  "nat-srb",
+  "nat-cze",
+  "nat-hun",
+  "nat-gre",
+  "nat-svk",
+  "nat-svn",
+  "nat-rou",
+  "nat-fin",
+  "nat-isl",
+  "nat-bih",
+  "nat-alb",
+  "nat-geo",
+  "nat-nir",
+  "nat-bul",
+  "nat-mkd",
+  "nat-mne",
+  "nat-arm",
+  "nat-kos",
+  "nat-lux",
+  "nat-cyp",
+  "nat-lva",
+  "nat-ltu",
+  "nat-est",
+  "nat-fro",
+  "nat-mlt",
+  "nat-and",
+  "nat-smr"
  ]
 }

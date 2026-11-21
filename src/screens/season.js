@@ -11,6 +11,7 @@ import { rateCard } from '../sim/card.js';
 import { applyEffects, surname } from '../sim/life.js';
 import { seasonYear } from '../sim/season.js';
 import { tournamentFor, createTournament, levelFor } from '../sim/international.js';
+import { qualifiedFor } from '../sim/intlSchedule.js';
 
 export function createSeasonScreen(root, go) {
   const c = state.career, S = seasonSummary(c), z = zone(c.div, S.pos, S.of);
@@ -59,7 +60,8 @@ export function createSeasonScreen(root, go) {
       // Summer 2046: the end of the story.
       if (seasonYear() >= 2046) { c.summer = null; save(); go('finale'); return; }
       const t = tournamentFor(seasonYear()), rep = reputation(c, skillLevelExact(), age(c));
-      if (t && !t.finaleOnly && age(c) >= 17) {
+      if (t && !t.finaleOnly && !qualifiedFor(c, t.year)) message(c, 'England', `England failed to qualify for ${t.name}. The nation sulks. You get a summer off.`);
+      if (t && !t.finaleOnly && qualifiedFor(c, t.year) && age(c) >= 17) {
         const caps = c.intl.caps.senior, selected = levelFor(age(c), rep, c) === 'senior' && (rep >= 58 || (caps >= 2 && rep >= 52));
         createTournament(c, t, selected, rep >= 68 ? 'start' : 'sub'); c.summer.stage = 'tournament'; save(); go('tournament'); return;
       }

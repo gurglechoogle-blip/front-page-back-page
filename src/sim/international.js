@@ -1,6 +1,7 @@
 // England: youth and senior call-ups in international breaks, and summer
 // tournaments (real ones while they exist, invented after).
 import NAT from '../data/nations.json';
+import { englandFixtures, breakDates, linkResult } from './intlSchedule.js';
 import { club, CAL, weekStart, addDays, quickResult, winnerOf, table } from './season.js';
 import { applyEffects, surname } from './life.js';
 
@@ -35,21 +36,29 @@ function opponent(strength, R, pool) {
   const scored = ids.map(id => ({ id, d: Math.abs(club(id).strength - strength) + R() * 14 })).sort((a, b) => a.d - b.d);
   return scored[Math.floor(R() * 4)].id;
 }
-/** International break: maybe a call-up, and a match for England this week. */
+/** International break: maybe a call-up, and England's games this week become yours. */
 export function maybeCallUp(c, rep, age, R = Math.random) {
   const date = breakIn(c), level = date && levelFor(age, rep, c);
   if (!level || c.intlWeek === c.week) return null;
-  const mine = teamId(level), next = NAT.tournaments.find(t => t.year > +date.slice(0, 4) || (t.year === +date.slice(0, 4) && date.slice(5) < '06-01'));
-  const oppBase = opponent(club('nat-eng').strength, R), opp = level === 'senior' ? oppBase : `${oppBase}-${level}`;
-  const label = level === 'senior' ? (next ? `${next.name} qualifier` : 'International friendly') : `${LEVELS[level]} ${R() < .5 ? 'European Championship qualifier' : 'friendly'}`;
-  const home = R() < .5;
-  c.fixtures.push({ id: `intl-${c.week}`, comp: 'intl', level, label: `England ${label}`, date, home: home ? mine : opp, away: home ? opp : mine, myTeam: mine, mine: true });
+  const ws = weekStart(c.week), we = addDays(ws, 6), mine = teamId(level);
+  if (level === 'senior') {
+    const fx = englandFixtures(c, ws, addDays(we, 3));
+    if (!fx.length) return null;
+    fx.forEach(f => { f.mine = true; c.fixtures.push({ id: `intl-${f.id}`, link: f.id, comp: 'intl', level, label: `England: ${f.label}`, date: f.date, home: f.home, away: f.away, myTeam: mine, mine: true }); });
+  } else {
+    // Youth sides: two games, European qualifiers in the autumn, friendlies in March.
+    const autumn = +date.slice(5, 7) >= 9, [d1, d2] = breakDates(date);
+    const pool = autumn ? NAT.europeans : NAT.nations.map(n => n.id), opps = pool.filter(x => x !== 'nat-eng').sort(() => R() - .5).slice(0, 2);
+    const label = `${LEVELS[level]} ${autumn ? (level === 'u21' ? 'European Championship qualifier' : 'Euro qualifying round') : 'friendly'}`;
+    [[d1, opps[0], true], [d2, opps[1], false]].forEach(([d, o, home], i) => c.fixtures.push({ id: `intl-${c.week}-${i}`, comp: 'intl', level, label: `England ${label}`, date: d, home: home ? mine : `${o}-${level}`, away: home ? `${o}-${level}` : mine, myTeam: mine, mine: true }));
+  }
   c.fixtures.sort((a, b) => a.date < b.date ? -1 : 1);
   c.intlWeek = c.week;
   return level;
 }
 /** After an England match. */
 export function recordIntl(c, f, S) {
+  if (f.link) linkResult(c, f.link, S.score.home, S.score.away);
   const L = f.level || 'senior', played = S.role !== 'none';
   if (!played) return;
   const first = !c.intl.caps[L];

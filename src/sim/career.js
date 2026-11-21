@@ -10,6 +10,7 @@ import {
 import { endSeason } from './world.js';
 import { endLoan, agentOf, inWindow, reputation, windowWeek } from './transfers.js';
 import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
+import { buildIntlSeason, intlWeek, linkResult } from './intlSchedule.js';
 import { initLook, lookFields } from './looks.js';
 import { initTrouble, rollInjury, troubleWeek, kidBills } from './trouble.js';
 import { initFame, staffBills, fameWeek, hasStaff } from './fame.js';
@@ -67,6 +68,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   return c;
 }
 function buildSeason(c, R) {
+  buildIntlSeason(c, seasonYear(), R);
   const fx = leagueFixtures(c.div, R).map(f => Object.assign(f, { mine: f.home === c.clubId || f.away === c.clubId }));
   CAL.friendlies.forEach((d, i) => {
     const opp = pickR(divisionClubs(i === 2 ? (c.div === 'PL' ? 'CH' : c.div === 'CH' ? 'L1' : 'L2') : 'NL').filter(id => id !== c.clubId), R);
@@ -182,6 +184,7 @@ export function playHeadless(c, f) {
 }
 /** Record a finished match of yours (summary from MatchSim.summary()). */
 export function recordMatch(c, f, S, R = Math.random) {
+  if (f.link) linkResult(c, f.link, S.score.home, S.score.away);
   Object.assign(f, { played: true, hs: S.score.home, as: S.score.away, role: S.role });
   if (S.pens) f.pens = [S.pens.home, S.pens.away];
   const played = S.role === 'start' || S.role === 'sub';
@@ -238,6 +241,7 @@ function drawNext(c, comp, nr, R) {
 /* ---------- end of the week ---------- */
 /** Simulate everyone else's games this week, settle money and approval. */
 export function finishWeek(c, R = Math.random) {
+  intlWeek(c, addDays(weekStart(c.week), 6), R);
   archiveWeek(c, weekStart(c.week), myFixtures(c).map(f => f.date), id => (friendOf(id) || { name: id }).name);
   const w = c.week, others = c.fixtures.filter(f => !f.played && !isMine(c, f) && weekOf(f.date) <= w);
   others.forEach(f => Object.assign(f, quickResult(f.home, f.away, { knockout: f.knockout, extraTime: f.extraTime }, R), { played: true }));
@@ -298,6 +302,7 @@ export function finishWeek(c, R = Math.random) {
 }
 /** Roll on to next week; returns false when the season is over. */
 export function nextWeek(c, R = Math.random) {
+  buildIntlSeason(c, seasonYear(), R); // no-op if this season's already built (older saves pick it up here)
   c.week++; c.slotsUsed = 0; c.weekLog = [];
   if (c.lastWeek) makePaper(c, R);
   if (c.week > lastWeek() || !myFixtures(c).some(f => !f.played) && weekStart(c.week) > CAL.seasonEnd) { c.seasonOver = true; return false; }
