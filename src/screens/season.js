@@ -2,7 +2,8 @@
 import { esc } from '../engine/util.js';
 import { state, save } from '../state/gameState.js';
 import { club, zone, DIVS, CAL, roundName } from '../sim/season.js';
-import { seasonSummary } from '../sim/career.js';
+import { seasonSummary, startNextSeason } from '../sim/career.js';
+import { seasonYear } from '../sim/season.js';
 
 export function createSeasonScreen(root, go) {
   const c = state.career, S = seasonSummary(c), z = zone(c.div, S.pos, S.of);
@@ -16,10 +17,12 @@ export function createSeasonScreen(root, go) {
       <p class="verdict">${verdict}</p>
       <h3>You</h3><div class="row"><span>Appearances</span><b>${S.stats.apps}</b></div><div class="row"><span>Goals</span><b>${S.stats.goals}</b></div><div class="row"><span>Assists</span><b>${S.stats.assists}</b></div><div class="row"><span>Average rating</span><b>${S.avg ? S.avg.toFixed(2) : '–'}</b></div><div class="row"><span>Bank balance</span><b>£${Math.round(S.bank).toLocaleString('en-GB')}</b></div>
       <h3>Cups</h3>${cups}
-      <p class="dim">Season two, loans and your first professional contract are coming in a later update. Your career is saved.</p>
+      <p class="dim">Transfers, loans and contract talks arrive in a later update. For now your club keeps you, and the world moves on: promotions, relegations and all.</p>
+      <div class="endBtns"><button class="btn gold big" id="nextSeason">START ${seasonYear() + 1}-${String(seasonYear() + 2).slice(-2)} ▶</button></div>
       <div class="endBtns"><button class="btn" id="hub">Back to the hub</button><button class="btn red" id="new">Start a new career</button></div>
     </div></div>`;
     root.querySelector('#hub').onclick = () => go('hub');
+    root.querySelector('#nextSeason').onclick = () => { startNextSeason(c); save(); go('hub'); };
     root.querySelector('#new').onclick = () => { if (confirm('Start a new career? This one goes in the bin.')) { state.career = null; save(); go('start'); } };
   }
   return { mount, frame() { } };

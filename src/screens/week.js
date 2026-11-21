@@ -4,6 +4,7 @@ import { esc } from '../engine/util.js';
 import { state, save, backup } from '../state/gameState.js';
 import { club, compName, prettyDate, zone, DIVS } from '../sim/season.js';
 import { nextWeek, leagueTable, resultFor } from '../sim/career.js';
+import { firstWeek } from '../sim/season.js';
 
 const money = n => (n < 0 ? '-£' : '£') + Math.abs(Math.round(n)).toLocaleString('en-GB');
 const sign = n => (n > 0 ? '+' : '') + n.toFixed(1);
@@ -25,7 +26,7 @@ export function createWeekScreen(root, go) {
     let last = -1; const rows = [...show].sort((a, b) => a - b).map(k => { const r = t[k], gap = k > last + 1 ? '<tr class="gap"><td colspan="5">⋯</td></tr>' : ''; last = k; return gap + `<tr class="${r.id === c.clubId ? 'me' : ''} z-${zone(c.div, k + 1, n) || ''}"><td>${k + 1}</td><td class="tn">${esc(club(r.id).name)}</td><td>${r.p}</td><td>${r.gf - r.ga}</td><td><b>${r.pts}</b></td></tr>`; }).join('');
     const bills = L.bills.filter(b => b.amount).map(b => `<div class="row"><span>${esc(b.what)}</span><b class="bad">-${money(b.amount)}</b></div>`).join('');
     root.innerHTML = `<div id="weekscr"><div class="wpanel">
-      <h1>WEEK ${L.week + 1} <span>RESULTS</span></h1><div class="sub">w/c ${prettyDate(L.date)} ${L.date.slice(0, 4)}</div>
+      <h1>WEEK ${L.week - firstWeek() + 1} <span>RESULTS</span></h1><div class="sub">w/c ${prettyDate(L.date)} ${L.date.slice(0, 4)}</div>
       <div class="wgrid">
         <section><h3>Your matches</h3>${mine}<h3>Training</h3><p>${trainLine}</p></section>
         <section><h3>Money</h3><div class="row"><span>Wages</span><b class="good">+${money(L.wage)}</b></div>${bills}<div class="row tot"><span>Bank balance</span><b>${money(L.bank)}</b></div>

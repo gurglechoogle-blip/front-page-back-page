@@ -4,27 +4,49 @@ import clubsData from '../data/clubs.json';
 import leagues from '../data/leagues.json';
 import cal from '../data/calendar.json';
 
+// The calendar and divisions for the CURRENT season. They start as 2026-27 and
+// are rebuilt in place by setWorld() each summer (same pattern, a year on).
+const BASE_CAL = JSON.parse(JSON.stringify(cal)), BASE_DIVS = JSON.parse(JSON.stringify(leagues.divisions));
 export const DIVS = leagues.divisions;
 export const CAL = cal;
 const BASE = new Map(clubsData.clubs.map(c => [c.id, c]));
-export const divisionClubs = div => clubsData.clubs.filter(c => c.league === div).map(c => c.id);
+const CAREER_START = BASE_CAL.careerStart; // week 0, fixed for the whole career
+
+/* ---------- the world: which season, who's in which division, how good they are ---------- */
+let WORLD = { year: 0, leagues: {}, strength: {} };
+export const getWorld = () => WORLD;
+export function setWorld(w) {
+  WORLD = Object.assign({ year: 0, leagues: {}, strength: {} }, w || {});
+  const shift = 7 * Math.round(365.25 * WORLD.year / 7);   // whole weeks, so Saturdays stay Saturdays
+  const move = o => { if (typeof o === 'string') return /^\d{4}-\d{2}-\d{2}$/.test(o) ? addDays(o, shift) : o; if (Array.isArray(o)) return o.map(move); if (o && typeof o === 'object') { const r = {}; for (const k in o) r[k] = move(o[k]); return r; } return o; };
+  const nc = move(BASE_CAL); Object.keys(cal).forEach(k => delete cal[k]); Object.assign(cal, nc);
+  cal.season = `${2026 + WORLD.year}-${String(27 + WORLD.year).slice(-2)}`;
+  const nd = move(BASE_DIVS); Object.keys(nd).forEach(k => Object.assign(DIVS[k], nd[k]));
+  return WORLD;
+}
+export const seasonYear = () => 2026 + WORLD.year;
+export const divisionClubs = div => clubsData.clubs.filter(c => (WORLD.leagues[c.id] || c.league) === div).map(c => c.id);
 
 /* ---------- clubs (incl. under-21 sides for the EFL Trophy) ---------- */
 export function club(id) {
   if (id.endsWith('-u21')) {
-    const b = BASE.get(id.slice(0, -4));
+    const b = club(id.slice(0, -4));
     return Object.assign({}, b, { id, name: b.name + ' U21', stadium: `the ${b.name} academy ground`, strength: Math.round(b.strength * .5 + 18), league: 'U21', parent: b.id });
   }
-  return BASE.get(id);
+  const b = BASE.get(id); if (!b) return b;
+  const lg = WORLD.leagues[id], st = WORLD.strength[id];
+  return lg == null && st == null ? b : Object.assign({}, b, lg != null ? { league: lg } : {}, st != null ? { strength: st } : {});
 }
-export const allClubs = () => clubsData.clubs;
+export const allClubs = () => clubsData.clubs.map(c => club(c.id));
 
 /* ---------- dates ---------- */
 const D = s => new Date(s + 'T12:00:00Z');
 const S = d => d.toISOString().slice(0, 10);
 export const addDays = (s, n) => { const d = D(s); d.setUTCDate(d.getUTCDate() + n); return S(d); };
-export const weekStart = i => addDays(cal.careerStart, 7 * i);
-export const weekOf = s => Math.floor((D(s) - D(cal.careerStart)) / 864e5 / 7);
+export const weekStart = i => addDays(CAREER_START, 7 * i);
+export const weekOf = s => Math.floor((D(s) - D(CAREER_START)) / 864e5 / 7);
+/** First week of the current season (pre-season starts here). */
+export const firstWeek = () => weekOf(cal.careerStart);
 export const lastWeek = () => weekOf(cal.seasonEnd);
 export const prettyDate = (s, long) => D(s).toLocaleDateString('en-GB', long ? { weekday: 'short', day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short' });
 export const dayName = s => D(s).toLocaleDateString('en-GB', { weekday: 'short' });
@@ -96,7 +118,7 @@ function trophyU21s() { return [...divisionClubs('PL'), ...divisionClubs('CH')].
 /** Which round my club enters each cup, and as which team (first team or U21s). */
 export function cupEntries(clubId) {
   const div = club(clubId).league, L = DIVS[div], out = [];
-  out.push({ comp: 'eflcup', team: clubId, from: div === 'PL' && europeClubs().includes(clubId) ? L.eflCupFromEurope : L.eflCupFrom });
+  if (L.eflCupFrom) out.push({ comp: 'eflcup', team: clubId, from: div === 'PL' && europeClubs().includes(clubId) ? L.eflCupFromEurope : L.eflCupFrom });
   out.push({ comp: 'facup', team: clubId, from: L.faCupFrom });
   if (L.trophy === 'group') out.push({ comp: 'trophy', team: clubId, from: 'G' });
   else if (trophyU21s().includes(clubId + '-u21')) out.push({ comp: 'trophy', team: clubId + '-u21', from: 'G' });

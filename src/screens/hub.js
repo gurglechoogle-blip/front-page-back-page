@@ -14,7 +14,7 @@ import {
 } from '../sim/season.js';
 import {
   nextFixture, weekFixtures, slotsLeft, slotsTotal, isPreseason, unread, leagueTable, avgRating, netWorth, honourBadge,
-  age, myFixtures, myTeamIn, resultFor, logRest, startMatchday, selection, playHeadless, recordMatch, finishWeek, matchParams, weeklyBills,
+  age, myFixtures, myTeamIn, resultFor, seasonWeek, logRest, startMatchday, selection, playHeadless, recordMatch, finishWeek, matchParams, weeklyBills,
 } from '../sim/career.js';
 import M from '../data/messages.json';
 import { playFixture } from './flow.js';
@@ -89,12 +89,12 @@ export function createHubScreen(root, go, params = {}) {
     const u = unread(c); $('unread').textContent = u || ''; $('unread').style.display = u ? '' : 'none';
     $('badge-football').textContent = wf.length ? wf.length : ''; $('badge-football').style.display = wf.length ? '' : 'none';
     root.querySelectorAll('.badge').forEach(b => { if (!b.textContent) b.style.display = 'none'; });
-    $('weekbadge').innerHTML = `<b>WEEK ${c.week + 1}</b> · w/c ${prettyDate(weekStart(c.week))} ${weekStart(c.week).slice(0, 4)}${isPreseason(c) ? ' · PRE-SEASON' : ''}`;
+    $('weekbadge').innerHTML = `<b>${esc(CAL.season)} · WEEK ${seasonWeek(c)}</b> · w/c ${prettyDate(weekStart(c.week))} ${weekStart(c.week).slice(0, 4)}${isPreseason(c) ? ' · PRE-SEASON' : ''}`;
     const bar = (label, v, cls) => `<div class="meter ${cls || ''}"><span>${label}</span><div class="bar"><i style="width:${Math.round(v)}%"></i></div><b>${Math.round(v)}</b></div>`;
     $('meters').innerHTML = bar('Manager approval', c.approval, 'appr') + `<div class="two">${bar('Form', c.form, 'form')}${bar('Energy', c.energy, 'energy')}</div>`;
     const avg = avgRating(c);
     $('left').innerHTML = `<h2>${esc(c.name)}</h2><div class="sub2">${age(c)} · Striker · ${esc(me.name)}</div>
-      <h3>Career</h3>${row('Appearances', st.apps + (st.subs ? ` <small>(${st.subs} sub)</small>` : ''))}${row('Goals', st.goals)}${row('Assists', st.assists)}${row('Avg rating', avg ? avg.toFixed(2) : '–')}${st.u21 ? row('U21 games', st.u21) : ''}
+      <h3>This season</h3>${row('Appearances', st.apps + (st.subs ? ` <small>(${st.subs} sub)</small>` : ''))}${row('Goals', st.goals)}${row('Assists', st.assists)}${c.totals.seasons ? row('Career', `${c.totals.apps + st.apps} apps · ${c.totals.goals + st.goals} goals`) : ''}${row('Avg rating', avg ? avg.toFixed(2) : '–')}${st.u21 ? row('U21 games', st.u21) : ''}
       <div class="lvl">${skillLevelText()}</div><div class="lvlcap">Skill level</div>
       <h3>Skills</h3>${SKILLS.map(([k, l]) => { const v = state.profile.skills[k]; return `<div class="row" style="border:0"><span>${l}</span><b>${v}</b></div><div class="bar"><i style="width:${Math.min(100, v / SKILL_MAX * 100)}%"></i></div>`; }).join('')}`;
     const bills = weeklyBills(c).reduce((a, b) => a + b.amount, 0), hb = honourBadge(c.honour);
@@ -206,7 +206,7 @@ export function createHubScreen(root, go, params = {}) {
   }
   function showContract() {
     const k = c.contract, star = n => '★'.repeat(n) + '☆'.repeat(5 - n);
-    modal(`<h2>Contract</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind) + ' · ' + esc(k.label))}${row('Wages', money(k.wage) + ' a week')}${row('Signing-on fee', money(k.signingFee))}${row('Runs until', prettyDate(k.until) + ' 2028')}${row('Coaching', 'x' + k.coaching)}${row('Prestige', star(k.prestige))}${row('Housing', k.housing ? 'Club digs, free' : 'At home with Mum')}
+    modal(`<h2>Contract</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind) + ' · ' + esc(k.label))}${row('Wages', money(k.wage) + ' a week')}${row('Signing-on fee', money(k.signingFee))}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${row('Coaching', 'x' + k.coaching)}${row('Prestige', star(k.prestige))}${row('Housing', k.housing ? 'Club digs, free' : 'At home with Mum')}
       <h3>Transfers</h3><p class="dim">You're 16. Nobody's buying yet. Loans, first pro contracts and transfers are coming in a later update.</p>`);
   }
   function showPhone() {

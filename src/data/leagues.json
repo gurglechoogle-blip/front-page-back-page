@@ -1,17 +1,100 @@
 {
-  "_note": "The four English divisions for 2026-27. Club lists come from clubs.json (league field).",
+  "_note": "The four EFL/Premier League divisions for 2026-27, plus the National League (where relegated League Two clubs go). Club lists come from clubs.json (league field).",
   "divisions": {
-    "PL": { "name": "Premier League", "short": "Premier League", "games": 38, "start": "2026-08-22", "end": "2027-05-30", "finalDaySunday": true, "skipsBreaks": true,
-            "faCupFrom": "R3", "eflCupFrom": "R2", "eflCupFromEurope": "R3", "europeSpots": 7, "trophy": "u21",
-            "places": { "champions": 1, "europe": 5, "relegation": 3 } },
-    "CH": { "name": "Sky Bet Championship", "short": "Championship", "games": 46, "start": "2026-08-15", "end": "2027-05-08", "skipsBreaks": true,
-            "faCupFrom": "R3", "eflCupFrom": "R1", "trophy": "u21",
-            "places": { "promotion": 2, "playoffs": [3, 6], "relegation": 3 } },
-    "L1": { "name": "Sky Bet League One", "short": "League One", "games": 46, "start": "2026-08-15", "end": "2027-05-08", "skipsBreaks": false,
-            "faCupFrom": "R1", "eflCupFrom": "R1", "trophy": "group",
-            "places": { "promotion": 2, "playoffs": [3, 6], "relegation": 4 } },
-    "L2": { "name": "Sky Bet League Two", "short": "League Two", "games": 46, "start": "2026-08-15", "end": "2027-05-08", "skipsBreaks": false,
-            "faCupFrom": "R1", "eflCupFrom": "R1", "trophy": "group",
-            "places": { "promotion": 3, "playoffs": [4, 7], "relegation": 2 } }
+    "PL": {
+      "name": "Premier League",
+      "short": "Premier League",
+      "games": 38,
+      "start": "2026-08-22",
+      "end": "2027-05-30",
+      "finalDaySunday": true,
+      "skipsBreaks": true,
+      "faCupFrom": "R3",
+      "eflCupFrom": "R2",
+      "eflCupFromEurope": "R3",
+      "europeSpots": 7,
+      "trophy": "u21",
+      "places": {
+        "champions": 1,
+        "europe": 5,
+        "relegation": 3
+      }
+    },
+    "CH": {
+      "name": "Sky Bet Championship",
+      "short": "Championship",
+      "games": 46,
+      "start": "2026-08-15",
+      "end": "2027-05-08",
+      "skipsBreaks": true,
+      "faCupFrom": "R3",
+      "eflCupFrom": "R1",
+      "trophy": "u21",
+      "places": {
+        "promotion": 2,
+        "playoffs": [
+          3,
+          6
+        ],
+        "relegation": 3
+      }
+    },
+    "L1": {
+      "name": "Sky Bet League One",
+      "short": "League One",
+      "games": 46,
+      "start": "2026-08-15",
+      "end": "2027-05-08",
+      "skipsBreaks": false,
+      "faCupFrom": "R1",
+      "eflCupFrom": "R1",
+      "trophy": "group",
+      "places": {
+        "promotion": 2,
+        "playoffs": [
+          3,
+          6
+        ],
+        "relegation": 4
+      }
+    },
+    "L2": {
+      "name": "Sky Bet League Two",
+      "short": "League Two",
+      "games": 46,
+      "start": "2026-08-15",
+      "end": "2027-05-08",
+      "skipsBreaks": false,
+      "faCupFrom": "R1",
+      "eflCupFrom": "R1",
+      "trophy": "group",
+      "places": {
+        "promotion": 3,
+        "playoffs": [
+          4,
+          7
+        ],
+        "relegation": 2
+      }
+    },
+    "NL": {
+      "name": "Vanarama National League",
+      "short": "National League",
+      "games": 46,
+      "start": "2026-08-08",
+      "end": "2027-04-24",
+      "skipsBreaks": false,
+      "faCupFrom": "R1",
+      "eflCupFrom": null,
+      "trophy": null,
+      "places": {
+        "promotion": 1,
+        "playoffs": [
+          2,
+          5
+        ],
+        "relegation": 0
+      }
+    }
   }
 }

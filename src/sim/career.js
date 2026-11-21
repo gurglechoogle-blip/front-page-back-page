@@ -5,7 +5,9 @@ import M from '../data/messages.json';
 import {
   CAL, DIVS, club, divisionClubs, leagueFixtures, cupEntries, cupFixture, drawOpponent, nextRound, trophyGroup,
   quickResult, winnerOf, weekStart, weekOf, lastWeek, prettyDate, addDays, table, compName, roundName, pickR,
+  setWorld, firstWeek, seasonYear,
 } from './season.js';
+import { endSeason } from './world.js';
 import { MatchSim } from './matchSim.js';
 import { initLife, rollEvents, makePaper, pressAfter, afterMatch, honourPatience, support, familyWeek, taper } from './life.js';
 
@@ -32,8 +34,9 @@ export function createCareer(name, offer, R = Math.random) {
   const A = ACADEMY[offer.type];
   // Born summer 2009 to summer 2010: 16 now, 17 at some point this season.
   const dob = addDays('2009-09-01', Math.floor(R() * 270));
+  setWorld(null); // a new career starts in 2026-27 with the real divisions
   const c = {
-    v: 1, name, dob, season: CAL.season, clubId: offer.clubId, div: club(offer.clubId).league,
+    v: 1, name, dob, world: { year: 0, leagues: {}, strength: {} }, totals: { apps: 0, goals: 0, assists: 0, seasons: 0 }, season: CAL.season, clubId: offer.clubId, div: club(offer.clubId).league,
     contract: { type: offer.type, label: A.label, wage: A.wage, signingFee: A.signingFee, coaching: A.coaching, pathway: A.pathway, patience: A.patience, prestige: A.prestige, housing: A.housing, until: '2028-06-30', kind: 'Academy scholarship' },
     week: 0, slotsUsed: 0, weekLog: [], approval: A.approval, form: 50, energy: 80, honour: 50, bank: 50 + A.signingFee,
     stats: { apps: 0, starts: 0, subs: 0, goals: 0, assists: 0, ratings: [], u21: 0 },
@@ -232,6 +235,37 @@ export function nextWeek(c, R = Math.random) {
   rollEvents(c, isPreseason(c), R);
   return true;
 }
+/** In-season week number (1 = first week of pre-season). */
+export const seasonWeek = c => c.week - firstWeek() + 1;
+
+/** Summer: wrap up the season, move the world on a year, build the next one. */
+export function startNextSeason(c, R = Math.random) {
+  const S = seasonSummary(c), oldClub = club(c.clubId), oldDiv = c.div;
+  c.history.push({ season: CAL.season, club: c.clubId, div: c.div, pos: S.pos, apps: c.stats.apps, goals: c.stats.goals, assists: c.stats.assists, avg: S.avg, cups: Object.fromEntries(Object.entries(c.cups).map(([k, v]) => [k, v.won ? 'won' : v.round])) });
+  ['apps', 'goals', 'assists'].forEach(k => c.totals[k] += c.stats[k]); c.totals.seasons++;
+  const { world, moves } = endSeason(c.div, c.fixtures, R);
+  c.world = world; setWorld(world);
+  c.div = club(c.clubId).league;
+  const mv = moves.find(m => m.id === c.clubId);
+  Object.assign(c, { stats: { apps: 0, starts: 0, subs: 0, goals: 0, assists: 0, ratings: [], u21: 0 }, cups: {}, trophyGroup: null, matchday: null, lastWeek: null, seasonOver: false, slotsUsed: 0, weekLog: [], liveMatch: null });
+  c.week = firstWeek(); c.season = CAL.season;
+  buildSeason(c, R);
+  const news = club(c.clubId).short + ' News';
+  if (mv) {
+    const up = mv.why !== 'relegated';
+    message(c, news, up ? `We're going up to ${DIVS[c.div].name}${mv.why === 'play-offs' ? ' through the play-offs' : ''}! Bigger crowds, better pies.` : `Relegated to ${DIVS[c.div].name}. The chairman's selling the team bus.`);
+    c.weekNews = c.weekNews || []; c.weekNews.push({ page: 'back', headline: up ? `${oldClub.name.toUpperCase()} GO UP!` : `${oldClub.name.toUpperCase()} GO DOWN` });
+  }
+  // Turned 18 on a scholarship: first professional contract.
+  if (age(c) >= 18 && c.contract.kind === 'Academy scholarship') {
+    c.contract = Object.assign({}, c.contract, { kind: 'First professional contract', wage: Math.round(c.contract.wage * 2.5 + 200), until: `${seasonYear() + 2}-06-30` });
+    message(c, news, `Your scholarship's up and we're offering you your first professional contract: £${c.contract.wage} a week. Proper contract talks (with silly clauses) arrive with transfers.`);
+  }
+  message(c, 'Mum', `New season, love. ${age(c)} years old! Where does the time go. Clean boots, clean pants.`);
+  void oldDiv;
+  return { moves, mv };
+}
+
 export function seasonSummary(c) {
   const t = leagueTable(c), pos = t.findIndex(r => r.id === c.clubId) + 1;
   return { pos, of: t.length, row: t[pos - 1], stats: c.stats, avg: avgRating(c), cups: c.cups, approval: c.approval, bank: c.bank };

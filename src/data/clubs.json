@@ -1692,6 +1692,34 @@
     "shorts": "#1c3f94",
     "socks": "#e2001a"
    }
+  },
+  {
+   "id": "ebbsfleet",
+   "name": "Ebbsfleet United",
+   "short": "EBB",
+   "stadium": "the Kuflink Stadium",
+   "strength": 26,
+   "league": "NL",
+   "home": {
+    "shirt": "#d4202c",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#d4202c"
+   }
+  },
+  {
+   "id": "braintree",
+   "name": "Braintree Town",
+   "short": "BRT",
+   "stadium": "Cressing Road",
+   "strength": 24,
+   "league": "NL",
+   "home": {
+    "shirt": "#f5a623",
+    "trim": "#1c3f94",
+    "shorts": "#1c3f94",
+    "socks": "#f5a623"
+   }
   }
  ]
 }
