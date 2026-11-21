@@ -5,6 +5,9 @@ import { W, H, setCam } from '../engine/camera.js';
 import { attachInput, setInputHandlers } from '../engine/input.js';
 import { setCtx, drawBackground, wrap, setVenue } from '../engine/draw.js';
 import { matchVenue } from './venue.js';
+import { makeRecorder, makeClip } from '../engine/replay.js';
+import { getCam } from '../engine/camera.js';
+import { getVenue } from '../engine/draw.js';
 import { esc } from '../engine/util.js';
 import { clock } from '../engine/clock.js';
 import { makeKitSet, matchColours, playerKitFrom, teamKitFrom, keeperKitFor, luminance } from '../engine/kits.js';
@@ -146,9 +149,19 @@ export function createMatchScreen(root, go, params) {
   function startMoment() {
     $('feed').classList.add('hidden'); phase = 'moment'; persist(true, true);
     moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: pName, onResult: r => { chanceResult = r; } });
+    moment.recorder = makeRecorder(); moment.recCam = getCam().n; moment.recVenue = Object.assign({}, getVenue());
   }
   function endMoment() {
-    const r = chanceResult; chanceResult = null; moment = null; setCam('def');
+    const r = chanceResult; chanceResult = null;
+    // Scrapbook: keep the clip of every goal you score or set up in a career match.
+    if (r.goal && career && state.career && moment.recorder.frames.length) {
+      const c = state.career, clip = makeClip(moment.recorder.frames.slice(-72), kits, moment.recCam, moment.recVenue);
+      c.scrapbook = c.scrapbook || [];
+      c.scrapbook.unshift(Object.assign(clip, { id: Date.now(), week: c.week, season: c.season, opp: (mySide === 'home' ? away : home).name, label: params.label || '', minute: chanceEvent.label, key: r.key, msg: r.msg, q: r.q || 0, assist: ['passing', 'crossing'].includes(r.key), keep: false }));
+      // Keep starred clips forever; otherwise the 40 most recent.
+      while (c.scrapbook.length > 40) { const i = c.scrapbook.map(x => x.keep).lastIndexOf(false); if (i < 0) break; c.scrapbook.splice(i, 1); }
+    }
+    moment = null; setCam('def');
     $('feed').classList.remove('hidden');
     const before = sim.rating;
     phase = sim.done ? phase : 'running';

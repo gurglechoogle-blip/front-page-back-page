@@ -305,3 +305,4 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .ctalk div:first-child{color:#fff;font-weight:700}
 .buyin{display:flex;align-items:center;gap:10px;margin:10px 0}.buyin input{flex:1;accent-color:#ffc928}.buyin b{min-width:90px;text-align:right;color:#ffc928}
 @media(max-width:620px){.felt{border-radius:30px;padding:14px 10px}.seat{min-width:0;padding:4px 6px}.card{width:30px;height:42px;font-size:13px}}
+.replaycv{flex:none;aspect-ratio:4/3;width:100%;height:auto;max-height:62vh;object-fit:contain;border:3px solid #2b2f35;border-radius:6px;margin:6px 0}

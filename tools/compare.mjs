@@ -17,7 +17,7 @@ const SEEDS = (process.argv[3] || '12345,777,4242').split(',').map(Number);
 const DRILLS = ['volley', 'snapshot', 'header', 'overhead', 'penalty', 'freekick', 'turn', 'passing', 'crossing'];
 
 const init = seed => {
-  let a = seed; Math.random = function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  let a = seed; window.__reseed = s => { a = s; }; Math.random = function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
   let T = 0, q = [];
   performance.now = () => T;
   window.requestAnimationFrame = cb => { q.push(cb); return q.length; };
@@ -85,7 +85,7 @@ for (const SEED of SEEDS) for (const k of DRILLS) {
     await page.goto(url);
     if (apiName === '__fpbp') { await page.evaluate(() => localStorage.clear()); await page.reload(); await page.click('#tg'); } // new build: start screen -> training ground
     await page.waitForFunction(n => window[n], apiName);
-    await page.evaluate(() => { for (let i = 0; i < 3; i++) window.__step(); });
+    await page.evaluate(s => { for (let i = 0; i < 3; i++) window.__step(); window.__reseed(s); }, SEED); // same random sequence from here on both sides
     runs.push(await page.evaluate(scenario, { k, apiName }));
     await ctx.close();
   }

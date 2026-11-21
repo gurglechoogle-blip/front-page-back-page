@@ -226,6 +226,7 @@ export class BaseMoment {
     const b = this.currentBall();
     let bz = b.z; if (Math.abs(b.z - pl.z) < .03) bz = G.mode === 'header' ? pl.z - .001 : pl.z + .001;
     items.push({ z: bz, d: () => drawBall(b, !!(G.shot || G.phase === 'incoming')) });
+    if (this.recorder) this.recorder(this.snapFrame(pl, b, now)); // scrapbook: read-only snapshot, draws nothing
     items.sort((a, b2) => b2.z - a.z).forEach(i => i.d());
 
     this.renderAids(now);
@@ -233,6 +234,13 @@ export class BaseMoment {
     this.renderBars(now);
     if (G.phase === 'ready') bigText(G.variant || 'GET READY', '#fff', 30);
     if (G.phase === 'result' && G.msg) bigText(G.msg, G.msgGood ? '#ffc928' : '#fff', G.msgGood ? (G.msg.length > 22 ? 34 : 46) : 36);
+  }
+
+  /** A compact copy of what's on screen this frame, for goal replays. */
+  snapFrame(pl, b, now) {
+    const G = this, r = v => v == null ? null : Math.round(v * 1000) / 1000, kp = G.keeper;
+    const pose = o => [r(o.x), r(o.z), o.facing === 'back' ? 1 : 0, r(o.armL), r(o.armR), r(o.legL), r(o.legR), r(o.lenR), r(o.lift), r(o.ang), r(o.scaleY), r(o.alpha)];
+    return { b: [r(b.x), r(b.z), r(b.h)], k: [r(kp.x), r(kp.h), r(kp.ang), kp.dive && now >= kp.dive.t0 ? 1 : 0], p: pose(pl), rr: pl.reachR ? [Math.round(pl.reachR.x), Math.round(pl.reachR.y)] : null, o: G.others.map(pose), n: G.netT0 && now - G.netT0 < .7 ? r(now - G.netT0) : -1, s: G.shot || G.phase === 'incoming' ? 1 : 0, ok: G.others.map(o => o.kit) };
   }
 
   // ---- shared bars ----

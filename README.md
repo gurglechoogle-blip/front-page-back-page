@@ -35,6 +35,7 @@ src/
     kits.js             kits, skin/hair variety, makeKitSet(), club colours and clashes
     manager.js          the gaffer figure, drawn per mood
     venues.js           scenery by venue: rec, lower-league ground, Championship, Premier League, training grounds
+    replay.js           goal replays: record a moment's frames compactly, draw them back
     clock.js            game time (clock.now)
     loop.js             requestAnimationFrame loop, active screen
     util.js             rand, clamp, lerp, pick, seeded PRNG
@@ -49,6 +50,13 @@ src/
     season.js           clubs, the 2026-27 calendar, fixture generation, cup draws, quick results, tables
     career.js           the career: academy offers, the week loop, selection, approval, money, the phone
     life.js             honour, relationship meters, events with choices, press, the weekly newspaper
+    world.js            summer: every division finishes, play-offs, promotion/relegation, strength drift
+    money.js            possessions, homes and rooms, savings funds, net worth, the debt ladder
+    social.js           friends, nights out, the rival striker, the team group chat
+    partner.js          meeting someone, dates, gifts, milestones
+    cards.js            deck, poker hand evaluator, equity by simulation
+    poker.js            no-limit Texas Hold'em against three characters
+    blackjack.js        six-deck blackjack
     squads.js           made-up squads, same names every time for a club
     text.js             pick a line, fill its {placeholders}
   screens/
@@ -59,6 +67,8 @@ src/
     paper.js            The Weekly Splash: front and back pages with drawn photos
     flow.js             playing (and resuming) a career fixture
     venue.js            which scenery a match or screen uses
+    moneyUI.js          bank, shopping, property and debt-ladder pop-ups
+    casino.js           the poker and blackjack tables
     training.js         the training ground (5 attempts per drill; one drill per slot in a career)
     matchSetup.js       pick a one-off match (until the career drives fixtures)
     match.js            match day: score blocks, feed, clock, rating, stats, the gaffer
@@ -71,6 +81,11 @@ src/
     events.json         life events: choices, effects, follow-ups, newspaper stories
     press.json          press-conference questions and answers
     newspaper.json      headline templates, alliterative verbs, fillers and sightings
+    shop.json           things to buy, homes, rooms, savings funds, lenders
+    friends.json        eight friends, their hang-outs, nights out and what can go wrong
+    chat.json           team group chat banter and risky prompts
+    partners.json       names, jobs, quirks, dates and gifts
+    casino.json         gambling venues by age and their regulars
     names.json          first names and surnames for squads
     commentary.json     every line of match commentary, manager quotes, headlines
   state/
@@ -138,6 +153,10 @@ Every frame should come back identical, except where the mechanics were delibera
 ### Honour, relationships and the newspaper
 
 Honour is public; the meters are private: manager (approval), teammates, fans and family. Teammates who like you pass to you more (up to a chance either way), the fans' mood shows up in the commentary, honour makes the gaffer more or less forgiving, and a stable family helps you recover. Each week may bring an event (a call, a text or a dressing-room moment) from `events.json`: every choice costs something, some use a time slot, and some come back weeks later. After some matches you face the press. Every Monday *The Weekly Splash* lands: the back page covers your football and the front page covers your life, with headlines built from what you actually did and alliterative puns on your surname. Pages can be framed.
+
+### Life between matches
+
+The career rolls on past the first season: every summer all five divisions finish, play-offs are played, clubs go up and down, and you age (a first pro contract arrives at 18). Things open up with age: friends, dating, house parties, Gran's 2p poker and modest shopping from 16; driving lessons and a first car at 17; pubs and clubs, the casino, moving out and the flash stuff at 18; houses with rooms that do something as the money grows. If you go overdrawn you work down the debt ladder: sell things, raid the savings funds, borrow from people close to you, then the loan sharks. Your rival from the academy runs a career alongside yours, the team group chat leaks, and every goal you score in a match is saved to the scrapbook to watch again.
 
 ## Saving
 

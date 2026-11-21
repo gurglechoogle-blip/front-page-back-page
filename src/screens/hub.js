@@ -23,6 +23,8 @@ import { paperHTML, paperPhotos } from './paper.js';
 import { showBank, showShop, showProperty, showDebt } from './moneyUI.js';
 import { FR, friend, hangOut, nightsFor, nightOut, chatPrompt, chatAnswer } from '../sim/social.js';
 import CZ from '../data/casino.json';
+import { drawClipFrame, clipLength } from '../engine/replay.js';
+import { MOMENTS } from '../moments/index.js';
 import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp } from '../sim/partner.js';
 import { exportSave, importSave } from '../state/gameState.js';
 
@@ -288,6 +290,25 @@ export function createHubScreen(root, go, params = {}) {
       go('casino', { venue: v.id, game: b.dataset.g, buyIn: buy });
     });
   }
+  let replaying = 0;
+  const momentTitle = k => (MOMENTS[k] ? new MOMENTS[k]().title : k);
+  function showScrapbook() {
+    const sb = c.scrapbook || [];
+    modal(`<h2>Scrapbook</h2><p class="dim">Every goal you score or set up in a match. Star the best ones to keep them forever; otherwise the latest 40 stay.</p><div class="scroll shop">${sb.map((g, i) => `<div class="item"><div><b>${esc(g.msg)}</b><p>${esc(g.season)} · ${esc(g.label)} v ${esc(g.opp)}${g.minute ? ' · ' + esc(g.minute) : ''} · ${esc(momentTitle(g.key))}${g.assist ? ' (assist)' : ''}</p></div><div class="btncol"><button class="btn small gold" data-play="${i}">▶ Watch</button><button class="btn small ${g.keep ? 'on' : ''}" data-keep="${i}">${g.keep ? '★ Kept' : '☆ Keep'}</button></div></div>`).join('') || '<p class="dim">No goals yet. Get scoring.</p>'}</div>`);
+    root.querySelectorAll('[data-play]').forEach(b => b.onclick = () => playClip(sb[+b.dataset.play]));
+    root.querySelectorAll('[data-keep]').forEach(b => b.onclick = () => { const g = sb[+b.dataset.keep]; g.keep = !g.keep; save(); showScrapbook(); });
+  }
+  function playClip(g) {
+    modal(`<h2>${esc(g.msg)}</h2><canvas id="replay" width="${W}" height="${H}" class="replaycv"></canvas><div class="sub2">${esc(g.season)} · ${esc(g.label)} v ${esc(g.opp)} · ${esc(momentTitle(g.key))}</div><div class="endBtns"><button class="btn" id="again">↺ Again</button><button class="btn gold" id="back">Scrapbook</button></div>`);
+    const x = $('replay').getContext('2d'); let i = 0;
+    clearInterval(replaying);
+    const len = clipLength(g);
+    replaying = setInterval(() => { if (!$('replay') || $('modal').classList.contains('hidden')) { stopReplay(); return; } drawClipFrame(x, g, i, i >= len - 30 ? (g.assist ? 'ASSIST!' : 'GOAL!') : null); if (++i > len + 20) i = len + 20; }, 1000 / 30);
+    $('again').onclick = () => { i = 0; };
+    $('back').onclick = () => { stopReplay(); showScrapbook(); };
+    $('mclose').onclick = () => { stopReplay(); closeModal(); };
+  }
+  function stopReplay() { clearInterval(replaying); replaying = 0; setCam('def'); setVenue(trainingVenue(c.clubId)); }
   function showRival() {
     const r = c.rival, rc = club(r.clubId), same = r.clubId === c.clubId;
     modal(`<h2>${esc(r.name)}</h2><p class="evtext">Came through the academy with you. ${same ? 'Still at ' + esc(rc.name) + ', still after your shirt.' : 'Now at ' + esc(rc.name) + '.'}</p>
@@ -297,16 +318,17 @@ export function createHubScreen(root, go, params = {}) {
   function fameItems() {
     return [
       { label: 'Newspapers', note: c.papers.length ? `${c.papers.length} issue${c.papers.length === 1 ? '' : 's'} · ${c.framed.length} framed` : 'The first issue lands Monday', go: showArchive },
+      { label: 'Scrapbook', note: (c.scrapbook || []).length ? `${c.scrapbook.length} goal${c.scrapbook.length === 1 ? '' : 's'} to watch again` : 'Score in a match to start it', go: showScrapbook },
       { label: 'Press cuttings', note: c.quotes.length ? `${c.quotes.length} quote${c.quotes.length === 1 ? '' : 's'}` : 'Nothing said yet', go: () => modal(`<h2>Press cuttings</h2><div class="scroll">${c.quotes.map(q => `<div class="msg"><b>${esc(q.journo)}</b><span>Week ${q.week + 1}</span><p class="dim">${esc(q.q)}</p><p>${esc(q.a)}</p></div>`).join('') || '<p class="dim">You haven\'t faced the press yet.</p>'}</div>`) },
     ];
   }
 
-  const H = { c, age, modal: (h, n) => modal(h, n), closeModal: () => closeModal(), toast: t => toast(t), save, render: () => render(), root };
+  const MH = { c, age, modal: (h, n) => modal(h, n), closeModal: () => closeModal(), toast: t => toast(t), save, render: () => render(), root };
   function moneyItems() {
     return [
-      { label: 'Bank & loans', note: `${money(c.bank)} · savings funds, debts`, go: () => showBank(H) },
-      { label: 'Shopping', note: 'Look, tech, wheels, bling', go: () => showShop(H) },
-      { label: 'Property', note: c.home === 'mums' ? (age(c) < 18 ? 'Still at Mum\'s (18+ to move out)' : 'Still at Mum\'s') : 'Homes and rooms', go: () => showProperty(H) },
+      { label: 'Bank & loans', note: `${money(c.bank)} · savings funds, debts`, go: () => showBank(MH) },
+      { label: 'Shopping', note: 'Look, tech, wheels, bling', go: () => showShop(MH) },
+      { label: 'Property', note: c.home === 'mums' ? (age(c) < 18 ? 'Still at Mum\'s (18+ to move out)' : 'Still at Mum\'s') : 'Homes and rooms', go: () => showProperty(MH) },
     ];
   }
 
@@ -318,7 +340,7 @@ export function createHubScreen(root, go, params = {}) {
     if (item.type === 'paper') showPaper(item.n, next);
     else if (item.type === 'event') showEvent(item.id, next);
     else if (item.type === 'press') showPress(item, next);
-    else if (item.type === 'debt') showDebt(H, next);
+    else if (item.type === 'debt') showDebt(MH, next);
     else if (item.type === 'chat') showChatPrompt(item, next);
     else next();
   }
@@ -380,6 +402,7 @@ export function createHubScreen(root, go, params = {}) {
 
   /* ---------- centre figure ---------- */
   function frame() {
+    if (replaying) return; // the replay owns the drawing for now
     setCtx(pctx); drawBackground();
     const t = clock.now, sway = Math.sin(t * 1.6) * .03;
     drawPerson({ x: 0, z: .1, kit, facing: 'front', armL: .25 + sway, armR: -.25 + sway, legL: .06, legR: -.06, ang: Math.sin(t * .8) * .015 });
