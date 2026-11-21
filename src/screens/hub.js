@@ -24,6 +24,9 @@ import { showBank, showShop, showProperty, showDebt } from './moneyUI.js';
 import { FR, friend, hangOut, nightsFor, nightOut, chatPrompt, chatAnswer } from '../sim/social.js';
 import CZ from '../data/casino.json';
 import { drawClipFrame, clipLength } from '../engine/replay.js';
+import { showAgents, showWindow, showDeadline } from './contractUI.js';
+import { reputation, inWindow, agentOf } from '../sim/transfers.js';
+import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
 import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp } from '../sim/partner.js';
 import { exportSave, importSave } from '../state/gameState.js';
@@ -133,7 +136,7 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'League table', go: showTable },
       { label: `Rival: ${esc(c.rival.name)}`, note: `${esc(club(c.rival.clubId).short)} · ${c.rival.seasonGoals} goals this season`, go: showRival },
       { label: 'Contract & transfers', go: showContract },
-      { label: 'Agent', go: () => modal(`<h2>Agent</h2><p>You haven't got one. At 16, agents are mostly blokes in car parks with lanyards they printed themselves.</p><p class="dim">Proper agents (and their hidden motives) are coming in a later update.</p>`) },
+      { label: 'Agent', note: agentOf(c) ? agentOf(c).name : age(c) < 17 ? 'At 17' : 'Sign one', go: () => age(c) < 17 ? modal(`<h2>Agent</h2><p>You haven't got one. At 16, agents are mostly blokes in car parks with lanyards they printed themselves. Come back at 17.</p>`) : showAgents(c, () => { save(); render(); }) },
     ];
   }
 
@@ -211,8 +214,16 @@ export function createHubScreen(root, go, params = {}) {
     modal(`<h2>${esc(DIVS[c.div].name)}</h2><div class="scroll"><table class="lt"><tr><th></th><th class="tn">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>F</th><th>A</th><th>GD</th><th>Pts</th><th>Form</th></tr>${rows}</table>${extra}</div><div class="cups">${cups}</div>`);
     const mine = root.querySelector('.lt tr.me'); if (mine) mine.scrollIntoView({ block: 'center' });
   }
+  const rep = () => reputation(c, skillLevelExact(), age(c));
   function showContract() {
-    const k = c.contract, star = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+    const k = c.contract, star = n => '★'.repeat(n) + '☆'.repeat(5 - n), cl = k.clauses || {}, win = inWindow(c);
+    const extra = `${cl.imageRights ? row('Image rights', 'Yes') : ''}${cl.goalBonus ? row('Goal bonus', money(cl.goalBonus) + ' a goal') : ''}${cl.releaseClause ? row('Release clause', money(cl.releaseClause)) : ''}${cl.silly ? row('Special request', esc(cl.silly)) : ''}${c.loan ? row('On loan from', esc(club(c.loan.parent).name)) : ''}`;
+    if (age(c) >= 17 || c.week > 60) {
+      modal(`<h2>Contract & transfers</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind))}${row('Wages', money(k.wage) + ' a week')}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${extra}${row('Reputation', Math.round(rep()) + '/100')}
+        <h3>Transfers</h3>${win ? `<p>The ${win} window is open.</p><div class="endBtns"><button class="btn gold" id="offers">See offers</button></div>` : '<p class="dim">Windows: summer (June to 1 September) and January (to 2 February). Offers depend on your reputation, and your agent.</p>'}`);
+      if (win) $('offers').onclick = () => { closeModal(); showWindow(c, { rep: rep(), age: age(c), window: win, midSeason: win === 'january' || !c.summer, onDone: () => { save(); go('hub'); } }); };
+      return;
+    }
     modal(`<h2>Contract</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind) + ' · ' + esc(k.label))}${row('Wages', money(k.wage) + ' a week')}${row('Signing-on fee', money(k.signingFee))}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${row('Coaching', 'x' + k.coaching)}${row('Prestige', star(k.prestige))}${row('Housing', k.housing ? 'Club digs, free' : 'At home with Mum')}
       <h3>Transfers</h3><p class="dim">You're 16. Nobody's buying yet. Loans, first pro contracts and transfers are coming in a later update.</p>`);
   }
@@ -342,6 +353,8 @@ export function createHubScreen(root, go, params = {}) {
     else if (item.type === 'press') showPress(item, next);
     else if (item.type === 'debt') showDebt(MH, next);
     else if (item.type === 'chat') showChatPrompt(item, next);
+    else if (item.type === 'window') { closeModal(); showWindow(c, { rep: rep(), age: age(c), window: 'january', midSeason: true, onDone: () => { save(); render(); next(); } }); }
+    else if (item.type === 'deadline') { closeModal(); showDeadline(c, { rep: rep(), age: age(c), onDone: () => { save(); render(); next(); } }); }
     else next();
   }
   const fmtEffects = eff => Object.entries(eff).filter(([k, v]) => v && k !== 'slot').map(([k, v]) => `<span class="${v > 0 ? 'good' : 'bad'}">${k.startsWith('friend:') ? (friend(k.slice(7)) || { name: k }).name : ({ partner: c.partner ? c.partner.name.split(' ')[0] : 'Partner', manager: 'Gaffer', teammates: 'Teammates', fans: 'Fans', family: 'Family', honour: 'Honour', money: 'Money', energy: 'Energy' })[k] || k} ${v > 0 ? '+' : ''}${k === 'money' ? money(v) : v}</span>`).join(' ');

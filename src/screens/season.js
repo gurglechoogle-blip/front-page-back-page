@@ -2,7 +2,10 @@
 import { esc } from '../engine/util.js';
 import { state, save } from '../state/gameState.js';
 import { club, zone, DIVS, CAL, roundName } from '../sim/season.js';
-import { seasonSummary, startNextSeason } from '../sim/career.js';
+import { seasonSummary, rollWorld, beginSeason, age } from '../sim/career.js';
+import { showWindow } from './contractUI.js';
+import { reputation } from '../sim/transfers.js';
+import { skillLevelExact } from '../state/gameState.js';
 import { seasonYear } from '../sim/season.js';
 
 export function createSeasonScreen(root, go) {
@@ -22,7 +25,9 @@ export function createSeasonScreen(root, go) {
       <div class="endBtns"><button class="btn" id="hub">Back to the hub</button><button class="btn red" id="new">Start a new career</button></div>
     </div></div>`;
     root.querySelector('#hub').onclick = () => go('hub');
-    root.querySelector('#nextSeason').onclick = () => { startNextSeason(c); save(); go('hub'); };
+    const openWindow = () => showWindow(c, { rep: reputation(c, skillLevelExact(), age(c)), age: age(c), window: 'summer', midSeason: false, onDone: () => { beginSeason(c); save(); go('hub'); } });
+    root.querySelector('#nextSeason').onclick = () => { rollWorld(c); save(); openWindow(); };
+    if (c.summer) openWindow(); // came back mid-summer
     root.querySelector('#new').onclick = () => { if (confirm('Start a new career? This one goes in the bin.')) { state.career = null; save(); go('start'); } };
   }
   return { mount, frame() { } };

@@ -31,5 +31,5 @@ window.addEventListener('error', e => { if (!document.querySelector('.modal:not(
 const c = state.career;
 if (c && c.casinoLive) { message(c, 'The casino', `You walked out without cashing in your ${c.casinoLive.buyIn < 1 ? 'pennies' : 'chips'}. We'll keep those. Thanks!`); c.casinoLive = null; save(); }
 if (c && c.liveMatch) resumeLiveMatch(go);
-else go(c ? (c.seasonOver ? 'season' : 'hub') : 'start');
+else go(c ? (c.seasonOver || c.summer ? 'season' : 'hub') : 'start');
 startLoop();

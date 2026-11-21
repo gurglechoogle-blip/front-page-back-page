@@ -8,6 +8,7 @@ import {
   setWorld, firstWeek, seasonYear,
 } from './season.js';
 import { endSeason } from './world.js';
+import { endLoan, agentOf, inWindow } from './transfers.js';
 import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './money.js';
 import { initPartner, partnerWeek } from './partner.js';
 import { initSocial, friendsWeek, nightPenalty, rivalWeek, rivalSummer, rivalSelectionPenalty, chatWeek } from './social.js';
@@ -94,6 +95,7 @@ export function weeklyBills(c) {
   if (c.home === 'mums' || !c.home) b.push({ what: c.contract.housing ? 'Club digs (Mrs Pemberton)' : 'Board to Mum', amount: c.contract.housing ? 0 : 25 });
   b.push({ what: 'Phone contract', amount: 12 });
   if (!hasCar(c)) b.push({ what: 'Bus pass', amount: 15 });
+  const ag = agentOf(c); if (ag) b.push({ what: `Agent's cut (${ag.name.split(' ')[0]})`, amount: Math.round(c.contract.wage * ag.fee) });
   return [...b, ...moneyBills(c)];
 }
 export function message(c, from, text) { c.inbox.unshift({ id: ++c.msgId, from, text, week: c.week, read: false }); if (c.inbox.length > 60) c.inbox.length = 60; }
@@ -152,6 +154,7 @@ export function recordMatch(c, f, S, R = Math.random) {
   const res = { id: f.id, role: S.role, rating: played ? S.rating : null, goals: S.my.goals, assists: S.my.assists, headline: S.headline };
   if (played) {
     f.rating = S.rating; f.myGoals = S.my.goals; f.myAssists = S.my.assists;
+    const gb = (c.contract.clauses || {}).goalBonus; if (gb && S.my.goals && f.comp !== 'friendly') c.bank += gb * S.my.goals;
     if (f.comp !== 'friendly') {
       const st = c.stats; st.apps++; if (S.role === 'start') st.starts++; else st.subs++; st.goals += S.my.goals; st.assists += S.my.assists; st.ratings.push(S.rating);
       if (myTeamIn(c, f).endsWith('-u21')) st.u21++;
@@ -218,6 +221,10 @@ export function finishWeek(c, R = Math.random) {
   // Money.
   const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);
   c.bank += c.contract.wage - out;
+  // Image rights and sponsorship: the more the fans love you, the more it pays.
+  const cl = c.contract.clauses || {}, ag2 = agentOf(c);
+  if (cl.imageRights) { const v = Math.round(c.meters.fans * 3 + c.stats.goals * 10); c.bank += v; bills.push({ what: 'Image rights (shirt sales)', amount: -v }); }
+  if (ag2 && ag2.sponsor) { const v = Math.round(c.meters.fans * 4); c.bank += v; bills.push({ what: 'Boot and drinks deals (Saffron)', amount: -v }); }
   moneyWeek(c);
   if (c.bank < 0) c.pending.push({ type: 'debt' });
   const md = c.matchday || { results: [] };
@@ -246,41 +253,54 @@ export function nextWeek(c, R = Math.random) {
   if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   rollEvents(c, isPreseason(c), R, age(c));
+  // Transfer windows: offers when January opens, and deadline day at the end of each window.
+  const win = inWindow(c);
+  if (win === 'january' && !c.janWindowSeen) { c.janWindowSeen = true; c.pending.push({ type: 'window', window: 'january' }); }
+  if (win !== 'january') c.janWindowSeen = false;
+  const deadline = d => ws <= d && d <= we;
+  if ((deadline(ws.slice(0, 4) + '-02-02') || deadline(ws.slice(0, 4) + '-09-01')) && age(c) >= 17 && R() < .55) c.pending.push({ type: 'deadline' });
   chatWeek(c, R);
   return true;
 }
 /** In-season week number (1 = first week of pre-season). */
 export const seasonWeek = c => c.week - firstWeek() + 1;
 
-/** Summer: wrap up the season, move the world on a year, build the next one. */
-export function startNextSeason(c, R = Math.random) {
-  const S = seasonSummary(c), oldClub = club(c.clubId), oldDiv = c.div;
+/** Summer, part 1: wrap up the season and move the world on a year. */
+export function rollWorld(c, R = Math.random) {
+  const S = seasonSummary(c), oldClub = club(c.clubId);
   c.history.push({ season: CAL.season, club: c.clubId, div: c.div, pos: S.pos, apps: c.stats.apps, goals: c.stats.goals, assists: c.stats.assists, avg: S.avg, cups: Object.fromEntries(Object.entries(c.cups).map(([k, v]) => [k, v.won ? 'won' : v.round])) });
   ['apps', 'goals', 'assists'].forEach(k => c.totals[k] += c.stats[k]); c.totals.seasons++;
   const { world, moves } = endSeason(c.div, c.fixtures, R);
   c.world = world; setWorld(world);
   c.div = club(c.clubId).league;
-  const mv = moves.find(m => m.id === c.clubId);
-  Object.assign(c, { stats: { apps: 0, starts: 0, subs: 0, goals: 0, assists: 0, ratings: [], u21: 0 }, cups: {}, trophyGroup: null, matchday: null, lastWeek: null, seasonOver: false, slotsUsed: 0, weekLog: [], liveMatch: null });
-  c.week = firstWeek(); c.season = CAL.season;
-  buildSeason(c, R);
-  const news = club(c.clubId).short + ' News';
+  const mv = moves.find(m => m.id === c.clubId), news = oldClub.short + ' News';
+  c.weekNews = c.weekNews || [];
   if (mv) {
     const up = mv.why !== 'relegated';
     message(c, news, up ? `We're going up to ${DIVS[c.div].name}${mv.why === 'play-offs' ? ' through the play-offs' : ''}! Bigger crowds, better pies.` : `Relegated to ${DIVS[c.div].name}. The chairman's selling the team bus.`);
-    c.weekNews = c.weekNews || []; c.weekNews.push({ page: 'back', headline: up ? `${oldClub.name.toUpperCase()} GO UP!` : `${oldClub.name.toUpperCase()} GO DOWN` });
+    c.weekNews.push({ page: 'back', headline: up ? `${oldClub.name.toUpperCase()} GO UP!` : `${oldClub.name.toUpperCase()} GO DOWN` });
   }
-  // Turned 18 on a scholarship: first professional contract.
-  if (age(c) >= 18 && c.contract.kind === 'Academy scholarship') {
-    c.contract = Object.assign({}, c.contract, { kind: 'First professional contract', wage: Math.round(c.contract.wage * 2.5 + 200), until: `${seasonYear() + 2}-06-30` });
-    message(c, news, `Your scholarship's up and we're offering you your first professional contract: £${c.contract.wage} a week. Proper contract talks (with silly clauses) arrive with transfers.`);
-  }
+  if (c.loan) { const back = endLoan(c); message(c, club(back).short + ' News', `Your loan's over. Welcome back to ${club(back).name}. Your peg's still there. Someone's been using it.`); }
   const rv = rivalSummer(c, R);
   if (rv) { const to = club(rv.to); c.weekNews.push({ page: 'back', headline: `RIVAL ${c.rival.short.toUpperCase()} JOINS ${to.name.toUpperCase()}` }); message(c, 'Dennis (kit man)', rv.wanted ? `${c.rival.name}'s signed for ${to.name}. The club you turned down. I said this would happen. I didn't, but I thought it.` : `${c.rival.name}'s off to ${to.name}. Good riddance, he never put his bibs in the basket.`); }
-  message(c, 'Mum', `New season, love. ${age(c)} years old! Where does the time go. Clean boots, clean pants.`);
-  void oldDiv;
+  c.summer = { stage: 'window' };
   return { moves, mv };
 }
+/** Summer, part 2 (after the transfer window): build the new season. */
+export function beginSeason(c, R = Math.random) {
+  c.div = club(c.clubId).league;
+  Object.assign(c, { stats: { apps: 0, starts: 0, subs: 0, goals: 0, assists: 0, ratings: [], u21: 0 }, cups: {}, trophyGroup: null, matchday: null, lastWeek: null, seasonOver: false, slotsUsed: 0, weekLog: [], liveMatch: null, summer: null });
+  c.week = firstWeek(); c.season = CAL.season;
+  buildSeason(c, R);
+  // Still on a scholarship at 18 and nothing signed: the club hands you a first pro deal.
+  if (age(c) >= 18 && c.contract.kind === 'Academy scholarship') {
+    c.contract = Object.assign({}, c.contract, { kind: 'First professional contract', wage: Math.round(c.contract.wage * 2.5 + 200), until: `${seasonYear() + 2}-06-30` });
+    message(c, club(c.clubId).short + ' News', `Your scholarship's up, so here's your first professional contract: £${c.contract.wage} a week.`);
+  }
+  message(c, 'Mum', `New season, love. ${age(c)} years old! Where does the time go. Clean boots, clean pants.`);
+}
+/** Both halves, with no transfer business (used by tests). */
+export function startNextSeason(c, R = Math.random) { const r = rollWorld(c, R); beginSeason(c, R); return r; }
 
 export function seasonSummary(c) {
   const t = leagueTable(c), pos = t.findIndex(r => r.id === c.clubId) + 1;
