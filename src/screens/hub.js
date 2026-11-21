@@ -22,6 +22,7 @@ import { METERS, meter, EVENTS, chooseEvent, answerPress, paperByN, framePage, a
 import { paperHTML, paperPhotos } from './paper.js';
 import { showBank, showShop, showProperty, showDebt } from './moneyUI.js';
 import { FR, friend, hangOut, nightsFor, nightOut, chatPrompt, chatAnswer } from '../sim/social.js';
+import CZ from '../data/casino.json';
 import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp } from '../sim/partner.js';
 import { exportSave, importSave } from '../state/gameState.js';
 
@@ -29,7 +30,7 @@ const MENUS = {
   football: { label: 'Football', icon: '⚽' },
   life: { label: 'Life', icon: '🏠', soon: ['Holidays'] },
   money: { label: 'Money', icon: '💷', soon: ['Staff', 'Businesses & merch'] },
-  casino: { label: 'Casino', icon: '🎲', soon: ['Poker', 'Blackjack'] },
+  casino: { label: 'Casino', icon: '🎲', soon: [] },
   fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Community & charity', 'Achievements'] },
 };
 const money = n => (n < 0 ? '-£' : '£') + Math.abs(Math.round(n)).toLocaleString('en-GB');
@@ -115,7 +116,7 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('.menu').forEach(m => m.classList.add('hidden'));
     if (!k || k === openMenu) { openMenu = null; return; }
     openMenu = k; const el = $('menu-' + k);
-    const items = k === 'football' ? footballItems() : [...(k === 'life' ? lifeItems() : k === 'fame' ? fameItems() : k === 'money' ? moneyItems() : []), ...MENUS[k].soon.map(s => ({ label: s, soon: true }))];
+    const items = k === 'football' ? footballItems() : [...(k === 'life' ? lifeItems() : k === 'fame' ? fameItems() : k === 'money' ? moneyItems() : k === 'casino' ? casinoItems() : []), ...MENUS[k].soon.map(s => ({ label: s, soon: true }))];
     el.innerHTML = `<h4>${MENUS[k].label}</h4>` + items.map((it, i) => `<button data-i="${i}" class="${it.soon ? 'soon' : ''}${it.main ? ' main' : ''}">${it.label}${it.soon ? '<small>coming soon</small>' : it.note ? `<small>${it.note}</small>` : ''}</button>`).join('');
     el.querySelectorAll('button').forEach(b => b.onclick = e => { e.stopPropagation(); const it = items[+b.dataset.i]; toggleMenu(null); if (it.soon) toast(`${it.label}: coming soon. Your agent says it's "in development". He hasn't got an agent yet either.`); else it.go(); });
     el.classList.remove('hidden');
@@ -266,6 +267,26 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('[data-g]').forEach(b => b.onclick = () => { const r = gift(c, b.dataset.g); save(); render(); if (!r.ok) return toast(r.why); showPartner(); toast('They love it. Or they\'re very good at pretending.'); });
     $('txt').onclick = () => { toast(textThem(c) ? 'You send three hearts and a pigeon emoji. They send seven hearts back.' : 'You\'ve already texted this week. Don\'t be needy.'); save(); render(); };
     $('dump').onclick = () => { if (confirm(`Break up with ${p.name}?`)) { breakUp(c, 'you ended it'); save(); render(); closeModal(); toast('It\'s over. Mum brings a lasagne round.'); } };
+  }
+  function casinoItems() {
+    const a = age(c);
+    return CZ.venues.map(v => {
+      const lock = a < v.minAge ? `${v.minAge}+ only` : v.needs && !c.flags[v.needs] ? 'Invite only (get to know Big Lee)' : null;
+      return { label: v.name, note: lock || v.games.map(g => g === 'poker' ? 'Poker' : 'Blackjack').join(' · '), go: () => lock ? toast(lock === 'Invite only (get to know Big Lee)' ? 'Big Lee\'s card nights are invite only. Spend some time with Lee.' : `You're ${a}. The bouncer laughs at your provisional licence.`) : showVenue(v) };
+    });
+  }
+  function showVenue(v) {
+    const lo = v.buyIn[0], hi = Math.min(v.buyIn[1], Math.max(lo, Math.floor(c.bank)));
+    const canAfford = c.bank >= lo, slot = slotsLeft(c) > 0;
+    modal(`<h2>${esc(v.name)}</h2><p class="evtext">${esc(v.blurb)}</p>
+      ${canAfford && slot ? `<div class="buyin"><span>Buy-in</span><input type="range" id="bi" min="${lo}" max="${hi}" step="${lo < 1 ? 1 : lo}" value="${lo}"><b id="biv">${money(lo)}</b></div>
+      <div class="choices">${v.games.map(g => `<button class="btn gold choice" data-g="${g}">${g === 'poker' ? 'Texas Hold\'em' : 'Blackjack'}</button>`).join('')}</div>
+      <p class="dim">Uses a time slot. Pretend money only, but it comes out of your bank. ${v.risk ? 'People talk.' : ''}</p>` : `<p class="bad">${!slot ? 'No time slots left this week.' : `You need at least ${money(lo)} to sit down.`}</p>`}`);
+    const bi = $('bi'); if (bi) bi.oninput = () => $('biv').textContent = money(+bi.value);
+    root.querySelectorAll('[data-g]').forEach(b => b.onclick = () => {
+      const buy = +bi.value; c.bank -= buy; c.slotsUsed++; c.casinoLive = { venue: v.id, buyIn: buy }; save(); closeModal();
+      go('casino', { venue: v.id, game: b.dataset.g, buyIn: buy });
+    });
   }
   function showRival() {
     const r = c.rival, rc = club(r.clubId), same = r.clubId === c.clubId;

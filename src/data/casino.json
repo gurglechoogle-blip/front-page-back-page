@@ -1,0 +1,18 @@
+{
+  "_note": "Gambling venues. Pretend money only. minAge, needs (flag), buy-in range, blinds (poker) / bet range (blackjack), the opponents' styles: tightness 0..1 (folds more), aggression 0..1 (raises more), bluff 0..1.",
+  "venues": [
+    { "id": "gran", "name": "Gran's kitchen table", "minAge": 16, "games": ["poker"], "buyIn": [2, 20], "blinds": [0.02, 0.04], "slot": true,
+      "blurb": "2p blinds. Gran's been playing since 1961. Auntie Carol never bluffs. Maureen from bingo calls everything.",
+      "opponents": [ { "name": "Gran", "tight": 0.25, "aggr": 0.8, "bluff": 0.35 }, { "name": "Auntie Carol", "tight": 0.75, "aggr": 0.3, "bluff": 0.05 }, { "name": "Maureen", "tight": 0.1, "aggr": 0.2, "bluff": 0.1 } ],
+      "talk": ["Gran: 'I'll see your 4p and raise you a Werther's Original.'", "Maureen: 'Is a flush the one with the same colours?'", "Auntie Carol: 'I fold. I always fold. I'm folding.'", "Gran: 'Your grandad lost the car to me in 1974. Twice.'"] },
+    { "id": "lee", "name": "Big Lee's card night", "minAge": 16, "needs": "leeCards", "games": ["poker", "blackjack"], "buyIn": [20, 400], "blinds": [1, 2], "bet": [5, 50], "slot": true, "risk": 0.15,
+      "news": "CARD SHARP: {NAME} IN SECRET GAMBLING DEN",
+      "blurb": "Lee's back room. Smells of Lynx and microwave pizza. Don't stare at Tel's eyebrow.",
+      "opponents": [ { "name": "Big Lee", "tight": 0.4, "aggr": 0.6, "bluff": 0.3 }, { "name": "Tel", "tight": 0.55, "aggr": 0.75, "bluff": 0.4 }, { "name": "Mystery Steve", "tight": 0.6, "aggr": 0.4, "bluff": 0.15 } ],
+      "talk": ["Big Lee: 'House rules: no crying, no cheating, no asking about the van.'", "Tel's eyebrow twitches. Is that a tell? Is the eyebrow the tell?", "Mystery Steve hasn't said a word in three hours."] },
+    { "id": "casino", "name": "Grosvenor Royale Casino", "minAge": 18, "games": ["poker", "blackjack"], "buyIn": [100, 50000], "blinds": [5, 10], "bet": [10, 5000], "slot": true, "risk": 0.1, "bigNews": 10000,
+      "blurb": "Carpet with a pattern designed to make you forget what time it is. It works.",
+      "opponents": [ { "name": "A man in sunglasses indoors", "tight": 0.5, "aggr": 0.7, "bluff": 0.3 }, { "name": "Retired dentist", "tight": 0.7, "aggr": 0.35, "bluff": 0.1 }, { "name": "Hen-do Becky", "tight": 0.2, "aggr": 0.5, "bluff": 0.25 } ],
+      "talk": ["The dealer has seen you play. The dealer has seen everything.", "A man at the bar is explaining his 'system'. His system is losing."] }
+  ]
+}
