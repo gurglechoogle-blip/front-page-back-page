@@ -51,10 +51,12 @@ export function createSeasonScreen(root, go) {
       });
     }
     // Retirement is your choice, from 33.
-    if (age(c) >= 33 && !c.retired) { const d = document.createElement('div'); d.className = 'endBtns'; d.innerHTML = '<button class="btn red" id="retire">Hang up your boots</button>'; root.querySelector('.wpanel').appendChild(d); root.querySelector('#retire').onclick = () => { if (confirm('Retire? Your playing days end here. The phone may ring again one day...')) { c.retired = true; c.retiredAt = age(c); save(); go('finale'); } }; }
+    if (age(c) >= 33 && !c.retired) { const d = document.createElement('div'); d.className = 'endBtns'; d.innerHTML = '<button class="btn red" id="retire">Hang up your boots</button>'; root.querySelector('.wpanel').appendChild(d); root.querySelector('#retire').onclick = () => { if (confirm('Retire? Your playing days end here. The phone may ring again one day...')) { c.retired = true; c.retiredAt = age(c); rollWorld(c); c.summer = null; save(); go('finale'); } }; }
     root.querySelector('#nextSeason').onclick = () => {
       rollWorld(c);
       // Tournament summer? England first, then the window.
+      // Summer 2046: the end of the story.
+      if (seasonYear() >= 2046) { c.summer = null; save(); go('finale'); return; }
       const t = tournamentFor(seasonYear()), rep = reputation(c, skillLevelExact(), age(c));
       if (t && !t.finaleOnly && age(c) >= 17) {
         const caps = c.intl.caps.senior, selected = rep >= 58 || (caps >= 2 && rep >= 52);

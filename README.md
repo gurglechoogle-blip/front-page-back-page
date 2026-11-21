@@ -58,6 +58,13 @@ src/
     poker.js            no-limit Texas Hold'em against three characters
     blackjack.js        six-deck blackjack
     squads.js           made-up squads, same names every time for a club
+    transfers.js        reputation, offers, loans, contract talks, deadline day
+    international.js    England call-ups, summer tournaments
+    looks.js  card.js   your appearance as you age; the yearly video-game card
+    trouble.js          injuries, bans and prison, kids, holidays, the ways back from a scandal
+    fame.js             social media, community and charity, staff, merch and investments
+    achievements.js     the 48 achievements and when each is checked
+    epilogue.js         legacy, the road to the 2046 final, "where are they now"
     text.js             pick a line, fill its {placeholders}
   screens/
     start.js            name entry and academy offers
@@ -68,6 +75,9 @@ src/
     flow.js             playing (and resuming) a career fixture
     venue.js            which scenery a match or screen uses
     moneyUI.js          bank, shopping, property and debt-ladder pop-ups
+    fameUI.js           social media, community, staff and business pop-ups
+    contractUI.js  tournament.js   transfer window and contract talks; England in the summer
+    finale.js           the end: testimonial, the years passing, scrapbook montage, the 2046 final, epilogue
     casino.js           the poker and blackjack tables
     training.js         the training ground (5 attempts per drill; one drill per slot in a career)
     matchSetup.js       pick a one-off match (until the career drives fixtures)
@@ -157,6 +167,12 @@ Honour is public; the meters are private: manager (approval), teammates, fans an
 ### Life between matches
 
 The career rolls on past the first season: every summer all five divisions finish, play-offs are played, clubs go up and down, and you age (a first pro contract arrives at 18). Things open up with age: friends, dating, house parties, Gran's 2p poker and modest shopping from 16; driving lessons and a first car at 17; pubs and clubs, the casino, moving out and the flash stuff at 18; houses with rooms that do something as the money grows. If you go overdrawn you work down the debt ladder: sell things, raid the savings funds, borrow from people close to you, then the loan sharks. Your rival from the academy runs a career alongside yours, the team group chat leaks, and every goal you score in a match is saved to the scrapbook to watch again.
+
+### Fame, achievements and the end
+
+Social media followers grow towards a ceiling set by how famous you are (the fans meter and the size of your league), with posts, sponsored posts and the odd troll. Community work and charity use time slots and rebuild honour. Staff cost wages and each does something (a PA adds a time slot, a driver halves night-out trouble, a trainer boosts training) with a small chance of going wrong. A merch line and investments make (or lose) money. There are 48 achievements in a trophy cabinet (Fame → Achievements), checked after each match, each week, each season and at the end.
+
+The game ends in the summer of 2046, either when you get there still playing or when you retire (from 33; retired players fast-forward). After 10+ seasons at one club you get a testimonial. A montage of your scrapbook plays, then the England manager rings: framed as the legend, the redeemed or the has-been depending on your legacy. You sit on the bench all tournament, then in the last minute of extra time in the final against Germany you get one chance, using your best shooting skill. Then the front page, and where everyone is now.
 
 ## Saving
 

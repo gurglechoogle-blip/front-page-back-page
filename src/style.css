@@ -127,7 +127,7 @@ h1 span{color:#ffc928}
 
 /* ---------- career start ---------- */
 #stage.tall{aspect-ratio:auto;min-height:600px}
-#stage.tall canvas{position:absolute;inset:0;height:100%;object-fit:cover}
+#stage.tall > canvas{position:absolute;inset:0;height:100%;object-fit:cover}
 #stage.tall .overlay{position:relative;inset:auto;min-height:600px;padding:20px 0}
 .hint a{color:#ffc928}
 .shake{animation:shake .4s;border-color:#e0392b!important}
@@ -332,3 +332,8 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .trophy .medal{font-size:28px;display:block}.trophy b{display:block;font-size:13px;margin:4px 0}.trophy p{font-size:11px;color:#9aa3ad;margin:0}
 .trophy.locked{opacity:.4}.trophy.locked .medal{filter:grayscale(1)}
 .trophy.gold{border-color:#ffc928}.trophy.silver{border-color:#c0c7cf}.trophy.bronze{border-color:#c98b4b}
+/* Finale */
+.finale #skip{position:absolute;right:12px;bottom:12px;z-index:5}
+.finale .epi{text-align:left}.finale .epi h3{margin-top:14px}.finale .epi p{line-height:1.45}
+.finale .paperwrap{margin:12px auto;max-width:560px;text-align:left}
+.finale .panel .row{text-align:left}
