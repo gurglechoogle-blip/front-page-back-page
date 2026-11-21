@@ -1,0 +1,2121 @@
+{
+  "_note": "Daily headlines for the hub ticker. general: not about the player. player: about the player, {NAME} = surname in caps, {CLUB} = club name, {FIRST} = first name.",
+  "general": [
+    {
+      "h": "SEAGULL STEALS PASTY IN BROAD DAYLIGHT",
+      "sub": "Witnesses say the bird \"didn't even look sorry\" as it flew off towards the pier"
+    },
+    {
+      "h": "GULL GANG TERRORISES SEAFRONT CHIP QUEUE",
+      "sub": "Police advise holidaymakers to \"eat quickly and avoid eye contact\""
+    },
+    {
+      "h": "PIGEON ADOPTED AS UNOFFICIAL BUS STATION MANAGER",
+      "sub": "Bird has attended every day for six years and \"keeps an eye on things\""
+    },
+    {
+      "h": "PARROT REPORTS OWNER TO NEIGHBOURS",
+      "sub": "Talkative bird has been shouting \"where's my tea\" over the fence since March"
+    },
+    {
+      "h": "SWAN BLOCKS BYPASS FOR FORTY MINUTES",
+      "sub": "Motorists praise its \"commitment\" but question its choice of lane"
+    },
+    {
+      "h": "DUCKS GIVEN OWN ZEBRA CROSSING",
+      "sub": "Council insists the painted ducklings are \"purely advisory\""
+    },
+    {
+      "h": "HERON EATS ENTIRE GARDEN POND, SAYS PENSIONER",
+      "sub": "\"Twelve goldfish, gone. He sat on the shed afterwards like he owned it.\""
+    },
+    {
+      "h": "OWL SPOTTED WEARING TINY SCARF",
+      "sub": "Turns out to be a knitted tea cosy blown off a nearby washing line"
+    },
+    {
+      "h": "ROBIN NESTS IN VICAR'S CHRISTMAS WREATH",
+      "sub": "Front door of the vicarage now out of use until \"at least the spring\""
+    },
+    {
+      "h": "MAGPIE HOARD FOUND IN CHURCH GUTTER",
+      "sub": "Haul includes three wedding rings, a car key and a single gold tooth"
+    },
+    {
+      "h": "CROWS LEARN TO OPERATE SUPERMARKET DOORS",
+      "sub": "Store manager describes the birds as \"frankly, better shoppers than most\""
+    },
+    {
+      "h": "WOODPECKER DAMAGES PARISH NOTICEBOARD",
+      "sub": "Ironically, the notice being pecked was about woodpecker conservation"
+    },
+    {
+      "h": "PEACOCK MOVES INTO CUL-DE-SAC, REFUSES TO LEAVE",
+      "sub": "Residents split between \"lovely\" and \"screams at four in the morning\""
+    },
+    {
+      "h": "GOOSE APPOINTED SECURITY AT SCRAPYARD",
+      "sub": "Owner says it has \"seen off two burglars and a man selling double glazing\""
+    },
+    {
+      "h": "CAT ELECTED HONORARY MAYOR OF VILLAGE",
+      "sub": "New mayor has so far attended no meetings and slept through the swearing-in"
+    },
+    {
+      "h": "TABBY RETURNS HOME AFTER THREE YEARS, LOOKING WELL FED",
+      "sub": "Owner suspects a second family \"about three streets away\""
+    },
+    {
+      "h": "CAT STARS IN 400 STRANGERS' HOLIDAY PHOTOS",
+      "sub": "Harbour tabby lounges on the same bollard every day and \"knows its good side\""
+    },
+    {
+      "h": "MOGGY BECOMES STAR OF LIBRARY'S QUIET ZONE",
+      "sub": "Visitors complain the purring is \"louder than the photocopier\""
+    },
+    {
+      "h": "CAT STUCK UP TREE FOR TWO DAYS WAS \"JUST THINKING\"",
+      "sub": "Firefighters climbed up to find it calmly washing a paw"
+    },
+    {
+      "h": "GINGER TOM STEALS 47 GARDEN GLOVES",
+      "sub": "Owner has set up a \"returns table\" at the end of the drive"
+    },
+    {
+      "h": "CAT ACCIDENTALLY POSTED TO NEIGHBOURING TOWN",
+      "sub": "Parcel was marked \"fragile\" and the cat was described on arrival as \"fine, annoyed\""
+    },
+    {
+      "h": "PUB CAT HAS OWN TAB, LANDLORD REVEALS",
+      "sub": "Regulars buy it a saucer of milk every Friday \"out of respect\""
+    },
+    {
+      "h": "SPANIEL EATS WINNING RAFFLE TICKET",
+      "sub": "Owner offers to \"wait for nature to take its course\" before claiming the hamper"
+    },
+    {
+      "h": "DOG LEARNS TO RING DOORBELL, NOW DOES IT CONSTANTLY",
+      "sub": "Family has answered the door 112 times this week"
+    },
+    {
+      "h": "SAUSAGE DOG WINS SHEEPDOG TRIAL BY MISTAKE",
+      "sub": "Judges admit the sheep \"seemed to find him confusing\""
+    },
+    {
+      "h": "LABRADOR HANDS IN LOST WALLET AT POLICE STATION",
+      "sub": "Wallet was slightly chewed but all the cash was there"
+    },
+    {
+      "h": "PUG DRESSED AS BUMBLEBEE CAUSES TRAFFIC JAM",
+      "sub": "Drivers slowed down \"just to have a proper look\""
+    },
+    {
+      "h": "DOG HAS WALKED ITSELF FOR TWO YEARS, NEIGHBOURS REVEAL",
+      "sub": "Terrier leaves at eight, does a loop of the park and is home by nine"
+    },
+    {
+      "h": "GREYHOUND REFUSES TO RUN IN THE RAIN",
+      "sub": "Retired racer now only goes out when the forecast is \"dry and bright\""
+    },
+    {
+      "h": "POODLE'S HAIRCUT COSTS MORE THAN OWNER'S",
+      "sub": "Owner shrugs: \"She deserves it. I don't.\""
+    },
+    {
+      "h": "DOG BURIES OWNER'S CAR KEYS IN ALLOTMENT",
+      "sub": "Search party of fourteen dug up three plots before finding them under the leeks"
+    },
+    {
+      "h": "BEAGLE SNIFFS OUT CAKE AT AIRPORT, NOTHING ELSE",
+      "sub": "Customs officers admit \"he's not really trained, he just likes cake\""
+    },
+    {
+      "h": "GRAN, 94, BEATS GRANDSON AT ARM WRESTLING",
+      "sub": "\"He's soft,\" she said. \"Too much time on his phone.\""
+    },
+    {
+      "h": "PENSIONER STILL WAITING FOR BUS FROM 1987",
+      "sub": "Retired postman insists \"it'll turn up, they always do\""
+    },
+    {
+      "h": "GREAT-GRANDAD COMPLETES FIRST SKYDIVE AGED 101",
+      "sub": "His only complaint was that \"the biscuits on the plane were stale\""
+    },
+    {
+      "h": "OAP KNITS JUMPER FOR EVERY LAMPPOST IN TOWN",
+      "sub": "Council has asked her to \"consider stopping at some point\""
+    },
+    {
+      "h": "COUPLE CELEBRATE 70 YEARS OF ARGUING ABOUT THE THERMOSTAT",
+      "sub": "Secret to a long marriage? \"Never let him near the dial.\""
+    },
+    {
+      "h": "PENSIONER DISCOVERS HE HAS BEEN SPEED-WALKING WRONG FOR DECADES",
+      "sub": "Club coach says he's been \"basically jogging\" since 1991"
+    },
+    {
+      "h": "GRAN'S SCONES BANNED FROM BAKE-OFF FOR BEING \"TOO GOOD\"",
+      "sub": "Organisers say the other entrants \"had simply given up\""
+    },
+    {
+      "h": "GRANDMA GOES VIRAL AFTER POINTING AT CAMERA FOR 3 MINUTES",
+      "sub": "Family had been trying to teach her how to make a video call"
+    },
+    {
+      "h": "PENSIONERS STAGE SIT-IN OVER CUSTARD CREAM SHORTAGE",
+      "sub": "Day centre protest ended when a new box was \"found in a cupboard\""
+    },
+    {
+      "h": "WIDOWER, 88, STARTS ROCK BAND WITH BRIDGE CLUB",
+      "sub": "First gig was cut short at nine o'clock because \"it was getting late\""
+    },
+    {
+      "h": "NAN DEMANDS RECOUNT AFTER BINGO DEFEAT",
+      "sub": "She insists number 42 was \"never said out loud, not once\""
+    },
+    {
+      "h": "RETIREE FINALLY FINISHES JIGSAW STARTED IN 1979",
+      "sub": "One piece still missing, believed to be \"under the dog\""
+    },
+    {
+      "h": "GRANDAD BUILDS WORKING STEAM TRAIN IN BACK GARDEN",
+      "sub": "Neighbours report it runs \"every half hour, on time, unlike the real one\""
+    },
+    {
+      "h": "PENSIONER FINISHES READING EVERY BOOK IN LIBRARY",
+      "sub": "Librarian says she has \"now started on the cookery leaflets\""
+    },
+    {
+      "h": "COUNCIL APOLOGISES FOR ROUNDABOUT",
+      "sub": "New junction has been described as \"a sort of circle that gives up halfway\""
+    },
+    {
+      "h": "BENCH UNVEILED FACING A WALL",
+      "sub": "Planning officer says the view \"will improve once the ivy grows\""
+    },
+    {
+      "h": "COUNCIL SPENDS £40,000 ON SIGN SAYING \"SIGN COMING SOON\"",
+      "sub": "Actual sign expected \"sometime next financial year\""
+    },
+    {
+      "h": "TOWN'S ONLY PUBLIC TOILET GIVEN LISTED STATUS",
+      "sub": "Heritage officials praise its \"unforgiving Victorian seating\""
+    },
+    {
+      "h": "COUNCIL PAINTS DOUBLE YELLOW LINES AROUND PARKED VAN",
+      "sub": "Owner returned to find a £70 fine and \"a very neat job, to be fair\""
+    },
+    {
+      "h": "NEW CYCLE LANE IS FOUR FEET LONG",
+      "sub": "Council says it is \"a starting point for a wider conversation\""
+    },
+    {
+      "h": "COUNCILLORS VOTE TO BAN THE WORD \"PROACTIVE\"",
+      "sub": "Motion passed after being described as \"going forward, very much needed\""
+    },
+    {
+      "h": "LAMPPOST INSTALLED IN MIDDLE OF PAVEMENT, AGAIN",
+      "sub": "Third time this year; residents now hang flower baskets from it"
+    },
+    {
+      "h": "COUNCIL TRIES TO EVICT DUCK FROM POND IT OWNS",
+      "sub": "Row continues as the duck \"fails to respond to any of our letters\""
+    },
+    {
+      "h": "GRITTERS OUT IN JULY AFTER CALENDAR MIX-UP",
+      "sub": "Depot boss admits someone \"flipped two pages at once\""
+    },
+    {
+      "h": "TOWN HALL CLOCK CORRECT FOR FIRST TIME SINCE 1958",
+      "sub": "Locals say it \"doesn't feel right\" and want it put back"
+    },
+    {
+      "h": "COUNCIL NAMES NEW STREET \"ROAD ROAD\"",
+      "sub": "Residents claim the online vote was \"hijacked by teenagers\""
+    },
+    {
+      "h": "RECYCLING LEAFLET SENT TO WRONG TOWN, IN WRONG LANGUAGE",
+      "sub": "Households now know how to sort glass \"in fairly good Welsh\""
+    },
+    {
+      "h": "COUNCIL INSTALLS BIN, THEN A BIN FOR THE BIN",
+      "sub": "Second bin will collect rubbish left next to the first one"
+    },
+    {
+      "h": "PARISH MEETING ON NOISE COMPLAINTS ABANDONED DUE TO SHOUTING",
+      "sub": "Chair calls for \"a period of quiet reflection, please, PLEASE\""
+    },
+    {
+      "h": "COUNCIL TWINS TOWN WITH ITSELF TO SAVE MONEY",
+      "sub": "Exchange trip will be \"a walk to the other end of the high street\""
+    },
+    {
+      "h": "POTHOLE SO BIG IT HAS ITS OWN POSTCODE",
+      "sub": "Residents now forward its post and leave it a Christmas card"
+    },
+    {
+      "h": "VILLAGERS PLANT DAFFODILS IN POTHOLES TO SHAME COUNCIL",
+      "sub": "Council responds by \"praising the community spirit\""
+    },
+    {
+      "h": "MAN SPENDS FOUR HOURS LOOKING FOR CAR IN MULTI-STOREY",
+      "sub": "Car was at home; he had walked into town that morning"
+    },
+    {
+      "h": "TRAFFIC CONES STOLEN AND RETURNED WITH APOLOGY NOTE",
+      "sub": "Note read \"sorry, needed them for a party, all cleaned\""
+    },
+    {
+      "h": "SAT NAV SENDS LORRY DOWN VILLAGE FOOTPATH",
+      "sub": "Driver says he \"trusted the lady voice completely\""
+    },
+    {
+      "h": "PARKING TICKET ISSUED TO HORSE",
+      "sub": "Warden says it was \"clearly over the time limit outside the bakery\""
+    },
+    {
+      "h": "SPEED CAMERA CATCHES MOBILITY SCOOTER AT 9MPH",
+      "sub": "Pensioner says she was \"late for the hairdresser\""
+    },
+    {
+      "h": "ROADWORKS FINISHED EARLY, TOWN IN SHOCK",
+      "sub": "Workers say they \"don't know what came over them\""
+    },
+    {
+      "h": "TEMPORARY TRAFFIC LIGHTS CELEBRATE 11TH BIRTHDAY",
+      "sub": "Locals hold a small party with cake at the red light"
+    },
+    {
+      "h": "ROAD RESURFACED, THEN DUG UP THE NEXT DAY",
+      "sub": "Water board and council admit they \"never really talk\""
+    },
+    {
+      "h": "DRIVERS BAFFLED BY SIGN: \"SLOW, CHANGE OF HEART AHEAD\"",
+      "sub": "Typo should have read \"change of layout\""
+    },
+    {
+      "h": "MAN PARKS SO BADLY HE GETS ROUND OF APPLAUSE",
+      "sub": "Bystanders say the car was \"somehow at three angles at once\""
+    },
+    {
+      "h": "HOTTEST DAY OF THE YEAR LASTS FORTY MINUTES",
+      "sub": "Barbecues lit across the nation were extinguished by 2.15pm"
+    },
+    {
+      "h": "SNOWFLAKE CAUSES CHAOS ON THE RAILWAYS",
+      "sub": "Commuters stranded after \"a single flake, possibly two\""
+    },
+    {
+      "h": "TOWN DECLARES OFFICIAL \"MIZZLE\" DAY",
+      "sub": "Weather that is \"not quite rain, not quite mist\" now has its own holiday"
+    },
+    {
+      "h": "MAN SAYS HE CAN PREDICT WEATHER WITH HIS KNEE",
+      "sub": "Knee is right 70% of the time, beating the local forecaster"
+    },
+    {
+      "h": "WIND BLOWS ENTIRE WASHING LINE TO NEXT VILLAGE",
+      "sub": "Underwear recovered from a churchyard hedge two miles away"
+    },
+    {
+      "h": "HEATWAVE: NATION'S SOCKS AND SANDALS SPOTTED",
+      "sub": "Fashion experts warn the trend is \"back, and stronger than before\""
+    },
+    {
+      "h": "HAILSTONE SHAPED LIKE A DUCK FOUND IN GARDEN",
+      "sub": "Woman keeps it in her freezer \"for the grandchildren to see\""
+    },
+    {
+      "h": "RAIN EXPECTED, SAYS EVERYONE, ALWAYS",
+      "sub": "Forecasters confirm it is \"a fairly safe prediction\""
+    },
+    {
+      "h": "SUMMER ARRIVES ON A TUESDAY, LEAVES ON WEDNESDAY",
+      "sub": "Nation agrees it was \"nice while it lasted\""
+    },
+    {
+      "h": "MAN REFUSES TO WEAR COAT DESPITE BLIZZARD",
+      "sub": "\"It's not that cold,\" he said, visibly blue"
+    },
+    {
+      "h": "FOG SO THICK VILLAGE LOSES ITS CHURCH",
+      "sub": "Spire reappeared at lunchtime \"exactly where we left it\""
+    },
+    {
+      "h": "RAINBOW OVER TOWN SPARKS 400 CALLS TO COUNCIL",
+      "sub": "Residents wanted to know \"who to thank\""
+    },
+    {
+      "h": "WEATHER VANE HAS POINTED SOUTH FOR 30 YEARS",
+      "sub": "Engineer finds it was \"bolted on by a man who just liked south\""
+    },
+    {
+      "h": "MAN FINDS POTATO SHAPED LIKE KING",
+      "sub": "Spud has been given a small crown and a cushion on the mantelpiece"
+    },
+    {
+      "h": "RECORD-BREAKING MARROW TOO BIG FOR GARDEN GATE",
+      "sub": "Grower had to borrow a forklift and \"a very patient nephew\""
+    },
+    {
+      "h": "ALLOTMENT FEUD OVER RUNNER BEANS ENTERS TENTH YEAR",
+      "sub": "Both men claim the canes are \"mine, and always have been\""
+    },
+    {
+      "h": "CARROT GROWS THROUGH WEDDING RING LOST IN 2004",
+      "sub": "\"I'd given up hope,\" said the gardener. \"And then, the carrot.\""
+    },
+    {
+      "h": "GIANT ONION CONTEST ENDS IN TEARS",
+      "sub": "Judges say it was \"the onions, mostly\""
+    },
+    {
+      "h": "MAN TALKS TO HIS TOMATOES, TOMATOES WIN PRIZE",
+      "sub": "He says the secret is \"mostly gossip about the neighbours\""
+    },
+    {
+      "h": "SHED OF THE YEAR SHORTLIST ANNOUNCED",
+      "sub": "Finalists include a shed shaped like a teapot and one with a hot tub"
+    },
+    {
+      "h": "GARDEN GNOME RETURNS WITH POSTCARDS FROM SPAIN",
+      "sub": "Family suspect a prank but admit \"he does look very tanned\""
+    },
+    {
+      "h": "HEDGE TRIMMED INTO SHAPE OF NEIGHBOUR, NEIGHBOUR NOT THRILLED",
+      "sub": "\"He's given me a much bigger nose than I've actually got\""
+    },
+    {
+      "h": "COURGETTE GLUT HITS VILLAGE",
+      "sub": "Police warn of \"anonymous courgette drops\" on doorsteps after dark"
+    },
+    {
+      "h": "PRIZE PUMPKIN STOLEN DAYS BEFORE SHOW",
+      "sub": "Grower offers reward and warns \"I know what you look like, pumpkin\""
+    },
+    {
+      "h": "LAWN SO NEAT IT IS MISTAKEN FOR BOWLING GREEN",
+      "sub": "Bowls club turned up unannounced and played a full match"
+    },
+    {
+      "h": "SUNFLOWER NOW TALLER THAN HOUSE",
+      "sub": "Plant is visible from the motorway and \"seems to wave at traffic\""
+    },
+    {
+      "h": "SLUGS EAT ENTIRE PRIZE LETTUCE IN ONE NIGHT",
+      "sub": "Gardener describes the scene as \"a slimy massacre\""
+    },
+    {
+      "h": "ALLOTMENT SOCIETY ELECTS LEEK AS CHAIR",
+      "sub": "Members say the leek is \"at least a good listener\""
+    },
+    {
+      "h": "SUPERMARKET RUNS OUT OF BREAD AFTER LIGHT DRIZZLE",
+      "sub": "Shoppers stockpile loaves \"just in case it gets worse\""
+    },
+    {
+      "h": "SELF-SERVICE TILL SAYS \"UNEXPECTED ITEM\" TO MAN'S HAT",
+      "sub": "Shopper had to remove it and \"have a quiet word with myself\""
+    },
+    {
+      "h": "MEAL DEAL PRICE RISE SPARKS LUNCHTIME FURY",
+      "sub": "Office workers threaten to \"make our own sandwiches, at home, like animals\""
+    },
+    {
+      "h": "TROLLEY WITH WONKY WHEEL RETIRED AFTER 22 YEARS",
+      "sub": "Staff held a small leaving do; trolley \"still pulled to the left\""
+    },
+    {
+      "h": "SHOPPER FINDS SAME MELON IN TROLLEY FOR THREE WEEKS",
+      "sub": "Store admits the trolley \"has never really been cleaned out\""
+    },
+    {
+      "h": "CORNER SHOP OWNER KNOWS EVERYONE'S ORDER BY HEART",
+      "sub": "Customers say they \"haven't spoken in years, he just knows\""
+    },
+    {
+      "h": "WOMAN QUEUES THREE HOURS FOR HALF-PRICE CHEESE",
+      "sub": "\"Worth it,\" she said, clutching a slightly sweaty brie"
+    },
+    {
+      "h": "YELLOW STICKER STAMPEDE AT 7PM",
+      "sub": "Two shoppers bruised after reaching for the same reduced quiche"
+    },
+    {
+      "h": "SHOP SELLS OUT OF PARSNIPS AFTER TV CHEF MENTIONS THEM",
+      "sub": "The chef had only been saying he didn't like them"
+    },
+    {
+      "h": "MAN ACCIDENTALLY BUYS 200 TINS OF BEANS ONLINE",
+      "sub": "Says he meant \"two\" and now has \"plenty for winter, and the next one\""
+    },
+    {
+      "h": "BAG FOR LIFE LASTS ACTUAL LIFETIME",
+      "sub": "Owner, 81, has used the same carrier bag since 1974"
+    },
+    {
+      "h": "SUPERMARKET PLAYS CHRISTMAS SONGS IN AUGUST",
+      "sub": "Staff \"in a very dark place\" by mid-September"
+    },
+    {
+      "h": "CHARITY SHOP RECEIVES 600 COPIES OF SAME CRIME NOVEL",
+      "sub": "Volunteers now use them to prop up every wobbly table in town"
+    },
+    {
+      "h": "BUTCHER'S SAUSAGES SO GOOD MAN TAKES THEM ON HOLIDAY",
+      "sub": "Customs let them through \"after a long and emotional conversation\""
+    },
+    {
+      "h": "FREE SAMPLES GO TO PENSIONER'S HEAD",
+      "sub": "She returned for a cocktail sausage \"nine or ten times, possibly twelve\""
+    },
+    {
+      "h": "CHIP SHOP WINS AWARD FOR \"MOST VINEGAR\"",
+      "sub": "Owner admits he has \"never really measured it\""
+    },
+    {
+      "h": "BAKERY MAKES SAUSAGE ROLL THE SIZE OF A CANOE",
+      "sub": "Six bakers and a removed doorframe were needed to get it out"
+    },
+    {
+      "h": "WOMAN MAKES PERFECT TOAST, HAS IT FRAMED",
+      "sub": "Slice was \"exactly the right brown, all the way to the edges\""
+    },
+    {
+      "h": "TEA ROOM BANS DUNKING AFTER BISCUIT INCIDENT",
+      "sub": "\"It was half a digestive and a lot of screaming,\" said the owner"
+    },
+    {
+      "h": "MAN EATS 40 PICKLED EGGS, REGRETS 39 OF THEM",
+      "sub": "Pub record now stands, though \"nobody wants to sit near him\""
+    },
+    {
+      "h": "JAM OR CREAM FIRST? SCONE DEBATE SPLITS VILLAGE",
+      "sub": "Fete committee forced to set up two separate tables"
+    },
+    {
+      "h": "TOWN'S OLDEST FRUITCAKE TURNS 110",
+      "sub": "Owner says it is \"still moist, mostly\" and will be eaten \"one day\""
+    },
+    {
+      "h": "CAFE SERVES TEA SO STRONG \"THE SPOON STANDS UP\"",
+      "sub": "Health inspectors confirm the spoon \"did, in fact, stand up\""
+    },
+    {
+      "h": "KEBAB VAN BECOMES TOWN'S UNOFFICIAL LANDMARK",
+      "sub": "Tourists now give directions using the van as a reference point"
+    },
+    {
+      "h": "CHEESE SO STRONG IT CLEARS VILLAGE HALL",
+      "sub": "Show entry described as \"aggressive\" by three separate judges"
+    },
+    {
+      "h": "PIE SHOP THAT \"NEVER RUNS OUT OF GRAVY\" RUNS OUT OF GRAVY",
+      "sub": "Owner described as \"devastated, just devastated\""
+    },
+    {
+      "h": "MAN'S TEA GOES COLD WHILE HE TELLS STORY ABOUT TEA",
+      "sub": "The story was about how much he likes his tea piping hot"
+    },
+    {
+      "h": "VILLAGE BAKER UP AT 3AM FOR 50 YEARS FINALLY SLEEPS IN",
+      "sub": "Customers queued in confusion outside an unlit shop"
+    },
+    {
+      "h": "FISH FINGER SANDWICH VOTED TOWN'S OFFICIAL DISH",
+      "sub": "Rival \"cheese on toast\" campaign alleges widespread fraud"
+    },
+    {
+      "h": "VILLAGE FETE CANCELLED DUE TO EXCESSIVE BUNTING",
+      "sub": "Safety officer feared the green was \"structurally overwhelmed\""
+    },
+    {
+      "h": "TOMBOLA PRIZE IS SAME BOTTLE OF SHERRY FOR 15TH YEAR",
+      "sub": "Bottle has been won and donated back every summer since 2010"
+    },
+    {
+      "h": "WELLY-WANGING CHAMPION THROWS BOOT INTO RIVER",
+      "sub": "Judges rule it \"technically still a record\""
+    },
+    {
+      "h": "SCARECROW FESTIVAL ENTRY \"TOO FRIGHTENING\"",
+      "sub": "Lifelike vicar scarecrow made two people cry outside the church"
+    },
+    {
+      "h": "DUCK RACE WON BY DUCK THAT WENT THE WRONG WAY",
+      "sub": "Organisers say the river \"had other ideas\""
+    },
+    {
+      "h": "TUG OF WAR ENDS IN DRAW AFTER ROPE SNAPS",
+      "sub": "Both teams landed in a heap and \"agreed to share the trophy\""
+    },
+    {
+      "h": "GUESS THE WEIGHT OF THE CAKE WON BY MAN WHO BAKED IT",
+      "sub": "Committee launches inquiry into \"potential cake fraud\""
+    },
+    {
+      "h": "MAYPOLE DANCERS TIE THEMSELVES IN A KNOT",
+      "sub": "Firefighters spent an hour freeing eight children and a teacher"
+    },
+    {
+      "h": "EGG AND SPOON RACE WINNER USED GLUE, SAYS RIVAL",
+      "sub": "Investigation ongoing; the egg has been \"sent away for analysis\""
+    },
+    {
+      "h": "BRASS BAND PLAYS SAME SONG FOR ENTIRE FETE",
+      "sub": "Bandleader says it was \"the only one we all knew\""
+    },
+    {
+      "h": "BOUNCY CASTLE DEFLATES DURING MAYOR'S SPEECH",
+      "sub": "Mayor carried on as the castle \"slowly ate the vicar\""
+    },
+    {
+      "h": "VILLAGE SHOW JUDGE ACCUSED OF FAVOURING ROUND JAM JARS",
+      "sub": "Critics say square-jarred entries \"never stood a chance\""
+    },
+    {
+      "h": "COCONUT SHY COCONUTS FOUND TO BE GLUED DOWN",
+      "sub": "Stallholder insists \"they're just very settled\""
+    },
+    {
+      "h": "BEST-KEPT VILLAGE TITLE STRIPPED OVER BUS SHELTER",
+      "sub": "Residents blame \"one crisp packet. One single crisp packet.\""
+    },
+    {
+      "h": "SACK RACE TURNS UGLY AS SACKS RUN OUT",
+      "sub": "Late entrants were forced to compete in pillowcases"
+    },
+    {
+      "h": "COW ESCAPES FIELD, VISITS HAIRDRESSER",
+      "sub": "Staff say she \"stood very still for a blow-dry\""
+    },
+    {
+      "h": "SHEEP FOUND ON TOP OF BUS SHELTER",
+      "sub": "Farmer has \"no idea how, and frankly, no idea why\""
+    },
+    {
+      "h": "ESCAPED PIG LIVES WILD IN WOODS FOR A YEAR",
+      "sub": "Animal spotted wearing \"what looked very much like a smile\""
+    },
+    {
+      "h": "GOATS EAT VICAR'S SERMON NOTES",
+      "sub": "Service went ahead \"mostly from memory, and slightly about goats\""
+    },
+    {
+      "h": "TORTOISE MISSING SINCE 1986 FOUND IN NEXT DOOR'S GARDEN",
+      "sub": "Owner says he \"always suspected the Hendersons\""
+    },
+    {
+      "h": "HEDGEHOGS GIVEN TINY SET OF TRAFFIC LIGHTS",
+      "sub": "Volunteers say the crossing is used \"about twice a night\""
+    },
+    {
+      "h": "FOX STEALS 30 SHOES FROM ONE STREET",
+      "sub": "All right feet, investigators note \"with some concern\""
+    },
+    {
+      "h": "SQUIRREL OUTWITS £300 BIRD FEEDER",
+      "sub": "Owner says he has \"lost the war but gained some respect\""
+    },
+    {
+      "h": "BADGER DIGS UP VILLAGE CRICKET PITCH ON MATCH DAY",
+      "sub": "Game moved to a car park; the badger \"watched from the boundary\""
+    },
+    {
+      "h": "ALPACA RING BEARER EATS WEDDING BOUQUET",
+      "sub": "Bride says it was \"still the best day of my life\""
+    },
+    {
+      "h": "HORSE WALKS INTO PUB, ORDERS NOTHING",
+      "sub": "Landlord says it \"just stood there, the way some regulars do\""
+    },
+    {
+      "h": "LLAMA SPITS AT COUNCIL INSPECTOR",
+      "sub": "Owner says the llama \"has strong views on planning permission\""
+    },
+    {
+      "h": "RABBIT ELECTED CAPTAIN OF PRIMARY SCHOOL",
+      "sub": "Pupils say he promises \"more carrots and longer playtimes\""
+    },
+    {
+      "h": "SEAL SUNBATHES ON LIFEBOAT SLIPWAY, DELAYS PRACTICE",
+      "sub": "Crew say the seal \"outranks all of us, really\""
+    },
+    {
+      "h": "DONKEY GOES ON STRIKE AT SEASIDE",
+      "sub": "Animal refuses to walk \"until the ice cream situation improves\""
+    },
+    {
+      "h": "COWS HOLD UP COMMUTER TRAIN BY STANDING ON LINE",
+      "sub": "Passengers report the herd \"seemed in no hurry whatsoever\""
+    },
+    {
+      "h": "GOLDFISH OUTLIVES THREE FAMILY DOGS",
+      "sub": "The fish, called Keith, is now 34 and \"frankly smug\""
+    },
+    {
+      "h": "RAM HEADBUTTS QUAD BIKE DOWN HILL",
+      "sub": "Farmer says the ram \"has never liked vehicles, or me\""
+    },
+    {
+      "h": "CHICKEN LAYS EGG INSIDE AN EGG INSIDE AN EGG",
+      "sub": "Farmer says it was \"like a breakfast nesting doll\""
+    },
+    {
+      "h": "RATS MOVE INTO DISUSED MODEL VILLAGE",
+      "sub": "Pest control say they look \"terrifyingly huge in context\""
+    },
+    {
+      "h": "OTTERS SPOTTED HOLDING HANDS IN TOWN RIVER",
+      "sub": "Couple watching say it was \"more romantic than our wedding\""
+    },
+    {
+      "h": "DEER WANDERS INTO GARDEN CENTRE, BUYS NOTHING",
+      "sub": "Staff say it \"browsed for about twenty minutes then left\""
+    },
+    {
+      "h": "SNAIL RACE CHAMPION RETIRES AFTER RECORD SEASON",
+      "sub": "Trainer says Gary \"has nothing left to prove\""
+    },
+    {
+      "h": "FROG MIGRATION FORCES CLOSURE OF COUNTRY LANE",
+      "sub": "Volunteers with buckets help 4,000 frogs \"get where they're going\""
+    },
+    {
+      "h": "TRAIN ARRIVES ON TIME, PASSENGERS SUSPICIOUS",
+      "sub": "Several commuters refused to board \"in case it was a trick\""
+    },
+    {
+      "h": "BUS DRIVER STOPS ROUTE TO HELP DUCKLINGS CROSS",
+      "sub": "Passengers applauded; one man \"had a little cry\""
+    },
+    {
+      "h": "LEAVES ON THE LINE CAUSE CHAOS, AGAIN",
+      "sub": "Rail bosses blame \"an unprecedented number of autumns\""
+    },
+    {
+      "h": "MAN CATCHES WRONG TRAIN, ENDS UP IN SCOTLAND",
+      "sub": "He only wanted to go two stops \"for a haircut\""
+    },
+    {
+      "h": "RAIL REPLACEMENT BUS REPLACED BY RAIL REPLACEMENT BUS",
+      "sub": "Passengers on the 7.42 report \"buses all the way down\""
+    },
+    {
+      "h": "TRAIN ANNOUNCER APOLOGISES FOR EVERYTHING, INCLUDING WEATHER",
+      "sub": "Commuters praise the \"genuinely heartfelt\" announcements"
+    },
+    {
+      "h": "COMMUTER HAS SAT IN SAME SEAT FOR 30 YEARS",
+      "sub": "Rival commuter \"has never been allowed near it\""
+    },
+    {
+      "h": "VILLAGE BUS RUNS ONCE A WEEK, IS LATE",
+      "sub": "Next service is due on Thursday, \"give or take a Friday\""
+    },
+    {
+      "h": "MAN DRIVES MOBILITY SCOOTER 300 MILES TO VISIT SISTER",
+      "sub": "Journey took eleven days and \"several very kind cafes\""
+    },
+    {
+      "h": "FERRY TURNS BACK AFTER CAPTAIN FORGETS SANDWICHES",
+      "sub": "Passengers say they \"fully understood, to be fair to him\""
+    },
+    {
+      "h": "LEARNER DRIVER PASSES TEST ON 41ST ATTEMPT",
+      "sub": "Examiner, now retired, came back specially \"to see it through\""
+    },
+    {
+      "h": "ICE CREAM VAN JINGLE PLAYED BACKWARDS FOR A WEEK",
+      "sub": "Children say it \"sounded haunted but still meant ice cream\""
+    },
+    {
+      "h": "TAXI DRIVER HAS NOT STOPPED TALKING SINCE 2009",
+      "sub": "Passengers report hearing \"the full story of his conservatory\""
+    },
+    {
+      "h": "CANAL BOAT OVERTAKEN BY JOGGING PENSIONER",
+      "sub": "Boat owner says \"she wasn't even trying\""
+    },
+    {
+      "h": "BIN MEN COLLECT ENTIRE GARDEN SHED BY MISTAKE",
+      "sub": "Owner had left it near the kerb \"while I painted the fence\""
+    },
+    {
+      "h": "TOWN DIVIDED OVER WHICH BIN IS FOR WHAT",
+      "sub": "Council's 14-colour system described as \"basically a rainbow\""
+    },
+    {
+      "h": "WHEELIE BIN ROLLS TWO MILES DOWNHILL",
+      "sub": "Bin found outside a pub \"like it had somewhere to be\""
+    },
+    {
+      "h": "MAN DECORATES WHEELIE BIN, WINS BEST CHRISTMAS LIGHTS",
+      "sub": "Judges say the bin \"really captured the spirit\""
+    },
+    {
+      "h": "FORTNIGHTLY BINS NOW COLLECTED \"EVERY OTHER FORTNIGHT\"",
+      "sub": "Council insists it is \"the same thing, if you really think about it\""
+    },
+    {
+      "h": "FOXES FORM UNION OVER NEW BIN LIDS",
+      "sub": "Wildlife expert says the lids are \"an affront to fox culture\""
+    },
+    {
+      "h": "TIP QUEUE SO LONG MAN TAKES PACKED LUNCH",
+      "sub": "Waited six hours to drop off \"one old kettle\""
+    },
+    {
+      "h": "LIBRARY BOOK RETURNED 80 YEARS LATE WITH £5 NOTE",
+      "sub": "Note read \"for the inconvenience\" in beautiful copperplate"
+    },
+    {
+      "h": "BELL RINGERS RANG WRONG TUNE FOR A DECADE",
+      "sub": "Vicar says \"we just thought it was a modern arrangement\""
+    },
+    {
+      "h": "VICAR'S SERMON SO SHORT CONGREGATION ASKS FOR MORE",
+      "sub": "Service lasted eleven minutes, \"including the hymns\""
+    },
+    {
+      "h": "SCHOOL NATIVITY FEATURES SEVEN WISE MEN AND A LOBSTER",
+      "sub": "Head teacher says \"everybody wanted a part\""
+    },
+    {
+      "h": "HEADTEACHER BANS CONKERS, THEN WINS CONKER CHAMPIONSHIP",
+      "sub": "Pupils call it \"the greatest betrayal in school history\""
+    },
+    {
+      "h": "DINNER LADY RETIRES AFTER SERVING 2 MILLION CUSTARDS",
+      "sub": "Former pupils return to \"say thank you for the skin\""
+    },
+    {
+      "h": "LIBRARY INTRODUCES \"SHUSHING\" LESSONS",
+      "sub": "Trainee librarians practise on \"a deliberately noisy man\""
+    },
+    {
+      "h": "CHURCH ORGANIST PLAYS DISCO HIT AT CHRISTENING BY MISTAKE",
+      "sub": "The baby \"loved it, absolutely bopped\""
+    },
+    {
+      "h": "CHOIR SINGS ENTIRE CAROL SERVICE IN WRONG KEY",
+      "sub": "Choirmaster says \"it was a bold choice, and we stuck with it\""
+    },
+    {
+      "h": "PRIMARY SCHOOL SPORTS DAY DECLARED \"TOO COMPETITIVE\"",
+      "sub": "Dads' race ended in three pulled hamstrings and a stewards' inquiry"
+    },
+    {
+      "h": "SPELLING BEE WON WITH WORD NOBODY CAN PRONOUNCE",
+      "sub": "Judges simply \"trusted her and moved on\""
+    },
+    {
+      "h": "SCHOOL HAMSTER ESCAPES, LIVES IN STAFF ROOM ALL TERM",
+      "sub": "Teachers say he was \"the only one who never complained\""
+    },
+    {
+      "h": "CHURCH ROOF FUND REACHES TARGET 40 YEARS LATE",
+      "sub": "Roof has since been replaced twice \"from other funds\""
+    },
+    {
+      "h": "PUB QUIZ ENDS IN ROW OVER CAPITAL OF AUSTRALIA",
+      "sub": "Team \"Quiz Team Aguilera\" refuse to accept the answer"
+    },
+    {
+      "h": "LANDLORD PULLS PERFECT PINT, PUB FALLS SILENT",
+      "sub": "Regulars say it was \"spiritual, almost\""
+    },
+    {
+      "h": "DARTS PLAYER HITS BULLSEYE WHILE SNEEZING",
+      "sub": "Opponent says the sneeze \"should have counted as a foul\""
+    },
+    {
+      "h": "PUB REFUSES TO SERVE MAN UNTIL HE STOPS TALKING ABOUT HIS BOILER",
+      "sub": "He has now been sober for eight months"
+    },
+    {
+      "h": "BINGO CALLER LOSES VOICE, PENSIONERS CALL OWN NUMBERS",
+      "sub": "Game descended into \"anarchy, lovely anarchy\""
+    },
+    {
+      "h": "VILLAGE PUB'S DOMINOES TEAM UNBEATEN SINCE 1972",
+      "sub": "Rivals claim the team \"has never actually turned up\""
+    },
+    {
+      "h": "SAME MAN SINGS SAME KARAOKE SONG 11 TIMES",
+      "sub": "It was a power ballad and he \"felt every single word\""
+    },
+    {
+      "h": "PUB DOG BARKS FOR LAST ORDERS EVERY NIGHT",
+      "sub": "Landlord says the bell is now \"basically decorative\""
+    },
+    {
+      "h": "QUIZ MASTER GETS OWN ANSWER WRONG",
+      "sub": "Pub left \"in total chaos\" after the answer sheet was misprinted"
+    },
+    {
+      "h": "MEAT RAFFLE WINNER RECEIVES ENTIRE COW",
+      "sub": "Butcher says it was \"a clerical error, but a generous one\""
+    },
+    {
+      "h": "TOWN'S CHRISTMAS TREE IS A SINGLE TWIG",
+      "sub": "Council says it is \"minimalist\" and \"very eco-conscious\""
+    },
+    {
+      "h": "CHRISTMAS LIGHTS SWITCHED ON IN OCTOBER BY ACCIDENT",
+      "sub": "Electrician leaned on the wrong switch \"with my elbow\""
+    },
+    {
+      "h": "FATHER CHRISTMAS ARRIVES BY TRACTOR, SLIGHTLY LATE",
+      "sub": "Santa blames \"a sheep situation\" near the bypass"
+    },
+    {
+      "h": "TURKEY ESCAPES FARM DAYS BEFORE CHRISTMAS",
+      "sub": "Bird spotted \"heading for the motorway with real purpose\""
+    },
+    {
+      "h": "NEIGHBOURS' LIGHTS WAR CAUSES TOWN BLACKOUT",
+      "sub": "Both houses were described as \"visible from space, briefly\""
+    },
+    {
+      "h": "CRACKER JOKE SO BAD FAMILY STOPS SPEAKING",
+      "sub": "Joke involved a penguin and \"a very long pause\""
+    },
+    {
+      "h": "PANTO DAME FORGETS LINES, CROWD DOES IT FOR HER",
+      "sub": "\"Oh no she didn't,\" shouted 300 people, helpfully"
+    },
+    {
+      "h": "BONFIRE NIGHT GUY TOO LIFELIKE, POLICE CALLED",
+      "sub": "Effigy was wearing \"a very convincing anorak\""
+    },
+    {
+      "h": "EASTER EGG HUNT TURNS UP EGGS FROM 2019",
+      "sub": "Organisers say \"we did know some were missing\""
+    },
+    {
+      "h": "CAROL SINGERS PAID TO GO AWAY",
+      "sub": "Group earned £80 in one street \"without finishing a single verse\""
+    },
+    {
+      "h": "PUMPKIN CARVED INTO PERFECT LIKENESS OF NEIGHBOUR'S CAT",
+      "sub": "The cat \"seemed unimpressed\""
+    },
+    {
+      "h": "NEW YEAR FIREWORKS GO OFF AT 11.58PM",
+      "sub": "Town counted down to midnight \"in total darkness\""
+    },
+    {
+      "h": "ADVENT CALENDAR HAS 24 DAYS OF THE SAME BLANK WINDOW",
+      "sub": "Child says it was \"a valuable lesson about disappointment\""
+    },
+    {
+      "h": "SANDCASTLE GRANTED PLANNING PERMISSION",
+      "sub": "Six-year-old builder says it \"has a moat and everything\""
+    },
+    {
+      "h": "PIER EXTENDED BY ONE FOOT, GRAND OPENING HELD",
+      "sub": "Ribbon cutting attended by 400 people and \"one bemused crab\""
+    },
+    {
+      "h": "DAD BURIED IN SAND FORGOTTEN BY FAMILY",
+      "sub": "He was found \"after about an hour, maybe two\" by a dog"
+    },
+    {
+      "h": "DECKCHAIR DEFEATS MAN IN 40-MINUTE STRUGGLE",
+      "sub": "Witnesses say \"it was folding him, not the other way round\""
+    },
+    {
+      "h": "ARCADE 2P MACHINE FINALLY PAYS OUT",
+      "sub": "Ledge of coins \"had been teetering since the eighties\""
+    },
+    {
+      "h": "BEACH HUT SELLS FOR MORE THAN A HOUSE",
+      "sub": "New owner says it has \"a kettle and a really good view\""
+    },
+    {
+      "h": "CRAB GRABS TODDLER'S ICE CREAM, ESCAPES SIDEWAYS",
+      "sub": "Family say the getaway was \"honestly very impressive\""
+    },
+    {
+      "h": "TOWN BUILDS WORLD'S LONGEST WINDBREAK",
+      "sub": "Structure is three miles long and \"still not quite enough\""
+    },
+    {
+      "h": "SEASIDE DONKEY RETIRES TO THE SEASIDE",
+      "sub": "Owner says he \"just moved him about forty yards\""
+    },
+    {
+      "h": "MAN BREAKS RECORD FOR LONGEST TIME HOLDING A SPOON",
+      "sub": "Attempt lasted 31 hours and \"the spoon got quite warm\""
+    },
+    {
+      "h": "TOWN BREWS WORLD'S BIGGEST CUP OF TEA",
+      "sub": "Brew used 4,000 teabags and was \"a bit stewed\""
+    },
+    {
+      "h": "WOMAN HAS HAD SAME HAIRDO FOR 60 YEARS",
+      "sub": "Hairdresser describes the bouffant as \"load-bearing\""
+    },
+    {
+      "h": "GRANDAD COLLECTS 10,000 BOTTLE TOPS",
+      "sub": "Wife says she would \"like the spare room back, please\""
+    },
+    {
+      "h": "YORKSHIRE PUDDING RISES SO HIGH IT HITS OVEN DOOR",
+      "sub": "Family Sunday lunch delayed while Dad \"negotiated it out\""
+    },
+    {
+      "h": "MAN HICCUPS FOR SIX WEEKS, CURED BY LOUD AUNT",
+      "sub": "Aunt Maureen simply shouted \"STOP IT\" and he did"
+    },
+    {
+      "h": "VILLAGE ATTEMPTS RECORD FOR MOST PEOPLE DRESSED AS PEAS",
+      "sub": "312 peas gathered; the record still stands at 317"
+    },
+    {
+      "h": "HUSBAND FINDS 40-YEAR-OLD SANDWICH IN COAT POCKET",
+      "sub": "Says it was \"cheese, probably, it's hard to tell now\""
+    },
+    {
+      "h": "BOY, 9, BUILDS WORKING ROBOT FROM CEREAL BOXES",
+      "sub": "Robot can \"wave and tidy his room, slowly\""
+    },
+    {
+      "h": "TEAPOT COLLECTOR BUYS JUST ONE MORE",
+      "sub": "Husband says the house is now \"about 70% teapot\""
+    },
+    {
+      "h": "MAN WALKS LENGTH OF BRITAIN BACKWARDS",
+      "sub": "Says the hardest part was \"people asking if I was lost\""
+    },
+    {
+      "h": "COUPLE STILL VISIT BUS STOP WHERE THEY MET IN 1974",
+      "sub": "They married in 1979 but \"the bus stop is still special\""
+    },
+    {
+      "h": "UFO OVER TOWN TURNS OUT TO BE DAD'S DRONE",
+      "sub": "He had been \"having a look at the gutters\""
+    },
+    {
+      "h": "MYSTERY KNITTER LEAVES TINY HATS ON POSTBOXES",
+      "sub": "Village has started leaving \"thank you\" notes and a flask of tea"
+    },
+    {
+      "h": "GHOST SPOTTED IN TOWN HALL WAS THE CLEANER",
+      "sub": "She says she has been \"very pale since a child\""
+    },
+    {
+      "h": "CROP CIRCLE IN WHEAT FIELD SPELLS \"HI MUM\"",
+      "sub": "Local farmer's son \"has some explaining to do\""
+    },
+    {
+      "h": "MAN'S CRUMPET HAS EXACTLY 100 HOLES",
+      "sub": "He counted them \"twice, with a cocktail stick\""
+    },
+    {
+      "h": "MYSTERY HUM KEEPING VILLAGE AWAKE TURNS OUT TO BE FRIDGE",
+      "sub": "Fridge belongs to \"a man who's been on holiday since May\""
+    },
+    {
+      "h": "BIGFOOT SIGHTING ON MOOR WAS RAMBLER IN FURRY COAT",
+      "sub": "Rambler says he is \"quite pleased\" with the attention"
+    },
+    {
+      "h": "HAUNTED PUB GHOST \"TOO SHY\" TO APPEAR",
+      "sub": "Paranormal team waited all night and heard \"one polite knock\""
+    },
+    {
+      "h": "METAL DETECTORIST FINDS 4,000 RING PULLS",
+      "sub": "Hoping for treasure, he describes the haul as \"gutting\""
+    },
+    {
+      "h": "MYSTERY OF FLOWERS LEFT ON TOWN STATUE SOLVED",
+      "sub": "It was the statue's great-great-grandson \"on the way to work\""
+    },
+    {
+      "h": "LOCH MONSTER SIGHTING WAS SWAN WITH LONG NECK",
+      "sub": "Hotel owner insists \"it was very big for a swan\""
+    },
+    {
+      "h": "TIME CAPSULE DUG UP 20 YEARS EARLY \"OUT OF CURIOSITY\"",
+      "sub": "Contents: one CD, a yo-yo and \"a lot of damp\""
+    },
+    {
+      "h": "PHANTOM DOORBELL RINGER IS A VERY TALL HEDGE",
+      "sub": "Hedge has been \"ringing the bell in the wind for two years\""
+    },
+    {
+      "h": "GROOM LATE FOR WEDDING AFTER GETTING STUCK IN CAT FLAP",
+      "sub": "He had locked himself out and \"thought it was worth a go\""
+    },
+    {
+      "h": "BEST MAN'S SPEECH LASTS LONGER THAN THE RECEPTION",
+      "sub": "Hall booked until midnight; speech \"went on past one\""
+    },
+    {
+      "h": "BRIDE ARRIVES AT CHURCH ON COMBINE HARVESTER",
+      "sub": "Guests say it was \"very her\" and \"a bit loud\""
+    },
+    {
+      "h": "FAMILY RECORDS GRAN'S VOICE FOR SAT NAV",
+      "sub": "Car now says \"you've missed it, love\" at every junction"
+    },
+    {
+      "h": "DAD FINALLY FIXES DRIPPING TAP, HOLDS PRESS CONFERENCE",
+      "sub": "Took 14 years and \"a video I watched eleven times\""
+    },
+    {
+      "h": "MAN SPENT 30 YEARS PRETENDING TO BE ALLERGIC TO SPROUTS",
+      "sub": "Turns out he \"just didn't like them, and wanted out\""
+    },
+    {
+      "h": "WOMAN BUYS HOUSE BECAUSE OF THE NEIGHBOUR'S CAT",
+      "sub": "\"The house was fine. The cat was perfect.\""
+    },
+    {
+      "h": "SHELF HOLDS ONE BOOK, THEN TAKES DOWN WALL",
+      "sub": "Husband says the shelf \"is fine, it's the wall that's weak\""
+    },
+    {
+      "h": "FLAT-PACK WARDROBE FINISHED WITH SEVEN SPARE SCREWS",
+      "sub": "Owner says it is \"standing, for now\""
+    },
+    {
+      "h": "FAMILY MONOPOLY GAME ENTERS 12TH YEAR",
+      "sub": "Board is still set up in the conservatory \"exactly as it was left\""
+    },
+    {
+      "h": "TWINS BORN IN DIFFERENT YEARS AND DIFFERENT COUNTIES",
+      "sub": "Ambulance crossed the county line just after midnight on New Year's Eve"
+    },
+    {
+      "h": "MAN HAS WORN SAME CHRISTMAS JUMPER SINCE 1983",
+      "sub": "Jumper now has \"more darns than wool\""
+    },
+    {
+      "h": "HOUSE PAINTED BRIGHT PINK, NEIGHBOURS SEE RED",
+      "sub": "Owner says it is \"salmon, and they're just jealous\""
+    },
+    {
+      "h": "GRAN'S MESSAGES \"MOSTLY THUMBS AND A POTATO\"",
+      "sub": "Family still unsure what the potato emoji means"
+    },
+    {
+      "h": "BARBER GIVES MAN HALF A HAIRCUT, THEN GOES ON HOLIDAY",
+      "sub": "Customer says he is \"making it work, socially\""
+    },
+    {
+      "h": "MULLET MAKES SHOCK RETURN TO VILLAGE",
+      "sub": "Barber reports demand \"the like of which I haven't seen since 1989\""
+    },
+    {
+      "h": "HAT BLOWS OFF AT WEDDING, LANDS ON BRIDE",
+      "sub": "Guests agree \"it suited her, actually\""
+    },
+    {
+      "h": "MAN'S COMBOVER SURVIVES GALE FORCE WINDS",
+      "sub": "Gusts of 70mph \"couldn't shift it, not an inch\""
+    },
+    {
+      "h": "TOWN'S OLDEST CARDIGAN UP FOR AUCTION",
+      "sub": "Bidding is expected to reach \"at least a tenner\""
+    },
+    {
+      "h": "SUNDAY LEAGUE MATCH ABANDONED AS BALL LANDS IN CANAL",
+      "sub": "It was their only ball and nobody \"fancied going in after it\""
+    },
+    {
+      "h": "REFEREE SENDS HIMSELF OFF",
+      "sub": "Official admits he \"lost his head\" over a throw-in"
+    },
+    {
+      "h": "MASCOT SCORES BETTER GOAL THAN STRIKER AT HALF-TIME",
+      "sub": "Fans ask \"can we sign the giant badger?\""
+    },
+    {
+      "h": "FOOTBALL PIE PRICES REACH ALL-TIME HIGH",
+      "sub": "Supporters say the pies are \"now basically an investment\""
+    },
+    {
+      "h": "GROUNDSMAN'S STRIPES SO STRAIGHT CROWD APPLAUDS MOWER",
+      "sub": "Groundskeeper \"took a small bow\" at half-time"
+    },
+    {
+      "h": "NON-LEAGUE CLUB GIVES ONLY FAN SEASON TICKET FOR LIFE",
+      "sub": "He says he will \"keep complaining, but for free now\""
+    },
+    {
+      "h": "GOAL NET HAD HOLE IN IT FOR ENTIRE SEASON",
+      "sub": "Club says \"only three goals went through, and we got those back\""
+    },
+    {
+      "h": "BALL BOY SIGNS PRO CONTRACT, TAKES BALL WITH HIM",
+      "sub": "Club says the ball is \"not part of the deal\""
+    },
+    {
+      "h": "CROSSBAR CHALLENGE AT VILLAGE FETE WON BY VICAR",
+      "sub": "\"Divine intervention,\" say rivals. \"Practice,\" says the vicar."
+    },
+    {
+      "h": "LOCAL TEAM'S KIT SPONSORED BY UNDERTAKER",
+      "sub": "Shirts read \"We'll See You Later\" across the front"
+    },
+    {
+      "h": "FANS STUNNED AS LEAGUE TWO MATCH HAS NO RAIN",
+      "sub": "Supporters say they \"didn't know what to do with their hands\""
+    },
+    {
+      "h": "SUNDAY LEAGUE KEEPER HAS WORN FLAT CAP FOR 20 YEARS",
+      "sub": "Cap has \"never come off, not even for penalties\""
+    },
+    {
+      "h": "FAN'S 1966 SCARF FINALLY WASHED",
+      "sub": "Wife says \"it was time, it was well past time\""
+    },
+    {
+      "h": "FIVE-A-SIDE MATCH ENDS 41-40",
+      "sub": "Players admit \"nobody was really defending, as such\""
+    },
+    {
+      "h": "LINESMAN'S FLAG STUCK UP FOR ENTIRE GAME",
+      "sub": "Officials say the match was \"technically all offside\""
+    },
+    {
+      "h": "ACADEMY KIDS BEAT OLD BOYS 14-0",
+      "sub": "Veterans claim a moral victory as \"we were thinking about our knees\""
+    },
+    {
+      "h": "CLUB TEA LADY VOTED PLAYER OF THE SEASON",
+      "sub": "Fans say her bacon rolls \"contributed more than the back four\""
+    },
+    {
+      "h": "CORNER FLAG STOLEN, REPLACED WITH MOP",
+      "sub": "Referee allowed play to continue as the mop was \"regulation height\""
+    },
+    {
+      "h": "SUNDAY LEAGUE SIGNS STRIKER FOR CRATE OF CRISPS",
+      "sub": "Club says the fee \"includes add-ons, mostly dips\""
+    },
+    {
+      "h": "PUNDIT'S JUMPER DOMINATES MATCH COVERAGE",
+      "sub": "Viewers say the knitwear \"said more than the analysis\""
+    },
+    {
+      "h": "CLUB SHOP SELLS OUT OF BOBBLE HATS",
+      "sub": "Supporters say winter \"came early, and so did the bobbles\""
+    },
+    {
+      "h": "VILLAGE MATCH PENALTY SHOOTOUT LASTS 38 ROUNDS",
+      "sub": "Both keepers took two each and the dog nearly took one"
+    },
+    {
+      "h": "PRE-SEASON FRIENDLY ABANDONED DUE TO WASP",
+      "sub": "Players fled \"in every possible direction\""
+    },
+    {
+      "h": "STADIUM ANNOUNCER MISPRONOUNCES EVERY NAME, INCLUDING HIS OWN",
+      "sub": "Fans now chant the wrong names \"out of loyalty\""
+    },
+    {
+      "h": "POSTMAN DELIVERS BIRTHDAY CARD POSTED IN 1962",
+      "sub": "Recipient is now 71 but says \"thanks anyway, lovely thought\""
+    },
+    {
+      "h": "POST OFFICE QUEUE SO LONG IT GETS ITS OWN TEA TROLLEY",
+      "sub": "Volunteers now serve the line every Monday morning"
+    },
+    {
+      "h": "LOLLIPOP LADY STOPS TRAFFIC ONE LAST TIME AFTER 50 YEARS",
+      "sub": "Drivers honked \"in a nice way\" as she retired"
+    },
+    {
+      "h": "MILKMAN STILL DELIVERING BY HORSE AND CART",
+      "sub": "Horse knows the round \"better than I do,\" he admits"
+    },
+    {
+      "h": "WINDOW CLEANER HAS SEEN SAME THING EVERY DAY FOR 30 YEARS",
+      "sub": "The thing is a man doing a crossword \"in his pants\""
+    },
+    {
+      "h": "PLUMBER REVEALS HE IS SCARED OF WATER",
+      "sub": "\"Never been a problem,\" he says, \"as long as it stays in the pipes\""
+    },
+    {
+      "h": "ESTATE AGENT DESCRIBES SHED AS \"BIJOU RESIDENCE\"",
+      "sub": "Asking price is £180,000, \"garden view included\""
+    },
+    {
+      "h": "CHIMNEY SWEEP BOOKED FOR WEDDING TURNS UP SOOTY",
+      "sub": "Couple say it was \"authentic, at least\""
+    },
+    {
+      "h": "DRIVING INSTRUCTOR RETIRES AFTER 40 YEARS OF GASPING",
+      "sub": "He says the brake on his side is \"completely worn through\""
+    },
+    {
+      "h": "BUILDERS FINISH EXTENSION, LEAVE RADIO BEHIND",
+      "sub": "Family say the radio \"still plays the same station, on its own\""
+    },
+    {
+      "h": "TV ENGINEER FIXES SET BY HITTING IT",
+      "sub": "Customer charged £60 \"for knowing where to hit\""
+    },
+    {
+      "h": "SMART FRIDGE ORDERS 80 YOGHURTS",
+      "sub": "Owner says the fridge \"has a problem and needs help\""
+    },
+    {
+      "h": "PHONE AUTOCORRECTS \"GRAN\" TO \"GRANITE\" FOR SIX YEARS",
+      "sub": "Family group chat now refers to her as \"the stone\""
+    },
+    {
+      "h": "VILLAGE GETS FIRST CASHPOINT, QUEUE FORMS TO LOOK AT IT",
+      "sub": "Nobody withdrew any money; \"we just wanted to see it\""
+    },
+    {
+      "h": "ROBOT VACUUM ESCAPES HOUSE, FOUND IN PUB",
+      "sub": "Device had \"cleaned half the beer garden\" before being caught"
+    },
+    {
+      "h": "VILLAGE WIFI PASSWORD IS BEST-KEPT SECRET",
+      "sub": "It is written on the parish noticeboard, in pen"
+    },
+    {
+      "h": "VOICE ASSISTANT NOW ANSWERS ONLY TO \"OI\"",
+      "sub": "Grandad \"never learned its name and never will\""
+    },
+    {
+      "h": "DOORBELL CAMERA CATCHES FOX DOING ROLY-POLY",
+      "sub": "Footage watched \"about four hundred times, just in our house\""
+    },
+    {
+      "h": "MAN'S 20-YEAR-OLD PHONE STILL HAS HALF ITS BATTERY",
+      "sub": "He charges it \"once a month, if I remember\""
+    },
+    {
+      "h": "MAN SPENDS FOUR HOURS ON HOLD, FALLS FOR HOLD MUSIC",
+      "sub": "He has now requested it for his wedding"
+    },
+    {
+      "h": "SELFIE STICK BANNED FROM VILLAGE FAIR",
+      "sub": "Organisers cite \"one very nasty incident with a candy floss\""
+    },
+    {
+      "h": "NEIGHBOURS IN 20-YEAR FEUD OVER BIRD BATH",
+      "sub": "Bath sits \"exactly on the boundary, possibly on purpose\""
+    },
+    {
+      "h": "MAN BUILDS FENCE SO TALL NEIGHBOURS LOSE THE SUN",
+      "sub": "Planning officer says \"it is a lot of fence\""
+    },
+    {
+      "h": "RESIDENTS' MEETING LASTS NINE HOURS OVER HANGING BASKET",
+      "sub": "Basket was eventually moved \"six inches to the left\""
+    },
+    {
+      "h": "STREET PARTY SPLIT OVER BUNTING COLOURS",
+      "sub": "One end is red and white, the other \"aggressively blue\""
+    },
+    {
+      "h": "NEIGHBOUR RETURNS LAWNMOWER BORROWED IN 1994",
+      "sub": "\"Sorry it took so long,\" says note. \"Could I borrow the hedge trimmer?\""
+    },
+    {
+      "h": "SIGN WARNS OF \"VERY FRIENDLY DOG\"",
+      "sub": "Postman now spends 40 minutes at the door \"being friendly back\""
+    },
+    {
+      "h": "AM-DRAM HAMLET RUNS SIX HOURS AFTER CAST FORGETS ENDING",
+      "sub": "Audience \"stayed out of politeness, and for the raffle\""
+    },
+    {
+      "h": "BRASS BAND RECRUITS FIRST NEW MEMBER SINCE 1978",
+      "sub": "Newcomer, 67, is described as \"a bit of a youngster\""
+    },
+    {
+      "h": "STATUE'S TRAFFIC CONE HAT GRANTED HERITAGE STATUS",
+      "sub": "Council says removing it \"would cause civil unrest\""
+    },
+    {
+      "h": "TOP ART PRIZE GOES TO PAINTING HUNG UPSIDE DOWN",
+      "sub": "Artist says \"I'll take it either way up\""
+    },
+    {
+      "h": "LOCAL POET'S ODE TO BUS SHELTER GOES VIRAL",
+      "sub": "Opening line \"O shelter, thou keepest off the drizzle\" is now on mugs"
+    },
+    {
+      "h": "MORRIS DANCERS BANNED FROM SUPERMARKET CAR PARK",
+      "sub": "Security say the bells were \"frightening the trolleys\""
+    },
+    {
+      "h": "BAGPIPE PRACTICE CLEARS ENTIRE CAMPSITE",
+      "sub": "Tents found abandoned \"with the kettles still on\""
+    },
+    {
+      "h": "TALENT SHOW WON BY MAN WHO PEELED AN APPLE",
+      "sub": "Judges praised \"an unbroken peel of real emotional depth\""
+    },
+    {
+      "h": "PARK RUN WON BY MAN WHO WAS ONLY CHASING HIS HAT",
+      "sub": "He was \"unaware there was a race on at all\""
+    },
+    {
+      "h": "PENSIONERS' AQUA AEROBICS CREATES SMALL TIDAL WAVE",
+      "sub": "Lifeguard says \"we've never seen splashing like it\""
+    },
+    {
+      "h": "GYM MEMBERSHIP USED FOR FIRST TIME IN EIGHT YEARS",
+      "sub": "Member says the treadmill \"had changed a lot\""
+    },
+    {
+      "h": "YOGA CLASS ENDS AFTER EVERYONE FALLS ASLEEP",
+      "sub": "Instructor says \"that is actually the goal, sort of\""
+    },
+    {
+      "h": "MAN TAKES UP JOGGING, IMMEDIATELY BUYS £400 TRAINERS",
+      "sub": "Has since run \"about to the postbox and back\""
+    },
+    {
+      "h": "BIRDWATCHERS FLOCK TO TOWN FOR RARE WARBLER, FIND PIGEON",
+      "sub": "Experts say it was \"a very confident pigeon\""
+    },
+    {
+      "h": "TRAINSPOTTERS THRILLED BY NOTHING HAPPENING",
+      "sub": "Group of nine say it was \"a classic Tuesday\""
+    },
+    {
+      "h": "CROSSWORD SETTER HIDES PROPOSAL IN PUZZLE",
+      "sub": "Girlfriend got 14 across but \"couldn't get the rest\""
+    },
+    {
+      "h": "KNITTING CIRCLE'S SCARF LONGER THAN HIGH STREET",
+      "sub": "Scarf is now wrapped around the town hall twice for winter"
+    },
+    {
+      "h": "ANGLER CATCHES SAME FISH FOUR TIMES IN ONE DAY",
+      "sub": "Says the fish \"clearly enjoys the attention\""
+    },
+    {
+      "h": "MODEL RAILWAY TAKES OVER ENTIRE VILLAGE HALL",
+      "sub": "Badminton club now forced to play \"between the stations\""
+    },
+    {
+      "h": "CARAVAN CONVOY CAUSES 30-MILE TAILBACK",
+      "sub": "Lead caravan was doing \"a very sensible 38mph\""
+    },
+    {
+      "h": "FAMILY CAMPING TRIP ENDS AS TENT TAKES FLIGHT",
+      "sub": "Tent last seen \"over the next valley, heading east\""
+    },
+    {
+      "h": "WOMAN PACKS 14 PAIRS OF SHOES FOR WEEKEND AWAY",
+      "sub": "\"You never know,\" she said. She wore her slippers all weekend."
+    },
+    {
+      "h": "MAN TAKES 2,000 HOLIDAY PHOTOS, ALL OF HIS THUMB",
+      "sub": "Family slideshow \"lasted three hours and was very pink\""
+    },
+    {
+      "h": "STAYCATION FAMILY SPENDS FORTNIGHT IN OWN GARDEN",
+      "sub": "Dad insists they \"really got away from it all\""
+    },
+    {
+      "h": "SUNBATHER WAKES WITH NEWSPAPER TAN LINE",
+      "sub": "Front page headline was readable on his chest \"for three days\""
+    },
+    {
+      "h": "NEW SPEED BUMP LAUNCHES MOPED INTO HEDGE",
+      "sub": "Rider \"landed unhurt, after being briefly airborne\""
+    },
+    {
+      "h": "BUS SHELTER STOLEN OVERNIGHT",
+      "sub": "Police appeal for anyone who \"saw a shelter on the move\""
+    },
+    {
+      "h": "PHONE BOX TURNED INTO WORLD'S SMALLEST NIGHTCLUB",
+      "sub": "Capacity is two, \"three if you're friendly\""
+    },
+    {
+      "h": "RED PHONE BOX BECOMES LIBRARY, CAFE, THEN PHONE BOX",
+      "sub": "Villagers say they have \"gone full circle\""
+    },
+    {
+      "h": "TOWN CLOCK CHIMES 13 TIMES AT MIDNIGHT",
+      "sub": "Residents \"slightly spooked, mostly annoyed\""
+    },
+    {
+      "h": "VILLAGE SIGN MISSPELT FOR 90 YEARS",
+      "sub": "\"Little Wibbleton\" has been \"Littel\" since 1934"
+    },
+    {
+      "h": "MAN GETS HEAD STUCK IN RAILINGS, AGAIN",
+      "sub": "Firefighters greeted him \"by name, like an old friend\""
+    },
+    {
+      "h": "CATTLE GRID SAID TO BE \"TOO BOUNCY\"",
+      "sub": "Drivers complain of \"a real jolt to the soul\""
+    },
+    {
+      "h": "MAN SELLS FAMILY PIANO, FINDS IT IN HIS LOCAL PUB",
+      "sub": "He now plays it \"every Friday, badly, to make a point\""
+    },
+    {
+      "h": "DOORMAT READING \"GO AWAY\" WINS DESIGN PRIZE",
+      "sub": "Judges praise its \"honest, no-nonsense welcome\""
+    },
+    {
+      "h": "BOWLS CLUB SCANDAL: WOMAN USES METRIC TAPE MEASURE",
+      "sub": "Members say it \"goes against everything we stand for\""
+    },
+    {
+      "h": "LADIES' GUILD CALENDAR SHOWS MEMBERS HOLDING CAKES",
+      "sub": "Sales top 3,000 copies; Miss March's Battenberg \"a clear favourite\""
+    },
+    {
+      "h": "MAN FINDS WINNING SCRATCHCARD IN OLD JACKET, WINS £2",
+      "sub": "He says it \"made my whole week, honestly\""
+    },
+    {
+      "h": "ICE CREAM PARLOUR LAUNCHES GRAVY FLAVOUR",
+      "sub": "Owner calls it \"a delicacy\"; customers mostly say \"no\""
+    },
+    {
+      "h": "PUB SIGN REPAINTED, NOW SHOWS DIFFERENT KING",
+      "sub": "Regulars say the new king \"looks like the landlord's brother\""
+    },
+    {
+      "h": "VILLAGE'S ONLY STREETLIGHT FAILS, STARS ADMIRED",
+      "sub": "Residents report seeing \"a proper sky, for once\""
+    },
+    {
+      "h": "LOST PROPERTY OFFICE HAS 300 UMBRELLAS AND ONE CANOE",
+      "sub": "Canoe unclaimed since 2015; \"someone must miss it\""
+    },
+    {
+      "h": "PRIZE BULL GIVEN SHOWER AND BLOW-DRY BEFORE SHOW",
+      "sub": "Farmer says he \"looks better than I did at my wedding\""
+    },
+    {
+      "h": "MAN CLEARS GUTTERS, FINDS 1970S FRISBEE AND A FERRET",
+      "sub": "Ferret \"seemed fine and wanted to stay\""
+    },
+    {
+      "h": "LIFEGUARD BLOWS WHISTLE SO HARD HE FAINTS",
+      "sub": "Pool cleared; he was \"fine, just a bit embarrassed\""
+    },
+    {
+      "h": "CAR RUNS OUT OF PETROL ON GARAGE FORECOURT",
+      "sub": "Driver was \"three feet from the pump, so close\""
+    },
+    {
+      "h": "HOT AIR BALLOON LANDS IN GARDEN DURING BARBECUE",
+      "sub": "Pilot \"stayed for a burger and two sausages\""
+    },
+    {
+      "h": "NEW MOTORWAY SERVICES SELL SANDWICH FOR £11",
+      "sub": "Travellers describe it as \"a tuna-based hostage situation\""
+    },
+    {
+      "h": "HOMEOWNER FINDS SECRET ROOM, IT IS A CUPBOARD",
+      "sub": "\"I was very excited for about a second,\" she said"
+    },
+    {
+      "h": "MAN WALKS INTO WRONG HOUSE, STAYS FOR TEA",
+      "sub": "Family \"didn't like to say anything\" until he left at ten"
+    },
+    {
+      "h": "TOWN'S NEW YEAR RESOLUTION: STOP MOANING ABOUT WEATHER",
+      "sub": "Resolution broken by 9am on the first of January"
+    },
+    {
+      "h": "VILLAGE POND DRAINED, FIFTY YEARS OF LOST BALLS FOUND",
+      "sub": "Children queued around the green to reclaim them"
+    },
+    {
+      "h": "MAN TRAPPED IN PORTALOO FOR FOUR HOURS AT FESTIVAL",
+      "sub": "Freed during the headline act \"which I'd paid to see\""
+    },
+    {
+      "h": "LIGHTHOUSE KEEPER RETIRES 34 YEARS AFTER LIGHT WENT AUTOMATIC",
+      "sub": "He says he \"just liked keeping an eye on it\""
+    },
+    {
+      "h": "HIGH STREET NOW HAS SIX BARBERS AND NOTHING ELSE",
+      "sub": "Residents are \"very well groomed but cannot buy milk\""
+    },
+    {
+      "h": "SHOPPING CENTRE ESCALATOR RUNS BACKWARDS FOR A DAY",
+      "sub": "Shoppers say it was \"like walking up a waterfall\""
+    },
+    {
+      "h": "MAN ORDERS PIZZA TO HIS ADDRESS IN THE WRONG TOWN",
+      "sub": "Delivery driver drove 60 miles \"out of principle\""
+    },
+    {
+      "h": "GARDEN CENTRE CAFE QUEUE CAUSES TRAFFIC JAM",
+      "sub": "Scone demand \"outstripped all known supply\""
+    },
+    {
+      "h": "MAN TRIES TO CARRY NEW SOFA HOME FROM SHOP",
+      "sub": "Got \"about as far as the bakery\" before needing a sit-down on it"
+    },
+    {
+      "h": "TOWN CRIER LOSES VOICE, USES CLIPBOARD",
+      "sub": "Announcements now \"very quiet, but neatly written\""
+    },
+    {
+      "h": "CHAMPION CONKER FOUND TO BE CONCRETE",
+      "sub": "Title stripped \"after the 400th straight win\""
+    },
+    {
+      "h": "VILLAGE BOOK CLUB HAS NEVER READ A BOOK",
+      "sub": "Members confirm \"it's mostly about the wine and cheese\""
+    },
+    {
+      "h": "LOCAL MAN'S MOUSTACHE INSURED FOR £10,000",
+      "sub": "Policy does \"not cover soup\""
+    },
+    {
+      "h": "FAMILY REUNITED WITH TEDDY LOST ON BEACH 30 YEARS AGO",
+      "sub": "Bear is \"a bit sandy but in good spirits\""
+    },
+    {
+      "h": "GLOVE ON RAILING HAS WAITED FOR OWNER SINCE 2011",
+      "sub": "It is now considered \"part of the street\""
+    },
+    {
+      "h": "MAN TAKES WRONG DOG HOME FROM GROOMERS",
+      "sub": "Says the dogs \"look identical after a trim\""
+    },
+    {
+      "h": "NUN WINS LOCAL BURGER-EATING CONTEST",
+      "sub": "Sister Bernadette finished \"in a heavenly four minutes\""
+    },
+    {
+      "h": "MAN BUYS OLD DOUBLE-DECKER, LIVES ON TOP DECK",
+      "sub": "Says the views are \"lovely, but the bell keeps going\""
+    },
+    {
+      "h": "POLICE HORSE REFUSES TO PATROL WITHOUT A MINT",
+      "sub": "Officers now carry \"a full roll at all times\""
+    },
+    {
+      "h": "MAN DIGS POND, STRIKES SPRING, OPENS SPA",
+      "sub": "Says the water \"tastes very slightly of the shed\""
+    },
+    {
+      "h": "FOAM MACHINE FAULT FILLS HIGH STREET WITH BUBBLES",
+      "sub": "Shoppers were seen \"wading to the bank, laughing\""
+    },
+    {
+      "h": "BRIDGE CLUB SCANDAL: MEMBER SEEN WINKING",
+      "sub": "Winking is \"considered communication under club rules\""
+    },
+    {
+      "h": "WOMAN FINDS 1950S RATION BOOK, TRIES TO USE IT",
+      "sub": "Shopkeeper \"gave her a bit of butter anyway\""
+    },
+    {
+      "h": "TODDLER'S DRAWING USED ON COUNCIL ROAD SIGN",
+      "sub": "Sign now warns of \"men at work, possibly a potato\""
+    },
+    {
+      "h": "ESCAPE ROOM SO HARD NOBODY HAS ESCAPED",
+      "sub": "Owner now lets people out \"after two hours, out of kindness\""
+    },
+    {
+      "h": "MAN BUYS FIRST TOP HAT, WEARS IT TO THE TIP",
+      "sub": "\"If not now, when?\" he asked"
+    },
+    {
+      "h": "CHIP SHOP CAT PUT ON A DIET",
+      "sub": "Owner admits it was \"having battered sausage most nights\""
+    },
+    {
+      "h": "MAN'S SNEEZE SETS OFF CAR ALARMS DOWN ENTIRE STREET",
+      "sub": "Neighbours now \"brace themselves in hay fever season\""
+    },
+    {
+      "h": "JAM JUDGE SUFFERS \"SUGAR WOBBLE\" MID-CONTEST",
+      "sub": "Results delayed while she \"had a sit down and a cheese sandwich\""
+    },
+    {
+      "h": "VILLAGE CRICKET STOPS FOR TEA, NEVER RESTARTS",
+      "sub": "Players say the sandwiches \"were the main event anyway\""
+    },
+    {
+      "h": "BUS STOP MOVED TEN FEET, PASSENGERS REFUSE TO FOLLOW",
+      "sub": "Queue still forms \"by the old pole, out of habit\""
+    },
+    {
+      "h": "SCOUT HELPS WOMAN ACROSS ROAD SHE DIDN'T WANT TO CROSS",
+      "sub": "She \"had to get the bus back, eventually\""
+    },
+    {
+      "h": "RAFFLE WINNER SPENDS PRIZE ON SECOND SHED",
+      "sub": "First shed is \"for thinking\", second is \"for not thinking\""
+    },
+    {
+      "h": "CHOCOLATE FACTORY SMELL DRIFTS OVER TOWN, DIETS COLLAPSE",
+      "sub": "Slimming club reports \"a very difficult Thursday\""
+    },
+    {
+      "h": "TOWN'S STATUE OF A HORSE FOUND TO BE A COW",
+      "sub": "Historians say the sculptor \"had never seen either\""
+    },
+    {
+      "h": "MYSTERY STRANGER WASHES WOMAN'S CAR OVERNIGHT",
+      "sub": "Note on windscreen: \"It was bothering me. Sorry.\""
+    },
+    {
+      "h": "SPAGHETTI HARVEST POOR THIS YEAR, SAYS FARMER",
+      "sub": "Blames the cold spring and \"a lot of hungry pigeons\""
+    },
+    {
+      "h": "VILLAGE GREEN MOWED INTO GIANT SMILEY FACE",
+      "sub": "Groundsman says he was \"just in a good mood, that's all\""
+    },
+    {
+      "h": "MAN STILL HOLDS GRUDGE AGAINST 1985 TOMBOLA",
+      "sub": "Says he was \"robbed of a tin of travel sweets\""
+    },
+    {
+      "h": "ESCAPED BUDGIE RETURNS HOME WITH A GIRLFRIEND",
+      "sub": "Owner now has \"two budgies and a lot of questions\""
+    },
+    {
+      "h": "TROLLEY FISHED OUT OF RIVER WITH CARP INSIDE",
+      "sub": "Supermarket \"happy to have the trolley back, less sure about the carp\""
+    },
+    {
+      "h": "VILLAGE HALL HEATING FIXED, WHIST PLAYERS SWELTER",
+      "sub": "Players \"removed one cardigan each, a historic moment\""
+    },
+    {
+      "h": "SHEEP SHEARING RECORD ATTEMPT RUINED BY SHEEP",
+      "sub": "Sheep number three \"simply ran off, mid-fleece\""
+    },
+    {
+      "h": "POSTBOX PAINTED GOLD BY MISTAKE",
+      "sub": "Painter says he \"thought it was a special occasion\""
+    },
+    {
+      "h": "TEENAGER THANKS BUS DRIVER, DRIVER WEEPS",
+      "sub": "Moment shared online \"as a sign of hope for humanity\""
+    },
+    {
+      "h": "MAN MAKES ROUND OF 14 TEAS, GETS EVERY ONE RIGHT",
+      "sub": "Office says \"it's never happened before and never will again\""
+    },
+    {
+      "h": "RACING PIGEON BEATS SECOND-CLASS POST",
+      "sub": "Club proves its point \"with one envelope and some seed\""
+    },
+    {
+      "h": "GARDEN WATER FEATURE MISTAKEN FOR BURST MAIN",
+      "sub": "Water board sent three vans \"to look at a small stone frog\""
+    },
+    {
+      "h": "COUNCIL PLANTS TREE, PUTS UP SIGN ASKING IT TO GROW",
+      "sub": "Sign reads \"Please Grow\" and has \"so far had no effect\""
+    },
+    {
+      "h": "VILLAGE SHOP INTRODUCES ONE-WAY SYSTEM FOR ITS ONE AISLE",
+      "sub": "Customers now \"walk in, turn round and walk out again\""
+    },
+    {
+      "h": "BOILER BREAKS ON COLDEST NIGHT, AS IS TRADITION",
+      "sub": "Engineers confirm boilers \"can sense fear, and frost\""
+    },
+    {
+      "h": "MAN WINS ARGUMENT, NOBODY REMEMBERS WHAT IT WAS ABOUT",
+      "sub": "Family says it started \"over a lid, possibly a Tupperware one\""
+    },
+    {
+      "h": "NATION AGREES TO DISAGREE ON HOW TO SAY \"SCONE\"",
+      "sub": "Linguists call the result \"a draw, with extra jam\""
+    },
+    {
+      "h": "BIN BAG MISTAKEN FOR BLACK CAT BY WHOLE STREET",
+      "sub": "Neighbours had been \"leaving it ham for a week\""
+    },
+    {
+      "h": "CHIPPY FRYER BREAKS, TOWN ENTERS FRIDAY OF MOURNING",
+      "sub": "Queue waited three hours \"just in case it came back on\""
+    },
+    {
+      "h": "CURATE ACCIDENTALLY MARRIES BRIDE TO BEST MAN",
+      "sub": "Mix-up \"sorted before the cake, thankfully\""
+    },
+    {
+      "h": "VILLAGE'S ONE-MAN BAND SPLITS UP",
+      "sub": "Member cites \"creative differences, mostly with myself\""
+    },
+    {
+      "h": "PENSIONER, 97, GETS FIRST SPEEDING TICKET",
+      "sub": "She was doing 34 in a 30 \"on the way to the bingo\""
+    },
+    {
+      "h": "FARMER'S FIELD OF SCARECROWS ATTRACTS EVERY CROW IN COUNTY",
+      "sub": "Birds \"seem to find them comforting\""
+    },
+    {
+      "h": "LOCAL BOWLING ALLEY FINDS 1980S SHOES STILL UNCLAIMED",
+      "sub": "Shoes are \"size 13, bright red and frankly legendary\""
+    },
+    {
+      "h": "CHURCH FETE RAISES £3, VICAR \"OVER THE MOON\"",
+      "sub": "Target had been £2.50 \"for a new kettle lead\""
+    },
+    {
+      "h": "GARDENER GROWS STRAWBERRY THE SIZE OF A TENNIS BALL",
+      "sub": "It is \"mostly water and pride\""
+    },
+    {
+      "h": "TOWN'S FIRST PEDESTRIAN CROSSING CELEBRATES 70 YEARS",
+      "sub": "Locals \"still look both ways twice, out of respect\""
+    },
+    {
+      "h": "NEIGHBOURS PASS SAME TUPPERWARE BACK AND FORTH SINCE 2001",
+      "sub": "Container \"has had every type of casserole in it\""
+    },
+    {
+      "h": "ESCAPED HAMSTER FOUND IN SOFA, AGAIN",
+      "sub": "It is the sixth time; family suspect it \"just likes the sofa\""
+    },
+    {
+      "h": "SHOP PUTS UP \"BACK IN FIVE MINUTES\" SIGN, IS GONE FOR A YEAR",
+      "sub": "Owner had popped out \"for a bit of a holiday\""
+    },
+    {
+      "h": "CAMPSITE OWNER BANS GUITARS AFTER EIGHT-HOUR SINGALONG",
+      "sub": "\"There are only so many campfire songs,\" she said"
+    },
+    {
+      "h": "VILLAGE BALLOT FOR NEW BENCH TURNS UGLY",
+      "sub": "Residents split between \"teak\" and \"slightly darker teak\""
+    }
+  ],
+  "player": {
+    "goal": [
+      {
+        "h": "{NAME} DOES IT AGAIN!",
+        "sub": "{CLUB} fans \"running out of superlatives\" after yet another goal"
+      },
+      {
+        "h": "{NAME} THE HERO",
+        "sub": "{FIRST} sends the home end into raptures with a late winner"
+      },
+      {
+        "h": "GOAL MACHINE {NAME}",
+        "sub": "Local barber reports a surge in requests for \"the {NAME} cut\""
+      },
+      {
+        "h": "{FIRST} FIRES {CLUB} TO GLORY",
+        "sub": "Celebration described as \"half knee-slide, half dad at a wedding\""
+      },
+      {
+        "h": "NET GAINS FOR {NAME}",
+        "sub": "Goal \"still being talked about in the chip shop queue\""
+      },
+      {
+        "h": "{NAME} BAGS A BELTER",
+        "sub": "Pundits run out of words; one simply says \"cor\""
+      },
+      {
+        "h": "{NAME} STRIKE BULGES NET, SAYS GROUNDSMAN",
+        "sub": "Groundsman \"not angry, just impressed, and a bit angry\""
+      },
+      {
+        "h": "WHAT A {NAME}!",
+        "sub": "Supporters say the finish was \"worth the price of a pie alone\""
+      },
+      {
+        "h": "{FIRST} FINDS HIS SHOOTING BOOTS",
+        "sub": "Kitman confirms the boots \"have been found, they were in the van\""
+      },
+      {
+        "h": "{NAME} SILENCES DOUBTERS",
+        "sub": "Pub regulars who said \"he'll never score\" now say \"always rated him\""
+      },
+      {
+        "h": "{CLUB} FANS NAME PIE AFTER {NAME}",
+        "sub": "\"The {FIRST} Special\" is steak, ale and \"pure class\""
+      },
+      {
+        "h": "ROCKET FROM {NAME}",
+        "sub": "Ball reportedly still travelling \"somewhere over the car park\""
+      },
+      {
+        "h": "{NAME} GETS ON THE SCORESHEET",
+        "sub": "Teammates mob {FIRST}, who \"nearly lost a contact lens\""
+      },
+      {
+        "h": "TOP-CORNER {NAME}",
+        "sub": "Keeper \"didn't move, just watched it go in, like the rest of us\""
+      },
+      {
+        "h": "{NAME} NETS, NAN NEARLY FAINTS",
+        "sub": "Proud gran watching at home \"spilled her sherry with joy\""
+      }
+    ],
+    "bad": [
+      {
+        "h": "{NAME} NIGHTMARE",
+        "sub": "{CLUB} fans left scratching their heads after a game to forget"
+      },
+      {
+        "h": "{NAME} MISSES SITTER",
+        "sub": "Witnesses say \"my nan would have scored that, and she's 90\""
+      },
+      {
+        "h": "{FIRST} HAS A STINKER",
+        "sub": "Splash ratings give him a 3, \"and that was being generous\""
+      },
+      {
+        "h": "WHERE WERE YOU, {NAME}?",
+        "sub": "Supporters ask whether {FIRST} \"actually got off the coach\""
+      },
+      {
+        "h": "{NAME} BLAZES OVER",
+        "sub": "Ball last seen \"heading for the motorway services\""
+      },
+      {
+        "h": "OFF-COLOUR {NAME}",
+        "sub": "Manager says {FIRST} \"will learn from it. He'd better.\""
+      },
+      {
+        "h": "{NAME} SPARES KEEPER'S BLUSHES",
+        "sub": "Gilt-edged chance \"politely declined\" from six yards out"
+      },
+      {
+        "h": "{CLUB} FANS LOSE PATIENCE WITH {NAME}",
+        "sub": "Radio phone-in callers \"queueing round the block to moan\""
+      },
+      {
+        "h": "{NAME} TRIPS OVER BALL",
+        "sub": "Moment already set to music \"by several cheeky teenagers\""
+      },
+      {
+        "h": "BLUNT {NAME}",
+        "sub": "{FIRST} fails to trouble the keeper, \"who had time to tie both laces\""
+      },
+      {
+        "h": "{NAME} GIVES IT AWAY",
+        "sub": "Misplaced pass \"found the opposition, the dugout and a steward\""
+      },
+      {
+        "h": "A DAY TO FORGET FOR {FIRST}",
+        "sub": "Even the club mascot \"looked away at one point\""
+      },
+      {
+        "h": "{NAME}'S RADAR ON THE BLINK",
+        "sub": "Shots \"kept coming, kept missing, kept hitting the same advertising board\""
+      },
+      {
+        "h": "{NAME} HOOKED AT HALF-TIME",
+        "sub": "{FIRST} walked off \"very slowly, like a man in a post office queue\""
+      },
+      {
+        "h": "PENALTY PAIN FOR {NAME}",
+        "sub": "Spot kick \"so gentle the keeper caught it one-handed and waved\""
+      },
+      {
+        "h": "{NAME} GETS THE HAIRDRYER",
+        "sub": "Dressing room sources say the gaffer \"went through two cups of tea\""
+      }
+    ],
+    "bench": [
+      {
+        "h": "BENCH-WARMER {NAME}",
+        "sub": "{CLUB} fans wonder if {FIRST} \"gets a cushion written into the contract\""
+      },
+      {
+        "h": "WHERE'S {NAME}?",
+        "sub": "{FIRST} spotted warming up \"for the fourth match running, still warming\""
+      },
+      {
+        "h": "{NAME} LEFT OUT AGAIN",
+        "sub": "Manager says {FIRST} is \"very much in my thoughts, just not my team\""
+      },
+      {
+        "h": "{NAME}'S BIB SEES MORE ACTION THAN HIM",
+        "sub": "Kitman reports the bib \"has never needed washing less\""
+      },
+      {
+        "h": "{FIRST} THE FORGOTTEN MAN",
+        "sub": "Fans' petition for more minutes reaches \"nearly forty signatures\""
+      },
+      {
+        "h": "{NAME} HAS BEST SEAT IN THE HOUSE",
+        "sub": "Insiders describe the bench view as \"excellent, slightly draughty\""
+      },
+      {
+        "h": "IS {NAME} STILL AT {CLUB}?",
+        "sub": "Club confirms {FIRST} \"is definitely on the books, we checked\""
+      },
+      {
+        "h": "{NAME} WARMS UP, CROWD CHEERS, HE SITS BACK DOWN",
+        "sub": "Fans say the stretches \"looked very promising\""
+      },
+      {
+        "h": "SPLINTER WATCH: {NAME}",
+        "sub": "{FIRST} enters a second month without \"proper minutes\""
+      },
+      {
+        "h": "{NAME} GETS 90 SECONDS",
+        "sub": "{FIRST} touched the ball once \"and made it count, sort of\""
+      },
+      {
+        "h": "PATIENCE IS A VIRTUE, SAYS {NAME}",
+        "sub": "{FIRST} insists he is \"ready whenever the gaffer needs me\""
+      },
+      {
+        "h": "{NAME} TOPS THE BENCH LEAGUE",
+        "sub": "Stats show {FIRST} has \"sat down more than anyone in the division\""
+      },
+      {
+        "h": "{CLUB} BOSS: \"{NAME}'S TIME WILL COME\"",
+        "sub": "Asked when, the manager said \"not this week\""
+      },
+      {
+        "h": "{NAME} STUDIES GAME FROM DUGOUT",
+        "sub": "{FIRST} \"took notes, ate a jelly baby and nodded a lot\""
+      }
+    ],
+    "transfer": [
+      {
+        "h": "{NAME} WANTED BY RIVALS",
+        "sub": "Scouts spotted in the stands \"clutching notebooks and pasties\""
+      },
+      {
+        "h": "{CLUB} SLAP 'HANDS OFF' SIGN ON {NAME}",
+        "sub": "Board says {FIRST} is \"not for sale, unless it's silly money\""
+      },
+      {
+        "h": "{NAME} TRANSFER TUG OF WAR",
+        "sub": "Three clubs said to be \"circling like gulls round a chip\""
+      },
+      {
+        "h": "{NAME}'S AGENT SPOTTED AT MOTORWAY SERVICES",
+        "sub": "Sources say he was \"on the phone, looking shifty, eating a scone\""
+      },
+      {
+        "h": "BIG MONEY MOVE FOR {NAME}?",
+        "sub": "Rumoured fee is \"more than the whole town's bus fares for a decade\""
+      },
+      {
+        "h": "{FIRST} TO STAY, SAYS... SOMEBODY",
+        "sub": "Unnamed source \"very confident, possibly the kitman\""
+      },
+      {
+        "h": "{NAME} LINKED WITH SHOCK MOVE ABROAD",
+        "sub": "Pal claims {FIRST} has \"bought a phrasebook and some sun cream\""
+      },
+      {
+        "h": "{CLUB} FANS: \"DON'T GO, {NAME}!\"",
+        "sub": "Banner unveiled at training was \"spelt mostly correctly\""
+      },
+      {
+        "h": "SCOUT WATCHES {NAME}, LEAVES AT HALF-TIME",
+        "sub": "Rival club insists he \"just had a parking ticket to deal with\""
+      },
+      {
+        "h": "{NAME} SNAPPED NEAR RIVAL GROUND",
+        "sub": "{FIRST} claims he was \"only after a decent sandwich\""
+      },
+      {
+        "h": "TALKS STALL OVER {NAME}",
+        "sub": "Clubs \"can't agree on a fee, or where to have lunch\""
+      },
+      {
+        "h": "{NAME} CONTRACT STAND-OFF",
+        "sub": "{CLUB} insiders say a new deal is \"on the table, under a mug\""
+      },
+      {
+        "h": "{NAME} FOR SALE?",
+        "sub": "Club refuses to deny rumours \"because nobody asked properly\""
+      },
+      {
+        "h": "DEADLINE DAY DRAMA FOR {NAME}",
+        "sub": "Club fax machine said to be \"warmed up and ready\""
+      },
+      {
+        "h": "RIVAL BOSS: {NAME} \"WOULD BE PERFECT FOR US\"",
+        "sub": "Comments \"not tapping up, just a very loud compliment\""
+      },
+      {
+        "h": "MYSTERY CLUB CIRCLES {NAME}",
+        "sub": "The only clue: \"they play in a colour, probably\""
+      }
+    ],
+    "life": [
+      {
+        "h": "{NAME} SPOTTED IN SUPERMARKET",
+        "sub": "{FIRST} bought \"three bananas and a frankly worrying amount of crisps\""
+      },
+      {
+        "h": "{NAME}'S NEW HAIRCUT: THE VERDICT",
+        "sub": "Barber says it took \"two hours and a lot of trust\""
+      },
+      {
+        "h": "{NAME} SHOWS OFF FLASH NEW MOTOR",
+        "sub": "Neighbours say the car is \"louder than the Saturday crowd\""
+      },
+      {
+        "h": "{FIRST} SEEN AT GARDEN CENTRE",
+        "sub": "Footballer \"spent forty minutes looking at a water feature\""
+      },
+      {
+        "h": "{NAME} QUEUES FOR CHIPS LIKE THE REST OF US",
+        "sub": "Fans praise {FIRST} for asking for \"extra scraps, a man of the people\""
+      },
+      {
+        "h": "{NAME} FAILS TO PARALLEL PARK",
+        "sub": "Onlookers report \"nine attempts and a small round of applause\""
+      },
+      {
+        "h": "{NAME} BUYS FLOWERS, BUT WHO FOR?",
+        "sub": "Florist \"staying tight-lipped, but did wink\""
+      },
+      {
+        "h": "{NAME}'S NEW TRAINERS \"VISIBLE FROM SPACE\"",
+        "sub": "Fashion experts call them \"bold\" and \"very, very orange\""
+      },
+      {
+        "h": "{FIRST} JOINS PUB QUIZ, COMES LAST",
+        "sub": "His team scored four points, \"three of them on sport\""
+      },
+      {
+        "h": "{NAME} HELPS PENSIONER WITH SHOPPING",
+        "sub": "Delighted gran, 82, says \"lovely lad, never heard of him\""
+      },
+      {
+        "h": "{NAME} AT THE PICTURES",
+        "sub": "{FIRST} spotted with \"large popcorn, larger drink, no shame\""
+      },
+      {
+        "h": "{NAME}'S DOG STEALS SHOW IN PARK",
+        "sub": "Pooch \"dribbled better than some of the back four\""
+      },
+      {
+        "h": "{NAME} GETS NEW TATTOO",
+        "sub": "Insiders say it is \"either a lion or a very confused cat\""
+      },
+      {
+        "h": "{NAME} PAYS FOR WHOLE CAFE'S BREAKFAST",
+        "sub": "Owner says it was \"the most expensive Tuesday we've ever had\""
+      },
+      {
+        "h": "{NAME} WASHES OWN CAR ON DRIVE",
+        "sub": "\"Missed a bit on the bonnet,\" notes one critical neighbour"
+      },
+      {
+        "h": "{FIRST} IN SHOCK SALAD ORDER",
+        "sub": "Restaurant staff say he \"looked at the burger for a long time\""
+      }
+    ]
+  }
+}

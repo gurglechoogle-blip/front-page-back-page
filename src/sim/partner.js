@@ -13,10 +13,35 @@ export function candidates(c, R = Math.random) {
   const pools = c.datePref === 'both' ? ['women', 'men'] : [c.datePref || 'women'];
   const used = new Set(c.exes.map(e => e.name.split(' ')[0]));
   return [0, 1, 2].map(() => {
-    let first; do { first = pick(PD.names[pick(pools, R)], R); } while (used.has(first)); used.add(first);
+    let first, k = 0; do { first = pick(PD.names[pick(pools, R)], R); } while (used.has(first) && k++ < 50); used.add(first);
     const j = pick(PD.jobs, R);
     return { name: `${first} ${pick(PD.lastNames, R)}`, job: j.job, blurb: j.blurb, quirk: pick(PD.quirks, R), meet: pick(PD.meet, R) };
   });
+}
+/** Out and about, someone might catch your eye. where: 'night' | 'party' | 'social'. */
+export function maybeMeet(c, where, R = Math.random) {
+  if (c.partner || (c._age || 16) < 16) return null;
+  const p = { night: .3, party: .22, social: .1 }[where] || 0;
+  if (R() > p) return null;
+  return candidates(c, R)[0];
+}
+const SCENES = {
+  night: ['at the bar, waiting just as long as you are', 'on the dance floor, dancing worse than you', 'in the queue for the toilets, which is where all the best conversations happen', 'at the chip shop after, holding the last battered sausage'],
+  party: ['by the snacks, guarding the good crisps', 'in the kitchen, where everyone ends up', 'in the garden, pretending to like the music', 'at the karaoke machine, doing a power ballad badly'],
+  social: ['at the next table', 'in the queue for coffee', 'helping out too, and laughing at your jokes (the good ones)', 'at the bus stop, both of you pretending it isn\'t raining'],
+};
+const TRIES = {
+  hello: { label: 'Go over and say hello', base: .4, win: ['You say hello. They say hello. Revolutionary stuff. Numbers are swapped.', 'It\'s easy. Weirdly easy. You\'re meeting up next week.'], lose: ['You say "hello" and "hiya" at the same time. "Helliya." They leave.', 'You go over. Their partner comes back from the bar. He is very big.', 'They\'re friendly, but they support your rivals. It\'s never going to work.'] },
+  line: { label: 'Try a chat-up line', base: .22, win: ['"Are you a free kick? Because I\'d curl one in for you." It\'s terrible. They laugh anyway. Result.', 'Your line is so bad it loops back round to charming.'], lose: ['"Do you come here often?" "I work here." Ah.', 'You attempt a line about xG. They glaze over. So do you.', 'You panic and say "nice shoes". They\'re wearing flip-flops.'] },
+  cool: { label: 'Play it cool and wait', base: .14, win: ['You play it cool. It works. They come over and ask for your number. Who even are you?'], lose: ['You play it so cool they forget you exist. They leave with someone else.', 'You wait. And wait. The lights come on. It\'s over.'] },
+};
+export const meetScene = (where, R = Math.random) => pick(SCENES[where] || SCENES.social, R);
+export const meetTries = () => Object.entries(TRIES).map(([k, v]) => ({ id: k, label: v.label }));
+/** Try your luck. Fame, honour and confidence (energy) help a bit. */
+export function tryMeet(c, cand, how, R = Math.random) {
+  const t = TRIES[how], p = clamp(t.base + (c.meters.fans - 50) / 300 + (c.honour - 50) / 300 + (c.energy - 50) / 400, .05, .75);
+  if (R() < p) { startDating(c, cand); return { ok: true, line: pick(t.win, R) }; }
+  return { ok: false, line: pick(t.lose, R) };
 }
 export function startDating(c, cand) {
   c.partner = Object.assign({}, cand, { meter: 45, stage: 'dating', since: c.week, lastDate: c.week, weeks: 0 });

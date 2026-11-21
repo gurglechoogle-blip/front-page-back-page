@@ -30,8 +30,10 @@ import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
 import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble.js';
 import { ACH, achCount } from '../sim/achievements.js';
 import { clause } from '../sim/contracts.js';
-import { stripHTML, showCalendar } from './calendarUI.js';
+import { stripHTML, showCalendar, todayDate } from './calendarUI.js';
+import { headlineFor } from '../sim/headlines.js';
 import { welcomeHTML } from './welcome.js';
+import { avatar } from '../engine/avatar.js';
 import { showCompetitions, showMyStats } from './statsUI.js';
 import { ACTIVITIES, available as injAvail, doActivity, longInjury } from '../sim/injuryLife.js';
 import { REQUESTS, cantAsk, odds, ask as askGaffer, raiseOffer } from '../sim/gaffer.js';
@@ -42,7 +44,7 @@ import { showSocial, showTroll, showCommunity, showInvite, showStaff, showBusine
 import { reputation, inWindow, agentOf } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
-import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp } from '../sim/partner.js';
+import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp, maybeMeet, meetScene, meetTries, tryMeet } from '../sim/partner.js';
 import { exportSave, importSave } from '../state/gameState.js';
 
 const MENUS = {
@@ -68,7 +70,7 @@ export function createHubScreen(root, go, params = {}) {
   <div class="htop">
     <div class="nextfx" id="nextfx"></div>
     <div class="slots" id="slots"></div>
-    <button class="phone paperbtn" id="paperbtn" title="This week's paper"><span style="font-size:26px;line-height:32px">📰</span><em id="punread"></em></button>
+    <button class="hlbox" id="paperbtn" title="Today's paper"><small>📰 THE WEEKLY SPLASH · <span id="hldate"></span></small><b id="hline"></b></button>
     <button class="phone" id="phone" title="Phone"><svg viewBox="0 0 24 36" width="22" height="32"><rect x="1" y="1" width="22" height="34" rx="4" fill="#23272d" stroke="#cfd5db" stroke-width="2"/><rect x="4" y="5" width="16" height="22" rx="1" fill="#6fb3e0"/><circle cx="12" cy="31" r="2" fill="#cfd5db"/></svg><em id="unread"></em></button>
   </div>
   <div class="hmain">
@@ -90,7 +92,7 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('.hbtn').forEach(b => b.onclick = e => { e.stopPropagation(); toggleMenu(b.dataset.m); });
     $('hubscr').onclick = () => toggleMenu(null);
     $('phone').onclick = e => { e.stopPropagation(); showPhone(); };
-    $('paperbtn').onclick = e => { e.stopPropagation(); const u = c.unreadPapers || []; if (!u.length) return showArchive(); const readNext = () => { const n = u.shift(); save(); render(); if (n != null) showPaper(n, u.length ? readNext : null); }; readNext(); };
+    $('paperbtn').onclick = e => { e.stopPropagation(); const td = todayDate(c), H0 = headlineFor(c, td); modal(`<div class="paper front"><div class="mast"><b>THE WEEKLY SPLASH</b><span>${esc(prettyDate(td))}</span></div><h1 class="ph">${esc(H0.h)}</h1><p class="psub" style="padding:0 16px 14px">${esc(H0.sub)}</p></div><div class="endBtns">${c.papers.length ? '<button class="btn gold" id="latest">This week\'s full paper</button>' : ''}<button class="btn" id="arch">All issues</button></div>`); if ($('latest')) $('latest').onclick = () => showPaper(c.papers[c.papers.length - 1].n); $('arch').onclick = showArchive; };
     $('nextfx').onclick = e => { e.stopPropagation(); matchday(); };
     $('mclose').onclick = closeModal; $('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
     $('newCareer').onclick = e => { e.preventDefault(); modal(`<h2>Start a new career?</h2><p>This one will be gone for good. Gran will be devastated.</p><div class="endBtns"><button class="btn red" id="reallyNew">Yes, start again</button><button class="btn" id="keep">Keep this one</button></div>`); $('reallyNew').onclick = () => { newGame(); go('start'); }; $('keep').onclick = closeModal; };
@@ -117,7 +119,7 @@ export function createHubScreen(root, go, params = {}) {
       : `<small>NO FIXTURES LEFT</small><b>Season's done</b>`;
     $('slots').innerHTML = `<small>TIME SLOTS</small><div>${Array.from({ length: slotsTotal(c) }, (_, i) => `<i class="${i < sl ? 'on' : ''}"></i>`).join('')}</div><span>${sl} left${isPreseason(c) ? ' · pre-season' : ''}</span>`;
     const u = unread(c); $('unread').textContent = u || ''; $('unread').style.display = u ? '' : 'none';
-    const pu = (c.unreadPapers || []).length; $('punread').textContent = pu || ''; $('punread').style.display = pu ? '' : 'none';
+    { const td = todayDate(c), H0 = headlineFor(c, td); $('hline').textContent = H0.h; $('hldate').textContent = prettyDate(td); $('paperbtn').classList.toggle('mine', H0.mine); }
     $('badge-football').textContent = wf.length ? wf.length : ''; $('badge-football').style.display = wf.length ? '' : 'none';
     root.querySelectorAll('.badge').forEach(b => { if (!b.textContent) b.style.display = 'none'; });
     $('weekbadge').innerHTML = `<b>${esc(CAL.season)} · WEEK ${seasonWeek(c)}</b> · w/c ${prettyDate(weekStart(c.week))} ${weekStart(c.week).slice(0, 4)}${isPreseason(c) ? ' · PRE-SEASON' : ''}`;
@@ -254,6 +256,27 @@ export function createHubScreen(root, go, params = {}) {
       $('ok').onclick = showInjured;
     });
   }
+  /** After a night out or a social: maybe someone catches your eye. Returns true if a scene opened. */
+  function afterOuting(where) {
+    if (c.partner) return false;
+    const cand = maybeMeet(c, where); if (!cand) return false;
+    const scene = meetScene(where);
+    const run = () => {
+      const cd = candidates(c)[0];
+      modal(`<div class="evvia">👀 Someone catches your eye</div><h2>${avatar(cd.name, 40)} ${esc(cd.name)}</h2><p class="evtext">${esc(cd.name.split(' ')[0])}, ${esc(cd.job.toLowerCase())}, is ${esc(scene)}. ${esc(cd.quirk.replace(/^./, x => x.toUpperCase()))}</p><div class="choices">${meetTries().map(t => `<button class="btn choice" data-mt="${t.id}">${esc(t.label)}</button>`).join('')}<button class="btn choice" data-mt="no">Not tonight</button></div>`, true);
+      root.querySelectorAll('[data-mt]').forEach(b => b.onclick = () => {
+        if (b.dataset.mt === 'no') { closeModal(); return; }
+        const r = tryMeet(c, cd, b.dataset.mt); save(); render();
+        modal(`<h2>${r.ok ? 'It\'s a date!' : 'Oh dear.'}</h2><p class="evtext">${esc(r.line)}</p>${r.ok ? `<p>You're now dating ${esc(cd.name)}. Look after it: Life → Partner.</p>` : ''}<div class="endBtns"><button class="btn gold" id="ok">${r.ok ? 'Smooth' : 'Never mind'}</button></div>`);
+        $('ok').onclick = closeModal;
+      });
+    };
+    if (!c.datePref) {
+      modal(`<h2>Someone's looking your way...</h2><p class="evtext">First things first: who are you interested in?</p><div class="choices"><button class="btn choice" data-p="women">Women</button><button class="btn choice" data-p="men">Men</button><button class="btn choice" data-p="both">Both</button></div>`, true);
+      root.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { c.datePref = b.dataset.p; save(); run(); });
+    } else run();
+    return true;
+  }
   function showGaffer() {
     const boss = managerFor(c.clubId), o = odds(c, avgRating(c)), mood = o > .6 ? 'He rates you. Strike while it\'s hot.' : o > .35 ? 'He\'s on the fence about you.' : 'He\'s not your biggest fan right now.';
     modal(`<h2>${esc(boss.name)}'s office</h2><p class="evtext">The door says "KNOCK". Underneath, in smaller writing: "THEN GO AWAY". ${esc(mood)}</p><div class="choices">${REQUESTS.map(r => { const why = cantAsk(c, r.id, age(c)); return `<button class="btn choice" data-q="${r.id}" ${why ? 'disabled' : ''}>${esc(r.label)}${why ? `<small>${esc(why)}</small>` : ''}</button>`; }).join('')}</div><p class="dim">Your chances depend on his approval of you and how you've been playing.${!agentOf(c) ? ' Without an agent you\'ll get whatever he offers.' : ''}</p>`);
@@ -280,16 +303,17 @@ export function createHubScreen(root, go, params = {}) {
   }
   function showPhone(tab = 'msgs') {
     const fname = id => (friend(id) || { name: id }).name;
-    const invs = c.invites.map((v, k) => { const d = inviteData(v), full = !d.venue && slotsLeft(c) <= 0; return `<div class="msg invite ${v.seen ? '' : 'new'}"><b>${esc(inviteFrom(v, fname))}</b><p>${esc(inviteText(v))}</p><div class="invbtns"><button class="btn small gold" data-acc="${k}" ${full ? 'disabled title="No time slots left this week"' : ''}>${esc(d.label)}${d.pay ? ` · ${money(d.pay)}` : ''}${d.venue ? '' : ' (1 slot)'}</button><button class="btn small" data-dec="${k}">Not this time</button></div></div>`; }).join('');
-    const list = (invs ? `<h3>Invitations</h3>${invs}<p class="dim small">Ignore them and they lapse at the end of the week (friends notice).</p><h3>Messages</h3>` : '') + (c.inbox.map(m => `<div class="msg ${m.read ? '' : 'new'}"><b>${esc(m.from)}</b><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">No messages. Nobody loves you yet.</p>');
+    const invs = c.invites.map((v, k) => { const d = inviteData(v), full = !d.venue && slotsLeft(c) <= 0; return `<div class="msg invite ${v.seen ? '' : 'new'}"><b>${avatar(['mum','gran'].includes(v.from) || friend(v.from) ? v.from : v.from === 'squad' ? (v.a || 'squad') : inviteData(v).text.slice(0, 12), 26)} ${esc(inviteFrom(v, fname))}</b><p>${esc(inviteText(v))}</p><div class="invbtns"><button class="btn small gold" data-acc="${k}" ${full ? 'disabled title="No time slots left this week"' : ''}>${esc(d.label)}${d.pay ? ` · ${money(d.pay)}` : ''}${d.venue ? '' : ' (1 slot)'}</button><button class="btn small" data-dec="${k}">Not this time</button></div></div>`; }).join('');
+    const list = (invs ? `<h3>Invitations</h3>${invs}<p class="dim small">Ignore them and they lapse at the end of the week (friends notice).</p><h3>Messages</h3>` : '') + (c.inbox.map(m => `<div class="msg ${m.read ? '' : 'new'}"><b>${avatar(m.from, 26)} ${esc(m.from)}</b><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">No messages. Nobody loves you yet.</p>');
     const chat = c.chat.slice(-40).map(m => `<div class="cm ${m.me ? 'me' : ''}">${esc(m.text)}</div>`).join('') || '<p class="dim">The lads haven\'t added you yet.</p>';
-    const notes = (c.notices || []).map(m => `<div class="msg"><b>${esc(m.from)}</b><span>${esc(prettyDate(weekStart(m.week)))}</span><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">Nothing on the noticeboard. Dennis has pinned up a lost sock.</p>';
+    const notes = (c.notices || []).map(m => `<div class="msg"><b>${avatar(m.from, 22)} ${esc(m.from)}</b><span>${esc(prettyDate(weekStart(m.week)))}</span><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">Nothing on the noticeboard. Dennis has pinned up a lost sock.</p>';
     modal(`<h2>Phone</h2><div class="tabs"><button class="tab" data-t="msgs">Messages${c.invites.length ? ` (${c.invites.length})` : ''}</button><button class="tab" data-t="chat">${esc(club(c.clubId).short)} LADS</button><button class="tab" data-t="notes">Noticeboard</button></div><div class="scroll phone-list" id="pmsgs">${list}</div><div class="scroll chatlog" id="pchat">${chat}</div><div class="scroll phone-list" id="pnotes">${notes}</div>`);
     const pick = t => { root.querySelectorAll('.tab[data-t]').forEach(x => x.classList.toggle('on', x.dataset.t === t)); ['msgs', 'chat', 'notes'].forEach(k => $('p' + k).classList.toggle('hidden', k !== t)); const pc = $('pchat'); pc.scrollTop = pc.scrollHeight; };
     root.querySelectorAll('.tab[data-t]').forEach(b => b.onclick = () => pick(b.dataset.t)); pick(tab);
     root.querySelectorAll('[data-acc]').forEach(b => b.onclick = () => {
-      const r = acceptInvite(c, +b.dataset.acc); save(); render();
+      const acceptedFrom = c.invites[+b.dataset.acc].from, r = acceptInvite(c, +b.dataset.acc); save(); render();
       if (r.venue) { const v = CZ.venues.find(x => x.id === r.venue); if (v.needs) c.flags[v.needs] = true; save(); return showVenue(v); }
+      if (afterOuting(['shaz', 'ty', 'lee', 'deano'].includes(acceptedFrom) ? 'party' : 'social')) return;
       modal(`<div class="evvia">📱 Invitation</div><p class="evtext">${esc(r.line)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="ok">Back to the phone</button></div>`);
       $('ok').onclick = () => showPhone();
     });
@@ -375,14 +399,14 @@ export function createHubScreen(root, go, params = {}) {
     $('beard').onclick = () => { L.beard = !L.beard; after(L.beard ? 'Beard: grown. You stroke it thoughtfully now.' : 'Clean-shaven. You look about twelve.'); };
   }
   function showFriends() {
-    const rows = FR.friends.map(f => { const L = Math.round(c.friends[f.id].loyalty); return `<div class="item friend ${f.kind}"><div><b>${esc(f.name)}</b> <small class="kind">${f.kind}</small><p>${esc(f.trait)}</p><div class="rel"><span>Loyalty</span><div class="bar"><i class="m-${f.kind === 'chaotic' ? 'fans' : 'teammates'}" style="width:${L}%"></i></div><b>${L}</b></div></div><button class="btn small gold" data-f="${f.id}" ${slotsLeft(c) <= 0 ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : 'Hang out'}</button></div>`; }).join('');
+    const rows = FR.friends.map(f => { const L = Math.round(c.friends[f.id].loyalty); return `<div class="item friend ${f.kind}"><div><b>${avatar(f.id, 30)} ${esc(f.name)}</b> <small class="kind">${f.kind}</small><p>${esc(f.trait)}</p><div class="rel"><span>Loyalty</span><div class="bar"><i class="m-${f.kind === 'chaotic' ? 'fans' : 'teammates'}" style="width:${L}%"></i></div><b>${L}</b></div></div><button class="btn small gold" data-f="${f.id}" ${slotsLeft(c) <= 0 ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : 'Hang out'}</button></div>`; }).join('');
     modal(`<h2>Friends</h2><p class="dim">Hanging out uses a time slot. Chaotic friends bring fun, schemes and trouble; grounded ones open sensible doors. Ignore them and they drift.</p><div class="scroll shop">${rows}</div>`);
-    root.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { const r = hangOut(c, b.dataset.f); save(); render(); closeModal(); toast(`${friend(b.dataset.f).name}: ${r.line}`); });
+    root.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { const r = hangOut(c, b.dataset.f); save(); render(); closeModal(); toast(`${friend(b.dataset.f).name}: ${r.line}`); afterOuting(b.dataset.f === 'shaz' ? 'party' : 'social'); });
   }
   function showNights() {
     const opts = nightsFor(age(c));
     modal(`<h2>Nights out</h2><p class="dim">Uses a time slot. A big night in a match week costs you on the pitch${age(c) < 18 ? '. Pubs and clubs open at 18' : ''}.</p><div class="scroll shop">${opts.map(n => `<div class="item"><div><b>${esc(n.label)}</b><span class="price">${money(n.cost)}</span></div><button class="btn small gold" data-n="${n.id}" ${slotsLeft(c) <= 0 || c.bank < n.cost ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : c.bank < n.cost ? 'Skint' : 'Go'}</button></div>`).join('')}</div>`);
-    root.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { const r = nightOut(c, b.dataset.n); save(); render(); closeModal(); if (!r.ok) return toast(r.why); toast(r.line + (r.story ? ' Then the photos turn up...' : '')); });
+    root.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { const r = nightOut(c, b.dataset.n); save(); render(); closeModal(); if (!r.ok) return toast(r.why); toast(r.line + (r.story ? ' Then the photos turn up...' : '')); afterOuting('night'); });
   }
   function showPartner() {
     if (!c.datePref) {
@@ -392,13 +416,17 @@ export function createHubScreen(root, go, params = {}) {
     }
     const p = c.partner, a = age(c);
     if (!p) {
-      if (!c.cands || c.cands.week !== c.week) c.cands = { week: c.week, list: candidates(c) };
+      modal(`<h2>Love life</h2><p class="evtext">You're single. Nobody's handing out a list of people to date: you meet someone by getting out there. Nights out, parties, invitations from friends. Most nights, nothing happens. Sometimes someone catches your eye, and then it's down to you not to blow it.</p>${c.exes.length ? `<h3>Exes</h3>${c.exes.slice(-6).reverse().map(e => `<div class="row"><span>${avatar(e.name, 22)} ${esc(e.name)}</span><b>${esc(e.why)}</b></div>`).join('')}` : ''}<p class="dim">Interested in: ${esc(c.datePref)}. <a href="#" id="pref">Change</a></p>`);
+      $('pref').onclick = e => { e.preventDefault(); c.datePref = null; save(); showPartner(); };
+      return;
+    }
+    if (false) {
       modal(`<h2>Meet someone</h2><p class="dim">A first date uses a time slot. New faces each week.</p><div class="scroll shop">${c.cands.list.map((x, i) => `<div class="item"><div><b>${esc(x.name)}</b> <small class="kind">${esc(x.job)}</small><p>${esc(x.meet)} ${esc(x.blurb)} Also: ${esc(x.quirk)}.</p></div><button class="btn small gold" data-c="${i}" ${slotsLeft(c) <= 0 ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : 'Ask them out'}</button></div>`).join('')}</div>${c.exes.length ? `<p class="dim">Exes: ${c.exes.map(e => esc(e.name.split(' ')[0])).join(', ')}. Gran keeps a list.</p>` : ''}`);
       root.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { startDating(c, c.cands.list[+b.dataset.c]); c.slotsUsed++; c.weekLog.push({ t: 'date' }); c.cands = null; save(); render(); showPartner(); toast('First date: a walk, a chippy, a nervous laugh. It went well!'); });
       return;
     }
     const M = Math.round(p.meter);
-    modal(`<h2>${esc(p.name)}</h2><div class="sub2">${esc(STAGES[p.stage])} · ${esc(p.job)} · ${esc(p.quirk)}</div>
+    modal(`<h2>${avatar(p.name, 40)} ${esc(p.name)}</h2><div class="sub2">${esc(STAGES[p.stage])} · ${esc(p.job)} · ${esc(p.quirk)}</div>
       <div class="rel"><span>Happiness</span><div class="bar"><i class="m-family" style="width:${M}%"></i></div><b>${M}</b></div>
       <p class="dim">${c.week - p.lastDate >= 2 ? 'You haven\'t taken them out in a while. They\'ve noticed.' : 'Things are good.'} Dates use a time slot.</p>
       <div class="scroll shop"><h3>Date night</h3>${PD.dates.filter(d => a >= d.minAge).map(d => `<div class="item"><div><b>${esc(d.label)}</b><span class="price">${money(d.cost)}</span></div><button class="btn small gold" data-d="${d.id}" ${slotsLeft(c) <= 0 || c.bank < d.cost ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : c.bank < d.cost ? 'Skint' : 'Go'}</button></div>`).join('')}
@@ -483,7 +511,7 @@ export function createHubScreen(root, go, params = {}) {
     const item = c.pending[0];
     if (!item) return done();
     const next = () => { c.pending.shift(); save(); render(); closeModal(); runPending(done); };
-    if (item.type === 'paper') { (c.unreadPapers = c.unreadPapers || []).push(item.n); if (c.unreadPapers.length === 1 && !c.flags.paperTip) { c.flags.paperTip = true; toast('The Weekly Splash has landed. Tap the newspaper icon (top right) to read it.'); } next(); }
+    if (item.type === 'paper') next(); // the paper waits behind the headline ticker; no alert
     else if (item.type === 'event') showEvent(item.id, next);
     else if (item.type === 'press') showPress(item, next);
     else if (item.type === 'debt') showDebt(MH, next);
@@ -500,10 +528,10 @@ export function createHubScreen(root, go, params = {}) {
     const via = { call: '📞 Incoming call', text: '💬 New message', moment: '⚡ Meanwhile…' }[e.via] || '';
     if (e.needPartner && !c.partner) return next();
     e = Object.assign({}, e, { from: e.from.replace('{PARTNER}', c.partner ? c.partner.name : 'Your ex') });
-    modal(`<div class="evvia">${via}</div><h2>${esc(e.from)}</h2><p class="evtext">${esc(e.text)}</p><div class="choices">${e.choices.map((ch, i) => `<button class="btn choice" data-i="${i}" ${ch.effects && ch.effects.slot && slotsLeft(c) <= 0 ? 'disabled title="No time slots left this week"' : ''}>${esc(ch.label)}</button>`).join('')}</div>`, true);
+    modal(`<div class="evvia">${via}</div><h2>${avatar(e.from, 36)} ${esc(e.from)}</h2><p class="evtext">${esc(e.text)}</p><div class="choices">${e.choices.map((ch, i) => `<button class="btn choice" data-i="${i}" ${ch.effects && ch.effects.slot && slotsLeft(c) <= 0 ? 'disabled title="No time slots left this week"' : ''}>${esc(ch.label)}</button>`).join('')}</div>`, true);
     root.querySelectorAll('.choice').forEach(b => b.onclick = () => {
       const r = chooseEvent(c, id, +b.dataset.i); save(); render();
-      modal(`<div class="evvia">${via}</div><h2>${esc(e.from)}</h2><p class="evtext">${esc(r.result)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
+      modal(`<div class="evvia">${via}</div><h2>${avatar(e.from, 36)} ${esc(e.from)}</h2><p class="evtext">${esc(r.result)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
       $('evok').onclick = next;
     });
   }

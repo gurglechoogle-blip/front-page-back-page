@@ -19,6 +19,8 @@ function entries(c, d, plan) {
 }
 function thisWeek(c) { const ws = weekStart(c.week), fx = myFixtures(c).filter(f => f.date >= ws && f.date <= addDays(ws, 6)); return weekPlan(c, ws, fx.map(f => f.date), names, fx.length > 0 && fx.every(f => f.played)); }
 
+/** Today's date in the game (the day you're on this week). */
+export const todayDate = c => thisWeek(c).today;
 export function stripHTML(c) {
   const { plan, today } = thisWeek(c);
   const cell = (d, label, cls) => { const e = entries(c, d, plan); return `<div class="cday ${cls}"><small>${label} · ${nice(d)}</small>${e.length ? e.slice(0, 3).map(x => `<span class="${x.t === 'match' ? 'cm-match' : ''}">${iconFor(x.t)} ${esc(x.text)}</span>`).join('') : `<span class="dim">${cls === 'today' ? 'Nothing yet. Use a time slot.' : 'Nothing'}</span>`}</div>`; };
