@@ -120,17 +120,21 @@ export function drawPerson(o) {
   };
   leg(-.11, o.legL || .03, o.lenL); leg(.11, o.legR || -.03, o.lenR, o.reachR);
   R(-.225, -1.0, .45, .37, .06, k.shorts);
-  const arm = (sx, a) => { ctx.save(); ctx.translate(sx * u, -1.43 * u); ctx.rotate(a); R(-.065, 0, .13, .24, .05, k.shirt); R(-.05, .22, .1, .28, .05, k.skin); R(-.065, .46, .13, .12, .05, k.gloves || k.skin); ctx.restore(); };
+  const arm = (sx, a) => { ctx.save(); ctx.translate(sx * u, -1.43 * u); ctx.rotate(a); R(-.065, 0, .13, .24, .05, k.shirt); R(-.05, .22, .1, .28, .05, k.skin); if (k.tattoo && k.tattoo !== 'neck') tattooArm(u, sx); R(-.065, .46, .13, .12, .05, k.gloves || k.skin); ctx.restore(); };
   arm(-.24, o.armL == null ? .18 : o.armL); arm(.24, o.armR == null ? -.18 : o.armR);
   R(-.235, -1.5, .47, .56, .1, k.shirt); R(-.235, -1.5, .47, .05, .02, k.trim);
   R(-.05, -1.6, .1, .12, .02, k.skin);
+  if (k.tattoo === 'neck' || k.tattoo === 'both') { ctx.fillStyle = 'rgba(30,60,80,.7)'; ctx.fillRect(-.035 * u, -1.57 * u, .07 * u, .05 * u); }
   if (o.facing === 'back' && k.number) { ctx.fillStyle = k.num; ctx.font = 'bold ' + (.24 * u) + 'px Roboto Condensed, Arial'; ctx.textAlign = 'center'; ctx.fillText(k.number, 0, -1.13 * u); }
   ctx.fillStyle = k.skin; ctx.beginPath(); ctx.arc(0, -1.72 * u, .135 * u, 0, 7); ctx.fill();
   if (o.facing === 'back') {
     ctx.beginPath(); ctx.arc(-.13 * u, -1.71 * u, .035 * u, 0, 7); ctx.arc(.13 * u, -1.71 * u, .035 * u, 0, 7); ctx.fill();
-    ctx.fillStyle = k.hair; ctx.beginPath(); ctx.arc(0, -1.735 * u, .138 * u, Math.PI * .92, Math.PI * 2.08); ctx.lineTo(.11 * u, -1.63 * u); ctx.lineTo(-.11 * u, -1.63 * u); ctx.closePath(); ctx.fill();
+    if (k.hairStyle) hairStyled(k, 'back', u);
+    else { ctx.fillStyle = k.hair; ctx.beginPath(); ctx.arc(0, -1.735 * u, .138 * u, Math.PI * .92, Math.PI * 2.08); ctx.lineTo(.11 * u, -1.63 * u); ctx.lineTo(-.11 * u, -1.63 * u); ctx.closePath(); ctx.fill(); }
   } else {
-    ctx.fillStyle = k.hair; ctx.beginPath(); ctx.arc(0, -1.74 * u, .142 * u, Math.PI * 1.02, Math.PI * 1.98); ctx.closePath(); ctx.fill();
+    if (k.hairStyle) hairStyled(k, 'front', u);
+    else { ctx.fillStyle = k.hair; ctx.beginPath(); ctx.arc(0, -1.74 * u, .142 * u, Math.PI * 1.02, Math.PI * 1.98); ctx.closePath(); ctx.fill(); }
+    if (k.beard) { ctx.fillStyle = k.hair; ctx.globalAlpha *= .85; ctx.beginPath(); ctx.arc(0, -1.705 * u, .125 * u, Math.PI * .08, Math.PI * .92); ctx.closePath(); ctx.fill(); ctx.globalAlpha /= .85; ctx.fillStyle = k.skin; ctx.fillRect(-.03 * u, -1.665 * u, .06 * u, .02 * u); }
     ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-.045 * u, -1.72 * u, .016 * u, 0, 7); ctx.arc(.045 * u, -1.72 * u, .016 * u, 0, 7); ctx.fill();
     ctx.strokeStyle = 'rgba(60,20,20,.7)'; ctx.lineWidth = Math.max(1, .012 * u); ctx.beginPath(); ctx.moveTo(-.035 * u, -1.65 * u); ctx.lineTo(.035 * u, -1.65 * u); ctx.stroke();
   }
@@ -139,6 +143,29 @@ export function drawPerson(o) {
     const hx = p.x + .25 * u, hy = p.y - 2.05 * u; ctx.save(); ctx.fillStyle = '#fff'; ctx.strokeStyle = '#222'; ctx.lineWidth = 1.5; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(hx, hy - 18, 46, 22, 6); else ctx.rect(hx, hy - 18, 46, 22); ctx.fill(); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(hx + 6, hy + 4); ctx.lineTo(hx + 2, hy + 12); ctx.lineTo(hx + 14, hy + 4); ctx.fill(); ctx.fillStyle = '#111'; ctx.font = 'bold 13px Roboto Condensed, Arial'; ctx.textAlign = 'center'; ctx.fillText(o.bubble, hx + 23, hy - 2); ctx.restore();
   }
+}
+
+/* ---------- looks: haircuts, ageing, beards, tattoos (only when the kit asks) ---------- */
+function hairStyled(k, view, u) {
+  const st = k.hairStyle, rec = k.recede || 0, front = view === 'front';
+  ctx.fillStyle = k.hair;
+  if (st === 'shaved') { ctx.globalAlpha *= .25; ctx.beginPath(); ctx.arc(0, -1.735 * u, .138 * u, Math.PI * 1.02, Math.PI * 1.98); ctx.closePath(); ctx.fill(); ctx.globalAlpha /= .25; return; }
+  if (st === 'afro') { ctx.beginPath(); ctx.arc(0, -1.79 * u, .19 * u, Math.PI * .98, Math.PI * 2.02); ctx.closePath(); ctx.fill(); if (!front) { ctx.beginPath(); ctx.arc(0, -1.72 * u, .16 * u, 0, Math.PI * 2); ctx.fill(); } }
+  else if (st === 'mohican') { ctx.fillRect(-.035 * u, -1.97 * u, .07 * u, .2 * u); ctx.globalAlpha *= .3; ctx.beginPath(); ctx.arc(0, -1.735 * u, .138 * u, Math.PI * 1.02, Math.PI * 1.98); ctx.closePath(); ctx.fill(); ctx.globalAlpha /= .3; }
+  else {
+    // default shape (also buzz, curtains, man bun, bleached, long)
+    const thin = st === 'buzz' ? .8 : 1;
+    ctx.beginPath(); if (front) ctx.arc(0, -1.74 * u, .142 * u * thin, Math.PI * 1.02, Math.PI * 1.98); else { ctx.arc(0, -1.735 * u, .138 * u, Math.PI * .92, Math.PI * 2.08); ctx.lineTo(.11 * u, -1.63 * u); ctx.lineTo(-.11 * u, -1.63 * u); } ctx.closePath(); ctx.fill();
+    if (st === 'curtains' || st === 'long') { const L = st === 'long' ? .2 : .08; ctx.fillRect(-.15 * u, -1.8 * u, .05 * u, (.1 + L) * u); ctx.fillRect(.1 * u, -1.8 * u, .05 * u, (.1 + L) * u); }
+    if (st === 'manbun') { ctx.beginPath(); ctx.arc(0, -1.9 * u, .055 * u, 0, Math.PI * 2); ctx.fill(); }
+  }
+  // Receding hairline: the forehead creeps up.
+  if (front && rec > 0 && st !== 'afro') { ctx.fillStyle = k.skin; ctx.beginPath(); ctx.ellipse(0, -1.81 * u, (.05 + .07 * rec) * u, (.015 + .045 * rec) * u, 0, 0, Math.PI * 2); ctx.fill(); }
+  if (!front && rec > .6 && st !== 'afro') { ctx.fillStyle = k.skin; ctx.beginPath(); ctx.arc(0, -1.83 * u, .04 * rec * u, 0, Math.PI * 2); ctx.fill(); }
+}
+function tattooArm(u) {
+  ctx.strokeStyle = 'rgba(25,55,75,.75)'; ctx.lineWidth = Math.max(1, .012 * u);
+  for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(-.045 * u, (.25 + i * .06) * u); ctx.quadraticCurveTo(0, (.28 + i * .06) * u, .045 * u, (.25 + i * .06) * u); ctx.stroke(); }
 }
 
 /** spinning: whether the ball is in flight (it rotates). */

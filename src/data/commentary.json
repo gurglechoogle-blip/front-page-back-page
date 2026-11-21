@@ -323,5 +323,12 @@
   "fansChant": [
     "The {team} fans: 'One {me}, there's only one {me}!'",
     "They're singing {me}'s name. Gran will be unbearable."
+  ],
+  "future": [
+    "Robot VAR is checking for a possible handball. Robot VAR has gone into standby mode.",
+    "The hologram fans in the {team} end are singing. One of them has glitched into the dugout.",
+    "The AI assistant manager has just substituted itself on. The fourth official is unsure what to do.",
+    "Drone cameras swoop over the pitch. One of them gets a yellow card for dissent.",
+    "A fan in the front row has paid £400 for this seat. For one game. He's watching his phone."
   ]
 }

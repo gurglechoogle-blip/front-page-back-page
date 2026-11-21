@@ -25,6 +25,7 @@ import { FR, friend, hangOut, nightsFor, nightOut, chatPrompt, chatAnswer } from
 import CZ from '../data/casino.json';
 import { drawClipFrame, clipLength } from '../engine/replay.js';
 import { showAgents, showWindow, showDeadline } from './contractUI.js';
+import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
 import { reputation, inWindow, agentOf } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
@@ -43,7 +44,7 @@ const oppOf = (c, f) => { const me = myTeamIn(c, f); return club(f.home === me ?
 const ha = (c, f) => f.neutral ? 'N' : f.home === myTeamIn(c, f) ? 'H' : 'A';
 
 export function createHubScreen(root, go, params = {}) {
-  const c = state.career, me = club(c.clubId), kit = playerKitFrom(me.home);
+  const c = state.career, me = club(c.clubId), kit = Object.assign(playerKitFrom(me.home), lookFields(c, age(c)));
   let pctx, openMenu = null;
   const $ = id => root.querySelector('#' + id);
 
@@ -240,11 +241,22 @@ export function createHubScreen(root, go, params = {}) {
     const called = c.weekLog.some(x => x.t === 'callMum');
     return [
       { label: c.partner ? `Partner: ${esc(c.partner.name.split(' ')[0])}` : 'Partner', note: c.partner ? `${STAGES[c.partner.stage]} · ${Math.round(c.partner.meter)}/100` : 'Single. Very single.', go: showPartner },
+      { label: 'Your look', note: 'Barber, beard, tattoos', go: showLook },
       { label: 'Friends', note: `${FR.friends.length} mates · uses a slot`, go: showFriends },
       { label: 'Nights out', note: age(c) < 18 ? 'House parties (18+ for pubs and clubs)' : 'Pub, clubs, VIP tables', go: showNights },
       { label: 'Call Mum', note: called ? 'Already rung her this week' : 'Free, once a week', go: () => { if (called) return toast('You rang her already. She\'s still talking.'); c.weekLog.push({ t: 'callMum' }); applyEffects(c, { family: 3 }); save(); render(); toast(pickLine(['Mum: "Are you eating properly?" (x4)', 'Mum tells you about next door\'s extension for 25 minutes. Family +3', 'Mum: "Your Gran\'s got a tattoo." You don\'t ask.'])); } },
       { label: 'Visit Gran', note: 'Uses a slot · family, energy', go: () => { if (slotsLeft(c) <= 0) return toast('No time slots left this week.'); c.slotsUsed++; c.weekLog.push({ t: 'gran' }); applyEffects(c, { family: 6, energy: 4 }); save(); render(); toast(pickLine(['Gran makes you a fry-up and asks for a tip on the 3.40 at Kempton.', 'Gran shows you her new betting app. She\'s up £340.', 'You watch Countdown with Gran. She gets a nine-letter word. It\'s rude.'])); } },
     ];
+  }
+  function showLook() {
+    const a = age(c), L = c.look;
+    modal(`<h2>Your look</h2><div class="scroll shop"><h3>The barber (Dazza)</h3>${LK.hair.map(h => `<div class="item ${L.hair === h.id ? 'owned' : ''}"><div><b>${esc(h.name)}</b><span class="price">${h.price ? money(h.price) : 'Free'}</span><p>${esc(h.blurb)}</p></div><button class="btn small gold" data-h="${h.id}" ${a < h.minAge || c.bank < h.price || L.hair === h.id ? 'disabled' : ''}>${L.hair === h.id ? 'Current' : a < h.minAge ? h.minAge + '+' : 'Do it'}</button></div>`).join('')}
+      <div class="item"><div><b>${L.beard ? 'Shave the beard off' : 'Grow a beard'}</b><p>${L.beard ? 'Baby face returns.' : 'Takes three weeks and a lot of itching.'}</p></div><button class="btn small" id="beard" ${a < 18 ? 'disabled' : ''}>${a < 18 ? '18+' : L.beard ? 'Shave' : 'Grow'}</button></div>
+      <h3>Tattoo parlour</h3>${LK.tattoos.map(t => `<div class="item ${L.tattoo === t.id ? 'owned' : ''}"><div><b>${esc(t.name)}</b><span class="price">${money(t.price)}</span><p>${esc(t.blurb)}</p></div><button class="btn small gold" data-t="${t.id}" ${a < t.minAge || c.bank < t.price || L.tattoo === t.id ? 'disabled' : ''}>${L.tattoo === t.id ? 'Got it' : a < t.minAge ? '18+' : 'Ink it'}</button></div>`).join('')}</div>`);
+    const after = msg => { Object.assign(kit, lookFields(c, age(c))); save(); render(); showLook(); toast(msg); };
+    root.querySelectorAll('[data-h]').forEach(b => b.onclick = () => { const r = haircut(c, b.dataset.h, a); r.ok ? after('Dazza does his thing. The mirror gasps.') : toast(r.why); });
+    root.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { const r = tattoo(c, b.dataset.t, a); r.ok ? after('Inked. Mum will have opinions.') : toast(r.why); });
+    $('beard').onclick = () => { L.beard = !L.beard; after(L.beard ? 'Beard: grown. You stroke it thoughtfully now.' : 'Clean-shaven. You look about twelve.'); };
   }
   function showFriends() {
     const rows = FR.friends.map(f => { const L = Math.round(c.friends[f.id].loyalty); return `<div class="item friend ${f.kind}"><div><b>${esc(f.name)}</b> <small class="kind">${f.kind}</small><p>${esc(f.trait)}</p><div class="rel"><span>Loyalty</span><div class="bar"><i class="m-${f.kind === 'chaotic' ? 'fans' : 'teammates'}" style="width:${L}%"></i></div><b>${L}</b></div></div><button class="btn small gold" data-f="${f.id}" ${slotsLeft(c) <= 0 ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : 'Hang out'}</button></div>`; }).join('');

@@ -18,6 +18,8 @@ import { pickR } from '../sim/text.js';
 import C from '../data/commentary.json';
 import clubsData from '../data/clubs.json';
 import { state, save, skillF, playerName, addSkill } from '../state/gameState.js';
+import { lookFields } from '../sim/looks.js';
+import { age as careerAge } from '../sim/career.js';
 
 const MINUTES_PER_SEC = 1.6;           // the clock "races": ~60s for 90 minutes plus your chances
 const FAST = 4;                        // fast-forward multiplier
@@ -42,6 +44,7 @@ export function createMatchScreen(root, go, params) {
   const kits = makeKitSet(playerKitFrom(myCol), teamKitFrom(oppCol), keeperKitFor(myCol.shirt, oppCol.shirt));
   // Career matches save themselves as they go (params.persist) and can be resumed (params.resume).
   const resume = params.resume || null;
+  if (params.onDone && state.career) Object.assign(kits.us, lookFields(state.career, careerAge(state.career)));
   const sim = resume ? MatchSim.restore(resume.sim) : new MatchSim({ home, away, mySide, cup: params.cup, extraTime: params.extraTime !== false, role, stadium, trust: params.trust, form: params.form, playerName: pName });
   const feedLog = resume ? resume.feed.slice() : [];
   let lastPersist = 0;

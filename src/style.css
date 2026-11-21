@@ -316,3 +316,10 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .talks input[type=range]{flex:1;accent-color:#ffc928;min-width:160px}.talks select{font:inherit;background:#1c2025;color:#fff;border:2px solid #3a4048;border-radius:6px;padding:4px 6px;max-width:100%}
 .talks b{color:#ffc928;min-width:90px}.kind.dream{background:#ffc928;color:#2a1d00}
 .mbody2{display:flex;flex-direction:column;min-height:0;flex:1;overflow-y:auto}
+/* ---------- video-game card ---------- */
+.gcard{width:170px;margin:8px auto;border-radius:12px 12px 40px 40px;padding:12px 10px 16px;color:#2a1d00;box-shadow:0 6px 0 rgba(0,0,0,.35);position:relative;text-align:center}
+.gcard.gold{background:linear-gradient(160deg,#fff3b0,#ffc928 45%,#c99400)}.gcard.silver{background:linear-gradient(160deg,#fff,#cfd5db 45%,#8a929c)}.gcard.bronze{background:linear-gradient(160deg,#f0c8a0,#c08350 45%,#7a4a22);color:#fff}
+.gcard .ovr{font-family:Anton,Impact,sans-serif;font-size:48px;line-height:1}.gcard .pos{font-weight:700;letter-spacing:2px}
+.gcard .nm{font-family:Anton,Impact,sans-serif;font-size:20px;margin:6px 0;border-top:2px solid rgba(0,0,0,.2);border-bottom:2px solid rgba(0,0,0,.2)}
+.gcard .attrs{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;font-size:13px;text-align:left}.gcard .attrs b{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:16px}
+.choices.small .btn{font-size:13px;padding:7px 10px}

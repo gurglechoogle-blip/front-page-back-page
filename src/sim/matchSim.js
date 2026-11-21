@@ -49,7 +49,7 @@ export class MatchSim {
     this.possTicks = 0; this.homePossTicks = 0;
     this.stoppage = { '1H': 1 + Math.floor(R() * 4), '2H': 2 + Math.floor(R() * 5), 'ET1': Math.floor(R() * 3), 'ET2': 1 + Math.floor(R() * 3) };
     // Team-mates who rate you pass to you more: support (-1..1) is worth up to a chance either way.
-    this.fans = opts.fans ?? 50;
+    this.fans = opts.fans ?? 50; this.year = opts.year || 2026;
     this.nChances = this.role === 'none' ? 0 : this.role === 'sub' ? 1 + (R() < .45 ? 1 : 0) : clamp(chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0), 3, 6);
     this.subMinute = this.role === 'sub' ? 58 + Math.floor(R() * 18) : null;
     this.schedule = {};
@@ -141,6 +141,7 @@ export class MatchSim {
     let r = R() * Object.values(W).reduce((a, b) => a + b, 0), kind = 'possession';
     for (const k in W) { r -= W[k]; if (r <= 0) { kind = k; break; } }
     const st = this.stats[side], opp = side === 'home' ? 'away' : 'home';
+    if (kind === 'crowd' && this.year >= 2031 && R() < .5) return [this.ev(fill(pickR(C.future, R), this.vars(side)), 'info', side)];
     if (kind === 'corner') st.corners++;
     if (kind === 'foul') this.stats[opp].fouls++;
     if (kind === 'yellow') { this.stats[opp].fouls++; this.stats[opp].yellows++; }

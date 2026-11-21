@@ -167,6 +167,7 @@ export function makePaper(c, R = Math.random) {
   let frontHead, frontSub;
   if (frontStory) { frontHead = frontStory.headline; frontSub = c.honour >= 65 ? `Friends insist the ${pick(NP.tone.good, R).toLowerCase()} is "a lovely lad really".` : c.honour <= 35 ? `Latest chapter in the ${pick(NP.tone.bad, R).toLowerCase()}'s rollercoaster year.` : 'Club refuse to comment. Gran refuses to stop commenting.'; }
   else if (c.honour >= 80) { frontHead = fill(pick(['{NAME}: NICEST LAD IN FOOTBALL?', 'SAINT {NAME}? FANS SAY YES']), vars); frontSub = 'Our reporters searched for dirt for a whole week. They found a parking ticket. He paid it.'; }
+  else if (+CAL.season.slice(0, 4) >= 2030 && R() < .3) { const yr = +CAL.season.slice(0, 4), fut = NP.future.filter(([y]) => y <= yr + 1); frontHead = pick(fut, R)[1]; frontSub = 'Meanwhile, the beautiful game continues to evolve. Gran is not impressed.'; }
   else if (R() < .55) { frontHead = fill(pick(NP.sightings, R), vars); frontSub = 'Our photographer has been following him all week. It\'s been a long week.'; }
   else { frontHead = fill(pick(NP.frontFillers, R), vars); frontSub = 'Nothing scandalous about ' + NAME.charAt(0) + NAME.slice(1).toLowerCase() + ' this week. We checked. Twice.'; }
   const paper = {

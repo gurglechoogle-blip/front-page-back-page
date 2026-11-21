@@ -1,0 +1,19 @@
+{
+  "_note": "The barber and the tattoo parlour. effects apply once. minAge gates some choices.",
+  "hair": [
+    { "id": "short", "name": "Short back and sides", "price": 15, "minAge": 16, "effects": {}, "blurb": "Sensible. Your mum approves." },
+    { "id": "buzz", "name": "Grade two all over", "price": 10, "minAge": 16, "effects": { "honour": 1 }, "blurb": "Low maintenance. High aerodynamics." },
+    { "id": "curtains", "name": "Curtains (it's back, apparently)", "price": 25, "minAge": 16, "effects": { "fans": 1 }, "blurb": "Very 1996. Very 2036, it turns out." },
+    { "id": "mohican", "name": "Mohican", "price": 30, "minAge": 16, "effects": { "fans": 2, "honour": -1 }, "blurb": "The gaffer stares at it for a full minute without speaking." },
+    { "id": "bleached", "name": "Bleached blond", "price": 60, "minAge": 16, "effects": { "fans": 2 }, "colour": "#f1e3a0", "blurb": "Every summer tournament, someone does it. This year it's you." },
+    { "id": "afro", "name": "Grow it out big", "price": 0, "minAge": 16, "effects": { "fans": 1 }, "blurb": "Free! Takes ages. Worth it." },
+    { "id": "manbun", "name": "Man bun", "price": 40, "minAge": 18, "effects": { "fans": -1, "partner": 2 }, "blurb": "Your partner loves it. Gran calls you 'young lady'." },
+    { "id": "long", "name": "Long and flowing", "price": 0, "minAge": 18, "effects": { "fans": 1 }, "blurb": "Requires an Alice band. You will need an Alice band." },
+    { "id": "shaved", "name": "Shave it all off", "price": 0, "minAge": 16, "effects": {}, "blurb": "The nuclear option. Very popular in your thirties." }
+  ],
+  "tattoos": [
+    { "id": "sleeve", "name": "Full sleeve (lions, a rose, your mum's name)", "price": 900, "minAge": 18, "effects": { "fans": 2, "family": 1 }, "blurb": "Twelve hours. Mum cried. Good crying." },
+    { "id": "neck", "name": "Neck tattoo", "price": 300, "minAge": 18, "effects": { "fans": 1, "honour": -2, "family": -3 }, "blurb": "It says 'BELIEVE'. It was meant to say 'BELIEVE IN YOURSELF'. You ran out of neck." },
+    { "id": "both", "name": "Sleeve and neck", "price": 1200, "minAge": 18, "effects": { "fans": 2, "honour": -2 }, "blurb": "Your kit man Dennis predicted this. Of course he did." }
+  ]
+}

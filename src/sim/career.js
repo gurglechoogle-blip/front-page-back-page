@@ -10,6 +10,7 @@ import {
 import { endSeason } from './world.js';
 import { endLoan, agentOf, inWindow, reputation } from './transfers.js';
 import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
+import { initLook } from './looks.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; }
@@ -53,7 +54,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   buildSeason(c, R); initLife(c); initMoney(c);
   c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
   c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
-  initSocial(c, R); initPartner(c); initIntl(c);
+  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -145,7 +146,7 @@ export function matchParams(c, f, role) {
   return {
     home: club(f.home), away: club(f.away), mySide, cup: !!f.knockout, extraTime: !!f.extraTime, role,
     stadium: f.neutral || null, label: compName(f), trust: c.approval / 100, form: effectiveForm(c), fixtureId: f.id,
-    support: support(c), fans: c.meters.fans,
+    support: support(c), fans: c.meters.fans, year: +CAL.season.slice(0, 4),
   };
 }
 /** Play a match nobody's watching (you're not in the squad). */
@@ -235,7 +236,7 @@ export function finishWeek(c, R = Math.random) {
   // Skipping it costs nothing here, you just don't improve.
   const dA = drills.length >= 2 ? taper(c.approval, drills.reduce((a, d) => a + (d.score >= 3 ? 1 : .6), 0)) : 0;
   c.approval = clamp(c.approval + dA, 0, 100);
-  c.energy = clamp(c.energy + 12, 0, 100);
+  c.energy = clamp(c.energy + 12 - Math.max(0, age(c) - 29) * 1.5 * (c.rooms && c.rooms.includes('gym') ? .5 : 1), 0, 100); // recovery slows in your thirties
   familyWeek(c); friendsWeek(c, R);
   if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
   const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });

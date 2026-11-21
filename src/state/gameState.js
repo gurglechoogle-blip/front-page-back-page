@@ -9,6 +9,7 @@ import { initMoney } from '../sim/money.js';
 import { initSocial } from '../sim/social.js';
 import { initPartner } from '../sim/partner.js';
 import { initIntl } from '../sim/international.js';
+import { initLook } from '../sim/looks.js';
 
 export const SAVE_VERSION = 3;
 export const SAVE_KEY = 'fpbp_save_v1';
@@ -33,7 +34,7 @@ export function migrate(s) {
   s.friendly = Object.assign({ clubId: 'shrewsbury', oppId: 'barrow', venue: 'home', cup: false, trust: 50, form: 50 }, s.friendly || {});
   if (s.career) {
     const c = s.career;
-    initLife(c); initMoney(c); initSocial(c); initPartner(c); initIntl(c); c.liveMatch = c.liveMatch || null;
+    initLife(c); initMoney(c); initSocial(c); initPartner(c); initIntl(c); initLook(c); c.liveMatch = c.liveMatch || null;
     c.world = c.world || { year: 0, leagues: {}, strength: {} }; c.totals = c.totals || { apps: 0, goals: 0, assists: 0, seasons: 0 }; c.history = c.history || []; c.inbox = c.inbox || []; c.weekLog = c.weekLog || [];
   }
   s.version = SAVE_VERSION;
@@ -95,6 +96,8 @@ export function addSkill(k, raw, mul = 1) {
   state.profile.skills[k] = Math.min(SKILL_MAX, s + g); return g;
 }
 export const skillLevelExact = () => 100 * Object.values(state.profile.skills).reduce((a, b) => a + Math.min(b, SKILL_MAX), 0) / (SKILL_MAX * SKILLS.length);
+/** Your thirties: skills fade a little every summer (a home gym halves it). */
+export function ageSkills(age, gym) { if (age < 30) return 0; const f = (age - 29) * .025 * (gym ? .5 : 1); let lost = 0; for (const k in state.profile.skills) { const d = Math.round(state.profile.skills[k] * f); state.profile.skills[k] -= d; lost += d; } return lost; }
 export const skillLevel = () => Math.round(skillLevelExact());
 /** Skill level for display: one decimal place while it's small. */
 export const skillLevelText = () => { const v = skillLevelExact(); return (v < 10 ? v.toFixed(1) : Math.round(v)) + '%'; };
