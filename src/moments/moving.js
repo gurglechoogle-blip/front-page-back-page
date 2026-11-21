@@ -23,7 +23,8 @@ export class MovingMoment extends BaseMoment {
     let dx = Math.abs(px - G.xL), e = (now - T) / tw;
     ({ e, dx } = this.contactError(b, px, e, dx, sf));
     G.pose = this.strikePose; G.poseT0 = now; G.contactX = px; G.contactPX = px;
-    if (dx >= tolX) this.miss(this.freshAirMsg);
+    if (this.lateFirst && e > 1) this.miss('Too late, it\'s gone past you!');
+    else if (dx >= tolX) this.miss(this.freshAirMsg);
     else if (e < -1) this.miss('Too eager, swung before it arrived!');
     else if (e > 1) this.miss('Too late, it\'s gone past you!');
     else {

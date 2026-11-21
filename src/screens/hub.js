@@ -2,12 +2,13 @@
 // gaffer's approval. Left: career stats and skills. Right: money and honour.
 // Top: next fixture, time slots, phone. Bottom: five category buttons.
 import { W, H, setCam } from '../engine/camera.js';
-import { setCtx, drawBackground, drawPerson } from '../engine/draw.js';
+import { setCtx, drawBackground, drawPerson, setVenue } from '../engine/draw.js';
+import { trainingVenue } from './venue.js';
 import { esc } from '../engine/util.js';
 import { clock } from '../engine/clock.js';
 import { playerKitFrom } from '../engine/kits.js';
 import { SKILLS } from '../moments/index.js';
-import { state, save, skillLevel } from '../state/gameState.js';
+import { state, save, skillLevelText, SKILL_MAX } from '../state/gameState.js';
 import {
   club, compName, prettyDate, weekStart, DIVS, CAL, zone, table, roundName,
 } from '../sim/season.js';
@@ -57,7 +58,7 @@ export function createHubScreen(root, go, params = {}) {
   <div id="modal" class="modal hidden"><div class="mbox"><button class="mclose" id="mclose">✕</button><div id="mbody"></div></div></div>
   <div id="toast" class="toast"></div>
 </div>`;
-    pctx = $('pc').getContext('2d');
+    pctx = $('pc').getContext('2d'); setVenue(trainingVenue(c.clubId));
     root.querySelectorAll('.hbtn').forEach(b => b.onclick = e => { e.stopPropagation(); toggleMenu(b.dataset.m); });
     $('hubscr').onclick = () => toggleMenu(null);
     $('phone').onclick = e => { e.stopPropagation(); showPhone(); };
@@ -88,8 +89,8 @@ export function createHubScreen(root, go, params = {}) {
     const avg = avgRating(c);
     $('left').innerHTML = `<h2>${esc(c.name)}</h2><div class="sub2">${age(c)} · Striker · ${esc(me.name)}</div>
       <h3>Career</h3>${row('Appearances', st.apps + (st.subs ? ` <small>(${st.subs} sub)</small>` : ''))}${row('Goals', st.goals)}${row('Assists', st.assists)}${row('Avg rating', avg ? avg.toFixed(2) : '–')}${st.u21 ? row('U21 games', st.u21) : ''}
-      <div class="lvl">${skillLevel()}%</div><div class="lvlcap">Skill level</div>
-      <h3>Skills</h3>${SKILLS.map(([k, l]) => { const v = state.profile.skills[k]; return `<div class="row" style="border:0"><span>${l}</span><b>${v}</b></div><div class="bar"><i style="width:${Math.min(100, v / 120)}%"></i></div>`; }).join('')}`;
+      <div class="lvl">${skillLevelText()}</div><div class="lvlcap">Skill level</div>
+      <h3>Skills</h3>${SKILLS.map(([k, l]) => { const v = state.profile.skills[k]; return `<div class="row" style="border:0"><span>${l}</span><b>${v}</b></div><div class="bar"><i style="width:${Math.min(100, v / SKILL_MAX * 100)}%"></i></div>`; }).join('')}`;
     const bills = weeklyBills(c).reduce((a, b) => a + b.amount, 0), hb = honourBadge(c.honour);
     $('right').innerHTML = `<h2>Money</h2>${row('Wages', money(c.contract.wage) + '/wk')}${row('Bills', money(bills) + '/wk')}${row('Bank balance', money(c.bank))}${row('Net worth', money(netWorth(c)))}
       <h3>Honour</h3><div class="honour h${Math.min(4, Math.floor(c.honour / 20.01))}"><div class="medal">${Math.round(c.honour)}</div><b>${hb}</b></div>
@@ -139,7 +140,7 @@ export function createHubScreen(root, go, params = {}) {
     if (!nextFixture(c) && !weekFixtures(c).length && c.seasonOver) return go('season');
     const sl = slotsLeft(c);
     if (sl > 0 && !c.matchday) {
-      modal(`<h2>Unused time slots</h2><p>You've still got <b>${sl}</b> slot${sl === 1 ? '' : 's'} this week. Unused slots annoy the gaffer, and he's already annoyed about the fishing season.</p>
+      modal(`<h2>Unused time slots</h2><p>You've still got <b>${sl}</b> slot${sl === 1 ? '' : 's'} this week. Nobody will tell you off, but skills don't improve on their own. Two or more drills a week and the gaffer notices.</p>
         <div class="endBtns"><button class="btn red" id="goAnyway">Go anyway</button><button class="btn" id="useThem">Use them</button></div>`);
       $('goAnyway').onclick = () => { closeModal(); proceed(); }; $('useThem').onclick = closeModal;
       return;

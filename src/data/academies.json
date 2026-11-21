@@ -1,6 +1,7 @@
 {
-  "_note": "Academy offers at 16. Each type trades something. coaching = training skill-gain multiplier; pathway = base chance of first-team football; patience = how hard bad games hit manager approval (higher = harsher); approval = starting manager approval. Club pools: 'high' if your training-ground skill level is decent, 'low' otherwise.",
-  "minSkillForHigh": 15,
+  "_note": "Academy offers at 16. Each type trades something. coaching = training skill-gain multiplier; pathway = base chance of first-team football; patience = how hard bad games hit manager approval (higher = harsher); approval = starting manager approval. Club pools: 'high' if your scout rating (average best drill score out of 5) is 2.5 or more, 'low' otherwise.",
+  "minScoutForHigh": 2.5,
+  "minScoutForFour": 1.5,
   "types": {
     "elite": {
       "label": "Elite academy", "strength": "Prestige, top coaching", "catch": "Crowded pathway, likely loans, little patience",

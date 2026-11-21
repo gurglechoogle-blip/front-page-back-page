@@ -1,7 +1,7 @@
 // VOLLEY: always from the left. Three crosses: whipped, dipping, low bouncing.
 // Timing (early = left, late = right) and striking off-centre decide direction.
 import { MovingMoment } from './moving.js';
-import { JFG, rand, pick } from './core.js';
+import { JFG, rand, pick, P, W } from './core.js';
 
 export class Volley extends MovingMoment {
   get key() { return 'volley'; }
@@ -11,6 +11,10 @@ export class Volley extends MovingMoment {
   get timingWindow() { return .32; }
   get strikePower() { return .85; }
   get aimSpread() { return 5.8; }
+  // Change from v1.1: no automatic miss once the drop point has passed. You only
+  // miss by swinging and missing, or by letting the ball run off the right of the screen.
+  get lateFirst() { return true; }
+  passedPlayer(now) { const b = this.incomingPos(now); return P(b.x, b.z, b.h).x > W + 30; }
   adjustAim(gx) { return gx - ((this.contactPX - this.xL) / 1.0) * 2.6; }
 
   setup() {

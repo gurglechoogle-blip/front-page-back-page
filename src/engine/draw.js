@@ -5,6 +5,7 @@ import { W, H, GOALZ, GW, GH, P, getCam } from './camera.js';
 import { clamp, pick2, mulberry } from './util.js';
 import { clock } from './clock.js';
 import { KIT_GK } from './kits.js';
+import { drawVenue, PITCH } from './venues.js';
 
 export let ctx = null;
 const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H; const tctx = tmp.getContext('2d');
@@ -12,15 +13,26 @@ const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H; con
 export function setCtx(c) { ctx = c; }
 
 /* ---------- background ---------- */
-const bgCache = {};
-export function getBg() { const CAM = getCam(); if (!bgCache[CAM.n]) bgCache[CAM.n] = buildBg(); return bgCache[CAM.n]; }
+// The venue sets the scenery: { tier, colours: {shirt, trim}, away?: colours, name }.
+// tier: 'park' (the rec, as in the prototype) | 'lower' | 'champ' | 'prem' | 'trainMid' | 'trainElite'.
+let venue = { tier: 'park' };
+export function setVenue(v) { venue = v && v.tier ? v : { tier: 'park' }; }
+export const getVenue = () => venue;
+let bgCache = {};
+export function getBg() {
+  const CAM = getCam(), key = CAM.n + '|' + venue.tier + '|' + (venue.name || '') + '|' + (venue.colours ? venue.colours.shirt : '');
+  if (!bgCache[key]) { if (Object.keys(bgCache).length > 10) bgCache = {}; bgCache[key] = buildBg(); }
+  return bgCache[key];
+}
 export function drawBackground() { ctx.drawImage(getBg(), 0, 0); }
 
 function buildBg() {
-  const CAM = getCam();
+  const CAM = getCam(), V = venue, park = V.tier === 'park', Q = PITCH[V.tier] || PITCH.park;
   const bg = document.createElement('canvas'); bg.width = W; bg.height = H; const c = bg.getContext('2d'); const R = mulberry(7);
-  let g = c.createLinearGradient(0, 0, 0, 262); g.addColorStop(0, '#8ea3b8'); g.addColorStop(1, '#d5dbe0'); c.fillStyle = g; c.fillRect(0, 0, W, CAM.yf); c.save(); c.translate(0, CAM.yf - 262);
+  let g = c.createLinearGradient(0, 0, 0, 262); g.addColorStop(0, park ? '#8ea3b8' : Q.sky); g.addColorStop(1, '#d5dbe0'); c.fillStyle = g; c.fillRect(0, 0, W, CAM.yf); c.save(); c.translate(0, CAM.yf - 262);
   c.fillStyle = 'rgba(255,255,255,.35)'; for (let i = 0; i < 9; i++) { const x = R() * W, y = 20 + R() * 110; for (let j = 0; j < 5; j++) { c.beginPath(); c.ellipse(x + j * 28 - 56, y + R() * 10, 40 + R() * 30, 14 + R() * 8, 0, 0, 7); c.fill(); } }
+  if (!park) { drawVenue(c, V, mulberry(11)); c.restore(); }
+  else {
   // tower blocks
   [[30, 96, 70], [690, 110, 80]].forEach(([x, top, w]) => {
     c.fillStyle = '#8b9097'; c.fillRect(x, top, w, 262 - top); c.fillStyle = '#a3a8ae'; c.fillRect(x, top, w, 6);
@@ -42,22 +54,24 @@ function buildBg() {
   // sign
   c.fillStyle = '#2f5d3a'; c.fillRect(560, 214, 150, 30); c.strokeStyle = '#e9efe9'; c.lineWidth = 2; c.strokeRect(563, 217, 144, 24); c.fillStyle = '#fff'; c.font = 'bold 11px Roboto Condensed, Arial'; c.textAlign = 'center'; c.fillText('ASHWORTH REC', 635, 228); c.font = '9px Roboto Condensed, Arial'; c.fillText('No golf · Dogs on leads', 635, 238); c.fillStyle = '#333'; c.fillRect(575, 244, 4, 18); c.fillRect(690, 244, 4, 18);
   c.restore();
+  }
   // grass
-  const gy0 = CAM.yf - 4; g = c.createLinearGradient(0, gy0, 0, H); g.addColorStop(0, '#6d8b48'); g.addColorStop(1, '#52762f'); c.fillStyle = g; c.fillRect(0, gy0, W, H - gy0);
-  for (let i = 0; i < 12; i++) { const z0 = i / 12, z1 = (i + 1) / 12; if (i % 2) continue; const a = P(-30, z0), b = P(30, z0), cc = P(30, z1), d = P(-30, z1); c.fillStyle = 'rgba(255,255,255,.035)'; c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.lineTo(cc.x, cc.y); c.lineTo(d.x, d.y); c.fill(); }
+  const gy0 = CAM.yf - 4; g = c.createLinearGradient(0, gy0, 0, H); g.addColorStop(0, Q.grass[0]); g.addColorStop(1, Q.grass[1]); c.fillStyle = g; c.fillRect(0, gy0, W, H - gy0);
+  for (let i = 0; i < 12; i++) { const z0 = i / 12, z1 = (i + 1) / 12; if (i % 2) continue; const a = P(-30, z0), b = P(30, z0), cc = P(30, z1), d = P(-30, z1); c.fillStyle = 'rgba(255,255,255,' + Q.stripes + ')'; c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.lineTo(cc.x, cc.y); c.lineTo(d.x, d.y); c.fill(); }
   // mud
   const blob = (x, z, r, col) => { const p = P(x, z); c.fillStyle = col; c.beginPath(); c.ellipse(p.x, p.y, r * 100 * p.s, r * 100 * p.s * (.12 + .3 * (1 - z)), 0, 0, 7); c.fill(); };
-  blob(0, .9, 3.4, 'rgba(96,74,46,.55)'); blob(0, .88, 2.2, 'rgba(82,62,38,.5)'); blob(0, .4, 1.3, 'rgba(92,70,44,.5)'); blob(0, .08, 2.5, 'rgba(92,70,44,.35)');
-  for (let i = 0; i < 40; i++) blob((R() - .5) * 12, R() * .95, .3 + R() * 1.2, 'rgba(' + (80 + R() * 25 | 0) + ',' + (62 + R() * 15 | 0) + ',40,' + (.25 + R() * .35) + ')');
-  for (let i = 0; i < 6; i++) { const x = (R() - .5) * 9, z = R() * .85; blob(x, z, .25 + R() * .4, 'rgba(120,140,155,.55)'); blob(x + .05, z + .005, .12, 'rgba(220,230,235,.35)'); }
+  if (park) { blob(0, .9, 3.4, 'rgba(96,74,46,.55)'); blob(0, .88, 2.2, 'rgba(82,62,38,.5)'); blob(0, .4, 1.3, 'rgba(92,70,44,.5)'); blob(0, .08, 2.5, 'rgba(92,70,44,.35)'); }
+  else if (Q.wear) { blob(0, .9, 2.6 * Q.wear, `rgba(96,74,46,${.45 * Q.wear})`); blob(0, .4, 1.1 * Q.wear, `rgba(92,70,44,${.35 * Q.wear})`); }
+  for (let i = 0; i < Q.mud; i++) blob((R() - .5) * 12, R() * .95, .3 + R() * 1.2, 'rgba(' + (80 + R() * 25 | 0) + ',' + (62 + R() * 15 | 0) + ',40,' + (.25 + R() * .35) + ')');
+  for (let i = 0; i < Q.puddles; i++) { const x = (R() - .5) * 9, z = R() * .85; blob(x, z, .25 + R() * .4, 'rgba(120,140,155,.55)'); blob(x + .05, z + .005, .12, 'rgba(220,230,235,.35)'); }
   // lines
-  c.strokeStyle = 'rgba(255,255,255,.5)';
+  c.strokeStyle = 'rgba(255,255,255,' + Q.lines + ')';
   const line = (pts) => { c.beginPath(); pts.forEach(([x, z], i) => { const p = P(x, z); c.lineWidth = Math.max(1, 6 * p.s); i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y); }); c.stroke(); };
   line([[-30, GOALZ], [30, GOALZ]]); line([[-5.5, GOALZ], [-5.5, .82], [5.5, .82], [5.5, GOALZ]]); line([[-16.5, GOALZ], [-16.5, .2], [16.5, .2], [16.5, GOALZ]]);
   c.beginPath(); for (let a = -56; a <= 56; a += 4) { const r = a * Math.PI / 180, p = P(9.15 * Math.sin(r), .4 - .366 * Math.cos(r)); c.lineWidth = Math.max(1, 6 * p.s); a === -56 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y); } c.stroke();
   let sp = P(0, .4); c.fillStyle = 'rgba(255,255,255,.6)'; c.beginPath(); c.ellipse(sp.x, sp.y, 6 * sp.s, 2 * sp.s, 0, 0, 7); c.fill();
   // litter
-  [[-5.2, .3, '#d23a3a'], [4.6, .18, '#2f7fd6'], [-2.6, .75, '#f0c419']].forEach(([x, z, col]) => { const p = P(x, z); c.fillStyle = col; c.fillRect(p.x, p.y - 3 * p.s, 9 * p.s, 5 * p.s); });
+  (Q.litter ? [[-5.2, .3, '#d23a3a'], [4.6, .18, '#2f7fd6'], [-2.6, .75, '#f0c419']] : []).forEach(([x, z, col]) => { const p = P(x, z); c.fillStyle = col; c.fillRect(p.x, p.y - 3 * p.s, 9 * p.s, 5 * p.s); });
   // vignette
   g = c.createRadialGradient(400, 330, 250, 400, 330, 560); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.45)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
   return bg;

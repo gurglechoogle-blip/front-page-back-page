@@ -28,7 +28,8 @@ export class Penalty extends BaseMoment {
     this.launchShot({ delay: .06, dur: clamp(.42 - .2 * p, .2, .42), x: G.bx, z: G.bz, h: .11, q: q, power: Math.min(1, p), gx: G.penX + randn() * .12, gh: Math.max(.05, gh + randn() * .08) });
   }
   saveChance(o, gx, gh) {
-    let ps = .62 - .11 * Math.abs(gx) - .35 * (o.power - .5) - (gh > 1.5 ? .12 : 0) + .22 * (1 - o.q); if (Math.abs(gx) > 3 && gh > 1.8) ps -= .15;
+    // Retuned from v1.1 (which saved ~37% on target): now ~1 in 5 on average. Weak, central or badly hit penalties still get saved more.
+    let ps = .32 - .065 * Math.abs(gx) - .25 * (o.power - .5) - (gh > 1.5 ? .05 : 0) + .15 * (1 - o.q); if (Math.abs(gx) > 3 && gh > 1.8) ps -= .08;
     return ps;
   }
   beatenDive(gx, gh) {

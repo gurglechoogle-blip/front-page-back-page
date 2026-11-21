@@ -24,10 +24,21 @@ const rgb = h => { h = h.replace('#', ''); if (h.length === 3) h = h.split('').m
 export const colourDist = (a, b) => { const x = rgb(a), y = rgb(b); return Math.hypot(x[0] - y[0], x[1] - y[1], x[2] - y[2]); };
 export const luminance = h => { const [r, g, b] = rgb(h); return (.299 * r + .587 * g + .114 * b) / 255; };
 
-/** Which kits each side wears: the away side changes if the shirts clash. */
+const NAVY = { shirt: '#1b2b4b', trim: '#f2c230', shorts: '#1b2b4b', socks: '#1b2b4b' };
+const THIRD = { shirt: '#f2c230', trim: '#1d1d1d', shorts: '#1d1d1d', socks: '#f2c230' };
+/** A club's change kit: its own if it has one, otherwise a sensible one. */
+export function changeKit(c) {
+  if (c.away) return c.away;
+  const h = c.home;
+  return luminance(h.shirt) > .6 ? NAVY : { shirt: '#f4f4f4', trim: h.shirt, shorts: h.shirt, socks: '#f4f4f4' };
+}
+const CLASH = 150;
+/** Which kits each side wears: the away side changes (and changes again) until nothing clashes. */
 export function matchColours(home, away) {
-  const awayKit = colourDist(home.home.shirt, away.home.shirt) < 150 ? away.away : away.home;
-  return { home: home.home, away: awayKit };
+  const hs = home.home.shirt;
+  if (colourDist(hs, away.home.shirt) >= CLASH) return { home: home.home, away: away.home };
+  const options = [changeKit(away), THIRD, NAVY, { shirt: '#f4f4f4', trim: '#1d1d1d', shorts: '#1d1d1d', socks: '#f4f4f4' }];
+  return { home: home.home, away: options.find(k => colourDist(hs, k.shirt) >= CLASH) || THIRD };
 }
 /** Our striker's kit (number 9) in club colours. */
 export function playerKitFrom(c) { return Object.assign({}, KIT_US, { shirt: c.shirt, trim: c.trim, shorts: c.shorts, socks: c.socks, num: luminance(c.shirt) > .6 ? '#111' : '#ffffff', number: '9' }); }

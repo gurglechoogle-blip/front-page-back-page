@@ -125,7 +125,7 @@ npm run dev              # in another terminal
 node tools/compare.mjs   # optional: node tools/compare.mjs <url> <seed,seed,...>
 ```
 
-Every frame should come back identical.
+Every frame should come back identical, except where the mechanics were deliberately changed after Stage 3: volleys only miss on a bad click or when the ball leaves the screen, and the penalty keeper saves about 1 in 5.
 
 ## Saving
 

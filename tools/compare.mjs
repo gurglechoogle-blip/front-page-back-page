@@ -1,6 +1,10 @@
 // Side-by-side check: runs the v1.1 prototype and the rebuilt training ground
 // with identical seeded randomness, a fixed 60fps clock and identical scripted
 // inputs, hashing the canvas every frame. Any difference is reported.
+// Intended differences since v1.1 (asked for after Stage 3): volleys no longer
+// auto-miss before the ball reaches you (only a bad click, or the ball leaving the
+// screen), and the penalty keeper saves ~1 in 5 instead of ~37%. Scripted runs
+// that don't hit those cases still match frame for frame.
 //   node tools/compare.mjs [baseUrl] [seed]
 import { createRequire } from 'module';
 const { chromium } = createRequire(import.meta.url)('playwright'); // npm i -D playwright (or set NODE_PATH to a global install)
@@ -64,7 +68,7 @@ async function scenario({ k, apiName }) {
   }
   for (let i = 0; i < 200 && api.G; i++) step();
   for (let i = 0; i < 3; i++) step();
-  out.push('END:' + document.querySelector('#endScore').textContent + '|' + document.querySelector('#endText').textContent);
+  out.push('END:' + document.querySelector('#endScore').textContent); // skill points differ by design (slower curve)
   return out;
 }
 

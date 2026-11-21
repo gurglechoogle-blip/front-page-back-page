@@ -1,7 +1,7 @@
 // MATCH DAY setup: a one-off match until the career exists (Stage 3 drives
 // matches from the fixture list instead).
 import { W, H, setCam } from '../engine/camera.js';
-import { setCtx, drawBackground } from '../engine/draw.js';
+import { setCtx, drawBackground, setVenue } from '../engine/draw.js';
 import { esc } from '../engine/util.js';
 import clubsData from '../data/clubs.json';
 import { state, save } from '../state/gameState.js';
@@ -43,7 +43,7 @@ export function createMatchSetupScreen(root, go) {
     </div>
   </div>
 </div>`;
-    ctx = $('c').getContext('2d'); setCam('def');
+    ctx = $('c').getContext('2d'); setCam('def'); setVenue(null);
     const seg = (id, key, val) => { root.querySelectorAll(`#${id} button`).forEach(b => { b.classList.toggle('on', b.dataset.v === val); b.onclick = () => { key(b.dataset.v); refresh(); }; }); };
     const refresh = () => {
       seg('venue', v => f.venue = v, f.venue); seg('comp', v => f.cup = v === 'cup', f.cup ? 'cup' : 'league');

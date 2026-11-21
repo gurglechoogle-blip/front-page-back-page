@@ -2,12 +2,13 @@
 // Same layout, flow and HUD as the v1.1 prototype, built on the moment modules.
 import { W, H, P, setCam } from '../engine/camera.js';
 import { mouse, attachInput, setInputHandlers } from '../engine/input.js';
-import { setCtx, drawBackground, wrap } from '../engine/draw.js';
+import { setCtx, drawBackground, wrap, setVenue } from '../engine/draw.js';
+import { trainingVenue } from './venue.js';
 import { esc } from '../engine/util.js';
 import { makeKitSet } from '../engine/kits.js';
 import { clock } from '../engine/clock.js';
 import { createMoment, SKILLS } from '../moments/index.js';
-import { state, save, skillF, skillLevel, playerName } from '../state/gameState.js';
+import { state, save, skillF, skillLevelText, playerName, addSkill, SKILL_MAX } from '../state/gameState.js';
 import { logTraining } from '../sim/career.js';
 
 const ATTEMPTS = 5;
@@ -47,6 +48,7 @@ export function createTrainingScreen(root, go, params = {}) {
   <aside id="side"></aside>
 </div>`;
     cv = $('c'); ctx = cv.getContext('2d');
+    setVenue(career ? trainingVenue(career.clubId) : null); // free practice: the rec
     attachInput(cv);
     setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
     $('pname').value = profile.name;
@@ -63,8 +65,8 @@ export function createTrainingScreen(root, go, params = {}) {
   function renderSide() {
     let h = '<h2>PLAYER CARD</h2>';
     h += `<div class="row"><span>Name</span><b>${esc(playerName())}</b></div><div class="row"><span>Age</span><b>16</b></div><div class="row"><span>Club</span><b>Unattached</b></div>`;
-    h += `<div class="lvl">${skillLevel()}%</div><div class="lvlcap">Skill level</div>`;
-    SKILLS.forEach(([k, l]) => { const v = profile.skills[k]; h += `<div class="row" style="border:0"><span>${l}</span><b>${v}</b></div><div class="bar"><i style="width:${Math.min(100, v / 120)}%"></i></div>`; });
+    h += `<div class="lvl">${skillLevelText()}</div><div class="lvlcap">Skill level</div>`;
+    SKILLS.forEach(([k, l]) => { const v = profile.skills[k]; h += `<div class="row" style="border:0"><span>${l}</span><b>${v}</b></div><div class="bar"><i style="width:${Math.min(100, v / SKILL_MAX * 100)}%"></i></div>`; });
     $('side').innerHTML = h;
   }
   function renderHub() {
@@ -88,9 +90,8 @@ export function createTrainingScreen(root, go, params = {}) {
   }
   let lastScore = 0, lastGain = 0;
   function endDrill() {
-    const k = session.k, title = moment.title, gained = Math.round(session.gained * gainMul);
-    lastScore = session.score; lastGain = gained;
-    profile.skills[k] += gained; profile.best[k] = Math.max(profile.best[k], session.score); save();
+    const k = session.k, title = moment.title, gained = addSkill(k, session.gained, gainMul);
+    lastScore = session.score; lastGain = gained; profile.best[k] = Math.max(profile.best[k], session.score); save();
     $('endScore').textContent = session.score + ' / 5';
     $('endTitle').innerHTML = session.score >= 4 ? 'TOP <span>DRAWER</span>' : session.score >= 2 ? 'DECENT <span>SESSION</span>' : 'BACK TO <span>BASICS</span>';
     $('endText').textContent = '+' + gained + ' ' + title + ' skill points' + (gainMul !== 1 ? ` (coaching x${gainMul})` : '');

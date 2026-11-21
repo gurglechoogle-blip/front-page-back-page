@@ -3,7 +3,8 @@
 // When a chance comes your way the clock stops and the moment plays in place.
 import { W, H, setCam } from '../engine/camera.js';
 import { attachInput, setInputHandlers } from '../engine/input.js';
-import { setCtx, drawBackground, wrap } from '../engine/draw.js';
+import { setCtx, drawBackground, wrap, setVenue } from '../engine/draw.js';
+import { matchVenue } from './venue.js';
 import { esc } from '../engine/util.js';
 import { clock } from '../engine/clock.js';
 import { makeKitSet, matchColours, playerKitFrom, teamKitFrom, keeperKitFor, luminance } from '../engine/kits.js';
@@ -13,7 +14,7 @@ import { MatchSim, managerMood } from '../sim/matchSim.js';
 import { pickR } from '../sim/text.js';
 import C from '../data/commentary.json';
 import clubsData from '../data/clubs.json';
-import { state, save, skillF, playerName } from '../state/gameState.js';
+import { state, save, skillF, playerName, addSkill } from '../state/gameState.js';
 
 const MINUTES_PER_SEC = 1.6;           // the clock "races": ~60s for 90 minutes plus your chances
 const FAST = 4;                        // fast-forward multiplier
@@ -87,6 +88,7 @@ export function createMatchScreen(root, go, params) {
   </div>
 </div>`;
     cv = $('c'); ctx = cv.getContext('2d'); mctx = $('mgr').getContext('2d');
+    setVenue(matchVenue(home, away, params.stadium && params.stadium !== home.stadium ? params.stadium : null));
     attachInput(cv);
     setInputHandlers({ down: () => moment && !moment.done && moment.onDown(), up: () => moment && !moment.done && moment.onUp() });
     $('ko').onclick = () => {
@@ -212,8 +214,8 @@ export function createMatchScreen(root, go, params) {
   function showFullTime() {
     const S = sim.summary(), r = S.rating;
     // Skill points from the match go into your training profile.
-    let gained = 0; for (const k in sim.my.gained) gained += sim.my.gained[k];
-    if (!sim.skillsAwarded) { for (const k in sim.my.gained) state.profile.skills[k] += sim.my.gained[k]; sim.skillsAwarded = true; persist(false, true); save(); }
+    if (!sim.skillsAwarded) { let g = 0; for (const k in sim.my.gained) g += addSkill(k, sim.my.gained[k]); sim.skillsAwarded = g; persist(false, true); save(); }
+    const gained = sim.skillsAwarded || 0;
     const scorerList = side => S.scorers[side].map(g => `<li${g.me ? ' class="me"' : ''}>${esc(g.name)} ${esc(g.label)}${g.assist ? ` <small>(ast ${esc(g.assist)})</small>` : ''}</li>`).join('') || '<li class="none">No scorers</li>';
     const resWord = { W: 'WIN', D: 'DRAW', L: 'DEFEAT' }[S.result];
     $('ft').innerHTML = `<div class="panel ftp">

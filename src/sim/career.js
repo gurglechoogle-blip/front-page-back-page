@@ -13,11 +13,11 @@ const fill = (t, v) => t.replace(/\{(\w+)\}/g, (m, k) => (v[k] != null ? v[k] : 
 export const ACADEMY = academies.types;
 
 /* ---------- academy offers ---------- */
-/** 3 offers, or 4 if your training-ground skill level is decent. */
-export function academyOffers(skillLvl, R = Math.random) {
-  const tier = skillLvl >= academies.minSkillForHigh ? 'high' : 'low', used = new Set();
+/** 3 offers, or 4 if the scouts rate you (average best drill score, 0-5). */
+export function academyOffers(scout, R = Math.random) {
+  const tier = scout >= academies.minScoutForHigh ? 'high' : 'low', used = new Set();
   const types = ['elite', 'pathway', 'money', 'family'];
-  if (skillLvl < 8) types.splice(1 + Math.floor(R() * 3), 1); // only three clubs come calling
+  if (scout < academies.minScoutForFour) types.splice(1 + Math.floor(R() * 3), 1); // only three clubs come calling
   return types.map(t => {
     const A = ACADEMY[t]; let id; let tries = 0;
     do { id = pickR(A[tier], R); } while (used.has(id) && tries++ < 20);
@@ -190,9 +190,10 @@ export function finishWeek(c, R = Math.random) {
   }
   // Time slots.
   const log = c.weekLog, drills = log.filter(x => x.t === 'train'), rests = log.filter(x => x.t === 'rest').length, unused = Math.max(0, slotsTotal(c) - c.slotsUsed);
-  let dA = drills.reduce((a, d) => a + (d.score >= 3 ? .6 : .2), 0) - .8 * Math.max(0, rests - 1) - 1.5 * unused;
-  dA += (50 - c.approval) * .04; // memories are short in football
-  c.approval = clamp(c.approval + dA, 0, 100); c.honour = clamp(c.honour - .5 * unused, 0, 100);
+  // Training only ever helps: two or more drills a week and the gaffer notices.
+  // Skipping it costs nothing here, you just don't improve.
+  const dA = drills.length >= 2 ? drills.reduce((a, d) => a + (d.score >= 3 ? 1 : .6), 0) : 0;
+  c.approval = clamp(c.approval + dA, 0, 100);
   c.energy = clamp(c.energy + 12, 0, 100);
   // Money.
   const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);

@@ -4,7 +4,7 @@
 import { store } from './storage.js';
 import { SKILLS } from '../moments/index.js';
 
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 export const SAVE_KEY = 'fpbp_save_v1';
 export const BACKUP_KEY = 'fpbp_save_backup';
 const LEGACY_KEY = 'tf_profile'; // the v1.1 prototype's save
@@ -19,6 +19,8 @@ const valid = s => !!(s && typeof s === 'object' && s.profile && typeof s.profil
 
 /** Bring any older save up to date. Safe to run on a current one. */
 export function migrate(s) {
+  // v3 rebalanced skills (much slower). Older saves start again, as agreed.
+  if ((s.version || 1) < 3) { s = { profile: { name: s.profile && s.profile.name || '' } }; }
   s.profile = normaliseProfile(s.profile);
   s.career = s.career || null;
   // Settings for one-off matches from the training ground.
@@ -37,7 +39,7 @@ function load() {
   if (!valid(saved)) {
     const backup = store.get(BACKUP_KEY, null);
     if (valid(backup)) { saved = backup; loadedFrom = 'backup'; }
-    else { saved = { profile: store.get(LEGACY_KEY, null) }; loadedFrom = 'new'; } // first run: bring across prototype skills
+    else { const old = store.get(LEGACY_KEY, null); saved = { version: SAVE_VERSION, profile: { name: old && old.name || '' } }; loadedFrom = 'new'; } // first run: keep the prototype's name only
   }
   return migrate(saved);
 }
@@ -71,7 +73,23 @@ export function importSave(file) {
   }).catch(() => false);
 }
 
-/** Skill points widen timing windows, up to 1.5x at 12,000 points. */
-export const skillF = k => 1 + Math.min(state.profile.skills[k], 12000) / 24000;
-export const skillLevel = () => Math.min(100, Math.round(Object.values(state.profile.skills).reduce((a, b) => a + b, 0) / 400));
+/* ---------- skills ----------
+ * Each skill runs 0 to SKILL_MAX points. Gains shrink as you improve, so
+ * 100% skill level (every skill maxed) takes a whole career of steady
+ * training: every slot trained well gets you to ~85% by 2046; 100% needs near-perfect
+ * sessions all career. A 16-year-old sits at a few %. */
+export const SKILL_MAX = 20000;
+/** Timing windows widen with skill, up to 1.5x at the maximum. */
+export const skillF = k => 1 + Math.min(state.profile.skills[k], SKILL_MAX) / (2 * SKILL_MAX);
+/** Add points earned in a drill or a match; returns what was actually added. */
+export function addSkill(k, raw, mul = 1) {
+  const s = state.profile.skills[k], g = Math.max(0, Math.round(raw * .18 * mul / (1 + s / 5000)));
+  state.profile.skills[k] = Math.min(SKILL_MAX, s + g); return g;
+}
+export const skillLevelExact = () => 100 * Object.values(state.profile.skills).reduce((a, b) => a + Math.min(b, SKILL_MAX), 0) / (SKILL_MAX * SKILLS.length);
+export const skillLevel = () => Math.round(skillLevelExact());
+/** Skill level for display: one decimal place while it's small. */
+export const skillLevelText = () => { const v = skillLevelExact(); return (v < 10 ? v.toFixed(1) : Math.round(v)) + '%'; };
+/** Scouts judge quality, not hours: the average of your best drill scores (0-5). */
+export const scoutRating = () => SKILLS.reduce((a, [k]) => a + state.profile.best[k], 0) / SKILLS.length;
 export const playerName = () => (state.profile.name || 'Player');
