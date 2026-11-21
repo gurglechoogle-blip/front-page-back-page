@@ -1,0 +1,40 @@
+{
+  "_note": "Shopping. price in £; minAge; needs = flag required; resale = fraction back if sold; weekly = running cost per week; once = one-off effects on purchase; perWeek = effects every week while owned; flags set on purchase (car removes the bus pass, home moves you out). news = front-page headline if bought.",
+  "categories": [["look", "Look"], ["tech", "Tech"], ["wheels", "Wheels"], ["bling", "Watches & bling"]],
+  "items": [
+    { "id": "trim", "cat": "look", "name": "Fresh trim at Dazza's", "price": 15, "minAge": 16, "resale": 0, "consumable": true, "once": { "fans": 1 }, "blurb": "Dazza's been cutting hair since 1981. He's been doing the same cut since 1981." },
+    { "id": "tracksuit", "cat": "look", "name": "Designer tracksuit", "price": 180, "minAge": 16, "resale": 0.3, "once": { "fans": 2 }, "blurb": "Grey. Very grey. Expensive grey." },
+    { "id": "fakeTracksuit", "cat": "look", "name": "\"Designer\" tracksuit from the market", "price": 35, "minAge": 16, "resale": 0, "once": { "fans": 1, "honour": -1 }, "blurb": "The logo's an alligator. Or a crocodile. Or a lizard with ambition." },
+    { "id": "puffer", "cat": "look", "name": "Enormous puffer coat", "price": 450, "minAge": 16, "resale": 0.3, "once": { "fans": 2 }, "blurb": "You can't put your arms down. Worth it." },
+    { "id": "phone", "cat": "tech", "name": "New phone", "price": 800, "minAge": 16, "resale": 0.35, "once": { "fans": 1 }, "blurb": "Same as your old phone, but £800." },
+    { "id": "console", "cat": "tech", "name": "Games console and a massive telly", "price": 1400, "minAge": 16, "resale": 0.3, "perWeek": { "energy": 2, "teammates": 0.5 }, "blurb": "Online with the lads every night. Rested, sort of." },
+    { "id": "lessons", "cat": "wheels", "name": "Ten driving lessons", "price": 350, "minAge": 17, "resale": 0, "consumable": true, "flag": "canDrive", "once": { "family": 2 }, "blurb": "Your instructor, Barry, has a nervous twitch. You gave him it." },
+    { "id": "corsa", "cat": "wheels", "name": "Second-hand Vauxhall Corsa", "price": 2800, "minAge": 17, "needs": "canDrive", "resale": 0.6, "weekly": 38, "car": true, "once": { "family": 2 }, "blurb": "Three previous owners, one smell. Insurance for a teenager: eye-watering." },
+    { "id": "rangeRover", "cat": "wheels", "name": "Range Rover with blacked-out windows", "price": 95000, "minAge": 18, "needs": "canDrive", "resale": 0.55, "weekly": 90, "car": true, "once": { "fans": 3, "honour": -1 }, "news": "{NAME}'S £95K CHELSEA TRACTOR", "blurb": "Every footballer has one. It's practically the law." },
+    { "id": "lambo", "cat": "wheels", "name": "Lamborghini (lime green)", "price": 260000, "minAge": 18, "needs": "canDrive", "resale": 0.6, "weekly": 250, "car": true, "once": { "fans": 5, "honour": -4, "family": -2 }, "news": "LAMBO-GHINI! {NAME} SPLASHES £260K ON LIME SUPERCAR", "blurb": "Doesn't fit over the speed bumps at the training ground. Or Tesco." },
+    { "id": "casio", "cat": "bling", "name": "Casio calculator watch", "price": 40, "minAge": 16, "resale": 0.2, "once": { "honour": 1 }, "blurb": "Retro. Practical. You can spell BOOBS upside down." },
+    { "id": "rolex", "cat": "bling", "name": "Rolex Submariner", "price": 12000, "minAge": 18, "resale": 0.8, "once": { "fans": 2, "honour": -1 }, "news": "TICK TOCK: {NAME} SPLASHES OUT ON £12K ROLEX", "blurb": "Waterproof to 300 metres, in case the training ground floods." },
+    { "id": "diamondWatch", "cat": "bling", "name": "Diamond-encrusted watch", "price": 65000, "minAge": 18, "resale": 0.5, "once": { "fans": 3, "honour": -3 }, "news": "BLING OF THE NORTH: {NAME}'S £65K WRIST", "blurb": "So shiny you can't read the time. It's always time to show off." }
+  ],
+  "homes": [
+    { "id": "mums", "name": "Mum's back bedroom", "rent": 0, "price": 0, "rooms": 0, "blurb": "Single bed. Posters. Mum knocks. Mum never knocks." },
+    { "id": "flatshare", "name": "Flat share with Deano", "rent": 110, "price": 0, "minAge": 18, "rooms": 0, "perWeek": { "energy": -2 }, "blurb": "Deano's 'mate' sleeps on the sofa. Nobody knows his name." },
+    { "id": "apartment", "name": "City-centre apartment", "rent": 380, "price": 280000, "minAge": 18, "rooms": 1, "perWeek": { "energy": 2 }, "blurb": "Floor-to-ceiling windows, a balcony, and a concierge called Graham." },
+    { "id": "detached", "name": "Detached house in the suburbs", "rent": 0, "price": 750000, "minAge": 19, "rooms": 3, "perWeek": { "energy": 3, "family": 0.5 }, "blurb": "Electric gates. The neighbours have opinions." },
+    { "id": "countryPile", "name": "Country pile with a moat", "rent": 0, "price": 3200000, "minAge": 21, "rooms": 6, "perWeek": { "energy": 4, "family": 0.5 }, "news": "MOAT-ER OF THE HOUSE: {NAME} BUYS £3.2M ESTATE", "blurb": "Twelve bedrooms. One moat. Possibly a ghost." }
+  ],
+  "rooms": [
+    { "id": "gym", "name": "Home gym", "price": 45000, "perWeek": { "energy": 3 }, "blurb": "Slows the decline in your thirties. Currently mostly used to dry towels." },
+    { "id": "recovery", "name": "Recovery suite", "price": 80000, "perWeek": { "energy": 4 }, "blurb": "Cryo chamber, hot tub, a massage chair that judges you." },
+    { "id": "cinema", "name": "Cinema room", "price": 60000, "perWeek": { "family": 0.5 }, "blurb": "Cheap date nights. Expensive popcorn machine." },
+    { "id": "library", "name": "Library", "price": 30000, "perWeek": { "honour": 0.2 }, "blurb": "Better press answers. You've read one book. It was about fishing." },
+    { "id": "homeCasino", "name": "Home casino", "price": 120000, "perWeek": { "teammates": 0.5, "honour": -0.3 }, "blurb": "Poker nights. Attracts the wild friends like moths to a roulette wheel." },
+    { "id": "trophyRoom", "name": "Trophy room", "price": 50000, "perWeek": { "fans": 0.3 }, "blurb": "Your framed newspapers move here from Mum's fridge. Press and visitors love it." }
+  ],
+  "funds": [["rainy", "Rainy day fund"], ["holiday", "Holiday fund"], ["mum", "Mum's retirement pot"]],
+  "lenders": {
+    "family": { "name": "Mum and Gran", "max": 2000, "rate": 0, "min": { "family": 55 }, "cost": { "family": -6, "honour": -1 } },
+    "teammate": { "name": "Kev from the team", "max": 1500, "rate": 0.01, "min": { "teammates": 60 }, "cost": { "teammates": -4 } },
+    "loanShark": { "name": "WONGALOT Loans (\"Fast cash, slow regrets\")", "max": 50000, "rate": 0.04, "cost": { "honour": -4 } }
+  }
+}

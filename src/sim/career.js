@@ -8,6 +8,7 @@ import {
   setWorld, firstWeek, seasonYear,
 } from './season.js';
 import { endSeason } from './world.js';
+import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './money.js';
 import { MatchSim } from './matchSim.js';
 import { initLife, rollEvents, makePaper, pressAfter, afterMatch, honourPatience, support, familyWeek, taper } from './life.js';
 
@@ -42,7 +43,7 @@ export function createCareer(name, offer, R = Math.random) {
     stats: { apps: 0, starts: 0, subs: 0, goals: 0, assists: 0, ratings: [], u21: 0 },
     fixtures: [], cups: {}, trophyGroup: null, inbox: [], msgId: 0, matchday: null, lastWeek: null, history: [], seasonOver: false,
   };
-  buildSeason(c, R); initLife(c);
+  buildSeason(c, R); initLife(c); initMoney(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -81,11 +82,14 @@ export const unread = c => c.inbox.filter(m => !m.read).length;
 export const leagueTable = c => table(divisionClubs(c.div), c.fixtures.filter(f => f.comp === 'league'));
 export const position = c => leagueTable(c).findIndex(r => r.id === c.clubId) + 1;
 export const avgRating = c => c.stats.ratings.length ? c.stats.ratings.reduce((a, b) => a + b, 0) / c.stats.ratings.length : 0;
-export const netWorth = c => c.bank;
+export const netWorth = c => worth(c);
 export function honourBadge(h) { return h >= 81 ? 'National Treasure' : h >= 61 ? 'Good Egg' : h >= 41 ? 'Fresh Face' : h >= 21 ? 'Bit Dodgy' : 'Pantomime Villain'; }
 export function weeklyBills(c) {
-  const b = [{ what: c.contract.housing ? 'Club digs (Mrs Pemberton)' : 'Board to Mum', amount: c.contract.housing ? 0 : 25 }, { what: 'Phone contract', amount: 12 }, { what: 'Bus pass', amount: 15 }];
-  return b;
+  const b = [];
+  if (c.home === 'mums' || !c.home) b.push({ what: c.contract.housing ? 'Club digs (Mrs Pemberton)' : 'Board to Mum', amount: c.contract.housing ? 0 : 25 });
+  b.push({ what: 'Phone contract', amount: 12 });
+  if (!hasCar(c)) b.push({ what: 'Bus pass', amount: 15 });
+  return [...b, ...moneyBills(c)];
 }
 export function message(c, from, text) { c.inbox.unshift({ id: ++c.msgId, from, text, week: c.week, read: false }); if (c.inbox.length > 60) c.inbox.length = 60; }
 
@@ -207,6 +211,8 @@ export function finishWeek(c, R = Math.random) {
   // Money.
   const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);
   c.bank += c.contract.wage - out;
+  moneyWeek(c);
+  if (c.bank < 0) c.pending.push({ type: 'debt' });
   const md = c.matchday || { results: [] };
   c.lastWeek = {
     week: w, date: weekStart(w), results: md.results, training: drills.length, rests, unused, approvalTraining: dA,

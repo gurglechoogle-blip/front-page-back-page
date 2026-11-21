@@ -20,12 +20,13 @@ import M from '../data/messages.json';
 import { playFixture } from './flow.js';
 import { METERS, meter, EVENTS, chooseEvent, answerPress, paperByN, framePage, applyEffects } from '../sim/life.js';
 import { paperHTML, paperPhotos } from './paper.js';
+import { showBank, showShop, showProperty, showDebt } from './moneyUI.js';
 import { exportSave, importSave } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
   life: { label: 'Life', icon: '🏠', soon: ['Partner', 'Friends', 'Nights out', 'Holidays'] },
-  money: { label: 'Money', icon: '💷', soon: ['Bank & loans', 'Property & shopping', 'Staff', 'Businesses & merch'] },
+  money: { label: 'Money', icon: '💷', soon: ['Staff', 'Businesses & merch'] },
   casino: { label: 'Casino', icon: '🎲', soon: ['Poker', 'Blackjack'] },
   fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Community & charity', 'Achievements'] },
 };
@@ -112,7 +113,7 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('.menu').forEach(m => m.classList.add('hidden'));
     if (!k || k === openMenu) { openMenu = null; return; }
     openMenu = k; const el = $('menu-' + k);
-    const items = k === 'football' ? footballItems() : [...(k === 'life' ? lifeItems() : k === 'fame' ? fameItems() : []), ...MENUS[k].soon.map(s => ({ label: s, soon: true }))];
+    const items = k === 'football' ? footballItems() : [...(k === 'life' ? lifeItems() : k === 'fame' ? fameItems() : k === 'money' ? moneyItems() : []), ...MENUS[k].soon.map(s => ({ label: s, soon: true }))];
     el.innerHTML = `<h4>${MENUS[k].label}</h4>` + items.map((it, i) => `<button data-i="${i}" class="${it.soon ? 'soon' : ''}${it.main ? ' main' : ''}">${it.label}${it.soon ? '<small>coming soon</small>' : it.note ? `<small>${it.note}</small>` : ''}</button>`).join('');
     el.querySelectorAll('button').forEach(b => b.onclick = e => { e.stopPropagation(); const it = items[+b.dataset.i]; toggleMenu(null); if (it.soon) toast(`${it.label}: coming soon. Your agent says it's "in development". He hasn't got an agent yet either.`); else it.go(); });
     el.classList.remove('hidden');
@@ -230,6 +231,15 @@ export function createHubScreen(root, go, params = {}) {
     ];
   }
 
+  const H = { c, age, modal: (h, n) => modal(h, n), closeModal: () => closeModal(), toast: t => toast(t), save, render: () => render(), root };
+  function moneyItems() {
+    return [
+      { label: 'Bank & loans', note: `${money(c.bank)} · savings funds, debts`, go: () => showBank(H) },
+      { label: 'Shopping', note: 'Look, tech, wheels, bling', go: () => showShop(H) },
+      { label: 'Property', note: c.home === 'mums' ? (age(c) < 18 ? 'Still at Mum\'s (18+ to move out)' : 'Still at Mum\'s') : 'Homes and rooms', go: () => showProperty(H) },
+    ];
+  }
+
   /* ---------- pending: newspaper, events, press ---------- */
   function runPending(done) {
     const item = c.pending[0];
@@ -238,6 +248,7 @@ export function createHubScreen(root, go, params = {}) {
     if (item.type === 'paper') showPaper(item.n, next);
     else if (item.type === 'event') showEvent(item.id, next);
     else if (item.type === 'press') showPress(item, next);
+    else if (item.type === 'debt') showDebt(H, next);
     else next();
   }
   const fmtEffects = eff => Object.entries(eff).filter(([k, v]) => v && k !== 'slot').map(([k, v]) => `<span class="${v > 0 ? 'good' : 'bad'}">${({ manager: 'Gaffer', teammates: 'Teammates', fans: 'Fans', family: 'Family', honour: 'Honour', money: 'Money', energy: 'Energy' })[k] || k} ${v > 0 ? '+' : ''}${k === 'money' ? money(v) : v}</span>`).join(' ');

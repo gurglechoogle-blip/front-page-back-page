@@ -5,6 +5,7 @@ import { store } from './storage.js';
 import { SKILLS } from '../moments/index.js';
 import { initLife } from '../sim/life.js';
 import { setWorld } from '../sim/season.js';
+import { initMoney } from '../sim/money.js';
 
 export const SAVE_VERSION = 3;
 export const SAVE_KEY = 'fpbp_save_v1';
@@ -29,7 +30,7 @@ export function migrate(s) {
   s.friendly = Object.assign({ clubId: 'shrewsbury', oppId: 'barrow', venue: 'home', cup: false, trust: 50, form: 50 }, s.friendly || {});
   if (s.career) {
     const c = s.career;
-    initLife(c); c.liveMatch = c.liveMatch || null;
+    initLife(c); initMoney(c); c.liveMatch = c.liveMatch || null;
     c.world = c.world || { year: 0, leagues: {}, strength: {} }; c.totals = c.totals || { apps: 0, goals: 0, assists: 0, seasons: 0 }; c.history = c.history || []; c.inbox = c.inbox || []; c.weekLog = c.weekLog || [];
   }
   s.version = SAVE_VERSION;
