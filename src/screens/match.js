@@ -12,6 +12,7 @@ import { esc } from '../engine/util.js';
 import { clock } from '../engine/clock.js';
 import { makeKitSet, matchColours, playerKitFrom, teamKitFrom, keeperKitFor, luminance } from '../engine/kits.js';
 import { drawManager } from '../engine/manager.js';
+import { managerFor } from '../sim/managers.js';
 import { createMoment, SKILLS } from '../moments/index.js';
 import { MatchSim, managerMood } from '../sim/matchSim.js';
 import { pickR } from '../sim/text.js';
@@ -40,6 +41,7 @@ export function createMatchScreen(root, go, params) {
     home = mySide === 'home' ? mine : them; away = mySide === 'home' ? them : mine;
   }
   const career = !!params.onDone, role = params.role || 'start', stadium = params.stadium || home.stadium, pName = params.playerName || playerName();
+  const boss = managerFor(mySide === 'home' ? home.id : away.id);
   const colours = matchColours(home, away), myCol = colours[mySide], oppCol = colours[mySide === 'home' ? 'away' : 'home'];
   const kits = makeKitSet(playerKitFrom(myCol), teamKitFrom(oppCol), keeperKitFor(myCol.shirt, oppCol.shirt));
   // Career matches save themselves as they go (params.persist) and can be resumed (params.resume).
@@ -82,7 +84,7 @@ export function createMatchScreen(root, go, params) {
     <aside id="mside">
       <h2>QUICK STATS</h2>
       <div id="stats"></div>
-      <h2 class="gh">THE GAFFER</h2>
+      <h2 class="gh">${esc(boss.name.toUpperCase())}<small style="display:block;font-size:11px;opacity:.7">${esc(boss.role)}</small></h2>
       <canvas id="mgr" width="200" height="190"></canvas>
       <div class="quote" id="quote"></div>
     </aside>
@@ -241,7 +243,7 @@ export function createMatchScreen(root, go, params) {
       <div class="scorers"><ul>${scorerList('home')}</ul><ul>${scorerList('away')}</ul></div>
       <div class="backpage"><div class="mast">THE BACK PAGE</div><div class="head">${esc(S.headline)}</div>
         <div class="byline">${resWord}${role === 'sub' ? ' · Off the bench' : ''} · Rating <b>${r.toFixed(1)}</b> · ${S.my.goals} goal${S.my.goals === 1 ? '' : 's'} · ${S.my.assists} assist${S.my.assists === 1 ? '' : 's'} · ${S.my.chances} chance${S.my.chances === 1 ? '' : 's'}</div>
-        <div class="verdict">The gaffer: ${esc(S.verdict)}</div></div>
+        <div class="verdict">${esc(boss.name)} (${esc(boss.role.toLowerCase())}): ${esc(S.verdict)}</div></div>
       <div class="gain">+${gained} skill points from the match</div>
       <div class="endBtns">${career ? '<button class="btn gold" id="cont">Continue ▶</button>' : '<button class="btn gold" id="again">Another match</button><button class="btn red" id="toTraining">Training ground</button>'}</div>
     </div>`;
@@ -268,7 +270,7 @@ export function createMatchScreen(root, go, params) {
     if (phase === 'ft' && ftAt && now >= ftAt) { ftAt = 0; showFullTime(); }
     if (now >= moodUntil) setQuote();
     renderClock(); renderRating();
-    drawManager(mctx, 200, 190, currentMood(), now, myCol.shirt);
+    drawManager(mctx, 200, 190, currentMood(), now, myCol.shirt, boss.look);
   }
 
   window.__fpbpMatch = { sim, get moment() { return moment; }, get phase() { return phase; }, setFast: v => { fast = v; } };

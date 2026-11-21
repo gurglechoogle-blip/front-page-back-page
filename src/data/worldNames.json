@@ -1,0 +1,27 @@
+{
+ "_note": "Surnames by country, so Spain aren't fielding Parkers and Hursts. Squads use surnames only.",
+ "groups": {
+  "es": ["García", "Fernández", "López", "Martínez", "Sánchez", "Romero", "Navarro", "Torres", "Domínguez", "Vázquez", "Ramos", "Gil", "Serrano", "Molina", "Ortega", "Delgado", "Castro", "Ortiz", "Rubio", "Marín", "Iglesias", "Medina", "Garrido", "Cortés", "Lozano", "Herrero", "Peña", "Arroyo"],
+  "latam": ["Álvarez", "Gómez", "Díaz", "Rodríguez", "Pereyra", "Acosta", "Benítez", "Cabrera", "Ríos", "Suárez", "Giménez", "Ledesma", "Villalba", "Sosa", "Aguirre", "Quintero", "Mendoza", "Cardona", "Valencia", "Herrera", "Paredes", "Olivera", "Salazar", "Zapata", "Morales", "Ibarra"],
+  "pt": ["Silva", "Santos", "Ferreira", "Pereira", "Oliveira", "Costa", "Rodrigues", "Martins", "Sousa", "Gonçalves", "Lopes", "Marques", "Almeida", "Ribeiro", "Pinto", "Carvalho", "Teixeira", "Moreira", "Correia", "Mendes", "Nunes", "Cardoso", "Rocha", "Barbosa", "Araújo", "Fonseca"],
+  "de": ["Müller", "Schmidt", "Schneider", "Fischer", "Weber", "Meyer", "Wagner", "Becker", "Hoffmann", "Schäfer", "Koch", "Bauer", "Richter", "Klein", "Wolf", "Schröder", "Neumann", "Schwarz", "Zimmermann", "Braun", "Krüger", "Hartmann", "Lange", "Werner", "Krause", "Lehmann", "Huber", "Brunner"],
+  "fr": ["Martin", "Bernard", "Dubois", "Durand", "Leroy", "Moreau", "Laurent", "Lefèvre", "Roux", "Fournier", "Girard", "Bonnet", "Dupont", "Lambert", "Fontaine", "Rousseau", "Vincent", "Muller", "Faure", "André", "Mercier", "Blanc", "Guérin", "Boyer", "Garnier", "Chevalier", "Diallo", "Kanté"],
+  "it": ["Rossi", "Russo", "Ferrari", "Esposito", "Bianchi", "Romano", "Colombo", "Ricci", "Marino", "Greco", "Bruno", "Gallo", "Conti", "De Luca", "Mancini", "Costa", "Giordano", "Rizzo", "Lombardi", "Moretti", "Barbieri", "Fontana", "Santoro", "Mariani", "Rinaldi", "Caruso", "Ferrara", "Galli"],
+  "nl": ["de Jong", "Jansen", "de Vries", "van den Berg", "van Dijk", "Bakker", "Visser", "Smit", "Meijer", "de Boer", "Mulder", "de Groot", "Bos", "Vos", "Peters", "Hendriks", "van Leeuwen", "Dekker", "Brouwer", "de Wit", "Dijkstra", "Vermeulen", "Peeters", "Maes", "Claes", "Wouters"],
+  "balkan": ["Horvat", "Kovačević", "Babić", "Marić", "Jurić", "Novak", "Knežević", "Vuković", "Petrović", "Jovanović", "Nikolić", "Marković", "Đorđević", "Stojanović", "Ilić", "Pavlović", "Tomić", "Perić", "Matić", "Lukić"],
+  "nordic": ["Hansen", "Johansen", "Olsen", "Larsen", "Andersen", "Pedersen", "Nilsen", "Kristiansen", "Jensen", "Nielsen", "Andersson", "Johansson", "Karlsson", "Nilsson", "Eriksson", "Larsson", "Lindberg", "Berg", "Lund", "Holm", "Dahl", "Strand"],
+  "pl": ["Nowak", "Kowalczyk", "Wiśniewski", "Wójcik", "Kamiński", "Lewandowicz", "Zieliński", "Szymański", "Woźniak", "Dąbrowski", "Kozłowski", "Jankowski", "Mazur", "Krawczyk", "Piotrowski", "Grabowski"],
+  "ua": ["Shevchenko", "Bondarenko", "Kovalenko", "Tkachenko", "Kravchenko", "Oliynyk", "Shevchuk", "Polishchuk", "Lysenko", "Rudenko", "Marchenko", "Savchenko", "Petrenko", "Moroz"],
+  "tr": ["Yılmaz", "Kaya", "Demir", "Şahin", "Çelik", "Yıldız", "Yıldırım", "Öztürk", "Aydın", "Özdemir", "Arslan", "Doğan", "Kılıç", "Aslan", "Çetin", "Kara", "Koç", "Kurt"],
+  "jp": ["Satō", "Suzuki", "Takahashi", "Tanaka", "Watanabe", "Itō", "Yamamoto", "Nakamura", "Kobayashi", "Katō", "Yoshida", "Yamada", "Sasaki", "Yamaguchi", "Matsumoto", "Inoue", "Kimura", "Hayashi"],
+  "kr": ["Kim", "Lee", "Park", "Choi", "Jung", "Kang", "Cho", "Yoon", "Jang", "Lim", "Han", "Oh", "Seo", "Shin", "Kwon", "Hwang"],
+  "arab": ["Al-Harbi", "Al-Qahtani", "Al-Ghamdi", "Al-Otaibi", "Al-Shehri", "Al-Dosari", "Al-Zahrani", "El Amrani", "Benali", "Bennani", "Haddad", "Mansour", "Ziani", "El Idrissi", "Tahiri", "Saidi", "Belhaj", "Ouali"],
+  "westafrica": ["Okafor", "Adeyemi", "Okonkwo", "Mensah", "Asante", "Boateng", "Owusu", "Osei", "Adjei", "Diop", "Ndiaye", "Sarr", "Fall", "Mendy", "Sow", "Balogun", "Eze", "Nwosu", "Ofori", "Appiah"],
+  "wales": ["Jones", "Davies", "Williams", "Evans", "Thomas", "Roberts", "Hughes", "Lewis", "Morgan", "Griffiths", "Owen", "Rees", "Price", "Pritchard", "Llewellyn", "Vaughan"],
+  "scotland": ["MacDonald", "Campbell", "Stewart", "Robertson", "Murray", "MacLeod", "Fraser", "Reid", "Kerr", "McGregor", "Paterson", "Ferguson", "Gillespie", "McKenzie", "Drummond", "Buchanan"],
+  "ireland": ["Murphy", "Kelly", "O'Sullivan", "Walsh", "O'Brien", "Byrne", "Ryan", "O'Connor", "Doyle", "McCarthy", "Gallagher", "Doherty", "Kennedy", "Lynch", "Quinn", "Brennan"],
+  "anglo": ["Miller", "Johnson", "Brown", "Wilson", "Anderson", "Taylor", "Thompson", "White", "Harris", "Clark", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Green", "Baker", "Adams", "Nelson", "Hill", "Campbell", "Mitchell", "Roberts"]
+ },
+ "nations": { "ger": "de", "aut": "de", "sui": "de", "fra": "fr", "esp": "es", "arg": "latam", "uru": "latam", "mex": "latam", "col": "latam", "bra": "pt", "por": "pt", "ned": "nl", "bel": "nl", "ita": "it", "cro": "balkan", "srb": "balkan", "den": "nordic", "nor": "nordic", "swe": "nordic", "pol": "pl", "ukr": "ua", "tur": "tr", "jpn": "jp", "kor": "kr", "ksa": "arab", "mar": "arab", "sen": "westafrica", "nga": "westafrica", "gha": "westafrica", "wal": "wales", "sco": "scotland", "irl": "ireland", "usa": "anglo", "can": "anglo", "aus": "anglo" },
+ "leagues": { "ES": "es", "IT": "it", "DE": "de", "FR": "fr" }
+}

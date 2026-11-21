@@ -37,7 +37,7 @@ export class MatchSim {
     this.role = opts.role || 'start'; this.extraTime = opts.extraTime !== false; this.stadium = opts.stadium || this.home.stadium;
     this.onPitch = this.role === 'start';
     this.oppSide = this.mySide === 'home' ? 'away' : 'home';
-    this.squads = { home: makeSquad(this.home.id), away: makeSquad(this.away.id) };
+    this.squads = { home: makeSquad(this.home.id, this.home.league), away: makeSquad(this.away.id, this.away.league) };
     if (this.role !== 'none') this.squads[this.mySide].fwd[0] = this.me;
     this.score = { home: 0, away: 0 }; this.pens = null;
     this.stats = { home: this.blankStats(), away: this.blankStats() };
@@ -100,7 +100,7 @@ export class MatchSim {
     return Object.assign({ team: this.name(side), opp: this.name(opp), player, player2: this.outfield(side, ['mid', 'fwd'], [player, this.me]), oppPlayer: this.outfield(opp, ['def', 'mid']), gk: this.squads[side].gk, oppGk: this.squads[opp].gk, me: this.me, home: this.home.name, away: this.away.name, hs: this.score.home, as: this.score.away, stadium: this.stadium }, extra);
   }
   ev(text, kind = 'info', side = null, label = this.label()) { return { label, text, kind, side }; }
-  line(key, side, extra) { return fill(pickR(C[key], this.R), this.vars(side, extra)); }
+  line(key, side, extra) { const pool = this.home.league === 'INT' ? C[key].filter(l => !/chairman|season ticket/i.test(l)) : C[key]; return fill(pickR(pool, this.R), this.vars(side, extra)); }
   scoreLine() { return `${this.home.name} ${this.score.home}-${this.score.away} ${this.away.name}`; }
   bump(delta) { this.rating = clamp(this.rating + delta, 3, 10); }
 

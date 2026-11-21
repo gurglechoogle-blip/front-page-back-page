@@ -23,12 +23,12 @@ export function createStartScreen(root, go) {
       <div class="namebox">Boyhood club <select id="boy">${['PL', 'CH', 'L1', 'L2', 'NL'].map(d => `<optgroup label="${DIVS[d].short}">${allClubs().filter(x => x.league === d).map(x => `<option value="${x.id}"${x.id === boyhood ? ' selected' : ''}>${esc(x.name)}</option>`).join('')}</optgroup>`).join('')}</select></div>
       <p class="prenote">Scout report: <b>${sc.toFixed(1)} / 5</b> (your best score in each training drill, averaged). That decides who comes calling.${sc < 2.5 ? ' Want bigger clubs? Show them some quality at the training ground first.' : ' Some big clubs have noticed.'}</p>
       <div class="endBtns"><button class="btn gold big" id="go">FIND ME A CLUB ▶</button></div>
-      <div class="hint"><a href="#" id="tg">Training ground (free practice)</a> · <a href="#" id="md">One-off match</a></div>`;
+      <div class="hint"><a href="#" id="tg">Training ground (free practice)</a></div>`;
     $('boy').onchange = e => { boyhood = e.target.value; };
     $('go').onclick = () => { const n = $('nm').value.trim(); if (!n) { $('nm').focus(); $('nm').classList.add('shake'); return; } state.profile.name = n; save(); offerStep(); };
     $('nm').onkeydown = e => { if (e.key === 'Enter') $('go').click(); };
     $('tg').onclick = e => { e.preventDefault(); go('training'); };
-    $('md').onclick = e => { e.preventDefault(); go('setup'); };
+
   }
   function offerStep() {
     offers = offers || academyOffers(scoutRating());

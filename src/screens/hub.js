@@ -58,6 +58,7 @@ export function createHubScreen(root, go, params = {}) {
   <div class="htop">
     <div class="nextfx" id="nextfx"></div>
     <div class="slots" id="slots"></div>
+    <button class="phone paperbtn" id="paperbtn" title="This week's paper"><span style="font-size:26px;line-height:32px">📰</span><em id="punread"></em></button>
     <button class="phone" id="phone" title="Phone"><svg viewBox="0 0 24 36" width="22" height="32"><rect x="1" y="1" width="22" height="34" rx="4" fill="#23272d" stroke="#cfd5db" stroke-width="2"/><rect x="4" y="5" width="16" height="22" rx="1" fill="#6fb3e0"/><circle cx="12" cy="31" r="2" fill="#cfd5db"/></svg><em id="unread"></em></button>
   </div>
   <div class="hmain">
@@ -78,6 +79,7 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('.hbtn').forEach(b => b.onclick = e => { e.stopPropagation(); toggleMenu(b.dataset.m); });
     $('hubscr').onclick = () => toggleMenu(null);
     $('phone').onclick = e => { e.stopPropagation(); showPhone(); };
+    $('paperbtn').onclick = e => { e.stopPropagation(); const u = c.unreadPapers || []; if (!u.length) return showArchive(); const readNext = () => { const n = u.shift(); save(); render(); if (n != null) showPaper(n, u.length ? readNext : null); }; readNext(); };
     $('nextfx').onclick = e => { e.stopPropagation(); matchday(); };
     $('mclose').onclick = closeModal; $('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
     $('newCareer').onclick = e => { e.preventDefault(); modal(`<h2>Start a new career?</h2><p>This one will be gone for good. Gran will be devastated.</p><div class="endBtns"><button class="btn red" id="reallyNew">Yes, start again</button><button class="btn" id="keep">Keep this one</button></div>`); $('reallyNew').onclick = () => { state.career = null; save(); go('start'); }; $('keep').onclick = closeModal; };
@@ -102,6 +104,7 @@ export function createHubScreen(root, go, params = {}) {
       : `<small>NO FIXTURES LEFT</small><b>Season's done</b>`;
     $('slots').innerHTML = `<small>TIME SLOTS</small><div>${Array.from({ length: slotsTotal(c) }, (_, i) => `<i class="${i < sl ? 'on' : ''}"></i>`).join('')}</div><span>${sl} left${isPreseason(c) ? ' · pre-season' : ''}</span>`;
     const u = unread(c); $('unread').textContent = u || ''; $('unread').style.display = u ? '' : 'none';
+    const pu = (c.unreadPapers || []).length; $('punread').textContent = pu || ''; $('punread').style.display = pu ? '' : 'none';
     $('badge-football').textContent = wf.length ? wf.length : ''; $('badge-football').style.display = wf.length ? '' : 'none';
     root.querySelectorAll('.badge').forEach(b => { if (!b.textContent) b.style.display = 'none'; });
     $('weekbadge').innerHTML = `<b>${esc(CAL.season)} · WEEK ${seasonWeek(c)}</b> · w/c ${prettyDate(weekStart(c.week))} ${weekStart(c.week).slice(0, 4)}${isPreseason(c) ? ' · PRE-SEASON' : ''}`;
@@ -163,8 +166,9 @@ export function createHubScreen(root, go, params = {}) {
   function matchday() {
     if (!nextFixture(c) && !weekFixtures(c).length && c.seasonOver) return go('season');
     const sl = slotsLeft(c);
-    if (sl > 0 && !c.matchday) {
-      modal(`<h2>Unused time slots</h2><p>You've still got <b>${sl}</b> slot${sl === 1 ? '' : 's'} this week. Nobody will tell you off, but skills don't improve on their own. Two or more drills a week and the gaffer notices.</p>
+    if (sl > 0 && !c.matchday && !c.flags.slotWarned) {
+      c.flags.slotWarned = true; save();
+      modal(`<h2>Unused time slots</h2><p>You've still got <b>${sl}</b> slot${sl === 1 ? '' : 's'} this week. Nobody will tell you off, but skills don't improve on their own. Two or more drills a week and the gaffer notices. (You won't see this warning again.)</p>
         <div class="endBtns"><button class="btn red" id="goAnyway">Go anyway</button><button class="btn" id="useThem">Use them</button></div>`);
       $('goAnyway').onclick = () => { closeModal(); proceed(); }; $('useThem').onclick = closeModal;
       return;
@@ -428,7 +432,7 @@ export function createHubScreen(root, go, params = {}) {
     const item = c.pending[0];
     if (!item) return done();
     const next = () => { c.pending.shift(); save(); render(); closeModal(); runPending(done); };
-    if (item.type === 'paper') showPaper(item.n, next);
+    if (item.type === 'paper') { (c.unreadPapers = c.unreadPapers || []).push(item.n); if (c.unreadPapers.length === 1 && !c.flags.paperTip) { c.flags.paperTip = true; toast('The Weekly Splash has landed. Tap the newspaper icon (top right) to read it.'); } next(); }
     else if (item.type === 'event') showEvent(item.id, next);
     else if (item.type === 'press') showPress(item, next);
     else if (item.type === 'debt') showDebt(MH, next);
