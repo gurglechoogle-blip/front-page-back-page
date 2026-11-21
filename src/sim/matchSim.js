@@ -100,7 +100,14 @@ export class MatchSim {
     return Object.assign({ team: this.name(side), opp: this.name(opp), player, player2: this.outfield(side, ['mid', 'fwd'], [player, this.me]), oppPlayer: this.outfield(opp, ['def', 'mid']), gk: this.squads[side].gk, oppGk: this.squads[opp].gk, me: this.me, home: this.home.name, away: this.away.name, hs: this.score.home, as: this.score.away, stadium: this.stadium }, extra);
   }
   ev(text, kind = 'info', side = null, label = this.label()) { return { label, text, kind, side }; }
-  line(key, side, extra) { const pool = this.home.league === 'INT' ? C[key].filter(l => !/chairman|season ticket/i.test(l)) : C[key]; return fill(pickR(pool, this.R), this.vars(side, extra)); }
+  line(key, side, extra) {
+    // No line twice in the same match (until a list runs out).
+    let pool = this.home.league === 'INT' ? C[key].filter(l => !/chairman|season ticket/i.test(l)) : C[key];
+    const used = (this.usedLines = this.usedLines || {})[key] = (this.usedLines[key] || []);
+    let fresh = pool.filter(l => !used.includes(l)); if (!fresh.length) { used.length = 0; fresh = pool; }
+    const l = pickR(fresh, this.R); used.push(l);
+    return fill(l, this.vars(side, extra));
+  }
   scoreLine() { return `${this.home.name} ${this.score.home}-${this.score.away} ${this.away.name}`; }
   bump(delta) { this.rating = clamp(this.rating + delta, 3, 10); }
 

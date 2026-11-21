@@ -183,6 +183,10 @@ export function playHeadless(c, f) {
   return sim;
 }
 /** Record a finished match of yours (summary from MatchSim.summary()). */
+/** Every competitive appearance, for the stats screen. */
+export function logApp(c, team, comp, S) {
+  (c.appLog = c.appLog || []).push({ s: CAL.season, t: team, c: comp, g: S.my.goals || 0, a: S.my.assists || 0, r: Math.round((S.rating || 0) * 10) / 10 });
+}
 export function recordMatch(c, f, S, R = Math.random) {
   if (f.link) linkResult(c, f.link, S.score.home, S.score.away);
   Object.assign(f, { played: true, hs: S.score.home, as: S.score.away, role: S.role });
@@ -190,6 +194,7 @@ export function recordMatch(c, f, S, R = Math.random) {
   const played = S.role === 'start' || S.role === 'sub';
   const res = { id: f.id, role: S.role, rating: played ? S.rating : null, goals: S.my.goals, assists: S.my.assists, headline: S.headline, unused: !!S.unusedSub, hooked: S.hooked || null, verdict: S.gafferLine || gafferVerdict(S, R) };
   if (played) c.lastPlayed = f.date;
+  if (played && f.comp !== 'friendly') logApp(c, myTeamIn(c, f) || c.clubId, f.comp === 'intl' ? 'intl-' + (f.level || 'senior') : f.comp, S);
   { const mt = myTeamIn(c, f) || c.clubId, opp = club(f.home === mt ? f.away : f.home), us = f.home === mt ? S.score.home : S.score.away, them = f.home === mt ? S.score.away : S.score.home;
     (c.diary = c.diary || {})[f.date] = (c.diary[f.date] || []).concat({ t: 'match', text: `${compName(f)}: ${f.home === mt ? 'v' : '@'} ${opp.name} ${us}-${them}${played ? ` · you: ${S.rating.toFixed(1)}${S.my.goals ? `, ${S.my.goals} goal${S.my.goals > 1 ? 's' : ''}` : ''}` : S.unusedSub ? ' · unused sub' : ' · not involved'}` }); }
   res.pay = matchPay(c, f, S); res.pay.forEach(x => c.bank += x.amount);

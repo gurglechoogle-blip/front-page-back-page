@@ -2,87 +2,1021 @@
  "_note": "Texts that invite you to do something. Accepting uses a time slot. from: a friend id, 'mum', 'gran' or 'squad'. venue: opens that casino venue instead (gran / lee). minAge optional. {a} = a teammate's surname.",
  "friends": {
   "deano": [
-   { "text": "mate. MATE. dog track tonight. i've got a system", "label": "Go to the dogs with Deano", "result": "Deano's system involves picking dogs by how kind their eyes look. You lose £20. Best night of the month.", "effects": { "energy": -3, "family": 1 }, "minAge": 18 },
-   { "text": "five-a-side at the leisure centre, we're one short and Gaz has done his ankle again", "label": "Play five-a-side", "result": "You score eleven. A dad in a Leeds shirt calls you a ringer. He's right.", "effects": { "energy": -6, "fans": 1 } },
-   { "text": "need a hand moving a sofa. it's not stolen. it's 'liberated'", "label": "Help Deano with the sofa", "result": "The sofa doesn't fit up his stairs. It now lives in his front garden. He calls it 'outdoor living'.", "effects": { "energy": -4, "honour": -1 } },
-   { "text": "quiz night at the Red Lion. we need someone who knows things. i'll settle for you", "label": "Go to the pub quiz", "result": "You come third. Deano answers 'Nelson Mandela' to every question in the music round. Two are correct.", "effects": { "energy": -2, "family": 1 } },
-   { "text": "pitching my new business to some investors (my uncle). need you there for credibility", "label": "Back Deano's pitch", "result": "The business is 'Uber, but for ladders'. Uncle Clive invests £40. Deano cries.", "effects": { "energy": -2, "honour": 1 } },
-   { "text": "fish and chips on the seafront? my treat. (you're paying)", "label": "Get chips with Deano", "result": "A seagull takes a whole sausage out of Deano's hand. He considers it a personal attack.", "effects": { "energy": 2, "family": 1 } }
+   {
+    "text": "mate. MATE. dog track tonight. i've got a system",
+    "label": "Go to the dogs with Deano",
+    "result": "Deano's system involves picking dogs by how kind their eyes look. You lose £20. Best night of the month.",
+    "effects": {
+     "energy": -3,
+     "family": 1
+    },
+    "minAge": 18
+   },
+   {
+    "text": "five-a-side at the leisure centre, we're one short and Gaz has done his ankle again",
+    "label": "Play five-a-side",
+    "result": "You score eleven. A dad in a Leeds shirt calls you a ringer. He's right.",
+    "effects": {
+     "energy": -6,
+     "fans": 1
+    }
+   },
+   {
+    "text": "need a hand moving a sofa. it's not stolen. it's 'liberated'",
+    "label": "Help Deano with the sofa",
+    "result": "The sofa doesn't fit up his stairs. It now lives in his front garden. He calls it 'outdoor living'.",
+    "effects": {
+     "energy": -4,
+     "honour": -1
+    }
+   },
+   {
+    "text": "quiz night at the Red Lion. we need someone who knows things. i'll settle for you",
+    "label": "Go to the pub quiz",
+    "result": "You come third. Deano answers 'Nelson Mandela' to every question in the music round. Two are correct.",
+    "effects": {
+     "energy": -2,
+     "family": 1
+    },
+    "minAge": 18
+   },
+   {
+    "text": "pitching my new business to some investors (my uncle). need you there for credibility",
+    "label": "Back Deano's pitch",
+    "result": "The business is 'Uber, but for ladders'. Uncle Clive invests £40. Deano cries.",
+    "effects": {
+     "energy": -2,
+     "honour": 1
+    }
+   },
+   {
+    "text": "fish and chips on the seafront? my treat. (you're paying)",
+    "label": "Get chips with Deano",
+    "result": "A seagull takes a whole sausage out of Deano's hand. He considers it a personal attack.",
+    "effects": {
+     "energy": 2,
+     "family": 1
+    }
+   }
   ],
   "shaz": [
-   { "text": "PARTY. MINE. SATURDAY. THEME IS 'ICONIC DUOS'. you're ant OR dec, you choose", "label": "Go to Shaz's party", "result": "The police come round at 1am. Shaz invites them in. One of them does a speech.", "effects": { "energy": -6, "fans": 1, "teammates": 1 } },
-   { "text": "karaoke tonight!! i've already put you down for Mr Brightside, no backing out", "label": "Do karaoke with Shaz", "result": "You murder Mr Brightside. Someone films it. It's quite popular, in a bad way.", "effects": { "energy": -3, "fans": 2 } },
-   { "text": "need a plus one for my cousin's wedding, the ex will be there, act rich", "label": "Be Shaz's plus one", "result": "You act rich. You are, slightly, rich. The ex leaves early. Shaz says it was 'the best day of her life'.", "effects": { "energy": -4, "family": 1 } },
-   { "text": "spin class at 7. it's like a party but you can't leave", "label": "Do spin class with Shaz", "result": "The instructor shouts at you by name. Shaz has told her who you are. Your legs file a complaint.", "effects": { "energy": -5, "manager": 1 } },
-   { "text": "help me pick an outfit?? i've narrowed it down to 41", "label": "Help Shaz shop", "result": "Five hours. She buys the first one. Of course she does.", "effects": { "energy": -2, "family": 1 } }
+   {
+    "text": "PARTY. MINE. SATURDAY. THEME IS 'ICONIC DUOS'. you're ant OR dec, you choose",
+    "label": "Go to Shaz's party",
+    "result": "The police come round at 1am. Shaz invites them in. One of them does a speech.",
+    "effects": {
+     "energy": -6,
+     "fans": 1,
+     "teammates": 1
+    }
+   },
+   {
+    "text": "karaoke tonight!! i've already put you down for Mr Brightside, no backing out",
+    "label": "Do karaoke with Shaz",
+    "result": "You murder Mr Brightside. Someone films it. It's quite popular, in a bad way.",
+    "effects": {
+     "energy": -3,
+     "fans": 2
+    }
+   },
+   {
+    "text": "need a plus one for my cousin's wedding, the ex will be there, act rich",
+    "label": "Be Shaz's plus one",
+    "result": "You act rich. You are, slightly, rich. The ex leaves early. Shaz says it was 'the best day of her life'.",
+    "effects": {
+     "energy": -4,
+     "family": 1
+    }
+   },
+   {
+    "text": "spin class at 7. it's like a party but you can't leave",
+    "label": "Do spin class with Shaz",
+    "result": "The instructor shouts at you by name. Shaz has told her who you are. Your legs file a complaint.",
+    "effects": {
+     "energy": -5,
+     "manager": 1
+    }
+   },
+   {
+    "text": "help me pick an outfit?? i've narrowed it down to 41",
+    "label": "Help Shaz shop",
+    "result": "Five hours. She buys the first one. Of course she does.",
+    "effects": {
+     "energy": -2,
+     "family": 1
+    }
+   }
   ],
   "lee": [
-   { "text": "cards. mine. thursday. bring cash, leave your morals", "label": "Go to Big Lee's card night", "venue": "lee", "result": "" },
-   { "text": "need a driver for a 'quick job'. nothing dodgy. it's a bit dodgy", "label": "Ride along with Lee", "result": "The 'job' is collecting 300 garden gnomes from a man in a lay-by. You don't ask. You really don't ask.", "effects": { "energy": -3, "honour": -2 } },
-   { "text": "car boot sale sunday. i'm selling. you're the celebrity draw", "label": "Help at the car boot sale", "result": "You sign 40 things, including a toaster. Lee makes £600. You get a bacon roll.", "effects": { "energy": -3, "fans": 2 } },
-   { "text": "snooker at the club. i'll go easy on you. i won't", "label": "Play snooker with Lee", "result": "Lee clears the table twice while eating a pasty. You pot the white four times.", "effects": { "energy": -1, "teammates": 1 } },
-   { "text": "got tickets to the boxing. ringside. don't ask how", "label": "Go to the boxing", "result": "Ringside, yes. Behind a pillar, also yes. You still get on the telly.", "effects": { "energy": -3, "fans": 2 }, "minAge": 18 }
+   {
+    "text": "cards. mine. thursday. bring cash, leave your morals",
+    "label": "Go to Big Lee's card night",
+    "venue": "lee",
+    "result": ""
+   },
+   {
+    "text": "need a driver for a 'quick job'. nothing dodgy. it's a bit dodgy",
+    "label": "Ride along with Lee",
+    "result": "The 'job' is collecting 300 garden gnomes from a man in a lay-by. You don't ask. You really don't ask.",
+    "effects": {
+     "energy": -3,
+     "honour": -2
+    },
+    "minAge": 17
+   },
+   {
+    "text": "car boot sale sunday. i'm selling. you're the celebrity draw",
+    "label": "Help at the car boot sale",
+    "result": "You sign 40 things, including a toaster. Lee makes £600. You get a bacon roll.",
+    "effects": {
+     "energy": -3,
+     "fans": 2
+    }
+   },
+   {
+    "text": "snooker at the club. i'll go easy on you. i won't",
+    "label": "Play snooker with Lee",
+    "result": "Lee clears the table twice while eating a pasty. You pot the white four times.",
+    "effects": {
+     "energy": -1,
+     "teammates": 1
+    }
+   },
+   {
+    "text": "got tickets to the boxing. ringside. don't ask how",
+    "label": "Go to the boxing",
+    "result": "Ringside, yes. Behind a pillar, also yes. You still get on the telly.",
+    "effects": {
+     "energy": -3,
+     "fans": 2
+    },
+    "minAge": 18
+   }
   ],
   "ty": [
-   { "text": "need you in a music video bro. you just stand there looking expensive", "label": "Be in Ty's music video", "result": "You stand by a hired Lamborghini for three hours. Ty's track gets 800 views. 700 are you.", "effects": { "energy": -3, "fans": 2, "honour": -1 } },
-   { "text": "trying a new challenge for the channel, it involves crossbar shots and a goat", "label": "Do Ty's crossbar challenge", "result": "You hit the bar nine times. The goat hits Ty once. The video does numbers.", "effects": { "energy": -2, "fans": 3 } },
-   { "text": "podcast ep 4. topic: are footballers just athletes with haircuts. you're the guest", "label": "Go on Ty's podcast", "result": "Two hours. Three listeners. One of them is Ty's mum, who asks about your diet.", "effects": { "energy": -2, "fans": 1 } },
-   { "text": "open mic tonight, i'm debuting a diss track about pigeons. need hype man", "label": "Hype Ty at open mic", "result": "The pigeon diss lands surprisingly well. You shout 'YEAH' at the wrong moments. A star is born, maybe.", "effects": { "energy": -3, "teammates": 1 } },
-   { "text": "photoshoot for my clothing brand 'TY-DAL WAVE' you're the model", "label": "Model for Ty's brand", "result": "The hoodie says 'TY-DAL WAVE' in letters that run. You look like a soggy flag. Ty is thrilled.", "effects": { "energy": -2, "fans": 1 } }
+   {
+    "text": "need you in a music video bro. you just stand there looking expensive",
+    "label": "Be in Ty's music video",
+    "result": "You stand by a hired Lamborghini for three hours. Ty's track gets 800 views. 700 are you.",
+    "effects": {
+     "energy": -3,
+     "fans": 2,
+     "honour": -1
+    }
+   },
+   {
+    "text": "trying a new challenge for the channel, it involves crossbar shots and a goat",
+    "label": "Do Ty's crossbar challenge",
+    "result": "You hit the bar nine times. The goat hits Ty once. The video does numbers.",
+    "effects": {
+     "energy": -2,
+     "fans": 3
+    }
+   },
+   {
+    "text": "podcast ep 4. topic: are footballers just athletes with haircuts. you're the guest",
+    "label": "Go on Ty's podcast",
+    "result": "Two hours. Three listeners. One of them is Ty's mum, who asks about your diet.",
+    "effects": {
+     "energy": -2,
+     "fans": 1
+    }
+   },
+   {
+    "text": "open mic tonight, i'm debuting a diss track about pigeons. need hype man",
+    "label": "Hype Ty at open mic",
+    "result": "The pigeon diss lands surprisingly well. You shout 'YEAH' at the wrong moments. A star is born, maybe.",
+    "effects": {
+     "energy": -3,
+     "teammates": 1
+    }
+   },
+   {
+    "text": "photoshoot for my clothing brand 'TY-DAL WAVE' you're the model",
+    "label": "Model for Ty's brand",
+    "result": "The hoodie says 'TY-DAL WAVE' in letters that run. You look like a soggy flag. Ty is thrilled.",
+    "effects": {
+     "energy": -2,
+     "fans": 1
+    }
+   }
   ],
   "priya": [
-   { "text": "Coffee? Also bring your bank statements. Don't make that face.", "label": "Money chat with Priya", "result": "Priya finds three subscriptions you didn't know you had. One is for a cheese of the month club.", "effects": { "energy": 1, "honour": 1, "family": 1 } },
-   { "text": "Pub quiz, but a proper one. At the library. There's a raffle.", "label": "Go to the library quiz", "result": "You win the raffle: a book token and a tin of travel sweets. Priya wins the quiz. She's insufferable about it.", "effects": { "energy": 1, "honour": 2 } },
-   { "text": "Walk round the park? I'll explain pensions. You'll thank me in 40 years.", "label": "Walk and talk pensions", "result": "You understand compound interest for about eleven minutes. It's beautiful while it lasts.", "effects": { "energy": 2, "honour": 1 } },
-   { "text": "My mum's cooking and she's made too much (on purpose). Come for tea.", "label": "Go for tea at Priya's", "result": "Priya's mum feeds you until you can't stand. She sends you home with four tubs. You don't need to cook till Thursday.", "effects": { "energy": 4, "family": 2 } },
-   { "text": "Volunteering at the food bank Saturday. They'd love a famous face. Or any face.", "label": "Help at the food bank", "result": "You stack tins for four hours. Nobody takes a photo. That's what makes it nice.", "effects": { "energy": -2, "honour": 3 } }
+   {
+    "text": "Coffee? Also bring your bank statements. Don't make that face.",
+    "label": "Money chat with Priya",
+    "result": "Priya finds three subscriptions you didn't know you had. One is for a cheese of the month club.",
+    "effects": {
+     "energy": 1,
+     "honour": 1,
+     "family": 1
+    }
+   },
+   {
+    "text": "Pub quiz, but a proper one. At the library. There's a raffle.",
+    "label": "Go to the library quiz",
+    "result": "You win the raffle: a book token and a tin of travel sweets. Priya wins the quiz. She's insufferable about it.",
+    "effects": {
+     "energy": 1,
+     "honour": 2
+    }
+   },
+   {
+    "text": "Walk round the park? I'll explain pensions. You'll thank me in 40 years.",
+    "label": "Walk and talk pensions",
+    "result": "You understand compound interest for about eleven minutes. It's beautiful while it lasts.",
+    "effects": {
+     "energy": 2,
+     "honour": 1
+    }
+   },
+   {
+    "text": "My mum's cooking and she's made too much (on purpose). Come for tea.",
+    "label": "Go for tea at Priya's",
+    "result": "Priya's mum feeds you until you can't stand. She sends you home with four tubs. You don't need to cook till Thursday.",
+    "effects": {
+     "energy": 4,
+     "family": 2
+    }
+   },
+   {
+    "text": "Volunteering at the food bank Saturday. They'd love a famous face. Or any face.",
+    "label": "Help at the food bank",
+    "result": "You stack tins for four hours. Nobody takes a photo. That's what makes it nice.",
+    "effects": {
+     "energy": -2,
+     "honour": 3
+    }
+   }
   ],
   "mo": [
-   { "text": "free physio session for a case study? I'll only mildly hurt you", "label": "Be Mo's case study", "result": "Mo finds a knot in your calf 'the size of a satsuma'. You feel brand new. Your calf feels violated.", "effects": { "energy": 6 } },
-   { "text": "yoga class. don't laugh. your hamstrings are a disgrace", "label": "Do yoga with Mo", "result": "You fall over in a pose called 'the tree'. A pensioner helps you up. You're more flexible, and humbled.", "effects": { "energy": 4, "manager": 1 } },
-   { "text": "park run saturday? it's 5k. it's free. it's character building", "label": "Do the park run", "result": "You finish 4th. A 70-year-old in a tutu finishes 3rd. You will be thinking about her for a while.", "effects": { "energy": -2, "manager": 1, "fans": 1 } },
-   { "text": "cold water swim at the lake. it's good for inflammation. it's 4 degrees", "label": "Go wild swimming with Mo", "result": "You make a noise you've never made before. Afterwards you feel incredible. You'll never do it again.", "effects": { "energy": 5 } },
-   { "text": "sports science lecture at the uni tonight, you'd find it interesting (you won't)", "label": "Go to the lecture with Mo", "result": "You learn about lactic acid. You fall asleep for nine minutes. Mo says you snored 'in a very efficient rhythm'.", "effects": { "energy": 2, "manager": 1 } }
+   {
+    "text": "free physio session for a case study? I'll only mildly hurt you",
+    "label": "Be Mo's case study",
+    "result": "Mo finds a knot in your calf 'the size of a satsuma'. You feel brand new. Your calf feels violated.",
+    "effects": {
+     "energy": 6
+    }
+   },
+   {
+    "text": "yoga class. don't laugh. your hamstrings are a disgrace",
+    "label": "Do yoga with Mo",
+    "result": "You fall over in a pose called 'the tree'. A pensioner helps you up. You're more flexible, and humbled.",
+    "effects": {
+     "energy": 4,
+     "manager": 1
+    }
+   },
+   {
+    "text": "park run saturday? it's 5k. it's free. it's character building",
+    "label": "Do the park run",
+    "result": "You finish 4th. A 70-year-old in a tutu finishes 3rd. You will be thinking about her for a while.",
+    "effects": {
+     "energy": -2,
+     "manager": 1,
+     "fans": 1
+    }
+   },
+   {
+    "text": "cold water swim at the lake. it's good for inflammation. it's 4 degrees",
+    "label": "Go wild swimming with Mo",
+    "result": "You make a noise you've never made before. Afterwards you feel incredible. You'll never do it again.",
+    "effects": {
+     "energy": 5
+    }
+   },
+   {
+    "text": "sports science lecture at the uni tonight, you'd find it interesting (you won't)",
+    "label": "Go to the lecture with Mo",
+    "result": "You learn about lactic acid. You fall asleep for nine minutes. Mo says you snored 'in a very efficient rhythm'.",
+    "effects": {
+     "energy": 2,
+     "manager": 1
+    }
+   }
   ],
   "jess": [
-   { "text": "the youth club's got a match on saturday and the kids want YOU. please. they've made a banner", "label": "Coach Jess's youth club", "result": "The banner spells your name wrong. The kids win 3-2. You cry a bit in the car.", "effects": { "energy": -2, "honour": 3, "fans": 1 } },
-   { "text": "sponsored silence for the charity, 24 hours. I know. you'll struggle", "label": "Do the sponsored silence", "result": "You last 14 hours. You break it to shout at the telly. Still raises £2,400.", "effects": { "honour": 2, "fans": 1 } },
-   { "text": "painting the community centre. bring old clothes and no ego", "label": "Paint the community centre", "result": "You paint a wall and most of yourself. A kid asks if you're 'the man off FIFA'. You say yes. He's disappointed.", "effects": { "energy": -3, "honour": 3 } },
-   { "text": "litter pick on the estate sunday morning. we start at 8. that's not a typo", "label": "Join the litter pick", "result": "You find a shopping trolley, a garden gnome and somebody's dentures. Jess finds a fiver and gives it to charity.", "effects": { "energy": -2, "honour": 2, "family": 1 } },
-   { "text": "quiz night fundraiser. you're the guest question master. no swearing this time", "label": "Host the fundraiser quiz", "result": "Only two swears. A record. The night raises £900 for new goalposts.", "effects": { "energy": -2, "honour": 2, "fans": 1 } }
+   {
+    "text": "the youth club's got a match on saturday and the kids want YOU. please. they've made a banner",
+    "label": "Coach Jess's youth club",
+    "result": "The banner spells your name wrong. The kids win 3-2. You cry a bit in the car.",
+    "effects": {
+     "energy": -2,
+     "honour": 3,
+     "fans": 1
+    }
+   },
+   {
+    "text": "sponsored silence for the charity, 24 hours. I know. you'll struggle",
+    "label": "Do the sponsored silence",
+    "result": "You last 14 hours. You break it to shout at the telly. Still raises £2,400.",
+    "effects": {
+     "honour": 2,
+     "fans": 1
+    }
+   },
+   {
+    "text": "painting the community centre. bring old clothes and no ego",
+    "label": "Paint the community centre",
+    "result": "You paint a wall and most of yourself. A kid asks if you're 'the man off FIFA'. You say yes. He's disappointed.",
+    "effects": {
+     "energy": -3,
+     "honour": 3
+    }
+   },
+   {
+    "text": "litter pick on the estate sunday morning. we start at 8. that's not a typo",
+    "label": "Join the litter pick",
+    "result": "You find a shopping trolley, a garden gnome and somebody's dentures. Jess finds a fiver and gives it to charity.",
+    "effects": {
+     "energy": -2,
+     "honour": 2,
+     "family": 1
+    }
+   },
+   {
+    "text": "quiz night fundraiser. you're the guest question master. no swearing this time",
+    "label": "Host the fundraiser quiz",
+    "result": "Only two swears. A record. The night raises £900 for new goalposts.",
+    "effects": {
+     "energy": -2,
+     "honour": 2,
+     "fans": 1
+    }
+   }
   ],
   "stan": [
-   { "text": "Fancy a round of golf, son? I'll give you 20 shots. You'll need them.", "label": "Play golf with Stan", "result": "Stan, 81, beats you by nine shots while telling a story about a mud bath at Halifax in 1974.", "effects": { "energy": 1, "manager": 1 } },
-   { "text": "Come and watch the Sunday league with me. Proper football. Proper mud.", "label": "Watch Sunday league with Stan", "result": "Stan heckles the referee for 90 minutes. The referee is his nephew. You learn a lot.", "effects": { "energy": 2, "manager": 1, "fans": 1 } },
-   { "text": "Allotment needs digging. I'll pay you in rhubarb.", "label": "Dig Stan's allotment", "result": "You dig for three hours. Stan supervises from a deckchair. You go home with rhubarb and a sense of purpose.", "effects": { "energy": -2, "family": 1, "honour": 1 } },
-   { "text": "Old players' reunion dinner Friday. They'd like to meet a young 'un. Wear a tie.", "label": "Go to the old players' dinner", "result": "Twelve old pros tell you the game's gone soft. Then they all ask for selfies.", "effects": { "energy": 1, "manager": 2, "honour": 1 } },
-   { "text": "Dominoes at the club, son. Bring change for the machine.", "label": "Play dominoes with Stan", "result": "You lose £3.40 and gain a nickname: 'Fumbles'. Stan says it's a term of endearment.", "effects": { "energy": 2, "family": 1 } }
+   {
+    "text": "Fancy a round of golf, son? I'll give you 20 shots. You'll need them.",
+    "label": "Play golf with Stan",
+    "result": "Stan, 81, beats you by nine shots while telling a story about a mud bath at Halifax in 1974.",
+    "effects": {
+     "energy": 1,
+     "manager": 1
+    }
+   },
+   {
+    "text": "Come and watch the Sunday league with me. Proper football. Proper mud.",
+    "label": "Watch Sunday league with Stan",
+    "result": "Stan heckles the referee for 90 minutes. The referee is his nephew. You learn a lot.",
+    "effects": {
+     "energy": 2,
+     "manager": 1,
+     "fans": 1
+    }
+   },
+   {
+    "text": "Allotment needs digging. I'll pay you in rhubarb.",
+    "label": "Dig Stan's allotment",
+    "result": "You dig for three hours. Stan supervises from a deckchair. You go home with rhubarb and a sense of purpose.",
+    "effects": {
+     "energy": -2,
+     "family": 1,
+     "honour": 1
+    }
+   },
+   {
+    "text": "Old players' reunion dinner Friday. They'd like to meet a young 'un. Wear a tie.",
+    "label": "Go to the old players' dinner",
+    "result": "Twelve old pros tell you the game's gone soft. Then they all ask for selfies.",
+    "effects": {
+     "energy": 1,
+     "manager": 2,
+     "honour": 1
+    }
+   },
+   {
+    "text": "Dominoes at the club, son. Bring change for the machine.",
+    "label": "Play dominoes with Stan",
+    "result": "You lose £3.40 and gain a nickname: 'Fumbles'. Stan says it's a term of endearment.",
+    "effects": {
+     "energy": 2,
+     "family": 1
+    }
+   }
   ]
  },
  "mum": [
-  { "text": "Sunday roast at mine, love. I've done Yorkshires. Bring a pudding (shop-bought is fine, I won't say anything)", "label": "Go to Mum's for a roast", "result": "Mum says nothing about the shop-bought pudding. Loudly.", "effects": { "energy": 4, "family": 4 } },
-  { "text": "Auntie Pat's 60th on Saturday. She's asked for you specifically. Don't make me beg", "label": "Go to Auntie Pat's 60th", "result": "Auntie Pat tells everyone you used to wet the bed. Then she cries and says she's proud of you.", "effects": { "energy": -2, "family": 5 } },
-  { "text": "Can you help me with the new telly? It's asking for a password and I've tried 'password'", "label": "Fix Mum's telly", "result": "The password was 'password1'. Mum calls you a genius. You stay for tea.", "effects": { "energy": 1, "family": 3 } },
-  { "text": "Garden centre trip? There's a café. They do a scone the size of your head", "label": "Go to the garden centre", "result": "The scone really is the size of your head. Mum buys a gnome that looks like your Grandad.", "effects": { "energy": 2, "family": 3 } },
-  { "text": "Your old school's asked if you'd do an assembly. I've said yes. Sorry", "label": "Do the school assembly", "result": "Your old PE teacher introduces you as 'the lad who couldn't climb the rope'. The kids go wild anyway.", "effects": { "energy": -1, "family": 2, "honour": 2, "fans": 1 } },
-  { "text": "Fancy a walk up the hill like we used to? I'll bring the flask", "label": "Walk up the hill with Mum", "result": "Mum stops at every bench. You talk about everything. Best afternoon in ages.", "effects": { "energy": 2, "family": 4 } },
-  { "text": "Bingo Thursday! Your Gran's coming. Wear something nice", "label": "Go to bingo", "result": "Gran wins £40 and accuses the caller of fixing it in her favour, then keeps the money.", "effects": { "energy": 1, "family": 3 } }
+  {
+   "text": "Sunday roast at mine, love. I've done Yorkshires. Bring a pudding (shop-bought is fine, I won't say anything)",
+   "label": "Go to Mum's for a roast",
+   "result": "Mum says nothing about the shop-bought pudding. Loudly.",
+   "effects": {
+    "energy": 4,
+    "family": 4
+   }
+  },
+  {
+   "text": "Auntie Pat's 60th on Saturday. She's asked for you specifically. Don't make me beg",
+   "label": "Go to Auntie Pat's 60th",
+   "result": "Auntie Pat tells everyone you used to wet the bed. Then she cries and says she's proud of you.",
+   "effects": {
+    "energy": -2,
+    "family": 5
+   }
+  },
+  {
+   "text": "Can you help me with the new telly? It's asking for a password and I've tried 'password'",
+   "label": "Fix Mum's telly",
+   "result": "The password was 'password1'. Mum calls you a genius. You stay for tea.",
+   "effects": {
+    "energy": 1,
+    "family": 3
+   }
+  },
+  {
+   "text": "Garden centre trip? There's a café. They do a scone the size of your head",
+   "label": "Go to the garden centre",
+   "result": "The scone really is the size of your head. Mum buys a gnome that looks like your Grandad.",
+   "effects": {
+    "energy": 2,
+    "family": 3
+   }
+  },
+  {
+   "text": "Your old school's asked if you'd do an assembly. I've said yes. Sorry",
+   "label": "Do the school assembly",
+   "result": "Your old PE teacher introduces you as 'the lad who couldn't climb the rope'. The kids go wild anyway.",
+   "effects": {
+    "energy": -1,
+    "family": 2,
+    "honour": 2,
+    "fans": 1
+   }
+  },
+  {
+   "text": "Fancy a walk up the hill like we used to? I'll bring the flask",
+   "label": "Walk up the hill with Mum",
+   "result": "Mum stops at every bench. You talk about everything. Best afternoon in ages.",
+   "effects": {
+    "energy": 2,
+    "family": 4
+   }
+  },
+  {
+   "text": "Bingo Thursday! Your Gran's coming. Wear something nice",
+   "label": "Go to bingo",
+   "result": "Gran wins £40 and accuses the caller of fixing it in her favour, then keeps the money.",
+   "effects": {
+    "energy": 1,
+    "family": 3
+   }
+  }
  ],
  "gran": [
-  { "text": "Poker at mine tonight pet. 2p a hand. Bring biscuits and your A game", "label": "Play poker at Gran's", "venue": "gran", "result": "" },
-  { "text": "Doris from bridge club is doing poker Thursday. I've told her you're useless. Prove me right", "label": "Play poker with Gran and Doris", "venue": "gran", "result": "" },
-  { "text": "Take me to the bookies love, my hip's playing up and Gary behind the counter fancies me", "label": "Take Gran to the bookies", "result": "Gran puts a fiver on a horse called Gran's Revenge. It wins. She buys everyone a Twix.", "effects": { "energy": 1, "family": 3, "honour": -1 } },
-  { "text": "Come round and help me with my phone. It keeps saying I've got 'storage'", "label": "Sort Gran's phone", "result": "Gran has 14,000 photos of her own thumb. You delete them. She's devastated.", "effects": { "energy": 1, "family": 3 } },
-  { "text": "Tea dance at the town hall Saturday. I need a partner who won't tread on me. You'll have to do", "label": "Take Gran to the tea dance", "result": "You tread on her four times. She says Ronald from 1962 was worse. High praise.", "effects": { "energy": -1, "family": 4, "fans": 1 } }
+  {
+   "text": "Poker at mine tonight pet. 2p a hand. Bring biscuits and your A game",
+   "label": "Play poker at Gran's",
+   "venue": "gran",
+   "result": ""
+  },
+  {
+   "text": "Doris from bridge club is doing poker Thursday. I've told her you're useless. Prove me right",
+   "label": "Play poker with Gran and Doris",
+   "venue": "gran",
+   "result": ""
+  },
+  {
+   "text": "Take me to the bookies love, my hip's playing up and Gary behind the counter fancies me",
+   "label": "Take Gran to the bookies",
+   "result": "Gran puts a fiver on a horse called Gran's Revenge. It wins. She buys everyone a Twix.",
+   "effects": {
+    "energy": 1,
+    "family": 3,
+    "honour": -1
+   }
+  },
+  {
+   "text": "Come round and help me with my phone. It keeps saying I've got 'storage'",
+   "label": "Sort Gran's phone",
+   "result": "Gran has 14,000 photos of her own thumb. You delete them. She's devastated.",
+   "effects": {
+    "energy": 1,
+    "family": 3
+   }
+  },
+  {
+   "text": "Tea dance at the town hall Saturday. I need a partner who won't tread on me. You'll have to do",
+   "label": "Take Gran to the tea dance",
+   "result": "You tread on her four times. She says Ronald from 1962 was worse. High praise.",
+   "effects": {
+    "energy": -1,
+    "family": 4,
+    "fans": 1
+   }
+  }
  ],
  "squad": [
-  { "text": "{a}: golf day tuesday lads, gaffer's coming so behave", "label": "Go to the squad golf day", "result": "You hit the gaffer's buggy with a five iron. He laughs. It's a worrying laugh.", "effects": { "energy": -1, "teammates": 3, "manager": 1 } },
-  { "text": "{a}: team meal at the Italian thursday, captain's paying (he doesn't know yet)", "label": "Go to the team meal", "result": "The captain finds out at the bill. He takes it well. He takes it very badly.", "effects": { "energy": 1, "teammates": 4 } },
-  { "text": "{a}: hospital visit with the club charity on wednesday, few of us going. you in?", "label": "Do the hospital visit", "result": "A seven-year-old asks why you missed that sitter. You have no answer. She gives you a sticker anyway.", "effects": { "energy": -1, "honour": 3, "fans": 2, "teammates": 1 } },
-  { "text": "{a}: extra shooting practice after training, me, you and the bag of balls", "label": "Do extra shooting practice", "result": "Two hours of finishing. The gaffer watches from his office window. He says nothing. He's noticed.", "effects": { "energy": -5, "manager": 3, "teammates": 1 } },
-  { "text": "{a}: go-karting saturday?? loser does the fines kitty for a month", "label": "Go go-karting", "result": "You come second. {a} comes last after crashing into a hay bale. He has the fines kitty now. God help us.", "effects": { "energy": -2, "teammates": 3 } },
-  { "text": "{a}: who's coming to the darts? i've got a table. it's next to the toilets", "label": "Go to the darts", "result": "You get on the big screen holding a sign that says '180 OR I'M MOVING CLUBS'. Fans love it.", "effects": { "energy": -3, "teammates": 2, "fans": 2 }, "minAge": 18 },
-  { "text": "{a}: fifa tournament at mine, winner gets bragging rights and my nan's lasagne", "label": "Go to the FIFA tournament", "result": "You lose in the semis playing as yourself. Your own card lets you down. The lasagne is elite.", "effects": { "energy": 2, "teammates": 3 } },
-  { "text": "{a}: school visit thursday for the club, they want a 'role model'. we're all they've got", "label": "Do the school visit", "result": "A kid asks how much you earn. Another asks if you've met a famous person. You say 'not really'. Brutal.", "effects": { "energy": -1, "honour": 2, "fans": 2 } }
+  {
+   "text": "{a}: golf day tuesday lads, gaffer's coming so behave",
+   "label": "Go to the squad golf day",
+   "result": "You hit the gaffer's buggy with a five iron. He laughs. It's a worrying laugh.",
+   "effects": {
+    "energy": -1,
+    "teammates": 3,
+    "manager": 1
+   }
+  },
+  {
+   "text": "{a}: team meal at the Italian thursday, captain's paying (he doesn't know yet)",
+   "label": "Go to the team meal",
+   "result": "The captain finds out at the bill. He takes it well. He takes it very badly.",
+   "effects": {
+    "energy": 1,
+    "teammates": 4
+   }
+  },
+  {
+   "text": "{a}: hospital visit with the club charity on wednesday, few of us going. you in?",
+   "label": "Do the hospital visit",
+   "result": "A seven-year-old asks why you missed that sitter. You have no answer. She gives you a sticker anyway.",
+   "effects": {
+    "energy": -1,
+    "honour": 3,
+    "fans": 2,
+    "teammates": 1
+   }
+  },
+  {
+   "text": "{a}: extra shooting practice after training, me, you and the bag of balls",
+   "label": "Do extra shooting practice",
+   "result": "Two hours of finishing. The gaffer watches from his office window. He says nothing. He's noticed.",
+   "effects": {
+    "energy": -5,
+    "manager": 3,
+    "teammates": 1
+   }
+  },
+  {
+   "text": "{a}: go-karting saturday?? loser does the fines kitty for a month",
+   "label": "Go go-karting",
+   "result": "You come second. {a} comes last after crashing into a hay bale. He has the fines kitty now. God help us.",
+   "effects": {
+    "energy": -2,
+    "teammates": 3
+   }
+  },
+  {
+   "text": "{a}: who's coming to the darts? i've got a table. it's next to the toilets",
+   "label": "Go to the darts",
+   "result": "You get on the big screen holding a sign that says '180 OR I'M MOVING CLUBS'. Fans love it.",
+   "effects": {
+    "energy": -3,
+    "teammates": 2,
+    "fans": 2
+   },
+   "minAge": 18
+  },
+  {
+   "text": "{a}: fifa tournament at mine, winner gets bragging rights and my nan's lasagne",
+   "label": "Go to the FIFA tournament",
+   "result": "You lose in the semis playing as yourself. Your own card lets you down. The lasagne is elite.",
+   "effects": {
+    "energy": 2,
+    "teammates": 3
+   }
+  },
+  {
+   "text": "{a}: school visit thursday for the club, they want a 'role model'. we're all they've got",
+   "label": "Do the school visit",
+   "result": "A kid asks how much you earn. Another asks if you've met a famous person. You say 'not really'. Brutal.",
+   "effects": {
+    "energy": -1,
+    "honour": 2,
+    "fans": 2
+   }
+  }
+ ],
+ "work": [
+  {
+   "text": "Radio Bantam here! Fancy coming on the breakfast show Friday? Just a quick chat and a go on our quiz, 'Guess the Gaffer's Hum'.",
+   "label": "Go on the Radio Bantam breakfast show",
+   "result": "You guess the hum wrong. It was the club anthem. The phone lines light up anyway.",
+   "effects": {
+    "energy": -1,
+    "fans": 2
+   },
+   "pay": 150,
+   "minFame": 0
+  },
+  {
+   "text": "Hello, it's Mavis at Sunnyside Care Home. The residents would love a visit. Mavis says she knew your grandad. Mavis says that about everyone, dear.",
+   "label": "Visit Sunnyside Care Home",
+   "result": "Mavis beats you at dominoes and tells you you need a haircut. She's right on both counts.",
+   "effects": {
+    "energy": -1,
+    "honour": 4,
+    "family": 1
+   },
+   "pay": 0,
+   "minFame": 0
+  },
+  {
+   "text": "Hello, it's Ward Waves, the hospital radio station! Could you read out the dedications on Sunday? Mrs Bell in Ward 4 asked for you by name.",
+   "label": "Read the hospital radio dedications",
+   "result": "Mrs Bell requests the same song four times. You play it four times. She's delighted.",
+   "effects": {
+    "energy": -1,
+    "honour": 4,
+    "family": 1
+   },
+   "pay": 0,
+   "minFame": 0
+  },
+  {
+   "text": "Bantam Community Trust here! Our charity mascot race needs a celebrity starter. You blow the whistle and try not to get trampled by a giant pear.",
+   "label": "Start the charity mascot race",
+   "result": "The giant pear false-starts and takes out a giant parrot. You're asked to give evidence at the stewards' inquiry.",
+   "effects": {
+    "energy": -1,
+    "honour": 3,
+    "fans": 2
+   },
+   "pay": 0,
+   "minFame": 10
+  },
+  {
+   "text": "Hi, it's Hope Street Shelter. We're doing a sponsored sleep-out on Friday. Bring a sleeping bag and a positive attitude. Mostly the sleeping bag.",
+   "label": "Do the charity sleep-out",
+   "result": "It's freezing. Big Terry turns up with soup. You raise £6,000 and lose all feeling in your toes.",
+   "effects": {
+    "energy": -4,
+    "honour": 5,
+    "fans": 1
+   },
+   "pay": 0,
+   "minFame": 10
+  },
+  {
+   "text": "Hi, this is Leanne, Alfie's mum. Alfie's turning 8 and you're his absolute hero. Could you pop into his party? I can pay! There's a bouncy castle.",
+   "label": "Surprise Alfie at his birthday party",
+   "result": "Alfie bursts into tears, then nutmegs you in the garden. His nan asks if you're single.",
+   "effects": {
+    "energy": -2,
+    "honour": 3,
+    "fans": 2,
+    "family": 1
+   },
+   "pay": 200,
+   "minFame": 15
+  },
+  {
+   "text": "Dear Sir, Greenhill Primary is opening its new sports hall. The children voted for you to cut the ribbon, narrowly beating a dinosaur.",
+   "label": "Open the school sports hall",
+   "result": "You cut the ribbon. A Year 2 asks if you're the dinosaur. You say yes, for morale.",
+   "effects": {
+    "energy": -1,
+    "honour": 3,
+    "fans": 2
+   },
+   "pay": 0,
+   "minFame": 15
+  },
+  {
+   "text": "Alright! It's the Bantam Legends XI. Charity match against the local firefighters on Sunday. They're very fit and very, very competitive.",
+   "label": "Play in the charity match",
+   "result": "A firefighter slide-tackles you into a hedge. You still score. £3,000 goes to the burns unit.",
+   "effects": {
+    "energy": -5,
+    "honour": 3,
+    "fans": 3,
+    "manager": -1
+   },
+   "pay": 0,
+   "minFame": 20
+  },
+  {
+   "text": "Hey hey! It's Two Lads One Mic, the third biggest football podcast in the East Midlands. Come on the show? We'll mostly be talking about crisps.",
+   "label": "Go on Two Lads One Mic",
+   "result": "You rank 40 crisp flavours for an hour. It's their most popular episode ever.",
+   "effects": {
+    "energy": -1,
+    "fans": 2
+   },
+   "pay": 250,
+   "minFame": 20
+  },
+  {
+   "text": "Good afternoon, Hollowmere Hospice here. Our charity golf day needs a celebrity fourball. You'd be with the mayor, a bishop and a man who once won a raffle.",
+   "label": "Play the charity golf day",
+   "result": "You lose three balls in the pond and the bishop's patience. The day raises £14,000.",
+   "effects": {
+    "energy": -2,
+    "honour": 4,
+    "fans": 1
+   },
+   "pay": 0,
+   "minFame": 20
+  },
+  {
+   "text": "Hiya, it's Shona from Value Barn! We're opening a new store on the ring road and we'd love you to cut the ribbon. There's a fee. And a free trolley of crisps.",
+   "label": "Open the new Value Barn",
+   "result": "The scissors are blunt. You end up biting through the ribbon. The local paper loves it.",
+   "effects": {
+    "energy": -2,
+    "fans": 3,
+    "honour": -1
+   },
+   "pay": 1500,
+   "minFame": 25
+  },
+  {
+   "text": "It's Gordon from Gordon's Pies. We'd love a photo of you with our new pie, The Hat-Trick. Three meats. One pastry. No questions.",
+   "label": "Pose with Gordon's new pie",
+   "result": "You take one bite for the photo. The club nutritionist sees the photo. You're on kale for a week.",
+   "effects": {
+    "energy": 1,
+    "fans": 2,
+    "manager": -1
+   },
+   "pay": 900,
+   "minFame": 25
+  },
+  {
+   "text": "Mick here, Big Mick's Motors! Will you do a radio ad for us? Just shout 'MICK'S MOTORS, MAGIC MOTORS!' as loud as you can. That's the whole script.",
+   "label": "Record Big Mick's radio ad",
+   "result": "Now every time you take a corner, the away end shouts 'MAGIC MOTORS'.",
+   "effects": {
+    "energy": -1,
+    "fans": 1,
+    "honour": -1
+   },
+   "pay": 1000,
+   "minFame": 25,
+   "minAge": 18
+  },
+  {
+   "text": "Bantam Evening Echo here. Fancy writing us a weekly column? 300 words. Don't worry, we'll fix the spelling.",
+   "label": "Write a column for the Echo",
+   "result": "Your first column is mostly about your nan's roast potatoes. Readers demand more.",
+   "effects": {
+    "energy": -1,
+    "fans": 2,
+    "honour": 1,
+    "manager": -1
+   },
+   "pay": 400,
+   "minFame": 30
+  },
+  {
+   "text": "Petal & Pot Garden Centres here! We're launching a new range of garden gnomes and want a famous face. The gnome is based on you. You'll see.",
+   "label": "Launch the gnome range",
+   "result": "The gnome has your face and someone else's legs. Three thousand sell in a weekend. Mum buys six.",
+   "effects": {
+    "energy": -1,
+    "fans": 2,
+    "family": 1,
+    "honour": -1
+   },
+   "pay": 800,
+   "minFame": 30
+  },
+  {
+   "text": "yo it's ZoomBoyGG, 400k followers. wanna come on stream and play the football game? as yourself? chat will be brutal ngl",
+   "label": "Go on ZoomBoyGG's gaming stream",
+   "result": "Your in-game self finishes worse than you do. Chat calls you 'actual NPC'. Somehow you gain 20,000 followers.",
+   "effects": {
+    "energy": -2,
+    "fans": 3
+   },
+   "pay": 1200,
+   "minFame": 35
+  },
+  {
+   "text": "Bantam Playhouse here! Would you do a cameo in this year's panto? You'd be the back end of the horse. It's an honour, honestly. Ask anyone.",
+   "label": "Be the back end of the panto horse",
+   "result": "The front end is a retired dentist called Malcolm. You have zero chemistry. The kids absolutely love it.",
+   "effects": {
+    "energy": -3,
+    "fans": 3,
+    "teammates": 1
+   },
+   "pay": 600,
+   "minFame": 35
+  },
+  {
+   "text": "Season's greetings from Bantam Council! Would you switch on the Christmas lights? Last year the button didn't work and the mayor cried.",
+   "label": "Switch on the Christmas lights",
+   "result": "The lights work. Half of them. The half that spells 'MERRY XMA'. Everyone cheers anyway.",
+   "effects": {
+    "energy": -1,
+    "fans": 4,
+    "honour": 3
+   },
+   "pay": 0,
+   "minFame": 35
+  },
+  {
+   "text": "Hi from Pageturners Bookshop! Your mum's written a book, 'He Never Ate His Greens: Raising a Footballer'. Would you join her at the signing?",
+   "label": "Sign books with Mum",
+   "result": "Chapter 3 is about your potty training. The queue is 200 long. They've all read chapter 3.",
+   "effects": {
+    "energy": -2,
+    "family": 4,
+    "fans": 2,
+    "honour": -1
+   },
+   "pay": 500,
+   "minFame": 40
+  },
+  {
+   "text": "hey babe it's Kitbox! we'll send you a huge box of free trainers. just film yourself opening them going 'woah'. that's literally it",
+   "label": "Film the Kitbox unboxing",
+   "result": "You say 'woah' 31 times. Your mum watches it and asks if that's a job now.",
+   "effects": {
+    "energy": -1,
+    "fans": 2,
+    "honour": -1
+   },
+   "pay": 2000,
+   "minFame": 40
+  },
+  {
+   "text": "Hiya! It's Biscuit & Friends on Saturday morning telly! Would you teach Biscuit the puppet a step-over? He has no legs, so please be patient.",
+   "label": "Go on Biscuit & Friends",
+   "result": "Biscuit the puppet does a better step-over than you. Nobody can explain it. Least of all you.",
+   "effects": {
+    "energy": -1,
+    "fans": 4,
+    "honour": 2
+   },
+   "pay": 1500,
+   "minFame": 45
+  },
+  {
+   "text": "Good evening, Bantam Rotary Club here. Would you be our after-dinner speaker? Twenty minutes. Clean jokes only. Last year a bishop heckled.",
+   "label": "Be the after-dinner speaker",
+   "result": "You tell the one about the gaffer's cones. It kills. A retired magistrate laughs so hard he loses a filling.",
+   "effects": {
+    "energy": -2,
+    "honour": 2,
+    "fans": 2
+   },
+   "pay": 2500,
+   "minFame": 50,
+   "minAge": 18
+  },
+  {
+   "text": "Hello from Waggle Dog Food! A TV advert with you and our star, Pickles. Pickles has done 40 adverts. Pickles is the talent. Know your place.",
+   "label": "Do the dog food advert with Pickles",
+   "result": "Pickles refuses to work with you until you share your sandwich. You share your sandwich.",
+   "effects": {
+    "energy": -2,
+    "fans": 3,
+    "honour": -1
+   },
+   "pay": 5000,
+   "minFame": 50
+  },
+  {
+   "text": "Strikeforce Boots here. We'd like you for our new campaign, 'Unleash Your Inner Toe'. It's a two-hour shoot. There's a wind machine.",
+   "label": "Do the Strikeforce boot photoshoot",
+   "result": "You stare into the middle distance for two hours while a man shouts 'BE THE BOOT'. You become the boot.",
+   "effects": {
+    "energy": -3,
+    "fans": 3,
+    "teammates": -1
+   },
+   "pay": 6000,
+   "minFame": 55
+  },
+  {
+   "text": "Hi from Dicey Toys! We're making a board game called 'Wonderkid!' and we want your face on the box. You'd also be the little silver boot.",
+   "label": "Be the face of the board game",
+   "result": "Gran plays it every Sunday, always as the silver boot, and always cheats.",
+   "effects": {
+    "energy": -1,
+    "fans": 3,
+    "family": 1
+   },
+   "pay": 4000,
+   "minFame": 55
+  },
+  {
+   "text": "Hello love, it's Morning Brew TV! Would you do the cookery slot with Chef Delphine? She's making a soufflé. You'll be making a mess, probably.",
+   "label": "Do the morning TV cookery slot",
+   "result": "Your soufflé rises, then falls, live on air, like your form every March. Delphine pats your arm kindly.",
+   "effects": {
+    "energy": -2,
+    "fans": 3,
+    "honour": 1
+   },
+   "pay": 3000,
+   "minFame": 60
+  },
+  {
+   "text": "Hello from Brainbox Celebrity Specials! We'd love you on the quiz show. There's a round on capital cities. Please revise. Please.",
+   "label": "Go on the celebrity quiz show",
+   "result": "You say the capital of Australia is 'Sydney, probably'. It ends up on a T-shirt. You buy one.",
+   "effects": {
+    "energy": -2,
+    "fans": 4,
+    "honour": -1
+   },
+   "pay": 5000,
+   "minFame": 65
+  },
+  {
+   "text": "Hello from Gravvo Granules! Our new TV advert: you carve a Sunday roast while a choir sings. It's very emotional. Bring your own carving face.",
+   "label": "Star in the gravy advert",
+   "result": "Gran watches it every night. She tells the butcher you're 'in gravy now'.",
+   "effects": {
+    "energy": -2,
+    "fans": 3,
+    "family": 2,
+    "honour": -1
+   },
+   "pay": 10000,
+   "minFame": 65
+  },
+  {
+   "text": "Evening! The Late Late Natter here. You'd be on the sofa next to a magician and a man who grows giant onions. Can you do Thursday?",
+   "label": "Go on The Late Late Natter",
+   "result": "The onion man steals the show. You spend the whole interview holding his onion.",
+   "effects": {
+    "energy": -2,
+    "fans": 4,
+    "honour": 1
+   },
+   "pay": 7000,
+   "minFame": 70
+  },
+  {
+   "text": "Hiya from Comfi-Nap Mattresses! We'd love you in our TV advert. You lie on a mattress and say 'Back of the net... and back to sleep.' That's it.",
+   "label": "Do the mattress advert",
+   "result": "It runs during every match. Away fans now chant 'BACK TO SLEEP' whenever you touch the ball.",
+   "effects": {
+    "energy": -2,
+    "fans": 4,
+    "honour": -2,
+    "teammates": -2
+   },
+   "pay": 15000,
+   "minFame": 70
+  },
+  {
+   "text": "Hello darling, it's Glitterball Live! The producers want you for the Christmas special. Sequins provided. Dignity not included.",
+   "label": "Dance on Glitterball Live",
+   "result": "You do a cha-cha in a lycra catsuit. The gaffer watches through his fingers. Your mum votes 600 times.",
+   "effects": {
+    "energy": -5,
+    "fans": 5,
+    "teammates": -2,
+    "manager": -2
+   },
+   "pay": 12000,
+   "minFame": 75
+  },
+  {
+   "text": "Gloss Football Monthly here. We want you on the cover. In a turtleneck. Holding a fox. Don't worry, the fox is trained.",
+   "label": "Do the magazine cover shoot",
+   "result": "The fox is not trained. The fox is extremely not trained. The photo is incredible, though.",
+   "effects": {
+    "energy": -2,
+    "fans": 5,
+    "honour": -1
+   },
+   "pay": 8000,
+   "minFame": 75
+  },
+  {
+   "text": "Hi, we're Grainy Films. We'd like to follow you around for a fly-on-the-wall documentary. Mostly the wall. Occasionally the fly.",
+   "label": "Make the documentary",
+   "result": "They film you eating cereal for six hours. The documentary is a hit. Your cereal technique becomes a meme.",
+   "effects": {
+    "energy": -3,
+    "fans": 5,
+    "teammates": -3,
+    "manager": -2,
+    "family": -1
+   },
+   "pay": 18000,
+   "minFame": 80
+  },
+  {
+   "text": "Bonjour! Maison Glimmer here. We'd love to create a fragrance with your name on it. Top notes: cut grass. Base notes: muscle rub.",
+   "label": "Launch your own fragrance",
+   "result": "It's called 'Offside'. It smells like a changing room on a wet Tuesday. It sells out in an hour.",
+   "effects": {
+    "energy": -2,
+    "fans": 4,
+    "honour": -3,
+    "teammates": -2
+   },
+   "pay": 20000,
+   "minFame": 85
+  },
+  {
+   "text": "Hi from Pixelforge Games! We'd like you on the cover of next year's football game. You'll need to wear a motion capture suit. It's very tight.",
+   "label": "Be the video game cover star",
+   "result": "In the suit you look like a sad liquorice allsort. The cover looks amazing. The lads have the outtakes.",
+   "effects": {
+    "energy": -3,
+    "fans": 6,
+    "teammates": -2
+   },
+   "pay": 20000,
+   "minFame": 90
+  }
  ]
 }

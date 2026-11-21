@@ -32,6 +32,7 @@ import { ACH, achCount } from '../sim/achievements.js';
 import { clause } from '../sim/contracts.js';
 import { stripHTML, showCalendar } from './calendarUI.js';
 import { welcomeHTML } from './welcome.js';
+import { showCompetitions, showMyStats } from './statsUI.js';
 import { ACTIVITIES, available as injAvail, doActivity, longInjury } from '../sim/injuryLife.js';
 import { REQUESTS, cantAsk, odds, ask as askGaffer, raiseOffer } from '../sim/gaffer.js';
 import { managerFor } from '../sim/managers.js';
@@ -155,7 +156,8 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'Training', note: `${sl} slot${sl === 1 ? '' : 's'} left`, go: trainingPicker },
       { label: 'Rest', note: 'Uses a slot, +energy', go: rest },
       { label: 'Fixtures & results', go: showFixtures },
-      { label: 'League table', go: showTable },
+      { label: 'Competitions', note: 'League, cups, Europe, England', go: () => showCompetitions(MH) },
+      { label: 'My stats', note: 'By team and competition', go: () => showMyStats(MH) },
       { label: 'Contract & transfers', go: showContract },
       ...(longInjury(c) ? [{ label: 'While you\'re injured', note: `Out for ${c.injury.weeks} more week${c.injury.weeks > 1 ? 's' : ''}: the telly's calling`, main: true, go: showInjured }] : []),
       { label: 'Head of Development\'s notes', note: 'What\'s ahead, and when', go: () => modal(welcomeHTML(c)) },

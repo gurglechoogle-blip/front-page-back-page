@@ -1,3 +1,4 @@
+import { logApp } from '../sim/career.js';
 // SUMMER TOURNAMENT: England at a Euros or World Cup.
 import { esc } from '../engine/util.js';
 import { state, save } from '../state/gameState.js';
@@ -28,7 +29,7 @@ export function createTournamentScreen(root, go) {
     if (play) play.onclick = () => {
       if (!T.selected) { simulateEngland(c); save(); mount(); return; }
       go('match', { home: club(f.home), away: club(f.away), mySide: f.home === 'nat-eng' ? 'home' : 'away', cup: !!f.knockout, extraTime: true, role: T.role, stadium: f.neutral || `a stadium in ${T.hosts.split(/[,(]/)[0].replace(/ and .*/, '')}`, label: f.label, trust: .7, form: Math.max(.3, c.form / 100), playerName: c.name,
-        onDone: S => { tournamentRecord(c, f, { hs: S.score.home, as: S.score.away, pens: S.pens ? [S.pens.home, S.pens.away] : null }); if (S.role !== 'none') { c.intl.caps.senior++; c.intl.goals.senior += S.my.goals; } save(); go('tournament'); } });
+        onDone: S => { tournamentRecord(c, f, { hs: S.score.home, as: S.score.away, pens: S.pens ? [S.pens.home, S.pens.away] : null }); if (S.role !== 'none') { c.intl.caps.senior++; c.intl.goals.senior += S.my.goals; logApp(c, 'nat-eng', 'tourn', S); } save(); go('tournament'); } });
     };
     void surname;
   }

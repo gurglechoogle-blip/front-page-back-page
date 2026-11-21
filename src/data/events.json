@@ -1,5 +1,5 @@
 {
-  "_note": "Life events. Each arrives as a call, text or moment in the dressing room, with choices that cost something. Effects: honour, manager, teammates, fans, family, money, energy, slot (uses a time slot this week), flag (remembered), unflag. 'next' queues a follow-up {id, in: weeks, chance}. 'news' puts a story in Monday's paper: page front|back, headline with {NAME}. Conditions: minWeek, notPreseason, needFlag, notFlag, meter minimums (min) / maximums (max), contract types (types), weight. Design rule: the bad choice is always tempting.",
+  "_note": "Life events. Each arrives as a call, text or moment in the dressing room, with choices that cost something. Effects: honour, manager, teammates, fans, family, money, energy, slot (uses a time slot this week), flag (remembered), unflag. 'next' queues a follow-up {id, in: weeks, chance}. 'news' puts a story in Monday's paper: page front|back, headline with {NAME}. Conditions: minWeek, notPreseason, needFlag, notFlag, meter minimums (min) / maximums (max), contract types (types), weight. Design rule: the bad choice is always tempting. Age rule: anything about the player's car or driving needs minAgeYears 18 and needFlag 'canDrive' (set by the driving lessons in the shop); pubs, nightclubs, alcohol and casinos need minAgeYears 18.",
   "events": [
     {
       "id": "coverGaz",
@@ -39,7 +39,7 @@
       "from": "The Gaffer",
       "via": "call",
       "followUpOnly": true,
-      "text": "Funny thing, son. The physio was in Tenerife last Tuesday. So where were you and Gaz? Think carefully. I can smell a lie like a three-day-old mackerel.",
+      "text": "Funny thing, son. The physio was in Tenerife last Tuesday. So where were you and Gaz? Think carefully. My dog can smell a sausage roll through two doors, and I can smell a lie through three.",
       "choices": [
         {
           "label": "Come clean",
@@ -168,7 +168,8 @@
             "chance": 0.4
           }
         }
-      ]
+      ],
+      "minAgeYears": 18
     },
     {
       "id": "ladsPhotos",
@@ -219,7 +220,7 @@
             "honour": 3,
             "fans": -2
           },
-          "result": "The gaffer texts you a single fish emoji. High praise."
+          "result": "The gaffer texts you a single traffic cone emoji. From him, that's a hug."
         },
         {
           "label": "'He's got a point, to be fair'",
@@ -235,12 +236,12 @@
           }
         },
         {
-          "label": "Talk about fishing for ten minutes",
+          "label": "Talk about the gaffer's allotment for ten minutes",
           "effects": {
             "manager": 3,
             "fans": 1
           },
-          "result": "The presenter cuts to the travel news. The gaffer loved it."
+          "result": "You do eight minutes on his marrows. The presenter cuts to the travel news. The gaffer loved it."
         }
       ]
     },
@@ -259,7 +260,7 @@
             "energy": 6,
             "slot": 1
           },
-          "result": "Auntie Carol's trifle is 40% sherry. Mum cries twice. Lovely evening."
+          "result": "Auntie Carol's trifle is 40% custard and 60% mystery. Mum cries twice. Lovely evening."
         },
         {
           "label": "Stay for extra shooting",
@@ -329,12 +330,12 @@
       ]
     },
     {
-      "id": "selfieTesco",
+      "id": "selfieShopco",
       "from": "Out and about",
       "via": "moment",
       "minWeek": 3,
       "weight": 2,
-      "text": "You're in the big Tesco in your pyjama bottoms buying Coco Pops when a fan spots you. 'Can I get a selfie? And can you do a video for my brother? He hates you.'",
+      "text": "You're in the big Shopco in your pyjama bottoms buying Coco Pops when a fan spots you. 'Can I get a selfie? And can you do a video for my brother? He hates you.'",
       "choices": [
         {
           "label": "Smile, selfie, video, the lot",
@@ -367,17 +368,17 @@
       "min": {
         "manager": 45
       },
-      "text": "Son. I'm going down the reservoir Sunday. Dawn start. Bring a flask. Don't tell the others, they'll want to come and they fish like idiots.",
+      "text": "Son. I'm down the allotment Sunday. Dawn start. Bring a flask and a spade. Don't tell the others, they'll want to come and they dig like idiots.",
       "choices": [
         {
-          "label": "Go fishing with the gaffer (uses a time slot)",
+          "label": "Dig the allotment with the gaffer (uses a time slot)",
           "effects": {
             "manager": 10,
             "teammates": -2,
             "energy": -5,
             "slot": 1
           },
-          "result": "Six hours. One fish. He names it after you. It's the happiest you've ever seen him.",
+          "result": "Six hours. One marrow. He names it after you and enters it in the village show. It's the happiest you've ever seen him.",
           "flag": "fishedWithGaffer"
         },
         {
@@ -448,7 +449,8 @@
           },
           "result": "Deano sends a voice note. It's just him saying 'Big time Charlie' for forty seconds."
         }
-      ]
+      ],
+      "minAgeYears": 18
     },
     {
       "id": "sundayFound",
@@ -510,7 +512,8 @@
           },
           "result": "Kev says no worries. Kev is very worried."
         }
-      ]
+      ],
+      "minAgeYears": 17
     },
     {
       "id": "kevPays",
@@ -558,7 +561,8 @@
           },
           "result": "You eat your lunch alone, but with dignity."
         }
-      ]
+      ],
+      "minAgeYears": 17
     },
     {
       "id": "schoolPrizeDay",
@@ -700,7 +704,7 @@
             "energy": 10,
             "slot": 1
           },
-          "result": "You learn three meals. Two involve sherry.",
+          "result": "You learn three meals. Two involve tinned peaches.",
           "flag": "canCook"
         },
         {
@@ -749,7 +753,8 @@
           "result": "The video plays sideways. Everyone watches it sideways.",
           "flag": "potm"
         }
-      ]
+      ],
+      "minAgeYears": 18
     },
     {
       "id": "boos",
@@ -1927,7 +1932,7 @@
             "manager": -10,
             "partner": -50
           },
-          "result": "The dressing room has collapsed. The gaffer has gone fishing and isn't answering.",
+          "result": "The dressing room has collapsed. The gaffer has locked himself in his office with his ukulele and isn't answering. You can hear him playing something sad.",
           "flag": "forcedOut",
           "news": {
             "page": "front",
@@ -2093,6 +2098,1691 @@
             "page": "front",
             "headline": "DUCK HOUSE SHAME: {NAME} STANDS BY DISGRACED MP"
           }
+        }
+      ]
+    },
+    {
+      "id": "dennisSocks",
+      "from": "Dennis (kit man)",
+      "via": "moment",
+      "minWeek": 3,
+      "weight": 2,
+      "text": "Dennis has lost one sock from every pair in the squad. He says the washing machine 'takes a tithe'. He's offering you a replacement pair: one is pink, one has a reindeer on it.",
+      "choices": [
+        {
+          "label": "Wear them with pride",
+          "effects": {
+            "teammates": 4,
+            "manager": -1
+          },
+          "result": "You score a screamer in training. By Friday the whole squad demands odd socks. Dennis is hailed as a prophet."
+        },
+        {
+          "label": "Complain to the gaffer",
+          "effects": {
+            "manager": 1,
+            "teammates": -3
+          },
+          "result": "The gaffer opens an inquiry. Dennis is cleared. The washing machine is not."
+        }
+      ]
+    },
+    {
+      "id": "strayCat",
+      "from": "The training ground",
+      "via": "moment",
+      "minWeek": 4,
+      "weight": 2,
+      "text": "A scruffy ginger cat has moved into the home dugout. It sits on the gaffer's clipboard and hisses at the goalkeeping coach. The lads want to keep it.",
+      "choices": [
+        {
+          "label": "Adopt it as the unofficial club cat",
+          "effects": {
+            "fans": 4,
+            "teammates": 3,
+            "manager": -2
+          },
+          "result": "You name it Tiddles. It immediately bites you. It's a perfect fit.",
+          "flag": "trainingCat",
+          "next": {
+            "id": "catSquadNumber",
+            "in": 4,
+            "chance": 0.6
+          },
+          "news": {
+            "page": "front",
+            "headline": "PURR-FECT SIGNING: {NAME} ADOPTS TRAINING GROUND MOGGY"
+          }
+        },
+        {
+          "label": "Ring the animal rescue",
+          "effects": {
+            "honour": 3,
+            "teammates": -2
+          },
+          "result": "A nice lady takes it away. It's back by Thursday, sitting on your boots. It has chosen you."
+        },
+        {
+          "label": "Feed it your protein bar",
+          "effects": {
+            "teammates": 1,
+            "energy": -2
+          },
+          "result": "It eats the protein bar, then your shin pad, then looks at you as if you're next."
+        }
+      ]
+    },
+    {
+      "id": "catSquadNumber",
+      "from": "The club's social media team",
+      "via": "text",
+      "followUpOnly": true,
+      "text": "OMG the training ground cat has 80k followers?? We want to give it an official squad number and a tiny shirt. Can you hold it for the photo? It only scratches people it respects.",
+      "choices": [
+        {
+          "label": "Hold the cat (and your nerve)",
+          "effects": {
+            "fans": 6,
+            "energy": -2
+          },
+          "result": "The cat's tiny shirt outsells yours in the club shop by Tuesday. You have the scratches to prove you were there.",
+          "news": {
+            "page": "back",
+            "headline": "CAT-ASTROPHE FOR {NAME} AS MOGGY OUTSELLS STRIKER"
+          }
+        },
+        {
+          "label": "'It's a cat'",
+          "effects": {
+            "fans": -2,
+            "honour": 1
+          },
+          "result": "The comments call you 'anti-cat'. You get a strongly worded letter from a woman in Kent with eleven of them."
+        }
+      ]
+    },
+    {
+      "id": "binWars",
+      "from": "Next door",
+      "via": "moment",
+      "minWeek": 8,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "Derby week. Your neighbour, a lifelong fan of the lot across town, has painted his wheelie bins in their colours and pointed them at your front window.",
+      "choices": [
+        {
+          "label": "Paint your bins back, twice as bright",
+          "effects": {
+            "fans": 5,
+            "family": -1,
+            "honour": -1
+          },
+          "result": "The street splits down the middle. The binmen refuse to collect either side.",
+          "news": {
+            "page": "front",
+            "headline": "BIN WARS: {NAME} IN DERBY WHEELIE ROW"
+          }
+        },
+        {
+          "label": "Bake him a cake in your colours",
+          "effects": {
+            "honour": 4,
+            "fans": -1
+          },
+          "result": "He eats the whole cake. He keeps the bins. A kind of respect has been reached."
+        },
+        {
+          "label": "Ignore the bins",
+          "effects": {
+            "energy": 1
+          },
+          "result": "The bins stay. You could swear they've started watching you."
+        }
+      ]
+    },
+    {
+      "id": "mascotPolitics",
+      "from": "Barry the Badger (club mascot)",
+      "via": "moment",
+      "minWeek": 5,
+      "weight": 2,
+      "text": "Barry the Badger, the club mascot, has been told off for dancing in front of the away end. He wants you to 'say something' to the board. Inside the costume, Barry is a 58-year-old called Neville.",
+      "choices": [
+        {
+          "label": "Back Neville in public",
+          "effects": {
+            "fans": 5,
+            "manager": -2,
+            "honour": 2
+          },
+          "result": "The board backs down. Neville celebrates with a dance so aggressive the away end applauds.",
+          "news": {
+            "page": "back",
+            "headline": "BADGER BADGERING: {NAME} BACKS MASCOT IN BOARDROOM BUST-UP"
+          }
+        },
+        {
+          "label": "Stay out of badger politics",
+          "effects": {
+            "honour": -1,
+            "energy": 1
+          },
+          "result": "Neville sulks. A sulking six-foot badger is a terrible thing to see on a Saturday."
+        }
+      ]
+    },
+    {
+      "id": "mascotRace",
+      "from": "Club Community Team",
+      "via": "text",
+      "minWeek": 10,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "Emergency! It's the half-time mascot race and we're one short. Could you wear the spare costume? It's a giant sausage roll. It smells a bit. It smells a lot, actually.",
+      "choices": [
+        {
+          "label": "Be the sausage roll (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "fans": 6,
+            "energy": -6
+          },
+          "result": "You lead until the last ten yards, when a giant carrot takes you out with a shoulder barge. The crowd chants your name. Your pastry name.",
+          "news": {
+            "page": "back",
+            "headline": "SAUSAGE ROLL {NAME} PIPPED BY GIANT CARROT"
+          }
+        },
+        {
+          "label": "Claim you've got a tight hamstring",
+          "effects": {
+            "honour": -1,
+            "teammates": -1
+          },
+          "result": "The costume goes to Gaz. Gaz wins. Gaz will never, ever stop talking about it."
+        }
+      ]
+    },
+    {
+      "id": "binderMan",
+      "from": "Autograph hunter",
+      "via": "moment",
+      "minWeek": 3,
+      "weight": 2,
+      "text": "A man with a ring binder of 900 signed photos is waiting at the training ground gate. He'd like you to sign eleven. 'For my collection.' He has a lot of collections.",
+      "choices": [
+        {
+          "label": "Sign all eleven",
+          "effects": {
+            "fans": 3,
+            "energy": -3
+          },
+          "result": "A week later they're on an auction site. You go for £2.40 each. You're secretly quite pleased."
+        },
+        {
+          "label": "Sign one, for his kid",
+          "effects": {
+            "fans": 2,
+            "honour": 1
+          },
+          "result": "He doesn't have a kid. He admits it. You both laugh, nervously, then he asks for ten more."
+        },
+        {
+          "label": "Sneak out the back way",
+          "effects": {
+            "fans": -3
+          },
+          "result": "He's at the back way. He's always at the back way. He knows the back way better than you do."
+        }
+      ]
+    },
+    {
+      "id": "schoolReunion",
+      "from": "Kayleigh (school reunion committee)",
+      "via": "text",
+      "minAgeYears": 21,
+      "weight": 2,
+      "text": "HIYA!! It's the big school reunion next Friday!! Everyone's coming. I'm doing a slideshow. Yes, THAT photo is in it. Can't wait xx",
+      "choices": [
+        {
+          "label": "Go along (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "family": 3,
+            "fans": 2,
+            "energy": -3
+          },
+          "result": "The slideshow features you dressed as a pumpkin in Year 4. You get a round of applause and a pumpkin emoji from everyone for a month."
+        },
+        {
+          "label": "Send apologies",
+          "effects": {
+            "family": -1,
+            "fans": 1
+          },
+          "result": "Kayleigh posts the pumpkin photo online anyway. It gets 4,000 likes. You are, forever, the pumpkin."
+        }
+      ]
+    },
+    {
+      "id": "shopMannequin",
+      "from": "The club shop",
+      "via": "moment",
+      "minWeek": 6,
+      "weight": 2,
+      "text": "The club shop's new mannequin is meant to be you. It's got your shirt, your boots and somebody else's face. Possibly a weather presenter's.",
+      "choices": [
+        {
+          "label": "Pose with your plastic twin",
+          "effects": {
+            "fans": 4,
+            "honour": 1
+          },
+          "result": "Fans queue to have their photo taken with both of you. Most of them prefer the mannequin.",
+          "news": {
+            "page": "front",
+            "headline": "DUMMY RUN: {NAME} MEETS HIS PLASTIC TWIN"
+          }
+        },
+        {
+          "label": "Ask them to fix the face",
+          "effects": {
+            "honour": -1,
+            "fans": -1
+          },
+          "result": "They fix it. It now looks like a startled pigeon. Everyone agrees it's an improvement."
+        }
+      ]
+    },
+    {
+      "id": "shopTill",
+      "from": "Club shop manager",
+      "via": "text",
+      "minWeek": 7,
+      "weight": 2,
+      "text": "Hi! We're short-staffed Saturday morning. Could you do an hour on the till? Customers love it. Please don't touch the scarf display, it's load-bearing.",
+      "choices": [
+        {
+          "label": "Work the till (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "fans": 6,
+            "honour": 2,
+            "energy": -2
+          },
+          "result": "You sell 140 shirts with your name on. You also give a man £50 change for a keyring. He doesn't mention it. Nobody mentions it."
+        },
+        {
+          "label": "Politely decline",
+          "effects": {
+            "fans": -1
+          },
+          "result": "They put up a cardboard cut-out of you instead. It shifts more stock than you would have."
+        }
+      ]
+    },
+    {
+      "id": "crackerChallenge",
+      "from": "The club's social media team",
+      "via": "text",
+      "minWeek": 4,
+      "weight": 2,
+      "text": "Hiya!! We're doing a video where players try to say the club motto with a mouth full of crackers. It's going to be HUGE. You're up in ten mins. Don't be weird about it.",
+      "choices": [
+        {
+          "label": "Fill your boots (with crackers)",
+          "effects": {
+            "fans": 5,
+            "honour": -1,
+            "energy": -1
+          },
+          "result": "You inhale a cracker. The video gets two million views. Most of it is you coughing and Kev hitting your back."
+        },
+        {
+          "label": "Suggest something more dignified",
+          "effects": {
+            "manager": 2,
+            "fans": -2
+          },
+          "result": "They film you reading a poem about the club. It gets 41 views. The gaffer watched it twice."
+        }
+      ]
+    },
+    {
+      "id": "cheeseTweet",
+      "from": "The club's social media team",
+      "via": "call",
+      "minWeek": 9,
+      "weight": 2,
+      "text": "So. Slight problem. Someone posted from YOUR account at 3am. It says 'honestly i love cheese more than football'. We think it was the work experience lad. It's trending.",
+      "choices": [
+        {
+          "label": "Own it: post a photo hugging a wheel of cheddar",
+          "effects": {
+            "fans": 6,
+            "honour": 1
+          },
+          "result": "A local dairy sends you a 20kg cheese. Your fridge will never be the same.",
+          "news": {
+            "page": "front",
+            "headline": "SAY CHEESE: {NAME}'S CHEDDAR CONFESSION"
+          }
+        },
+        {
+          "label": "Demand they delete it",
+          "effects": {
+            "manager": 1,
+            "fans": -2
+          },
+          "result": "It's deleted. The screenshots live forever. Away fans bring cheese to the next game."
+        }
+      ]
+    },
+    {
+      "id": "bonnetSponsor",
+      "from": "Big Mick's Motors",
+      "via": "call",
+      "minAgeYears": 18,
+      "needFlag": "canDrive",
+      "minWeek": 8,
+      "weight": 1.5,
+      "text": "Mick here, Big Mick's Motors! We'd love to sponsor you with a lovely little hatchback. It's got your face on the bonnet. And mine on the roof. Mine's bigger. Interested?",
+      "choices": [
+        {
+          "label": "Take the car and the cash",
+          "effects": {
+            "money": 500,
+            "fans": 2,
+            "honour": -2
+          },
+          "result": "Everyone can see you coming for half a mile. Mick waves at you from the roof at every roundabout.",
+          "news": {
+            "page": "front",
+            "headline": "FACE THE FACTS: {NAME}'S BONNET BONANZA"
+          }
+        },
+        {
+          "label": "No thanks, Mick",
+          "effects": {
+            "honour": 2
+          },
+          "result": "Mick gives the deal to the club mascot. Barry the Badger now drives a car with his face on it."
+        }
+      ]
+    },
+    {
+      "id": "prawnCustard",
+      "from": "Spudz Crisps",
+      "via": "call",
+      "minWeek": 9,
+      "weight": 2,
+      "text": "Hello from Spudz Crisps! We'd like you to be the face of our bold new flavour: Prawn Custard. You'll have to eat them on camera. Quite a lot of them. With a smile.",
+      "choices": [
+        {
+          "label": "Take the deal (£1,500)",
+          "effects": {
+            "money": 1500,
+            "fans": 2,
+            "energy": -4,
+            "honour": -1
+          },
+          "result": "Twenty-six takes. You can still taste custard in your dreams. The prawns are in there somewhere too.",
+          "news": {
+            "page": "back",
+            "headline": "{NAME} GOES CRACKERS FOR PRAWN CUSTARD"
+          }
+        },
+        {
+          "label": "Politely decline",
+          "effects": {
+            "honour": 2
+          },
+          "result": "They go with a reality star instead. She's sick in take three. You feel quietly vindicated."
+        }
+      ]
+    },
+    {
+      "id": "luckyPants",
+      "from": "The dressing room",
+      "via": "moment",
+      "minWeek": 6,
+      "notPreseason": true,
+      "notFlag": "luckyPants",
+      "weight": 2,
+      "text": "You scored in the last two games wearing the same pants. You haven't washed them since. Gaz has started getting changed in the corridor.",
+      "choices": [
+        {
+          "label": "Keep the lucky pants going",
+          "effects": {
+            "fans": 2,
+            "teammates": -4,
+            "energy": 2
+          },
+          "result": "The pants become a legend. Dennis refuses to touch them without barbecue tongs.",
+          "flag": "luckyPants"
+        },
+        {
+          "label": "Wash them like a normal person",
+          "effects": {
+            "teammates": 3
+          },
+          "result": "You wash them. Nothing terrible happens. You remain deeply suspicious of the washing machine."
+        }
+      ]
+    },
+    {
+      "id": "terryHamster",
+      "from": "Big Terry (captain)",
+      "via": "moment",
+      "minWeek": 5,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "Big Terry insists every player touches the tunnel sign, then pats a framed photo of his late hamster, Gerald. You forgot last week. You lost 4-0. Terry has noticed.",
+      "choices": [
+        {
+          "label": "Pat Gerald, solemnly",
+          "effects": {
+            "teammates": 4
+          },
+          "result": "Terry nods. 'Gerald approves.' You win 2-1. Nobody can prove anything."
+        },
+        {
+          "label": "Tell Terry it's nonsense",
+          "effects": {
+            "teammates": -4,
+            "honour": 1
+          },
+          "result": "Terry doesn't speak to you for a week. Gerald's photo is turned to face away from your peg."
+        }
+      ]
+    },
+    {
+      "id": "hedgeRow",
+      "from": "Mr Pickering (next door)",
+      "via": "text",
+      "minWeek": 4,
+      "weight": 2,
+      "text": "Mr Pickering here, number 14. Your hedge is over my fence. Also your football came over. Also it beheaded my gnome. Also, for the record, I have a season ticket for the other lot.",
+      "choices": [
+        {
+          "label": "Trim the hedge yourself (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "honour": 3,
+            "energy": -3
+          },
+          "result": "You trim it into the shape of the club badge. It looks like a startled hedgehog. He's furious, but impressed."
+        },
+        {
+          "label": "Buy him a new gnome",
+          "effects": {
+            "money": -60,
+            "honour": 1
+          },
+          "result": "The only gnome in the shop is wearing your club's shirt. He turns it to face the wall."
+        }
+      ]
+    },
+    {
+      "id": "parcelNeighbour",
+      "from": "Mrs Okafor (next door)",
+      "via": "text",
+      "minWeek": 5,
+      "weight": 2,
+      "text": "Hello love, I've taken in fourteen parcels for you this week. One of them is moving. Another one is ticking. What on earth are you ordering?",
+      "choices": [
+        {
+          "label": "Pop round with flowers and a signed shirt",
+          "effects": {
+            "money": -30,
+            "fans": 2,
+            "honour": 2
+          },
+          "result": "The moving one was a houseplant with a frog in it. The ticking one was a clock. Mrs Okafor is now your biggest fan."
+        },
+        {
+          "label": "'Just leave them on the step next time'",
+          "effects": {
+            "honour": -2
+          },
+          "result": "She does. It rains all week. Your new boots are now a soup."
+        }
+      ]
+    },
+    {
+      "id": "faceTattoo",
+      "from": "A fan outside the chippy",
+      "via": "moment",
+      "minWeek": 10,
+      "min": {
+        "fans": 55
+      },
+      "weight": 2,
+      "text": "A bloke stops you outside the chippy and rolls up his sleeve. He's had your face tattooed on his forearm. It's got a moustache. You don't have a moustache.",
+      "choices": [
+        {
+          "label": "Sign his arm so he can get it inked",
+          "effects": {
+            "fans": 6
+          },
+          "result": "He goes straight back to the tattoo parlour. Now he has your face, your autograph and the moustache."
+        },
+        {
+          "label": "Gently ask about the moustache",
+          "effects": {
+            "fans": 1,
+            "honour": 1
+          },
+          "result": "'Artistic licence,' he says. 'You'll grow into it.'"
+        }
+      ]
+    },
+    {
+      "id": "namedBaby",
+      "from": "Fans in the park",
+      "via": "moment",
+      "minWeek": 12,
+      "min": {
+        "fans": 50
+      },
+      "weight": 2,
+      "text": "A young couple stop you in the park. 'We've named our baby after you!' The baby looks up at you with the deep suspicion of someone who has seen your finishing.",
+      "choices": [
+        {
+          "label": "Hold the baby for a photo",
+          "effects": {
+            "fans": 5,
+            "honour": 2
+          },
+          "result": "The baby is sick down your shirt. The photo is still lovely. It ends up on the club website."
+        },
+        {
+          "label": "Ask if they're sure",
+          "effects": {
+            "fans": -2
+          },
+          "result": "'We weren't until now,' says the dad. 'Now we're not sure at all.'"
+        }
+      ]
+    },
+    {
+      "id": "gafferDogPresser",
+      "from": "Club press officer",
+      "via": "moment",
+      "minWeek": 5,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "The press officer has given you a list of things NOT to talk about. Number four is 'the gaffer's dog'. The first question is about the gaffer's dog.",
+      "choices": [
+        {
+          "label": "Call the dog 'a great servant to the club'",
+          "effects": {
+            "manager": 3,
+            "fans": 2
+          },
+          "result": "The dog is called Biscuit. By Friday Biscuit has his own fan page. It has more followers than you."
+        },
+        {
+          "label": "Tell the story of the dog eating the team sheet",
+          "effects": {
+            "manager": -5,
+            "fans": 5
+          },
+          "result": "The room is in stitches. The gaffer is not in stitches. Biscuit, for the record, looks guilty.",
+          "news": {
+            "page": "back",
+            "headline": "{NAME}: GAFFER'S DOG ATE MY TEAM SELECTION"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gafferCones",
+      "from": "The Gaffer",
+      "via": "moment",
+      "minWeek": 3,
+      "weight": 2,
+      "text": "The gaffer has bought 600 new training cones. He's colour-coded them. He's named some of them. He wants help laying out a drill he calls 'The Spaghetti Junction'.",
+      "choices": [
+        {
+          "label": "Help with the cones",
+          "effects": {
+            "manager": 6,
+            "energy": -3,
+            "teammates": -1
+          },
+          "result": "Two hours. Nobody understands the drill, including the gaffer. He calls it 'his masterpiece'."
+        },
+        {
+          "label": "'Accidentally' kick a cone into the canal",
+          "effects": {
+            "manager": -4,
+            "teammates": 3
+          },
+          "result": "That was Clive. He loved Clive. The lads hold a minute's silence, mostly laughing."
+        }
+      ]
+    },
+    {
+      "id": "gafferUkulele",
+      "from": "The Gaffer",
+      "via": "call",
+      "minWeek": 8,
+      "min": {
+        "manager": 40
+      },
+      "weight": 2,
+      "text": "Son. I've written a song for the team. On the ukulele. Eleven verses, one per player. I need someone to hear it first and be honest. Not too honest.",
+      "choices": [
+        {
+          "label": "'It's brilliant, gaffer'",
+          "effects": {
+            "manager": 6,
+            "honour": -1,
+            "teammates": -3
+          },
+          "result": "He plays it on the team bus for four hours. All eleven verses. Twice. The lads know it was you."
+        },
+        {
+          "label": "Suggest a few changes",
+          "effects": {
+            "manager": -2,
+            "honour": 2
+          },
+          "result": "He sulks for a day, then adds a key change. It's better. Annoyingly, it's much better."
+        }
+      ]
+    },
+    {
+      "id": "gafferCrossword",
+      "from": "The Gaffer",
+      "via": "moment",
+      "minWeek": 6,
+      "weight": 2,
+      "text": "The gaffer's stuck on 14 down: 'Overpaid show-off who won't track back (7)'. He's not looking at the paper. He's looking at you.",
+      "choices": [
+        {
+          "label": "'Striker, gaffer?'",
+          "effects": {
+            "manager": 3,
+            "honour": 1
+          },
+          "result": "He fills it in. Then rubs it out and writes your name. It doesn't fit. He makes it fit."
+        },
+        {
+          "label": "Pretend to tie your laces",
+          "effects": {
+            "energy": 1,
+            "manager": -1
+          },
+          "result": "He gives you 'extra fitness (5,7)'. You don't need to be good at crosswords to solve that one."
+        }
+      ]
+    },
+    {
+      "id": "gafferGreatDane",
+      "from": "The Gaffer",
+      "via": "call",
+      "minWeek": 10,
+      "min": {
+        "manager": 50
+      },
+      "weight": 2,
+      "text": "Son, I'm away on a coaching course this weekend. Can you look after Brian? He's a Great Dane. He eats shoes. He's very gentle with them, mind.",
+      "choices": [
+        {
+          "label": "Dog-sit Brian (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "manager": 8,
+            "money": -80
+          },
+          "result": "Brian eats your left boot, a cushion and an entire lasagne. You love him. The gaffer can tell.",
+          "flag": "minderBrian"
+        },
+        {
+          "label": "Recommend a professional dog sitter",
+          "effects": {
+            "manager": -2
+          },
+          "result": "'Brian doesn't do strangers,' says the gaffer, in a voice that makes you feel like a stranger."
+        }
+      ]
+    },
+    {
+      "id": "clawMachine",
+      "from": "Away day",
+      "via": "moment",
+      "minWeek": 5,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "The team coach stopped at a motorway services for 'ten minutes'. It's been fifty. The coach driver is in the arcade, glued to the claw machine.",
+      "choices": [
+        {
+          "label": "Help him win the teddy",
+          "effects": {
+            "teammates": 4,
+            "manager": -2,
+            "energy": -2
+          },
+          "result": "You win a pink unicorn on the 31st go. It becomes the team's lucky charm. You lose 3-0."
+        },
+        {
+          "label": "Round everyone up",
+          "effects": {
+            "manager": 4,
+            "teammates": -2
+          },
+          "result": "You get there on time. The lads call you 'Head Boy' for a month."
+        }
+      ]
+    },
+    {
+      "id": "lostPassport",
+      "from": "Club secretary",
+      "via": "call",
+      "minWeek": 6,
+      "weight": 2,
+      "text": "Quick reminder: the warm-weather training camp leaves Monday at 6am. Passports, please. You can't find yours. Mum thinks it's in the airing cupboard. Gran thinks it's 'with the Christmas decorations'.",
+      "choices": [
+        {
+          "label": "Tear the house apart",
+          "effects": {
+            "energy": -6,
+            "family": -2
+          },
+          "result": "It was in your boot bag all along. Inside a sock. Inside another sock."
+        },
+        {
+          "label": "Trust Gran's hunch",
+          "effects": {
+            "family": 4,
+            "energy": -2
+          },
+          "result": "It IS with the Christmas decorations, wrapped in tinsel. Gran will be insufferable about this until next Christmas."
+        }
+      ]
+    },
+    {
+      "id": "henBus",
+      "from": "Rail replacement bus",
+      "via": "moment",
+      "minAgeYears": 18,
+      "minWeek": 6,
+      "weight": 2,
+      "text": "Your train home is cancelled. The rail replacement bus is a minibus. The minibus is full of a hen party from Wigan. They've recognised you. They have a sash with your name on it already. How?",
+      "choices": [
+        {
+          "label": "Get on and embrace it",
+          "effects": {
+            "fans": 5,
+            "energy": -6
+          },
+          "result": "You're crowned honorary bridesmaid and made to sing the whole way. You keep the sash. It's in a frame now."
+        },
+        {
+          "label": "Wait for the next one",
+          "effects": {
+            "energy": -4
+          },
+          "result": "The next one is at 6am. You spend the night on a platform bench next to a pigeon you name Trevor."
+        }
+      ]
+    },
+    {
+      "id": "kaleDisaster",
+      "from": "Your kitchen",
+      "via": "moment",
+      "minWeek": 5,
+      "weight": 2,
+      "text": "You're making the club nutritionist's 'super easy' recipe. Step one: 'blanch the kale'. You don't know what blanching is. The smoke alarm seems to have a theory.",
+      "choices": [
+        {
+          "label": "Keep going, you're a chef now",
+          "effects": {
+            "energy": 4,
+            "family": 1,
+            "honour": 1
+          },
+          "result": "It's edible. Just. The kale has gone a colour not found in nature, but it's very nutritious, probably."
+        },
+        {
+          "label": "Give up and order a pizza",
+          "effects": {
+            "money": -25,
+            "energy": -2
+          },
+          "result": "The pizza man recognises you. 'Does the nutritionist know about this?' He winks. He'll tell her."
+        }
+      ]
+    },
+    {
+      "id": "bakeOff",
+      "from": "Club charity bake-off",
+      "via": "moment",
+      "minWeek": 7,
+      "weight": 2,
+      "text": "The club's charity bake-off is Friday. Big Terry has been practising a four-foot tower of profiteroles for six weeks. You have Thursday night and a packet of digestives.",
+      "choices": [
+        {
+          "label": "Go big: a cake shaped like the gaffer's head",
+          "effects": {
+            "fans": 4,
+            "manager": 3,
+            "energy": -4
+          },
+          "result": "It slowly collapses in the heat. It still looks a lot like him. That's the problem."
+        },
+        {
+          "label": "Turn up with shop-bought and a straight face",
+          "effects": {
+            "honour": -2,
+            "teammates": 2
+          },
+          "result": "You come second. Big Terry weeps into his profiteroles. The judges have questions about your 'family recipe' sticker."
+        }
+      ]
+    },
+    {
+      "id": "skiJumpShelf",
+      "from": "Your living room",
+      "via": "moment",
+      "minWeek": 6,
+      "weight": 2,
+      "text": "You've put up a shelf for your trophies. It's at a 30-degree angle. Everything slides off. The neighbour asked if you were building a ski jump.",
+      "choices": [
+        {
+          "label": "Fix it properly (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "honour": 2,
+            "family": 2
+          },
+          "result": "Uncle Ron comes round to inspect it and says 'not bad', the most he has said to anyone since 1997."
+        },
+        {
+          "label": "Call it a 'feature'",
+          "effects": {
+            "fans": 1,
+            "energy": -3
+          },
+          "result": "Your Player of the Month trophy slides off and lands on your toe. You train with a limp and a grudge."
+        }
+      ]
+    },
+    {
+      "id": "tapFlood",
+      "from": "Your kitchen",
+      "via": "moment",
+      "minWeek": 9,
+      "weight": 2,
+      "text": "You watched a video on how to fix a dripping tap. Your kitchen is now a small lido. A duck has turned up. You don't know how the duck got in.",
+      "choices": [
+        {
+          "label": "Ring a plumber",
+          "effects": {
+            "money": -150,
+            "energy": 2
+          },
+          "result": "The plumber is a season ticket holder. He charges double 'for that miss on Saturday'. Fair enough."
+        },
+        {
+          "label": "Ring Mum",
+          "effects": {
+            "family": 3,
+            "energy": -3
+          },
+          "result": "Mum fixes it in four minutes with a butter knife and tells everyone at bingo. The duck stays for tea."
+        }
+      ]
+    },
+    {
+      "id": "barryTaster",
+      "from": "Barry (driving instructor)",
+      "via": "call",
+      "minAgeYears": 17,
+      "notFlag": "canDrive",
+      "minWeek": 3,
+      "weight": 2,
+      "text": "Barry here, Barry's School of Motoring. Your mum's booked you a taster lesson. I've seen you play, so please check your mirrors more than you check for a pass.",
+      "choices": [
+        {
+          "label": "Do the taster lesson (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "family": 3,
+            "energy": -3
+          },
+          "result": "You stall nine times. On the tenth go you hit 20mph and scream. Barry's twitch gets noticeably worse."
+        },
+        {
+          "label": "Not yet, Barry",
+          "effects": {
+            "family": -1
+          },
+          "result": "Barry sounds relieved. Very, very relieved."
+        }
+      ]
+    },
+    {
+      "id": "charityCarWash",
+      "from": "Youth team coach",
+      "via": "text",
+      "minAgeYears": 18,
+      "needFlag": "canDrive",
+      "minWeek": 6,
+      "weight": 1.5,
+      "text": "Charity car wash Sunday! The youth team are washing cars for the hospice and they'd love you to bring yours. They have sponges. They have foam. They have very little supervision.",
+      "choices": [
+        {
+          "label": "Bring your car (and a sponge)",
+          "effects": {
+            "honour": 4,
+            "fans": 3,
+            "energy": -2
+          },
+          "result": "Your car comes back gleaming and, somehow, missing a wing mirror. They raise £800. Nobody knows where the mirror went."
+        },
+        {
+          "label": "Just make a donation",
+          "effects": {
+            "money": -100,
+            "honour": 2
+          },
+          "result": "They send a thank-you card with a drawing of your car. In the drawing it's on fire. Kids."
+        }
+      ]
+    },
+    {
+      "id": "gafferSpace",
+      "from": "Training ground car park",
+      "via": "moment",
+      "minAgeYears": 18,
+      "needFlag": "canDrive",
+      "minWeek": 6,
+      "weight": 1.5,
+      "text": "You've parked in the gaffer's space. In fairness, it's the only space in the shade. In less fairness, it says GAFFER on it in letters a foot high.",
+      "choices": [
+        {
+          "label": "Move it before he arrives",
+          "effects": {
+            "manager": 1,
+            "energy": -1
+          },
+          "result": "You move it. He pulls in eight seconds later. He saw. He says nothing. He definitely saw."
+        },
+        {
+          "label": "Leave it and live dangerously",
+          "effects": {
+            "manager": -6,
+            "teammates": 4
+          },
+          "result": "He chains his bicycle to your bumper and takes the key home. The lads are thrilled."
+        }
+      ]
+    },
+    {
+      "id": "satNavShouty",
+      "from": "Your sat nav",
+      "via": "moment",
+      "minAgeYears": 18,
+      "needFlag": "canDrive",
+      "minWeek": 8,
+      "notPreseason": true,
+      "weight": 1.5,
+      "text": "Your new sat nav voice is a very excitable man who shouts 'SMASHING!' at every roundabout. You've followed him to the away ground. The wrong away ground. In Wales.",
+      "choices": [
+        {
+          "label": "Turn round and get there (legally)",
+          "effects": {
+            "manager": -2,
+            "energy": -5
+          },
+          "result": "You arrive as the warm-up finishes. The gaffer is holding a training cone like a weapon."
+        },
+        {
+          "label": "Ring the gaffer and confess",
+          "effects": {
+            "manager": -4,
+            "honour": 2,
+            "teammates": 2
+          },
+          "result": "He sends Dennis in the kit van to fetch you. Dennis plays panpipes the whole way back. 'SMASHING,' says the sat nav."
+        }
+      ]
+    },
+    {
+      "id": "infernoNight",
+      "from": "Big night out",
+      "via": "moment",
+      "minAgeYears": 18,
+      "minWeek": 5,
+      "weight": 2,
+      "text": "It's 2am in town. The lads want to carry on to a nightclub called Inferno. You've got recovery at 9. Gaz is already doing the worm in the taxi queue.",
+      "choices": [
+        {
+          "label": "On to Inferno",
+          "effects": {
+            "teammates": 6,
+            "energy": -14,
+            "manager": -3
+          },
+          "result": "The dance floor is sticky enough to hold you upright. You get home at five. Recovery is a rumour."
+        },
+        {
+          "label": "Get chips and go home",
+          "effects": {
+            "energy": 2,
+            "teammates": -2,
+            "manager": 2
+          },
+          "result": "The chips are perfect. The lads send you 70 videos, which you watch over breakfast feeling smug."
+        }
+      ]
+    },
+    {
+      "id": "kevStag",
+      "from": "Kev (midfielder)",
+      "via": "text",
+      "minAgeYears": 18,
+      "minWeek": 8,
+      "notPreseason": true,
+      "weight": 1.5,
+      "text": "STAG DO IN RIGA BROS!!! 3 days. matching t-shirts with my face on. the gaffer said 'over my dead body' but he says that about everything",
+      "choices": [
+        {
+          "label": "Go to Riga (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "teammates": 8,
+            "manager": -6,
+            "energy": -12
+          },
+          "result": "You come back with one eyebrow and no memory of a tank. There was definitely a tank. There are photos of the tank.",
+          "news": {
+            "page": "front",
+            "headline": "TANK YOU VERY MUCH: {NAME}'S STAG DO EYEBROW SHAME"
+          }
+        },
+        {
+          "label": "Stay home, send a card",
+          "effects": {
+            "teammates": -3,
+            "manager": 3
+          },
+          "result": "Kev reads your card out at the wedding. It says 'Congratulations on your retirement'. Wrong card."
+        }
+      ]
+    },
+    {
+      "id": "charityCasino",
+      "from": "Sponsor's charity night",
+      "via": "moment",
+      "minAgeYears": 18,
+      "minWeek": 10,
+      "weight": 1.5,
+      "text": "The club sponsor's charity 'Casino Night'. Black tie. Fake money, real roulette wheel. Big Terry has already lost his fake house and is trying to win back his fake dog.",
+      "choices": [
+        {
+          "label": "Hit the tables (for charity)",
+          "effects": {
+            "honour": 2,
+            "fans": 2,
+            "energy": -4
+          },
+          "result": "You win a fortune in fake money and spend it all on a fake yacht. The hospice gets a very real £12,000."
+        },
+        {
+          "label": "Guard the buffet",
+          "effects": {
+            "energy": 3,
+            "teammates": 1
+          },
+          "result": "You eat 40 vol-au-vents. It's a club record. Big Terry tries to wager his fake dog on you beating it."
+        }
+      ]
+    },
+    {
+      "id": "lindaKaraoke",
+      "from": "A bar in town",
+      "via": "moment",
+      "minAgeYears": 18,
+      "minWeek": 6,
+      "weight": 2,
+      "text": "An office Christmas party has spotted you at the bar. A woman called Linda is holding out a microphone like a sword. The song is a nine-minute power ballad.",
+      "choices": [
+        {
+          "label": "Duet with Linda",
+          "effects": {
+            "fans": 5,
+            "energy": -4
+          },
+          "result": "You do the deep bits. Linda does everything else, including a knee slide. Standing ovation."
+        },
+        {
+          "label": "Run",
+          "effects": {
+            "fans": -2,
+            "energy": -2
+          },
+          "result": "You run. Linda chases you three streets in heels. She's quick, is Linda. She gets the duet in the end."
+        }
+      ]
+    },
+    {
+      "id": "doormatRow",
+      "from": "Your phone",
+      "via": "moment",
+      "minWeek": 6,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "Derby week. Their striker has posted a photo of himself wiping his feet on a doormat with your club's badge on it. The internet is waiting for your reply.",
+      "choices": [
+        {
+          "label": "Reply with a doormat that has HIS face on it",
+          "effects": {
+            "fans": 6,
+            "honour": -2,
+            "manager": -2
+          },
+          "result": "Your doormat sells 5,000 units by Friday. The FA would like a quiet word.",
+          "news": {
+            "page": "back",
+            "headline": "WELCOME MAT-TER: {NAME} HITS BACK IN DERBY DOORMAT ROW"
+          }
+        },
+        {
+          "label": "Just reply 'see you Saturday'",
+          "effects": {
+            "fans": 3,
+            "honour": 2,
+            "manager": 2
+          },
+          "result": "Three words. Ice cold. You practise saying them in the mirror for an hour."
+        }
+      ]
+    },
+    {
+      "id": "mumsFella",
+      "from": "Mum",
+      "via": "text",
+      "minWeek": 6,
+      "weight": 2,
+      "text": "Love, Graham's coming to Sunday lunch. Yes, he supports the other lot. Yes, he's wearing the shirt. It's derby week, I know. Please be nice. x",
+      "choices": [
+        {
+          "label": "Be nice (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "family": 6,
+            "fans": -1
+          },
+          "result": "You pass the gravy. He passes the gravy. A fragile peace holds until the crumble."
+        },
+        {
+          "label": "Turn up in full kit with a vuvuzela",
+          "effects": {
+            "fans": 3,
+            "family": -5
+          },
+          "result": "Mum doesn't speak to you until Tuesday. Graham secretly asks for a selfie on the way out."
+        }
+      ]
+    },
+    {
+      "id": "groupChatName",
+      "from": "Squad group chat",
+      "via": "moment",
+      "minWeek": 4,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "After your miss on Saturday, someone has renamed the squad group chat 'Row Z Appreciation Society'. It has a new profile picture. It's the ball, still in the air.",
+      "choices": [
+        {
+          "label": "Rename it something worse about Gaz",
+          "effects": {
+            "teammates": 5,
+            "honour": -1
+          },
+          "result": "The chat is renamed fourteen times before lunch. The gaffer leaves the group. Then rejoins to vote."
+        },
+        {
+          "label": "Mute it for a week",
+          "effects": {
+            "teammates": -3,
+            "energy": 3
+          },
+          "result": "You miss 900 messages, a fines vote and the news that Kev's having twins."
+        }
+      ]
+    },
+    {
+      "id": "preMatchPlaylist",
+      "from": "The dressing room",
+      "via": "moment",
+      "minWeek": 3,
+      "weight": 2,
+      "text": "You're in charge of the pre-match playlist. Big Terry wants 80s power ballads. The young lads want drill. The gaffer wants 'something with a brass section'.",
+      "choices": [
+        {
+          "label": "Power ballads",
+          "effects": {
+            "teammates": 2,
+            "manager": 1
+          },
+          "result": "Big Terry warms up doing air guitar. Your full-back pulls a hamstring doing air drums. You win anyway."
+        },
+        {
+          "label": "Drill",
+          "effects": {
+            "teammates": 4,
+            "manager": -3
+          },
+          "result": "The gaffer stands in the corner with his fingers in his ears, doing his crossword."
+        },
+        {
+          "label": "Brass band versions of everything",
+          "effects": {
+            "manager": 5,
+            "teammates": -4
+          },
+          "result": "A brass band cover of a grime track. Nobody knows how to feel. The gaffer has tears in his eyes."
+        }
+      ]
+    },
+    {
+      "id": "pigeonPitch",
+      "from": "The training ground",
+      "via": "moment",
+      "minWeek": 4,
+      "weight": 2,
+      "text": "A flock of pigeons has taken over the training pitch. The groundsman says they're 'protected'. They're not protected. He just likes them. He's named them.",
+      "choices": [
+        {
+          "label": "Train around them",
+          "effects": {
+            "energy": -2,
+            "teammates": 2
+          },
+          "result": "You nutmeg a pigeon. It's the best bit of skill you've done all season, and nobody filmed it."
+        },
+        {
+          "label": "Pay for a hawk",
+          "effects": {
+            "money": -200,
+            "manager": 2,
+            "honour": -1
+          },
+          "result": "The hawk takes one look at the pigeons and flies off towards the M6. The groundsman is delighted."
+        }
+      ]
+    },
+    {
+      "id": "sprinklerTalk",
+      "from": "The training ground",
+      "via": "moment",
+      "minWeek": 5,
+      "weight": 2,
+      "text": "The pitch sprinklers come on halfway through the gaffer's team talk. He keeps talking. He refuses to acknowledge them. Everyone is soaked.",
+      "choices": [
+        {
+          "label": "Stand there and listen, dripping",
+          "effects": {
+            "manager": 5,
+            "energy": -2
+          },
+          "result": "'...and THAT is why we press high,' he finishes. Nobody heard a word. Total respect."
+        },
+        {
+          "label": "Run for cover",
+          "effects": {
+            "manager": -4,
+            "teammates": 2
+          },
+          "result": "Half the squad follows you. The gaffer finishes his talk to the cones, who listen beautifully."
+        }
+      ]
+    },
+    {
+      "id": "toasterSigning",
+      "from": "The dressing room",
+      "via": "moment",
+      "minWeek": 6,
+      "weight": 2,
+      "text": "The new signing doesn't speak much English yet. His only phrase so far is 'Where is the toaster?' The gaffer asks you to show him round.",
+      "choices": [
+        {
+          "label": "Take him under your wing (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "teammates": 6,
+            "honour": 2
+          },
+          "result": "You show him the toaster. He cries. It's a long story involving his gran. You're best mates now."
+        },
+        {
+          "label": "Teach him rude words instead",
+          "effects": {
+            "teammates": 3,
+            "manager": -4
+          },
+          "result": "He uses every one of them at his first press conference. Beautifully pronounced.",
+          "news": {
+            "page": "back",
+            "headline": "NEW BOY'S BLUE PRESSER: {NAME} BLAMED FOR LANGUAGE LESSONS"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dennisSeventy",
+      "from": "Dennis (kit man)",
+      "via": "moment",
+      "minWeek": 8,
+      "notFlag": "dennisParty",
+      "weight": 2,
+      "text": "It's Dennis's 70th birthday today. Nobody knows. Dennis knows. Dennis has mentioned it to you four times this morning, completely unprompted.",
+      "choices": [
+        {
+          "label": "Organise a surprise for Dennis",
+          "effects": {
+            "teammates": 4,
+            "honour": 3,
+            "energy": -2
+          },
+          "result": "The whole squad sings. Dennis cries, then grips your arm: 'Beware a man holding a clipboard.' Then he cuts the cake.",
+          "flag": "dennisParty"
+        },
+        {
+          "label": "Grab him a card from the garage",
+          "effects": {
+            "honour": 1
+          },
+          "result": "It's a card for a new baby boy. Dennis puts it on his shelf anyway, facing out."
+        }
+      ]
+    },
+    {
+      "id": "upsideNine",
+      "from": "Dennis (kit man)",
+      "via": "moment",
+      "minWeek": 12,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "Dennis has ironed your shirt number on upside down. Your 9 is now a 6. He says it isn't a mistake. He says it's 'a message'.",
+      "choices": [
+        {
+          "label": "Wear it and trust Dennis",
+          "effects": {
+            "fans": 3,
+            "manager": -2
+          },
+          "result": "You score twice. Dennis just nods from the tunnel, like he knew. He did know."
+        },
+        {
+          "label": "Ask for a new shirt",
+          "effects": {
+            "manager": 1
+          },
+          "result": "Dennis hands it over with a look that will haunt you until the end of the season."
+        }
+      ]
+    },
+    {
+      "id": "doubleGlazer",
+      "from": "Club commercial department",
+      "via": "text",
+      "minWeek": 6,
+      "weight": 2,
+      "text": "Our main sponsor, Pringleton Windows, is holding its annual awards. They'd love a player to present 'Double Glazer of the Year'. It's a big deal in double glazing.",
+      "choices": [
+        {
+          "label": "Present the award (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "honour": 2,
+            "fans": 2,
+            "manager": 2
+          },
+          "result": "The winner, Clive, thanks you, his mum and his squeegee, in that order. It's genuinely moving."
+        },
+        {
+          "label": "Make an excuse",
+          "effects": {
+            "manager": -3
+          },
+          "result": "They ask Barry the Badger instead. Neville gives a twenty-minute speech about mascot rights."
+        }
+      ]
+    },
+    {
+      "id": "skincareMag",
+      "from": "Teen magazine",
+      "via": "call",
+      "minWeek": 8,
+      "min": {
+        "fans": 45
+      },
+      "weight": 2,
+      "text": "Hi! We're doing a feature on footballers' skincare routines. What's yours? (You use the same shower gel for your face, your hair, your legs and your boots.)",
+      "choices": [
+        {
+          "label": "Invent an elaborate routine",
+          "effects": {
+            "fans": 4,
+            "honour": -2
+          },
+          "result": "You say 'avocado' eleven times. Avocado sales in the town go up 12%. Your face does not change."
+        },
+        {
+          "label": "Tell the truth",
+          "effects": {
+            "fans": 1,
+            "honour": 2
+          },
+          "result": "Readers find it refreshing. A shower gel company sends you a crate, out of pity.",
+          "news": {
+            "page": "front",
+            "headline": "SOAP-ER STAR: {NAME}'S ONE-BOTTLE BEAUTY SECRET"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ellieLetter",
+      "from": "Fan mail",
+      "via": "moment",
+      "minWeek": 7,
+      "weight": 2,
+      "text": "A letter from a 9-year-old called Ellie. You're her favourite player, she says, but her second favourite is a Labrador called Duke, and 'it is very close'.",
+      "choices": [
+        {
+          "label": "Write back with a signed photo",
+          "effects": {
+            "fans": 3,
+            "honour": 3
+          },
+          "result": "Ellie writes again. You've pulled ahead of Duke. Duke's family are said to be furious."
+        },
+        {
+          "label": "Send a photo of you with a borrowed Labrador",
+          "effects": {
+            "fans": 5,
+            "energy": -2
+          },
+          "result": "The Labrador licks your face for the whole shoot. Ellie declares it a draw. Diplomacy."
+        }
+      ]
+    },
+    {
+      "id": "bananaRun",
+      "from": "Club physio",
+      "via": "text",
+      "minWeek": 9,
+      "weight": 2,
+      "text": "Good news! I've signed you up for the charity 10k on Sunday. You're running it dressed as a banana. Bad news: the banana costume is a size small.",
+      "choices": [
+        {
+          "label": "Run as the banana (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "honour": 4,
+            "fans": 3,
+            "energy": -6
+          },
+          "result": "You finish 212th, just behind a man dressed as a fridge. You raise £3,500 and chafe in new places."
+        },
+        {
+          "label": "Pull a fake hamstring",
+          "effects": {
+            "honour": -3,
+            "energy": 3
+          },
+          "result": "A photographer catches you jogging to the shop on Monday, perfectly fine.",
+          "news": {
+            "page": "back",
+            "headline": "BANANA SPLIT: {NAME} SLIPS OUT OF CHARITY RUN"
+          }
+        }
+      ]
+    },
+    {
+      "id": "busStopFans",
+      "from": "Fans in the street",
+      "via": "moment",
+      "minWeek": 4,
+      "weight": 2,
+      "text": "Three lads at the bus stop recognise you. 'Do the celebration!' they shout. You don't have a celebration. They're expecting one anyway.",
+      "choices": [
+        {
+          "label": "Invent one on the spot",
+          "effects": {
+            "fans": 4,
+            "energy": -1
+          },
+          "result": "You do a sort of crab walk into a salute. Within a week every kid in town is doing it. You have to do it now. Forever."
+        },
+        {
+          "label": "'I'm saving it for Saturday'",
+          "effects": {
+            "fans": 1,
+            "honour": 1
+          },
+          "result": "Mysterious. Cool. Now you need a celebration by Saturday. You practise in the kitchen. The cat watches."
+        }
+      ]
+    },
+    {
+      "id": "wrongShirtSigned",
+      "from": "Fans in the street",
+      "via": "moment",
+      "minWeek": 8,
+      "weight": 2,
+      "text": "A lovely old man asks you to sign his shirt. You do. He looks at it, then at you, then says 'You're not the goalkeeper.' He's been looking for the goalkeeper.",
+      "choices": [
+        {
+          "label": "Take him to meet the goalkeeper",
+          "effects": {
+            "honour": 3,
+            "teammates": 2,
+            "energy": -2
+          },
+          "result": "The keeper signs right next to your name. The old man frames it. You're both in his downstairs loo now. An honour."
+        },
+        {
+          "label": "Insist you could play in goal",
+          "effects": {
+            "fans": 2,
+            "honour": -1
+          },
+          "result": "He makes you prove it in the park. You let in seven against a man of 84."
+        }
+      ]
+    },
+    {
+      "id": "trainingBreakfast",
+      "from": "The canteen",
+      "via": "moment",
+      "minWeek": 3,
+      "weight": 2,
+      "text": "The club chef has 'refreshed' the training ground breakfast. The bacon has gone. In its place is something called a 'chia pudding'. It's looking at you.",
+      "choices": [
+        {
+          "label": "Lead a bacon rebellion",
+          "effects": {
+            "teammates": 5,
+            "manager": -3,
+            "energy": -1
+          },
+          "result": "You hold a sit-in by the toaster. The bacon returns on Fridays only. History will call it the Bacon Accord."
+        },
+        {
+          "label": "Eat the chia pudding",
+          "effects": {
+            "energy": 4,
+            "manager": 2,
+            "teammates": -1
+          },
+          "result": "It's a bit like frogspawn. You feel incredible. You'll never admit it."
+        }
+      ]
+    },
+    {
+      "id": "radioHotDog",
+      "from": "Local radio",
+      "via": "call",
+      "minWeek": 9,
+      "notPreseason": true,
+      "weight": 2,
+      "text": "Radio Bantam's 'Quick-Fire Friday'! Ten questions in sixty seconds. Question one: if the gaffer were a sandwich, what sandwich would he be?",
+      "choices": [
+        {
+          "label": "'A big, honest cheese and pickle'",
+          "effects": {
+            "manager": 4,
+            "fans": 2
+          },
+          "result": "The gaffer has 'Cheese and Pickle' put on the back of his training top. He's never been happier."
+        },
+        {
+          "label": "'A soggy egg one left on a radiator'",
+          "effects": {
+            "manager": -6,
+            "fans": 5
+          },
+          "result": "The listeners love it. The gaffer leaves an egg sandwich on your peg every day for a fortnight.",
+          "news": {
+            "page": "back",
+            "headline": "EGG ON HIS FACE: {NAME}'S SANDWICH SLUR ON GAFFER"
+          }
+        }
+      ]
+    },
+    {
+      "id": "oldTeacher",
+      "from": "Your old school",
+      "via": "text",
+      "minAgeYears": 19,
+      "minWeek": 6,
+      "weight": 2,
+      "text": "Dear former pupil. Mrs Abernathy (Geography) is retiring after 41 years. She has asked if you'd come and say a few words. She would also like her protractor back. She knows you have it.",
+      "choices": [
+        {
+          "label": "Go and give a speech, protractor in hand (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "honour": 4,
+            "family": 3,
+            "fans": 1
+          },
+          "result": "You return the protractor to a standing ovation. Mrs Abernathy says you were 'a lovely boy with no sense of direction'. Fair."
+        },
+        {
+          "label": "Post the protractor back with a card",
+          "effects": {
+            "honour": 1
+          },
+          "result": "She writes back to say the card's lovely but you've spelt 'geography' wrong. Twice."
         }
       ]
     }

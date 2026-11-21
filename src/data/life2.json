@@ -117,6 +117,776 @@
      }
     ]
    ]
+  },
+  {
+   "q": "'The keeper's come for that and missed it. Is he at fault?'",
+   "a": [
+    [
+     "insight",
+     "\"He's got to stay on his line there. That cross was never his.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Keepers are a different breed, aren't they?\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"He's got hands like two bags of sand. Always has.\"",
+     {
+      "teammates": -4,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'What's the gaffer saying at half-time, do you think?'",
+   "a": [
+    [
+     "insight",
+     "\"He'll want them higher up the pitch. We're sitting too deep and inviting pressure.\"",
+     {
+      "honour": 2,
+      "manager": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Probably 'keep going, lads'.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Knowing him? Shouting, mostly. Then a biscuit.\"",
+     {
+      "manager": -4,
+      "fans": 1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'How's the injury coming along?'",
+   "a": [
+    [
+     "insight",
+     "\"Rehab's going well. I'm doing the boring work so I come back stronger.\"",
+     {
+      "honour": 2,
+      "manager": 1
+     }
+    ],
+    [
+     "bland",
+     "\"Day by day, Jim. Day by day.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Honestly? I'm loving the time off. Daytime telly is unreal.\"",
+     {
+      "manager": -4,
+      "fans": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'That's a booking. Harsh?'",
+   "a": [
+    [
+     "insight",
+     "\"He's been warned twice already. You can't keep doing that and expect the ref to ignore it.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"The ref's seen it differently.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Harsh? He wants sending off. He's a menace in training as well.\"",
+     {
+      "teammates": -5,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Who's been the best player on the pitch so far?'",
+   "a": [
+    [
+     "insight",
+     "\"Our holding midfielder. Doesn't get the headlines, but nothing gets past him.\"",
+     {
+      "teammates": 3,
+      "honour": 1
+     }
+    ],
+    [
+     "bland",
+     "\"Hard to pick one out. Lot of good performances.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Me, and I'm up here in a headset.\"",
+     {
+      "teammates": -3,
+      "fans": 1,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'The fans are getting restless. Can you understand that?'",
+   "a": [
+    [
+     "insight",
+     "\"Totally. They pay good money. The lads need to give them something to shout about.\"",
+     {
+      "fans": 3,
+      "honour": 1
+     }
+    ],
+    [
+     "bland",
+     "\"Fans are fans.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"They should try playing. It's harder than shouting.\"",
+     {
+      "fans": -6
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'There's talk of a big transfer for one of your team-mates. Heard anything?'",
+   "a": [
+    [
+     "insight",
+     "\"That's between him and the club. He's focused on today, and so are we.\"",
+     {
+      "honour": 2,
+      "teammates": 2
+     }
+    ],
+    [
+     "bland",
+     "\"I just play football, mate.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Oh, he's off. He's already been looking at houses.\"",
+     {
+      "teammates": -5,
+      "manager": -3
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'The referee's had a busy afternoon. How's he doing?'",
+   "a": [
+    [
+     "insight",
+     "\"Decent, actually. He's letting the game flow, which suits both sides.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"He's out there doing his best.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"He's needed a guide dog since kick-off.\"",
+     {
+      "honour": -3,
+      "fans": 1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Tactically, what would you change?'",
+   "a": [
+    [
+     "insight",
+     "\"Push the wingers inside and let the full-backs overlap. Their midfield can't cover the width.\"",
+     {
+      "honour": 3,
+      "manager": 1
+     }
+    ],
+    [
+     "bland",
+     "\"Maybe a bit more of this, a bit less of that.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Bring me on. Dodgy hamstring and all.\"",
+     {
+      "manager": -2,
+      "fans": 2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Do you miss being out there?'",
+   "a": [
+    [
+     "insight",
+     "\"Every minute. From up here you can see how much space there is. I'll use it when I'm back.\"",
+     {
+      "honour": 2,
+      "fans": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Course I do.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Not really. It's warm up here and there are free sandwiches.\"",
+     {
+      "fans": -4,
+      "manager": -3
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Their goalkeeper looks nervous. Should your lot be shooting more?'",
+   "a": [
+    [
+     "insight",
+     "\"Definitely. Anything low and on target, he's struggling to hold. Test him.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"You've got to be in it to win it.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"I've seen him in the players' lounge. Nervous is his natural state.\"",
+     {
+      "honour": -3
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Big save there! How good was that?'",
+   "a": [
+    [
+     "insight",
+     "\"Top drawer. Great starting position, so he only needed one step.\"",
+     {
+      "honour": 2,
+      "teammates": 1
+     }
+    ],
+    [
+     "bland",
+     "\"That's what he's there for.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Lucky. It hit him. Watch the replay.\"",
+     {
+      "teammates": -3,
+      "honour": -1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'What's the dressing room like at the moment?'",
+   "a": [
+    [
+     "insight",
+     "\"Tight. We've had tough spells, but we stick together and the young lads keep us going.\"",
+     {
+      "teammates": 3,
+      "honour": 1
+     }
+    ],
+    [
+     "bland",
+     "\"Good bunch of lads.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Someone keeps nicking yoghurts out of the fridge. It's tearing us apart.\"",
+     {
+      "teammates": -3,
+      "fans": 2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'That's a substitution. Right call?'",
+   "a": [
+    [
+     "insight",
+     "\"Yeah, he was on a yellow and they were targeting him. Smart management.\"",
+     {
+      "manager": 2,
+      "honour": 1
+     }
+    ],
+    [
+     "bland",
+     "\"The gaffer knows best.\"",
+     {
+      "manager": 1
+     }
+    ],
+    [
+     "gaffe",
+     "\"Wrong player off. The gaffer's got that one badly wrong.\"",
+     {
+      "manager": -5,
+      "honour": -1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Set pieces seem to be a problem today. Why?'",
+   "a": [
+    [
+     "insight",
+     "\"We're marking zonally and they're overloading the near post. Somebody needs to attack the ball.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"They're always tricky, set pieces.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Because our centre-half can't jump. Never could.\"",
+     {
+      "teammates": -4,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'A young lad's just come on for his debut. Any advice for him?'",
+   "a": [
+    [
+     "insight",
+     "\"Keep it simple, get an early touch, and enjoy it. You only get one debut.\"",
+     {
+      "honour": 2,
+      "teammates": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Just go and play.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Don't get too comfy, son. That's my shirt, really.\"",
+     {
+      "teammates": -3,
+      "fans": 1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Is the pitch causing problems?'",
+   "a": [
+    [
+     "insight",
+     "\"It's sticky in the middle. You can see passes holding up. Longer balls might be the answer.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Same pitch for both teams.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"The groundsman's let it go. It's basically a farm.\"",
+     {
+      "honour": -2,
+      "fans": 1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'What do you make of the atmosphere today?'",
+   "a": [
+    [
+     "insight",
+     "\"Brilliant. When the fans are like this it's like having an extra player.\"",
+     {
+      "fans": 3
+     }
+    ],
+    [
+     "bland",
+     "\"Yeah, it's lively.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Bit quiet. Is this a library?\"",
+     {
+      "fans": -4,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Who's the joker in the dressing room?'",
+   "a": [
+    [
+     "insight",
+     "\"Our kit man. He keeps everyone grounded, which matters more than people think.\"",
+     {
+      "teammates": 2,
+      "honour": 1
+     }
+    ],
+    [
+     "bland",
+     "\"There's a few of them.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"{RIVAL}, but not on purpose. He's a walking punchline.\"",
+     {
+      "fans": 1,
+      "honour": -3
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Goal-line clearance! Talk us through it.'",
+   "a": [
+    [
+     "insight",
+     "\"Great awareness. He's tracked the run from halfway and read exactly where it was going.\"",
+     {
+      "honour": 2,
+      "teammates": 1
+     }
+    ],
+    [
+     "bland",
+     "\"Big moment, that.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"He only got there because he was jogging back for a breather.\"",
+     {
+      "teammates": -3
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Would you like to be a manager one day?'",
+   "a": [
+    [
+     "insight",
+     "\"Maybe. I'm already doing my coaching badges. I love the tactical side.\"",
+     {
+      "honour": 2,
+      "manager": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Never say never.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"I'd be better than ours, put it that way.\"",
+     {
+      "manager": -6,
+      "fans": 1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'There's been a bit of a scuffle. What's going on there?'",
+   "a": [
+    [
+     "insight",
+     "\"Handbags, really. The ref will calm it down. Nobody wants to go down to ten men.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Passions running high.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Get stuck in! Somebody give him a slap!\"",
+     {
+      "honour": -5,
+      "fans": 2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'How's their new signing getting on?'",
+   "a": [
+    [
+     "insight",
+     "\"Neat and tidy, but our lads have worked out he doesn't like turning on his left.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"He's settling in, I'd say.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"For that money I'd want him doing my ironing as well.\"",
+     {
+      "honour": -1,
+      "fans": 1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Five minutes left. Hold on, or go for it?'",
+   "a": [
+    [
+     "insight",
+     "\"Go for it, but smartly. Keep two back and get bodies in the box.\"",
+     {
+      "honour": 2,
+      "manager": 1
+     }
+    ],
+    [
+     "bland",
+     "\"It's in the lap of the gods now.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"I'd park the team bus in front of the goal. Literally. I'd drive it on.\"",
+     {
+      "fans": 1,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'What's your diet like while you're injured?'",
+   "a": [
+    [
+     "insight",
+     "\"Strict. Lots of protein, lots of veg. Healing starts in the kitchen.\"",
+     {
+      "honour": 2,
+      "manager": 1
+     }
+    ],
+    [
+     "bland",
+     "\"Healthy, mostly.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Takeaways and biscuits. Don't tell the nutritionist.\"",
+     {
+      "manager": -3,
+      "fans": 1
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Who was your hero growing up?'",
+   "a": [
+    [
+     "insight",
+     "\"My grandad. He drove me to every game and never missed one.\"",
+     {
+      "fans": 3,
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Too many to choose from.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Me. I've always been my own hero.\"",
+     {
+      "fans": -3,
+      "honour": -3
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Penalty shout waved away! Was it one?'",
+   "a": [
+    [
+     "insight",
+     "\"No, he's got the ball first. Our lad was looking for it.\"",
+     {
+      "honour": 3
+     }
+    ],
+    [
+     "bland",
+     "\"I've seen them given.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Never a penalty. Our lad dived. Embarrassing, really.\"",
+     {
+      "teammates": -5,
+      "fans": -3
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Their manager's been very animated on the touchline. Distracting?'",
+   "a": [
+    [
+     "insight",
+     "\"It's all noise. Good players block it out and focus on the next pass.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"He's very passionate, isn't he?\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"He looks like he's been plugged into the mains.\"",
+     {
+      "honour": -2,
+      "fans": 2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Should the fans be patient with this team?'",
+   "a": [
+    [
+     "insight",
+     "\"Yes. We're young, we're learning, and we're getting better every week.\"",
+     {
+      "fans": 2,
+      "manager": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Patience is a virtue, as they say.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"No. Boo us. We deserve it.\"",
+     {
+      "fans": -2,
+      "teammates": -4,
+      "manager": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Nearly full-time. What's the headline in tomorrow's paper?'",
+   "a": [
+    [
+     "insight",
+     "\"Hard-working performance, one or two lessons to learn. That's football.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Whatever the paper wants, it'll write.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"'Injured star outshines entire team from commentary box.'\"",
+     {
+      "teammates": -4,
+      "honour": -2,
+      "fans": 1
+     }
+    ]
+   ]
   }
  ],
  "holidays": [
