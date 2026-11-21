@@ -29,6 +29,7 @@ export function applyEffects(c, eff = {}) {
     else if (k === 'money') c.bank += v;
     else if (k === 'energy') c.energy = clamp(c.energy + v, 0, 100);
     else if (k === 'slot') c.slotsUsed += v;
+    else if (k.startsWith('friend:')) { const f = c.friends && c.friends[k.slice(7)]; if (f) f.loyalty = clamp(f.loyalty + v, 0, 100); }
     else c.meters[k] = clamp((c.meters[k] ?? 50) + v, 0, 100);
     out[k] = v;
   }
@@ -53,7 +54,7 @@ function eligible(c, e) {
 /** At the start of a week: follow-ups that are due, else maybe a new event. */
 export function rollEvents(c, preseason, R = Math.random) {
   c._preseason = preseason;
-  const due = c.followUps.filter(f => f.week <= c.week);
+  const due = c.followUps.filter((f, i, a) => f.week <= c.week && !c.eventsSeen[f.id] && a.findIndex(x => x.id === f.id) === i);
   c.followUps = c.followUps.filter(f => f.week > c.week);
   due.forEach(f => c.pending.push({ type: 'event', id: f.id }));
   if (!due.length && R() < .6) {
@@ -70,7 +71,8 @@ export function rollEvents(c, preseason, R = Math.random) {
 export function chooseEvent(c, id, i, R = Math.random) {
   const e = EVENTS.get(id), ch = e.choices[i];
   c.eventsSeen[id] = true;
-  const effects = applyEffects(c, ch.effects);
+  const eff = Object.assign({}, ch.effects); if (eff.loyalty != null) { if (e.friend) eff['friend:' + e.friend] = eff.loyalty; delete eff.loyalty; }
+  const effects = applyEffects(c, eff);
   if (ch.flag) c.flags[ch.flag] = true;
   if (ch.next && R() < (ch.next.chance ?? 1)) c.followUps.push({ id: ch.next.id, week: c.week + ch.next.in });
   if (ch.news) c.weekNews.push({ page: ch.news.page, headline: fill(ch.news.headline, { NAME: surname(c) }), from: id });
@@ -162,7 +164,7 @@ export function makePaper(c, R = Math.random) {
   const paper = {
     n: c.papers.length + 1, week: c.week, date: weekStart(c.week), price: pick(NP.price, R), masthead: NP.masthead,
     front: { headline: frontHead, sub: frontSub, photo: frontStory ? 'scandal' : 'filler' },
-    back: { headline: backHead, sub: backSub, quote: quote ? quote.quote : null, photo: key, pos: L ? L.pos : null, div: DIVS[c.div].short },
+    back: { headline: backHead, sub: backSub, quote: quote ? quote.quote : null, photo: key, pos: L ? L.pos : null, div: DIVS[c.div].short, rival: (c.weekNews.find(n => n.rival) || {}).rival || null },
     dennis: pick(NP.dennis, R), gran: c.granBet ? 'Gran\'s tip of the week: you to score. She\'s already spent the winnings.' : 'Gran\'s tip of the week: the 3.40 at Kempton. Don\'t ask why.',
     kit: myClub.home,
   };

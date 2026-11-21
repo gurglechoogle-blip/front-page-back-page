@@ -274,3 +274,9 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .shop .item b{display:block}.shop .item p{margin:2px 0 0;font-size:13px;color:#9aa3ad}.shop .item .price{color:#ffc928;font-weight:700;font-size:13px}
 .shop .item.owned{border-left:4px solid #3d9a1d}.btncol{display:flex;flex-direction:column;gap:4px}
 .shop .btn{white-space:nowrap}
+.friend .kind{font-size:11px;padding:1px 6px;border-radius:8px;background:#3a4048;color:#cfd5db;text-transform:uppercase}
+.friend.chaotic .kind{background:#7a1f1f}.friend.grounded .kind{background:#1f4e3a}
+.friend .rel{max-width:260px}
+.chatlog{display:flex;flex-direction:column;gap:5px;background:#0e1013;border-radius:8px;padding:8px;margin:6px 0}
+.cm{align-self:flex-start;background:#23272d;border-radius:10px 10px 10px 2px;padding:6px 10px;max-width:85%;font-size:14px}
+.cm.me{align-self:flex-end;background:#1f5c2e;border-radius:10px 10px 2px 10px}.cm.q{border:1px solid #ffc928}

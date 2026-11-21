@@ -21,11 +21,12 @@ import { playFixture } from './flow.js';
 import { METERS, meter, EVENTS, chooseEvent, answerPress, paperByN, framePage, applyEffects } from '../sim/life.js';
 import { paperHTML, paperPhotos } from './paper.js';
 import { showBank, showShop, showProperty, showDebt } from './moneyUI.js';
+import { FR, friend, hangOut, nightsFor, nightOut, chatPrompt, chatAnswer } from '../sim/social.js';
 import { exportSave, importSave } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
-  life: { label: 'Life', icon: '🏠', soon: ['Partner', 'Friends', 'Nights out', 'Holidays'] },
+  life: { label: 'Life', icon: '🏠', soon: ['Partner', 'Holidays'] },
   money: { label: 'Money', icon: '💷', soon: ['Staff', 'Businesses & merch'] },
   casino: { label: 'Casino', icon: '🎲', soon: ['Poker', 'Blackjack'] },
   fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Community & charity', 'Achievements'] },
@@ -95,7 +96,7 @@ export function createHubScreen(root, go, params = {}) {
     $('meters').innerHTML = bar('Manager approval', c.approval, 'appr') + `<div class="two">${bar('Form', c.form, 'form')}${bar('Energy', c.energy, 'energy')}</div>`;
     const avg = avgRating(c);
     $('left').innerHTML = `<h2>${esc(c.name)}</h2><div class="sub2">${age(c)} · Striker · ${esc(me.name)}</div>
-      <h3>This season</h3>${row('Appearances', st.apps + (st.subs ? ` <small>(${st.subs} sub)</small>` : ''))}${row('Goals', st.goals)}${row('Assists', st.assists)}${c.totals.seasons ? row('Career', `${c.totals.apps + st.apps} apps · ${c.totals.goals + st.goals} goals`) : ''}${row('Avg rating', avg ? avg.toFixed(2) : '–')}${st.u21 ? row('U21 games', st.u21) : ''}
+      ${c.hometown ? `<div class="sub2">From ${esc(c.hometown)} · ${esc(club(c.boyhood).name)} fan</div>` : ''}<h3>This season</h3>${row('Appearances', st.apps + (st.subs ? ` <small>(${st.subs} sub)</small>` : ''))}${row('Goals', st.goals)}${row('Assists', st.assists)}${c.totals.seasons ? row('Career', `${c.totals.apps + st.apps} apps · ${c.totals.goals + st.goals} goals`) : ''}${row('Avg rating', avg ? avg.toFixed(2) : '–')}${st.u21 ? row('U21 games', st.u21) : ''}
       <div class="lvl">${skillLevelText()}</div><div class="lvlcap">Skill level</div>
       <h3>Skills</h3>${SKILLS.map(([k, l]) => { const v = state.profile.skills[k]; return `<div class="row" style="border:0"><span>${l}</span><b>${v}</b></div><div class="bar"><i style="width:${Math.min(100, v / SKILL_MAX * 100)}%"></i></div>`; }).join('')}`;
     const bills = weeklyBills(c).reduce((a, b) => a + b.amount, 0), hb = honourBadge(c.honour);
@@ -126,6 +127,7 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'Rest', note: 'Uses a slot, +energy', go: rest },
       { label: 'Fixtures & results', go: showFixtures },
       { label: 'League table', go: showTable },
+      { label: `Rival: ${esc(c.rival.name)}`, note: `${esc(club(c.rival.clubId).short)} · ${c.rival.seasonGoals} goals this season`, go: showRival },
       { label: 'Contract & transfers', go: showContract },
       { label: 'Agent', go: () => modal(`<h2>Agent</h2><p>You haven't got one. At 16, agents are mostly blokes in car parks with lanyards they printed themselves.</p><p class="dim">Proper agents (and their hidden motives) are coming in a later update.</p>`) },
     ];
@@ -211,8 +213,10 @@ export function createHubScreen(root, go, params = {}) {
       <h3>Transfers</h3><p class="dim">You're 16. Nobody's buying yet. Loans, first pro contracts and transfers are coming in a later update.</p>`);
   }
   function showPhone() {
-    const list = c.inbox.map(m => `<div class="msg ${m.read ? '' : 'new'}"><b>${esc(m.from)}</b><span>Week ${m.week + 1}</span><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">No messages. Nobody loves you yet.</p>';
-    modal(`<h2>Phone</h2><div class="scroll phone-list">${list}</div>`);
+    const list = c.inbox.map(m => `<div class="msg ${m.read ? '' : 'new'}"><b>${esc(m.from)}</b><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">No messages. Nobody loves you yet.</p>';
+    const chat = c.chat.slice(-40).map(m => `<div class="cm ${m.me ? 'me' : ''}">${esc(m.text)}</div>`).join('') || '<p class="dim">The lads haven\'t added you yet.</p>';
+    modal(`<h2>Phone</h2><div class="tabs"><button class="tab on" data-t="msgs">Messages</button><button class="tab" data-t="chat">${esc(club(c.clubId).short)} LADS</button></div><div class="scroll phone-list" id="pmsgs">${list}</div><div class="scroll chatlog hidden" id="pchat">${chat}</div>`);
+    root.querySelectorAll('.tab[data-t]').forEach(b => b.onclick = () => { root.querySelectorAll('.tab[data-t]').forEach(x => x.classList.toggle('on', x === b)); $('pmsgs').classList.toggle('hidden', b.dataset.t !== 'msgs'); $('pchat').classList.toggle('hidden', b.dataset.t !== 'chat'); const pc = $('pchat'); pc.scrollTop = pc.scrollHeight; });
     c.inbox.forEach(m => m.read = true); save(); render();
   }
 
@@ -220,9 +224,27 @@ export function createHubScreen(root, go, params = {}) {
   function lifeItems() {
     const called = c.weekLog.some(x => x.t === 'callMum');
     return [
+      { label: 'Friends', note: `${FR.friends.length} mates · uses a slot`, go: showFriends },
+      { label: 'Nights out', note: age(c) < 18 ? 'House parties (18+ for pubs and clubs)' : 'Pub, clubs, VIP tables', go: showNights },
       { label: 'Call Mum', note: called ? 'Already rung her this week' : 'Free, once a week', go: () => { if (called) return toast('You rang her already. She\'s still talking.'); c.weekLog.push({ t: 'callMum' }); applyEffects(c, { family: 3 }); save(); render(); toast(pickLine(['Mum: "Are you eating properly?" (x4)', 'Mum tells you about next door\'s extension for 25 minutes. Family +3', 'Mum: "Your Gran\'s got a tattoo." You don\'t ask.'])); } },
       { label: 'Visit Gran', note: 'Uses a slot · family, energy', go: () => { if (slotsLeft(c) <= 0) return toast('No time slots left this week.'); c.slotsUsed++; c.weekLog.push({ t: 'gran' }); applyEffects(c, { family: 6, energy: 4 }); save(); render(); toast(pickLine(['Gran makes you a fry-up and asks for a tip on the 3.40 at Kempton.', 'Gran shows you her new betting app. She\'s up £340.', 'You watch Countdown with Gran. She gets a nine-letter word. It\'s rude.'])); } },
     ];
+  }
+  function showFriends() {
+    const rows = FR.friends.map(f => { const L = Math.round(c.friends[f.id].loyalty); return `<div class="item friend ${f.kind}"><div><b>${esc(f.name)}</b> <small class="kind">${f.kind}</small><p>${esc(f.trait)}</p><div class="rel"><span>Loyalty</span><div class="bar"><i class="m-${f.kind === 'chaotic' ? 'fans' : 'teammates'}" style="width:${L}%"></i></div><b>${L}</b></div></div><button class="btn small gold" data-f="${f.id}" ${slotsLeft(c) <= 0 ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : 'Hang out'}</button></div>`; }).join('');
+    modal(`<h2>Friends</h2><p class="dim">Hanging out uses a time slot. Chaotic friends bring fun, schemes and trouble; grounded ones open sensible doors. Ignore them and they drift.</p><div class="scroll shop">${rows}</div>`);
+    root.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { const r = hangOut(c, b.dataset.f); save(); render(); closeModal(); toast(`${friend(b.dataset.f).name}: ${r.line}`); });
+  }
+  function showNights() {
+    const opts = nightsFor(age(c));
+    modal(`<h2>Nights out</h2><p class="dim">Uses a time slot. A big night in a match week costs you on the pitch${age(c) < 18 ? '. Pubs and clubs open at 18' : ''}.</p><div class="scroll shop">${opts.map(n => `<div class="item"><div><b>${esc(n.label)}</b><span class="price">${money(n.cost)}</span></div><button class="btn small gold" data-n="${n.id}" ${slotsLeft(c) <= 0 || c.bank < n.cost ? 'disabled' : ''}>${slotsLeft(c) <= 0 ? 'No slots' : c.bank < n.cost ? 'Skint' : 'Go'}</button></div>`).join('')}</div>`);
+    root.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { const r = nightOut(c, b.dataset.n); save(); render(); closeModal(); if (!r.ok) return toast(r.why); toast(r.line + (r.story ? ' Then the photos turn up...' : '')); });
+  }
+  function showRival() {
+    const r = c.rival, rc = club(r.clubId), same = r.clubId === c.clubId;
+    modal(`<h2>${esc(r.name)}</h2><p class="evtext">Came through the academy with you. ${same ? 'Still at ' + esc(rc.name) + ', still after your shirt.' : 'Now at ' + esc(rc.name) + '.'}</p>
+      <table class="lt"><tr><th></th><th>You</th><th>${esc(r.short)}</th></tr><tr><td class="tn">Club</td><td>${esc(club(c.clubId).short)}</td><td>${esc(rc.short)}</td></tr><tr><td class="tn">Goals this season</td><td>${c.stats.goals}</td><td>${r.seasonGoals}</td></tr><tr><td class="tn">Career goals</td><td>${c.totals.goals + c.stats.goals}</td><td>${r.goals}</td></tr><tr><td class="tn">Form</td><td>${Math.round(c.form)}</td><td>${Math.round(r.form)}</td></tr></table>
+      ${same && r.form > c.form ? '<p class="bad">He\'s in better form. The gaffer\'s noticed.</p>' : ''}`);
   }
   function fameItems() {
     return [
@@ -249,9 +271,10 @@ export function createHubScreen(root, go, params = {}) {
     else if (item.type === 'event') showEvent(item.id, next);
     else if (item.type === 'press') showPress(item, next);
     else if (item.type === 'debt') showDebt(H, next);
+    else if (item.type === 'chat') showChatPrompt(item, next);
     else next();
   }
-  const fmtEffects = eff => Object.entries(eff).filter(([k, v]) => v && k !== 'slot').map(([k, v]) => `<span class="${v > 0 ? 'good' : 'bad'}">${({ manager: 'Gaffer', teammates: 'Teammates', fans: 'Fans', family: 'Family', honour: 'Honour', money: 'Money', energy: 'Energy' })[k] || k} ${v > 0 ? '+' : ''}${k === 'money' ? money(v) : v}</span>`).join(' ');
+  const fmtEffects = eff => Object.entries(eff).filter(([k, v]) => v && k !== 'slot').map(([k, v]) => `<span class="${v > 0 ? 'good' : 'bad'}">${k.startsWith('friend:') ? (friend(k.slice(7)) || { name: k }).name : ({ manager: 'Gaffer', teammates: 'Teammates', fans: 'Fans', family: 'Family', honour: 'Honour', money: 'Money', energy: 'Energy' })[k] || k} ${v > 0 ? '+' : ''}${k === 'money' ? money(v) : v}</span>`).join(' ');
   function showEvent(id, next) {
     const e = EVENTS.get(id); if (!e) return next();
     const via = { call: '📞 Incoming call', text: '💬 New message', moment: '⚡ Meanwhile…' }[e.via] || '';
@@ -259,6 +282,15 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('.choice').forEach(b => b.onclick = () => {
       const r = chooseEvent(c, id, +b.dataset.i); save(); render();
       modal(`<div class="evvia">${via}</div><h2>${esc(e.from)}</h2><p class="evtext">${esc(r.result)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
+      $('evok').onclick = next;
+    });
+  }
+  function showChatPrompt(item, next) {
+    const P = chatPrompt(item);
+    modal(`<div class="evvia">💬 ${esc(club(c.clubId).short)} LADS (group chat)</div><div class="chatlog">${c.chat.slice(-4).map(m => `<div class="cm">${esc(m.text)}</div>`).join('')}<div class="cm q">${esc(P.q)}</div></div><div class="choices">${P.options.map((o, i) => `<button class="btn choice" data-i="${i}">${esc(o.text)}</button>`).join('')}</div>`, true);
+    root.querySelectorAll('.choice').forEach(b => b.onclick = () => {
+      const r = chatAnswer(c, item, +b.dataset.i); save(); render();
+      modal(`<div class="evvia">💬 Group chat</div><h2>${r.leaked ? 'Uh oh.' : 'Sent.'}</h2><p class="evtext">${r.leaked ? 'Someone screenshotted it. It\'s already with Sid Scoop. Monday\'s paper will be fun.' : 'The lads react with 14 crying-laughing emojis.'}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
       $('evok').onclick = next;
     });
   }

@@ -9,6 +9,7 @@ import {
 } from './season.js';
 import { endSeason } from './world.js';
 import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './money.js';
+import { initSocial, friendsWeek, nightPenalty, rivalWeek, rivalSummer, rivalSelectionPenalty, chatWeek } from './social.js';
 import { MatchSim } from './matchSim.js';
 import { initLife, rollEvents, makePaper, pressAfter, afterMatch, honourPatience, support, familyWeek, taper } from './life.js';
 
@@ -31,7 +32,7 @@ export function academyOffers(scout, R = Math.random) {
 }
 
 /* ---------- creating a career ---------- */
-export function createCareer(name, offer, R = Math.random) {
+export function createCareer(name, offer, R = Math.random, extra = {}) {
   const A = ACADEMY[offer.type];
   // Born summer 2009 to summer 2010: 16 now, 17 at some point this season.
   const dob = addDays('2009-09-01', Math.floor(R() * 270));
@@ -44,6 +45,9 @@ export function createCareer(name, offer, R = Math.random) {
     fixtures: [], cups: {}, trophyGroup: null, inbox: [], msgId: 0, matchday: null, lastWeek: null, history: [], seasonOver: false,
   };
   buildSeason(c, R); initLife(c); initMoney(c);
+  c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
+  c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
+  initSocial(c, R);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -111,13 +115,14 @@ export function selection(c, f, R = Math.random) {
   let p = c.contract.pathway + ((c.approval - 50) / 110 + (c.form - 50) / 220) * (.4 + c.contract.pathway);
   if (f.comp !== 'league') p += ['R1', 'R2', 'G'].includes(f.round) ? .3 : .1;
   if (c.energy < 30) p -= .15;
+  p -= rivalSelectionPenalty(c);
   p = clamp(p, .02, .92);
   const r = R();
   if (r < p) return 'start';
   return r < p + clamp(.35 + c.contract.pathway, .2, .75) * (1 - p) ? 'sub' : 'none';
 }
 /** Effective form for the number of chances: tiredness takes the edge off. */
-export const effectiveForm = c => clamp(c.form - Math.max(0, 35 - c.energy), 0, 100) / 100;
+export const effectiveForm = c => clamp(c.form - Math.max(0, 35 - c.energy) - nightPenalty(c), 0, 100) / 100;
 
 /** Start (or resume) this week's matchday: returns the queue of fixture ids. */
 export function startMatchday(c) {
@@ -207,7 +212,8 @@ export function finishWeek(c, R = Math.random) {
   const dA = drills.length >= 2 ? taper(c.approval, drills.reduce((a, d) => a + (d.score >= 3 ? 1 : .6), 0)) : 0;
   c.approval = clamp(c.approval + dA, 0, 100);
   c.energy = clamp(c.energy + 12, 0, 100);
-  familyWeek(c);
+  familyWeek(c); friendsWeek(c, R);
+  const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.
   const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);
   c.bank += c.contract.wage - out;
@@ -239,6 +245,7 @@ export function nextWeek(c, R = Math.random) {
   if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   rollEvents(c, isPreseason(c), R);
+  chatWeek(c, R);
   return true;
 }
 /** In-season week number (1 = first week of pre-season). */
@@ -267,6 +274,8 @@ export function startNextSeason(c, R = Math.random) {
     c.contract = Object.assign({}, c.contract, { kind: 'First professional contract', wage: Math.round(c.contract.wage * 2.5 + 200), until: `${seasonYear() + 2}-06-30` });
     message(c, news, `Your scholarship's up and we're offering you your first professional contract: £${c.contract.wage} a week. Proper contract talks (with silly clauses) arrive with transfers.`);
   }
+  const rv = rivalSummer(c, R);
+  if (rv) { const to = club(rv.to); c.weekNews.push({ page: 'back', headline: `RIVAL ${c.rival.short.toUpperCase()} JOINS ${to.name.toUpperCase()}` }); message(c, 'Dennis (kit man)', rv.wanted ? `${c.rival.name}'s signed for ${to.name}. The club you turned down. I said this would happen. I didn't, but I thought it.` : `${c.rival.name}'s off to ${to.name}. Good riddance, he never put his bibs in the basket.`); }
   message(c, 'Mum', `New season, love. ${age(c)} years old! Where does the time go. Clean boots, clean pants.`);
   void oldDiv;
   return { moves, mv };

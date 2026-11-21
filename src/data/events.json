@@ -2,225 +2,1306 @@
   "_note": "Life events. Each arrives as a call, text or moment in the dressing room, with choices that cost something. Effects: honour, manager, teammates, fans, family, money, energy, slot (uses a time slot this week), flag (remembered), unflag. 'next' queues a follow-up {id, in: weeks, chance}. 'news' puts a story in Monday's paper: page front|back, headline with {NAME}. Conditions: minWeek, notPreseason, needFlag, notFlag, meter minimums (min) / maximums (max), contract types (types), weight. Design rule: the bad choice is always tempting.",
   "events": [
     {
-      "id": "coverGaz", "from": "Gaz (left-back)", "via": "text", "minWeek": 2, "weight": 3,
+      "id": "coverGaz",
+      "from": "Gaz (left-back)",
+      "via": "text",
+      "minWeek": 2,
+      "weight": 3,
       "text": "Mate. Overslept. Again. If the gaffer asks, tell him I was with you at the physio. You're a legend. Owe you one. Gaz",
       "choices": [
-        { "label": "Cover for him", "effects": { "teammates": 6, "honour": -3 }, "result": "Gaz owes you one. Gaz has owed everyone one since 2019.", "flag": "coveredGaz", "next": { "id": "gazCaught", "in": 2, "chance": 0.45 } },
-        { "label": "Tell him to sort himself out", "effects": { "teammates": -5, "honour": 3, "manager": 1 }, "result": "Gaz calls you a grass in the group chat. Then sends a sad face." }
+        {
+          "label": "Cover for him",
+          "effects": {
+            "teammates": 6,
+            "honour": -3
+          },
+          "result": "Gaz owes you one. Gaz has owed everyone one since 2019.",
+          "flag": "coveredGaz",
+          "next": {
+            "id": "gazCaught",
+            "in": 2,
+            "chance": 0.45
+          }
+        },
+        {
+          "label": "Tell him to sort himself out",
+          "effects": {
+            "teammates": -5,
+            "honour": 3,
+            "manager": 1
+          },
+          "result": "Gaz calls you a grass in the group chat. Then sends a sad face."
+        }
       ]
     },
     {
-      "id": "gazCaught", "from": "The Gaffer", "via": "call", "followUpOnly": true,
+      "id": "gazCaught",
+      "from": "The Gaffer",
+      "via": "call",
+      "followUpOnly": true,
       "text": "Funny thing, son. The physio was in Tenerife last Tuesday. So where were you and Gaz? Think carefully. I can smell a lie like a three-day-old mackerel.",
       "choices": [
-        { "label": "Come clean", "effects": { "manager": 2, "teammates": -6, "honour": 3 }, "result": "The gaffer nods slowly. Gaz runs laps until his legs are spaghetti." },
-        { "label": "Double down on the lie", "effects": { "manager": -10, "teammates": 4, "honour": -4 }, "result": "The gaffer's eyes narrow. You've been dropped into his bad books, and the bad books are wet.", "news": { "page": "front", "headline": "{NAME} IN PHYSIO PORKIE PROBE" } }
+        {
+          "label": "Come clean",
+          "effects": {
+            "manager": 2,
+            "teammates": -6,
+            "honour": 3
+          },
+          "result": "The gaffer nods slowly. Gaz runs laps until his legs are spaghetti."
+        },
+        {
+          "label": "Double down on the lie",
+          "effects": {
+            "manager": -10,
+            "teammates": 4,
+            "honour": -4
+          },
+          "result": "The gaffer's eyes narrow. You've been dropped into his bad books, and the bad books are wet.",
+          "news": {
+            "page": "front",
+            "headline": "{NAME} IN PHYSIO PORKIE PROBE"
+          }
+        }
       ]
     },
     {
-      "id": "granTips", "from": "Gran", "via": "call", "minWeek": 3, "notPreseason": true, "weight": 3,
+      "id": "granTips",
+      "from": "Gran",
+      "via": "call",
+      "minWeek": 3,
+      "notPreseason": true,
+      "weight": 3,
       "text": "Quick one, pet. Are you starting Saturday? Only Maureen at bingo reckons you're on the bench and there's good money riding on it. Just a little nod. Nobody would know.",
       "choices": [
-        { "label": "Give her a little nod", "effects": { "family": 5, "honour": -5, "money": 0 }, "result": "Gran makes a noise like a kettle. 'You're a good boy.'", "flag": "granInsider", "next": { "id": "granBanned", "in": 3, "chance": 0.5 } },
-        { "label": "Gran, I can't tell you that", "effects": { "family": -3, "honour": 4 }, "result": "'Your grandad would've told me,' she says. Your grandad was banned from three bookmakers." }
+        {
+          "label": "Give her a little nod",
+          "effects": {
+            "family": 5,
+            "honour": -5,
+            "money": 0
+          },
+          "result": "Gran makes a noise like a kettle. 'You're a good boy.'",
+          "flag": "granInsider",
+          "next": {
+            "id": "granBanned",
+            "in": 3,
+            "chance": 0.5
+          }
+        },
+        {
+          "label": "Gran, I can't tell you that",
+          "effects": {
+            "family": -3,
+            "honour": 4
+          },
+          "result": "'Your grandad would've told me,' she says. Your grandad was banned from three bookmakers."
+        }
       ]
     },
     {
-      "id": "granBanned", "from": "Gran", "via": "call", "followUpOnly": true,
+      "id": "granBanned",
+      "from": "Gran",
+      "via": "call",
+      "followUpOnly": true,
       "text": "They've BANNED me from the bookies! Said my bets were 'statistically improbable'. I said I'm just lucky. They've sent a letter to the FA. Is that bad?",
       "choices": [
-        { "label": "Ring the FA and explain", "effects": { "honour": 3, "manager": -3, "family": -2 }, "result": "A tired man at the FA writes 'GRAN' on a Post-it and sighs.", "news": { "page": "front", "headline": "GRANNY GAMBLE: {NAME}'S NAN IN BETTING BAN" } },
-        { "label": "Lie low and hope it goes away", "effects": { "honour": -6 }, "result": "It doesn't go away. It never goes away.", "news": { "page": "front", "headline": "BETTING GRAN SHOCK: {NAME} 'KNEW NOTHING'" } }
+        {
+          "label": "Ring the FA and explain",
+          "effects": {
+            "honour": 3,
+            "manager": -3,
+            "family": -2
+          },
+          "result": "A tired man at the FA writes 'GRAN' on a Post-it and sighs.",
+          "news": {
+            "page": "front",
+            "headline": "GRANNY GAMBLE: {NAME}'S NAN IN BETTING BAN"
+          }
+        },
+        {
+          "label": "Lie low and hope it goes away",
+          "effects": {
+            "honour": -6
+          },
+          "result": "It doesn't go away. It never goes away.",
+          "news": {
+            "page": "front",
+            "headline": "BETTING GRAN SHOCK: {NAME} 'KNEW NOTHING'"
+          }
+        }
       ]
     },
     {
-      "id": "hospitalOrLads", "from": "Club Community Officer", "via": "text", "minWeek": 2, "weight": 3,
+      "id": "hospitalOrLads",
+      "from": "Club Community Officer",
+      "via": "text",
+      "minWeek": 2,
+      "weight": 3,
       "text": "Hi! We'd love you to visit the children's ward on Thursday. Bring a smile and some signed photos. (Gaz says the lads are going to Wetherspoons that night. Ignore Gaz.)",
       "choices": [
-        { "label": "Visit the hospital (uses a time slot)", "effects": { "honour": 7, "fans": 4, "family": 2, "slot": 1 }, "result": "A seven-year-old beats you at FIFA and tells you you're rubbish. Best afternoon of your life.", "news": { "page": "front", "headline": "HEARTS OF GOLD: {NAME} CHEERS SICK KIDS" } },
-        { "label": "Go out with the lads", "effects": { "teammates": 7, "energy": -12, "honour": -3 }, "result": "Somebody orders a round of Jägerbombs at 6pm. It's a long night.", "next": { "id": "ladsPhotos", "in": 1, "chance": 0.4 } }
+        {
+          "label": "Visit the hospital (uses a time slot)",
+          "effects": {
+            "honour": 7,
+            "fans": 4,
+            "family": 2,
+            "slot": 1
+          },
+          "result": "A seven-year-old beats you at FIFA and tells you you're rubbish. Best afternoon of your life.",
+          "news": {
+            "page": "front",
+            "headline": "HEARTS OF GOLD: {NAME} CHEERS SICK KIDS"
+          }
+        },
+        {
+          "label": "Go out with the lads",
+          "effects": {
+            "teammates": 7,
+            "energy": -12,
+            "honour": -3
+          },
+          "result": "Somebody orders a round of Jägerbombs at 6pm. It's a long night.",
+          "next": {
+            "id": "ladsPhotos",
+            "in": 1,
+            "chance": 0.4
+          }
+        }
       ]
     },
     {
-      "id": "ladsPhotos", "from": "Sid Scoop (journalist)", "via": "call", "followUpOnly": true,
+      "id": "ladsPhotos",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "followUpOnly": true,
       "text": "Sid Scoop, Weekly Splash. I've got a photo of you asleep in a kebab shop wearing a traffic cone. Any comment before we go to print?",
       "choices": [
-        { "label": "'It was a fancy dress thing'", "effects": { "honour": -4, "fans": 2 }, "result": "It was not a fancy dress thing.", "news": { "page": "front", "headline": "CONE-HEAD! {NAME} IN KEBAB SHOP KIP" } },
-        { "label": "Apologise to the club", "effects": { "honour": -1, "manager": 3 }, "result": "The gaffer accepts. He's seen worse. He did worse.", "news": { "page": "front", "headline": "SORRY SEEMS TO BE THE HARDEST WORD FOR CONE-HEAD {NAME}" } }
+        {
+          "label": "'It was a fancy dress thing'",
+          "effects": {
+            "honour": -4,
+            "fans": 2
+          },
+          "result": "It was not a fancy dress thing.",
+          "news": {
+            "page": "front",
+            "headline": "CONE-HEAD! {NAME} IN KEBAB SHOP KIP"
+          }
+        },
+        {
+          "label": "Apologise to the club",
+          "effects": {
+            "honour": -1,
+            "manager": 3
+          },
+          "result": "The gaffer accepts. He's seen worse. He did worse.",
+          "news": {
+            "page": "front",
+            "headline": "SORRY SEEMS TO BE THE HARDEST WORD FOR CONE-HEAD {NAME}"
+          }
+        }
       ]
     },
     {
-      "id": "radioPhoneIn", "from": "Local radio", "via": "call", "minWeek": 4, "notPreseason": true, "weight": 2,
+      "id": "radioPhoneIn",
+      "from": "Local radio",
+      "via": "call",
+      "minWeek": 4,
+      "notPreseason": true,
+      "weight": 2,
       "text": "You're live on Radio Bantam's Football Phone-In! Caller from Dudley says the gaffer's tactics are 'like watching paint dry, but the paint's also asleep'. Do you agree?",
       "choices": [
-        { "label": "Back the gaffer", "effects": { "manager": 6, "honour": 3, "fans": -2 }, "result": "The gaffer texts you a single fish emoji. High praise." },
-        { "label": "'He's got a point, to be fair'", "effects": { "manager": -9, "fans": 5, "honour": -3 }, "result": "The phone-in lines light up. So does the gaffer's face.", "news": { "page": "back", "headline": "{NAME} STICKS THE BOOT INTO GAFFER" } },
-        { "label": "Talk about fishing for ten minutes", "effects": { "manager": 3, "fans": 1 }, "result": "The presenter cuts to the travel news. The gaffer loved it." }
+        {
+          "label": "Back the gaffer",
+          "effects": {
+            "manager": 6,
+            "honour": 3,
+            "fans": -2
+          },
+          "result": "The gaffer texts you a single fish emoji. High praise."
+        },
+        {
+          "label": "'He's got a point, to be fair'",
+          "effects": {
+            "manager": -9,
+            "fans": 5,
+            "honour": -3
+          },
+          "result": "The phone-in lines light up. So does the gaffer's face.",
+          "news": {
+            "page": "back",
+            "headline": "{NAME} STICKS THE BOOT INTO GAFFER"
+          }
+        },
+        {
+          "label": "Talk about fishing for ten minutes",
+          "effects": {
+            "manager": 3,
+            "fans": 1
+          },
+          "result": "The presenter cuts to the travel news. The gaffer loved it."
+        }
       ]
     },
     {
-      "id": "mumDinner", "from": "Mum", "via": "text", "minWeek": 2, "weight": 2,
+      "id": "mumDinner",
+      "from": "Mum",
+      "via": "text",
+      "minWeek": 2,
+      "weight": 2,
       "text": "It's my birthday dinner Wednesday love. Your auntie Carol's coming. She's bringing the trifle. Please come. The coach mentioned extra shooting practice though didn't he?",
       "choices": [
-        { "label": "Go to Mum's dinner (uses a time slot)", "effects": { "family": 9, "energy": 6, "slot": 1 }, "result": "Auntie Carol's trifle is 40% sherry. Mum cries twice. Lovely evening." },
-        { "label": "Stay for extra shooting", "effects": { "manager": 4, "family": -8 }, "result": "Mum says it's fine. It is not fine. Auntie Carol posts about it on Facebook." }
+        {
+          "label": "Go to Mum's dinner (uses a time slot)",
+          "effects": {
+            "family": 9,
+            "energy": 6,
+            "slot": 1
+          },
+          "result": "Auntie Carol's trifle is 40% sherry. Mum cries twice. Lovely evening."
+        },
+        {
+          "label": "Stay for extra shooting",
+          "effects": {
+            "manager": 4,
+            "family": -8
+          },
+          "result": "Mum says it's fine. It is not fine. Auntie Carol posts about it on Facebook."
+        }
       ]
     },
     {
-      "id": "initiation", "from": "The dressing room", "via": "moment", "maxWeek": 12, "weight": 4,
+      "id": "initiation",
+      "from": "The dressing room",
+      "via": "moment",
+      "maxWeek": 12,
+      "weight": 4,
       "text": "Initiation night. Everyone's chanting your name. You have to stand on a chair and sing. The senior pros are watching. Gaz is filming.",
       "choices": [
-        { "label": "Belt out Mr Brightside", "effects": { "teammates": 9, "fans": 2 }, "result": "You miss every high note. The dressing room goes wild. Gaz's video gets 40 views, all Gaz." },
-        { "label": "Refuse, you're not a performing seal", "effects": { "teammates": -8, "honour": 1 }, "result": "Silence. Someone fills your boots with yoghurt the next morning." }
+        {
+          "label": "Belt out Mr Brightside",
+          "effects": {
+            "teammates": 9,
+            "fans": 2
+          },
+          "result": "You miss every high note. The dressing room goes wild. Gaz's video gets 40 views, all Gaz."
+        },
+        {
+          "label": "Refuse, you're not a performing seal",
+          "effects": {
+            "teammates": -8,
+            "honour": 1
+          },
+          "result": "Silence. Someone fills your boots with yoghurt the next morning."
+        }
       ]
     },
     {
-      "id": "dodgyBoots", "from": "Unknown number", "via": "text", "minWeek": 5, "weight": 2,
+      "id": "dodgyBoots",
+      "from": "Unknown number",
+      "via": "text",
+      "minWeek": 5,
+      "weight": 2,
       "text": "Hi, Nikey Sports here (not that one). We'll give you £600 to wear our boots. They're nearly leather. The swoosh goes the other way. Interested?",
       "choices": [
-        { "label": "Take the £600", "effects": { "money": 600, "honour": -4, "fans": -2 }, "result": "The boots squeak. Every step sounds like a duck being sat on.", "flag": "nikey", "news": { "page": "front", "headline": "JUST DON'T DO IT: {NAME}'S KNOCK-OFF BOOT DEAL" } },
-        { "label": "No thanks", "effects": { "honour": 2 }, "result": "'Your loss,' they text. Then: 'Would you do it for £400?'" }
+        {
+          "label": "Take the £600",
+          "effects": {
+            "money": 600,
+            "honour": -4,
+            "fans": -2
+          },
+          "result": "The boots squeak. Every step sounds like a duck being sat on.",
+          "flag": "nikey",
+          "news": {
+            "page": "front",
+            "headline": "JUST DON'T DO IT: {NAME}'S KNOCK-OFF BOOT DEAL"
+          }
+        },
+        {
+          "label": "No thanks",
+          "effects": {
+            "honour": 2
+          },
+          "result": "'Your loss,' they text. Then: 'Would you do it for £400?'"
+        }
       ]
     },
     {
-      "id": "selfieTesco", "from": "Out and about", "via": "moment", "minWeek": 3, "weight": 2,
+      "id": "selfieTesco",
+      "from": "Out and about",
+      "via": "moment",
+      "minWeek": 3,
+      "weight": 2,
       "text": "You're in the big Tesco in your pyjama bottoms buying Coco Pops when a fan spots you. 'Can I get a selfie? And can you do a video for my brother? He hates you.'",
       "choices": [
-        { "label": "Smile, selfie, video, the lot", "effects": { "fans": 6, "honour": 2, "energy": -3 }, "result": "The brother still hates you, but he hates you a bit less." },
-        { "label": "Pretend you're someone else", "effects": { "fans": -4 }, "result": "'You're definitely him,' she says. 'You've got his face.'", "news": { "page": "front", "headline": "PYJAMA DRAMA: {NAME} SNUBS FAN IN CEREAL AISLE" } }
+        {
+          "label": "Smile, selfie, video, the lot",
+          "effects": {
+            "fans": 6,
+            "honour": 2,
+            "energy": -3
+          },
+          "result": "The brother still hates you, but he hates you a bit less."
+        },
+        {
+          "label": "Pretend you're someone else",
+          "effects": {
+            "fans": -4
+          },
+          "result": "'You're definitely him,' she says. 'You've got his face.'",
+          "news": {
+            "page": "front",
+            "headline": "PYJAMA DRAMA: {NAME} SNUBS FAN IN CEREAL AISLE"
+          }
+        }
       ]
     },
     {
-      "id": "fishingTrip", "from": "The Gaffer", "via": "call", "minWeek": 6, "weight": 2, "min": { "manager": 45 },
+      "id": "fishingTrip",
+      "from": "The Gaffer",
+      "via": "call",
+      "minWeek": 6,
+      "weight": 2,
+      "min": {
+        "manager": 45
+      },
       "text": "Son. I'm going down the reservoir Sunday. Dawn start. Bring a flask. Don't tell the others, they'll want to come and they fish like idiots.",
       "choices": [
-        { "label": "Go fishing with the gaffer (uses a time slot)", "effects": { "manager": 10, "teammates": -2, "energy": -5, "slot": 1 }, "result": "Six hours. One fish. He names it after you. It's the happiest you've ever seen him.", "flag": "fishedWithGaffer" },
-        { "label": "Make an excuse", "effects": { "manager": -3, "energy": 5 }, "result": "'Suit yourself,' he says, in the voice of a man who will remember this." }
+        {
+          "label": "Go fishing with the gaffer (uses a time slot)",
+          "effects": {
+            "manager": 10,
+            "teammates": -2,
+            "energy": -5,
+            "slot": 1
+          },
+          "result": "Six hours. One fish. He names it after you. It's the happiest you've ever seen him.",
+          "flag": "fishedWithGaffer"
+        },
+        {
+          "label": "Make an excuse",
+          "effects": {
+            "manager": -3,
+            "energy": 5
+          },
+          "result": "'Suit yourself,' he says, in the voice of a man who will remember this."
+        }
       ]
     },
     {
-      "id": "seniorPro", "from": "The dressing room", "via": "moment", "minWeek": 2, "weight": 2,
+      "id": "seniorPro",
+      "from": "The dressing room",
+      "via": "moment",
+      "minWeek": 2,
+      "weight": 2,
       "text": "Big Terry, club captain, 34, has taken your peg, your towel and your protein shake. 'Rookies get the corner by the bin,' he says. The lads are watching.",
       "choices": [
-        { "label": "Stand up to him", "effects": { "teammates": 3, "honour": 2, "manager": -2 }, "result": "Big Terry stares at you for a long time. Then he laughs and gives you the towel back. The shake's gone though." },
-        { "label": "Corner by the bin it is", "effects": { "teammates": -2, "energy": -2 }, "result": "It's not too bad by the bin. You get to know the bin quite well." }
+        {
+          "label": "Stand up to him",
+          "effects": {
+            "teammates": 3,
+            "honour": 2,
+            "manager": -2
+          },
+          "result": "Big Terry stares at you for a long time. Then he laughs and gives you the towel back. The shake's gone though."
+        },
+        {
+          "label": "Corner by the bin it is",
+          "effects": {
+            "teammates": -2,
+            "energy": -2
+          },
+          "result": "It's not too bad by the bin. You get to know the bin quite well."
+        }
       ]
     },
     {
-      "id": "sundayLeague", "from": "Deano (old Sunday league mate)", "via": "text", "minWeek": 4, "weight": 2,
+      "id": "sundayLeague",
+      "from": "Deano (old Sunday league mate)",
+      "via": "text",
+      "minWeek": 4,
+      "weight": 2,
       "text": "Oi superstar. The Red Lion are in the cup final Sunday and we're short. Come on, one game, for old times. Ref's blind. Pitch is a swamp. You'll love it.",
       "choices": [
-        { "label": "Play for the Red Lion (uses a time slot)", "effects": { "family": 4, "fans": 4, "energy": -10, "slot": 1 }, "result": "You score a hat-trick in wellies. Deano cries. You're banned from the Red Lion's car park for life (long story).", "next": { "id": "sundayFound", "in": 1, "chance": 0.5 } },
-        { "label": "Can't risk the injury, sorry", "effects": { "honour": 1, "family": -2 }, "result": "Deano sends a voice note. It's just him saying 'Big time Charlie' for forty seconds." }
+        {
+          "label": "Play for the Red Lion (uses a time slot)",
+          "effects": {
+            "family": 4,
+            "fans": 4,
+            "energy": -10,
+            "slot": 1
+          },
+          "result": "You score a hat-trick in wellies. Deano cries. You're banned from the Red Lion's car park for life (long story).",
+          "next": {
+            "id": "sundayFound",
+            "in": 1,
+            "chance": 0.5
+          }
+        },
+        {
+          "label": "Can't risk the injury, sorry",
+          "effects": {
+            "honour": 1,
+            "family": -2
+          },
+          "result": "Deano sends a voice note. It's just him saying 'Big time Charlie' for forty seconds."
+        }
       ]
     },
     {
-      "id": "sundayFound", "from": "The Gaffer", "via": "call", "followUpOnly": true,
+      "id": "sundayFound",
+      "from": "The Gaffer",
+      "via": "call",
+      "followUpOnly": true,
       "text": "Someone's sent me a video of you in a Red Lion shirt, on a swamp, doing a knee slide into a dog. Explain.",
       "choices": [
-        { "label": "'It was for charity'", "effects": { "manager": -5, "honour": -1 }, "result": "'Which charity?' 'The Red Lion.' Long silence.", "news": { "page": "back", "headline": "PUB-LIC ENEMY: {NAME} RISKS IT ALL IN SUNDAY LEAGUE" } },
-        { "label": "Hold your hands up", "effects": { "manager": -2, "honour": 2 }, "result": "He fines you a week's tea money. Fair." }
+        {
+          "label": "'It was for charity'",
+          "effects": {
+            "manager": -5,
+            "honour": -1
+          },
+          "result": "'Which charity?' 'The Red Lion.' Long silence.",
+          "news": {
+            "page": "back",
+            "headline": "PUB-LIC ENEMY: {NAME} RISKS IT ALL IN SUNDAY LEAGUE"
+          }
+        },
+        {
+          "label": "Hold your hands up",
+          "effects": {
+            "manager": -2,
+            "honour": 2
+          },
+          "result": "He fines you a week's tea money. Fair."
+        }
       ]
     },
     {
-      "id": "lendMoney", "from": "Kev (midfielder)", "via": "text", "minWeek": 6, "weight": 2, "min": { "money": 700 },
+      "id": "lendMoney",
+      "from": "Kev (midfielder)",
+      "via": "text",
+      "minWeek": 6,
+      "weight": 2,
+      "min": {
+        "money": 700
+      },
       "text": "Bro can I borrow £500. Car's failed its MOT and I need it for, er, a car thing. Pay you back next week 100%. Kev",
       "choices": [
-        { "label": "Lend him £500", "effects": { "money": -500, "teammates": 5 }, "result": "Kev hugs you so hard your back clicks.", "next": { "id": "kevPays", "in": 2, "chance": 0.55 } },
-        { "label": "Sorry Kev, skint", "effects": { "teammates": -3 }, "result": "Kev says no worries. Kev is very worried." }
+        {
+          "label": "Lend him £500",
+          "effects": {
+            "money": -500,
+            "teammates": 5
+          },
+          "result": "Kev hugs you so hard your back clicks.",
+          "next": {
+            "id": "kevPays",
+            "in": 2,
+            "chance": 0.55
+          }
+        },
+        {
+          "label": "Sorry Kev, skint",
+          "effects": {
+            "teammates": -3
+          },
+          "result": "Kev says no worries. Kev is very worried."
+        }
       ]
     },
     {
-      "id": "kevPays", "from": "Kev (midfielder)", "via": "text", "followUpOnly": true,
+      "id": "kevPays",
+      "from": "Kev (midfielder)",
+      "via": "text",
+      "followUpOnly": true,
       "text": "Told you bro! £500 back plus a Twix for interest. Legend.",
-      "choices": [ { "label": "Accept the Twix", "effects": { "money": 500, "teammates": 2 }, "result": "Best interest rate you'll ever get." } ]
+      "choices": [
+        {
+          "label": "Accept the Twix",
+          "effects": {
+            "money": 500,
+            "teammates": 2
+          },
+          "result": "Best interest rate you'll ever get."
+        }
+      ]
     },
     {
-      "id": "prankWar", "from": "The dressing room", "via": "moment", "minWeek": 5, "weight": 2,
+      "id": "prankWar",
+      "from": "The dressing room",
+      "via": "moment",
+      "minWeek": 5,
+      "weight": 2,
       "text": "The prank war's escalated. Somebody's put cling film over the gaffer's toilet. Everyone thinks it was you. It wasn't. Was it?",
       "choices": [
-        { "label": "Go bigger: fill Gaz's car with balloons", "effects": { "teammates": 7, "manager": -4, "energy": -4 }, "result": "Four hundred balloons. Gaz opens the door and becomes a viral sensation.", "news": { "page": "front", "headline": "POP IDOL: {NAME}'S BALLOON BUST-UP" } },
-        { "label": "Stay well out of it", "effects": { "teammates": -2, "manager": 2 }, "result": "You eat your lunch alone, but with dignity." }
+        {
+          "label": "Go bigger: fill Gaz's car with balloons",
+          "effects": {
+            "teammates": 7,
+            "manager": -4,
+            "energy": -4
+          },
+          "result": "Four hundred balloons. Gaz opens the door and becomes a viral sensation.",
+          "news": {
+            "page": "front",
+            "headline": "POP IDOL: {NAME}'S BALLOON BUST-UP"
+          }
+        },
+        {
+          "label": "Stay well out of it",
+          "effects": {
+            "teammates": -2,
+            "manager": 2
+          },
+          "result": "You eat your lunch alone, but with dignity."
+        }
       ]
     },
     {
-      "id": "schoolPrizeDay", "from": "Your old school", "via": "text", "minWeek": 8, "weight": 2,
+      "id": "schoolPrizeDay",
+      "from": "Your old school",
+      "via": "text",
+      "minWeek": 8,
+      "weight": 2,
       "text": "Dear former pupil. We'd love you to present the prizes at Prize Day. Mr Hargreaves (PE) says he 'always knew'. He did not always know.",
       "choices": [
-        { "label": "Present the prizes (uses a time slot)", "effects": { "honour": 6, "family": 5, "fans": 3, "slot": 1 }, "result": "Mr Hargreaves calls you 'my lad'. Your old maths teacher asks for a selfie. Revenge tastes like Ribena.", "news": { "page": "front", "headline": "HEAD OF THE CLASS: {NAME} BACK AT SCHOOL" } },
-        { "label": "Too busy, sorry", "effects": { "honour": -2, "family": -2 }, "result": "They get the local weatherman instead. He's thrilled." }
+        {
+          "label": "Present the prizes (uses a time slot)",
+          "effects": {
+            "honour": 6,
+            "family": 5,
+            "fans": 3,
+            "slot": 1
+          },
+          "result": "Mr Hargreaves calls you 'my lad'. Your old maths teacher asks for a selfie. Revenge tastes like Ribena.",
+          "news": {
+            "page": "front",
+            "headline": "HEAD OF THE CLASS: {NAME} BACK AT SCHOOL"
+          }
+        },
+        {
+          "label": "Too busy, sorry",
+          "effects": {
+            "honour": -2,
+            "family": -2
+          },
+          "result": "They get the local weatherman instead. He's thrilled."
+        }
       ]
     },
     {
-      "id": "sidPuff", "from": "Sid Scoop (journalist)", "via": "call", "minWeek": 7, "weight": 2,
+      "id": "sidPuff",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "minWeek": 7,
+      "weight": 2,
       "text": "Sid Scoop. I'll write you a lovely puff piece. 'Wonderkid', the works. All I need is the team for Saturday. Who's playing? Tiny thing. Nobody gets hurt.",
       "choices": [
-        { "label": "Leak the team", "effects": { "honour": -6, "money": 200 }, "result": "Sid sends you £200 in an envelope that smells of pickled onions.", "flag": "leaked", "next": { "id": "leakFound", "in": 2, "chance": 0.5 }, "news": { "page": "back", "headline": "WONDERKID {NAME}: THE NEXT BIG THING?" } },
-        { "label": "Tell Sid where to go", "effects": { "honour": 4 }, "result": "'You'll regret that,' says Sid. You suspect he's right.", "flag": "sidGrudge" }
+        {
+          "label": "Leak the team",
+          "effects": {
+            "honour": -6,
+            "money": 200
+          },
+          "result": "Sid sends you £200 in an envelope that smells of pickled onions.",
+          "flag": "leaked",
+          "next": {
+            "id": "leakFound",
+            "in": 2,
+            "chance": 0.5
+          },
+          "news": {
+            "page": "back",
+            "headline": "WONDERKID {NAME}: THE NEXT BIG THING?"
+          }
+        },
+        {
+          "label": "Tell Sid where to go",
+          "effects": {
+            "honour": 4
+          },
+          "result": "'You'll regret that,' says Sid. You suspect he's right.",
+          "flag": "sidGrudge"
+        }
       ]
     },
     {
-      "id": "leakFound", "from": "The Gaffer", "via": "call", "followUpOnly": true,
+      "id": "leakFound",
+      "from": "The Gaffer",
+      "via": "call",
+      "followUpOnly": true,
       "text": "Somebody leaked my team to Sid Scoop. I've narrowed it down to you, Gaz and the bloke who does the pies. The pie bloke can't read. And Gaz can't spell 'team'.",
       "choices": [
-        { "label": "Confess", "effects": { "manager": -8, "honour": 3 }, "result": "He doesn't shout. That's worse. He just sighs, like a slow puncture." },
-        { "label": "Blame the pie bloke", "effects": { "manager": -3, "honour": -6, "teammates": -3 }, "result": "The pie bloke is sacked. The pies are worse now. Everyone knows." }
+        {
+          "label": "Confess",
+          "effects": {
+            "manager": -8,
+            "honour": 3
+          },
+          "result": "He doesn't shout. That's worse. He just sighs, like a slow puncture."
+        },
+        {
+          "label": "Blame the pie bloke",
+          "effects": {
+            "manager": -3,
+            "honour": -6,
+            "teammates": -3
+          },
+          "result": "The pie bloke is sacked. The pies are worse now. Everyone knows."
+        }
       ]
     },
     {
-      "id": "goldChain", "from": "Gran", "via": "call", "minWeek": 6, "weight": 2, "needFlag": "granWon",
+      "id": "goldChain",
+      "from": "Gran",
+      "via": "call",
+      "minWeek": 6,
+      "weight": 2,
+      "needFlag": "granWon",
       "text": "I won again on you, pet! I've bought you a present. It's a gold chain. It's very big. It says your name. In diamonds. Well, nearly diamonds.",
       "choices": [
-        { "label": "Wear it with pride", "effects": { "family": 6, "fans": -3, "honour": -1 }, "result": "It weighs more than your boots. The lads call you Mr T.", "news": { "page": "front", "headline": "BLING IT ON: {NAME}'S GRAN GOES FOR GOLD" } },
-        { "label": "Thank her, hide it in a drawer", "effects": { "family": -2 }, "result": "Gran checks every photo of you for the chain. Every. Photo." }
+        {
+          "label": "Wear it with pride",
+          "effects": {
+            "family": 6,
+            "fans": -3,
+            "honour": -1
+          },
+          "result": "It weighs more than your boots. The lads call you Mr T.",
+          "news": {
+            "page": "front",
+            "headline": "BLING IT ON: {NAME}'S GRAN GOES FOR GOLD"
+          }
+        },
+        {
+          "label": "Thank her, hide it in a drawer",
+          "effects": {
+            "family": -2
+          },
+          "result": "Gran checks every photo of you for the chain. Every. Photo."
+        }
       ]
     },
     {
-      "id": "cooking", "from": "Mum", "via": "text", "minWeek": 3, "weight": 2,
+      "id": "cooking",
+      "from": "Mum",
+      "via": "text",
+      "minWeek": 3,
+      "weight": 2,
       "text": "Love, the club nutritionist rang. She says you've been living on Pot Noodles. I've booked you a cooking class with Auntie Carol. Thursday. It's non-negotiable. x",
       "choices": [
-        { "label": "Go to the cooking class (uses a time slot)", "effects": { "family": 6, "energy": 10, "slot": 1 }, "result": "You learn three meals. Two involve sherry.", "flag": "canCook" },
-        { "label": "Order a Deliveroo instead", "effects": { "money": -40, "family": -4, "energy": -2 }, "result": "Your Deliveroo rider recognises you and asks why you're always ordering chicken nuggets at 11pm." }
+        {
+          "label": "Go to the cooking class (uses a time slot)",
+          "effects": {
+            "family": 6,
+            "energy": 10,
+            "slot": 1
+          },
+          "result": "You learn three meals. Two involve sherry.",
+          "flag": "canCook"
+        },
+        {
+          "label": "Order a Deliveroo instead",
+          "effects": {
+            "money": -40,
+            "family": -4,
+            "energy": -2
+          },
+          "result": "Your Deliveroo rider recognises you and asks why you're always ordering chicken nuggets at 11pm."
+        }
       ]
     },
     {
-      "id": "fansPOTM", "from": "Supporters' Club", "via": "text", "minWeek": 10, "weight": 3, "min": { "fans": 68 }, "notFlag": "potm",
+      "id": "fansPOTM",
+      "from": "Supporters' Club",
+      "via": "text",
+      "minWeek": 10,
+      "weight": 3,
+      "min": {
+        "fans": 68
+      },
+      "notFlag": "potm",
       "text": "Congratulations! You've been voted Supporters' Player of the Month! The award ceremony is at the Working Men's Club. There'll be a buffet. A big one.",
       "choices": [
-        { "label": "Go and give a speech", "effects": { "fans": 6, "honour": 4, "energy": -4 }, "result": "You thank your mum, your gran and the buffet. Standing ovation.", "flag": "potm", "news": { "page": "back", "headline": "FANS' FAVOURITE: {NAME} SCOOPS MONTHLY GONG" } },
-        { "label": "Send a video message", "effects": { "fans": 2, "honour": 1 }, "result": "The video plays sideways. Everyone watches it sideways.", "flag": "potm" }
+        {
+          "label": "Go and give a speech",
+          "effects": {
+            "fans": 6,
+            "honour": 4,
+            "energy": -4
+          },
+          "result": "You thank your mum, your gran and the buffet. Standing ovation.",
+          "flag": "potm",
+          "news": {
+            "page": "back",
+            "headline": "FANS' FAVOURITE: {NAME} SCOOPS MONTHLY GONG"
+          }
+        },
+        {
+          "label": "Send a video message",
+          "effects": {
+            "fans": 2,
+            "honour": 1
+          },
+          "result": "The video plays sideways. Everyone watches it sideways.",
+          "flag": "potm"
+        }
       ]
     },
     {
-      "id": "boos", "from": "The fans", "via": "moment", "minWeek": 6, "weight": 3, "max": { "fans": 32 },
+      "id": "boos",
+      "from": "The fans",
+      "via": "moment",
+      "minWeek": 6,
+      "weight": 3,
+      "max": {
+        "fans": 32
+      },
       "text": "A bloke in the car park shouts 'Get a proper striker!' at you. His mate shouts 'Or a proper haircut!' Then they ask for an autograph for their kid.",
       "choices": [
-        { "label": "Sign it, and smile", "effects": { "fans": 5, "honour": 2 }, "result": "'You're alright, you,' says the first bloke. Progress." },
-        { "label": "Tell them what you think of them", "effects": { "fans": -6, "honour": -4 }, "result": "Someone films it. It's not your best angle.", "news": { "page": "back", "headline": "CAR PARK CLASH: {NAME} BLOWS HIS TOP" } }
+        {
+          "label": "Sign it, and smile",
+          "effects": {
+            "fans": 5,
+            "honour": 2
+          },
+          "result": "'You're alright, you,' says the first bloke. Progress."
+        },
+        {
+          "label": "Tell them what you think of them",
+          "effects": {
+            "fans": -6,
+            "honour": -4
+          },
+          "result": "Someone films it. It's not your best angle.",
+          "news": {
+            "page": "back",
+            "headline": "CAR PARK CLASH: {NAME} BLOWS HIS TOP"
+          }
+        }
       ]
     },
     {
-      "id": "agentLunch", "from": "Tony (super-agent)", "via": "call", "minWeek": 4, "weight": 3, "types": ["money"],
+      "id": "agentLunch",
+      "from": "Tony (super-agent)",
+      "via": "call",
+      "minWeek": 4,
+      "weight": 3,
+      "types": [
+        "money"
+      ],
       "text": "Tony here. Super-agent. Lunch. My treat. Steakhouse. I've got contacts in Dubai, Madrid and a bloke in Rhyl. Sign nothing, just eat.",
       "choices": [
-        { "label": "Go to lunch", "effects": { "money": 0, "manager": -3, "honour": -2 }, "result": "Tony orders for you, takes a photo of you, and leaves you with the bill. £180.", "flag": "metTony", "next": { "id": "tonyPhoto", "in": 1, "chance": 0.6 } },
-        { "label": "Ignore him", "effects": { "honour": 1 }, "result": "Tony sends you 14 voice notes. One is just him chewing." }
+        {
+          "label": "Go to lunch",
+          "effects": {
+            "money": 0,
+            "manager": -3,
+            "honour": -2
+          },
+          "result": "Tony orders for you, takes a photo of you, and leaves you with the bill. £180.",
+          "flag": "metTony",
+          "next": {
+            "id": "tonyPhoto",
+            "in": 1,
+            "chance": 0.6
+          }
+        },
+        {
+          "label": "Ignore him",
+          "effects": {
+            "honour": 1
+          },
+          "result": "Tony sends you 14 voice notes. One is just him chewing."
+        }
       ]
     },
     {
-      "id": "tonyPhoto", "from": "Sid Scoop (journalist)", "via": "call", "followUpOnly": true,
+      "id": "tonyPhoto",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "followUpOnly": true,
       "text": "Sid Scoop. Funny photo landed on my desk: you, a steakhouse, and Tony 'Ten Percent' Malone. Are you leaving the club?",
       "choices": [
-        { "label": "'No comment'", "effects": { "manager": -5, "fans": -4 }, "result": "'No comment' means yes in newspaper.", "news": { "page": "back", "headline": "STEAK-OUT: {NAME} IN SECRET AGENT LUNCH" } },
-        { "label": "'I love this club'", "effects": { "fans": 3, "manager": 1, "honour": 1 }, "result": "Sid prints it anyway, with a photo of you holding a steak knife.", "news": { "page": "back", "headline": "{NAME}: I'M NOT GOING ANYWHERE (PROBABLY)" } }
+        {
+          "label": "'No comment'",
+          "effects": {
+            "manager": -5,
+            "fans": -4
+          },
+          "result": "'No comment' means yes in newspaper.",
+          "news": {
+            "page": "back",
+            "headline": "STEAK-OUT: {NAME} IN SECRET AGENT LUNCH"
+          }
+        },
+        {
+          "label": "'I love this club'",
+          "effects": {
+            "fans": 3,
+            "manager": 1,
+            "honour": 1
+          },
+          "result": "Sid prints it anyway, with a photo of you holding a steak knife.",
+          "news": {
+            "page": "back",
+            "headline": "{NAME}: I'M NOT GOING ANYWHERE (PROBABLY)"
+          }
+        }
       ]
     },
     {
-      "id": "kitmanProphecy", "from": "Dennis (kit man)", "via": "moment", "minWeek": 9, "weight": 2,
+      "id": "kitmanProphecy",
+      "from": "Dennis (kit man)",
+      "via": "moment",
+      "minWeek": 9,
+      "weight": 2,
       "text": "Dennis grabs your arm in the corridor. 'Tuesday. A seagull. Don't eat the sausage roll.' He walks off. On Tuesday a seagull steals your sausage roll. Dennis winks at you from across the car park.",
       "choices": [
-        { "label": "Ask Dennis what else he knows", "effects": { "teammates": 1, "energy": -2 }, "result": "'You'll be famous,' he says. 'Or infamous. Depends on the slippers.' What slippers?", "flag": "dennisSlippers" },
-        { "label": "Back away slowly", "effects": {}, "result": "You start checking for seagulls everywhere. There are always seagulls." }
+        {
+          "label": "Ask Dennis what else he knows",
+          "effects": {
+            "teammates": 1,
+            "energy": -2
+          },
+          "result": "'You'll be famous,' he says. 'Or infamous. Depends on the slippers.' What slippers?",
+          "flag": "dennisSlippers"
+        },
+        {
+          "label": "Back away slowly",
+          "effects": {},
+          "result": "You start checking for seagulls everywhere. There are always seagulls."
+        }
+      ]
+    },
+    {
+      "id": "deanoDogVape",
+      "friend": "deano",
+      "from": "Deano",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Mate. Hear me out. Vape shop. For DOGS. Flavours: bacon, postman, next door's cat. I just need £500 to get started. You'll get 20%. Of the profits. Of the dogs.",
+      "choices": [
+        {
+          "label": "Invest £500",
+          "effects": {
+            "money": -500,
+            "loyalty": 8
+          },
+          "result": "Deano cries. He promises you'll be 'on the ground floor'. The ground floor is his mum's garage.",
+          "next": {
+            "id": "deanoSlippers",
+            "in": 4,
+            "chance": 1
+          }
+        },
+        {
+          "label": "Not a chance",
+          "effects": {
+            "loyalty": -6
+          },
+          "result": "Deano says you've 'changed'. You have. You've learned what a dog vape is."
+        }
+      ]
+    },
+    {
+      "id": "deanoSlippers",
+      "friend": "deano",
+      "from": "Deano",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Dog vapes didn't work (RSPCA got involved). BUT. Novelty slippers. Shaped like YOUR face. Fans will go mad. I've found a supplier. Minimum order 40,000. I need £5,000. This is the one.",
+      "choices": [
+        {
+          "label": "Back him with £5,000",
+          "effects": {
+            "money": -5000,
+            "loyalty": 10
+          },
+          "result": "Somewhere in China, a factory starts making 40,000 of your face.",
+          "flag": "slippers",
+          "next": {
+            "id": "deanoSlippersFallout",
+            "in": 3,
+            "chance": 1
+          }
+        },
+        {
+          "label": "Absolutely not",
+          "effects": {
+            "loyalty": -8,
+            "honour": 1
+          },
+          "result": "Deano finds another investor. It's his nan. Dennis the kit man looks relieved."
+        }
+      ]
+    },
+    {
+      "id": "deanoSlippersFallout",
+      "friend": "deano",
+      "from": "Deano",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Slight problem. The slippers arrived. They've got your face on, but it's not really your face. It's more like a sad potato. Nobody's buying. They're in your garage. All of them. Also the press know.",
+      "choices": [
+        {
+          "label": "Laugh it off and sign a few for charity",
+          "effects": {
+            "honour": 4,
+            "fans": 4,
+            "loyalty": 6
+          },
+          "result": "A children's hospital gets 500 signed potato slippers. The kids love them. Deano sells the rest at a car boot for 20p each.",
+          "news": {
+            "page": "front",
+            "headline": "STRIKER'S 40,000 SLIPPERS SHAME"
+          }
+        },
+        {
+          "label": "Blame Deano in public",
+          "effects": {
+            "honour": -3,
+            "loyalty": -25,
+            "fans": -2
+          },
+          "result": "Deano unfollows you. Then refollows you to unfollow you again, so you notice.",
+          "news": {
+            "page": "front",
+            "headline": "SLIPPER-Y SLOPE: {NAME} DUMPS BEST MATE OVER 40,000 FACE SLIPPERS"
+          }
+        }
+      ]
+    },
+    {
+      "id": "shazParty",
+      "friend": "shaz",
+      "from": "Shaz",
+      "via": "text",
+      "followUpOnly": true,
+      "text": "PARTY AT MINE SATURDAY 🎉🎉 foam machine CONFIRMED. bring the lads. bring snacks. bring a towel (foam).",
+      "choices": [
+        {
+          "label": "Go (but leave early, match day)",
+          "effects": {
+            "loyalty": 5,
+            "energy": -4,
+            "teammates": 2
+          },
+          "result": "You leave at 10pm. Shaz calls you 'grandad' in the group chat. Worth it."
+        },
+        {
+          "label": "Go all in",
+          "effects": {
+            "loyalty": 10,
+            "energy": -14,
+            "teammates": 4
+          },
+          "result": "You wake up covered in foam on a sun lounger. It's Sunday. It might be Monday.",
+          "next": {
+            "id": "shazPhotos",
+            "in": 1,
+            "chance": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "shazPhotos",
+      "friend": "shaz",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Sid Scoop. Lovely photos from a foam party. You, a sun lounger, a traffic cone (again), and what looks like a goat. Comment?",
+      "choices": [
+        {
+          "label": "'The goat was invited'",
+          "effects": {
+            "honour": -3,
+            "fans": 3
+          },
+          "result": "The goat becomes a minor celebrity.",
+          "news": {
+            "page": "front",
+            "headline": "FOAM-ALITY: {NAME} AND THE PARTY GOAT"
+          }
+        },
+        {
+          "label": "Ask Shaz to make a statement",
+          "effects": {
+            "loyalty": -5,
+            "honour": 1
+          },
+          "result": "Shaz's statement is a 40-second voice note of her laughing.",
+          "news": {
+            "page": "front",
+            "headline": "BUBBLE TROUBLE FOR {NAME}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "leeTellies",
+      "friend": "lee",
+      "from": "Big Lee",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Got a van full of tellies. Don't ask. 75-inch. Hundred quid each. You want one? Your mum wants one. I've already asked your mum.",
+      "choices": [
+        {
+          "label": "Take a telly (£100)",
+          "effects": {
+            "money": -100,
+            "loyalty": 6,
+            "honour": -4,
+            "energy": 3
+          },
+          "result": "It's a great telly. It has someone else's Netflix logged in.",
+          "next": {
+            "id": "leeCardNight",
+            "in": 2,
+            "chance": 1
+          }
+        },
+        {
+          "label": "Lee, I can't",
+          "effects": {
+            "loyalty": -4,
+            "honour": 2
+          },
+          "result": "'Your loss,' says Lee. 'Ninety quid?'"
+        }
+      ]
+    },
+    {
+      "id": "leeCardNight",
+      "friend": "lee",
+      "from": "Big Lee",
+      "via": "text",
+      "followUpOnly": true,
+      "text": "Card night at mine Friday. Proper game. Bring cash. My cousin Tel's playing. Don't stare at Tel's eyebrow.",
+      "choices": [
+        {
+          "label": "I'm in (opens Big Lee's card nights in the Casino)",
+          "effects": {
+            "loyalty": 6,
+            "honour": -1
+          },
+          "result": "Tel's eyebrow is mesmerising. Big Lee's card nights are now in your Casino menu.",
+          "flag": "leeCards"
+        },
+        {
+          "label": "Not for me",
+          "effects": {
+            "loyalty": -3
+          },
+          "result": "Lee says 'suit yourself' and deals Tel in."
+        }
+      ]
+    },
+    {
+      "id": "tyFeature",
+      "friend": "ty",
+      "from": "Ty",
+      "via": "text",
+      "followUpOnly": true,
+      "text": "bro. BRO. need u on my new track. just say 'big ting' 4 times in a deep voice. gonna be massive. trust.",
+      "choices": [
+        {
+          "label": "Record it",
+          "effects": {
+            "loyalty": 10,
+            "fans": 3,
+            "honour": -1
+          },
+          "result": "The track gets 40,000 plays. 39,000 are people laughing at you. You're a meme. A popular meme.",
+          "news": {
+            "page": "front",
+            "headline": "BIG TING ENERGY: {NAME}'S RAP DEBUT"
+          }
+        },
+        {
+          "label": "Leave me out of it",
+          "effects": {
+            "loyalty": -8
+          },
+          "result": "Ty goes quiet. Ty is never quiet.",
+          "next": {
+            "id": "tyDiss",
+            "in": 3,
+            "chance": 0.7
+          }
+        }
+      ]
+    },
+    {
+      "id": "tyDiss",
+      "friend": "ty",
+      "from": "Ty",
+      "via": "text",
+      "followUpOnly": true,
+      "text": "dropped a diss track about u. its called 'Bench Warmer'. no hard feelings. its fire tho.",
+      "choices": [
+        {
+          "label": "Respond with a diss track of your own",
+          "effects": {
+            "fans": 4,
+            "honour": -3,
+            "loyalty": 5
+          },
+          "result": "Your track rhymes 'bench' with 'bench'. The internet decides you've won anyway.",
+          "news": {
+            "page": "front",
+            "headline": "RAP BEEF: {NAME} BITES BACK"
+          }
+        },
+        {
+          "label": "Rise above it",
+          "effects": {
+            "honour": 3,
+            "fans": -1
+          },
+          "result": "Ty's track gets 600 plays. He blames the algorithm."
+        }
+      ]
+    },
+    {
+      "id": "priyaMoney",
+      "friend": "priya",
+      "from": "Priya",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "I looked at your bank statement (you left it open). You spent £84 on Greggs last week. EIGHTY FOUR. Let me set you up with a savings plan. I'll do it for free. Well, for a sausage roll.",
+      "choices": [
+        {
+          "label": "Let Priya sort it",
+          "effects": {
+            "loyalty": 6,
+            "family": 2,
+            "money": -200
+          },
+          "result": "Priya puts £200 in your rainy day fund and bans you from Greggs on weekdays.",
+          "flag": "priyaSaving"
+        },
+        {
+          "label": "I'm fine, honestly",
+          "effects": {
+            "loyalty": -3
+          },
+          "result": "You buy a sausage roll to prove a point. It is not a point."
+        }
+      ]
+    },
+    {
+      "id": "priyaProperty",
+      "friend": "priya",
+      "from": "Priya",
+      "via": "call",
+      "followUpOnly": true,
+      "minAge": 18,
+      "text": "Grown-up talk: rent is money you never see again. If you buy somewhere sensible, it's an investment. Not a moat. Please don't buy a moat.",
+      "choices": [
+        {
+          "label": "Listen. Properly.",
+          "effects": {
+            "loyalty": 5,
+            "honour": 1
+          },
+          "result": "Priya draws a graph. You understand 60% of it. That's 60% more than your agent."
+        },
+        {
+          "label": "'What about a moat though?'",
+          "effects": {
+            "loyalty": -2
+          },
+          "result": "Priya puts her head on the table for a long time."
+        }
+      ]
+    },
+    {
+      "id": "moInjuryTip",
+      "friend": "mo",
+      "from": "Mo",
+      "via": "text",
+      "followUpOnly": true,
+      "text": "Watched your last game. Your left hamstring's tight, you're landing heavy on it. Come round, I'll sort you a routine. Free. I need the practice and you need the hamstring.",
+      "choices": [
+        {
+          "label": "Go round (uses a time slot)",
+          "effects": {
+            "loyalty": 6,
+            "energy": 15,
+            "slot": 1
+          },
+          "result": "Mo's routine is mostly lying on the floor groaning. You feel brand new."
+        },
+        {
+          "label": "It's fine, I'll stretch",
+          "effects": {
+            "loyalty": -2
+          },
+          "result": "You don't stretch."
+        }
+      ]
+    },
+    {
+      "id": "jessCharity",
+      "friend": "jess",
+      "from": "Jess",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "The youth club roof's leaking again. We're doing a sponsored penalty shoot-out. Would you go in goal? The kids want to score past a 'real footballer'. Even a striker.",
+      "choices": [
+        {
+          "label": "Go in goal (uses a time slot)",
+          "effects": {
+            "loyalty": 8,
+            "honour": 6,
+            "fans": 3,
+            "slot": 1
+          },
+          "result": "You let in 112 penalties. They raise £2,300. The roof gets fixed. A seven-year-old does a Cristiano celebration in your face.",
+          "news": {
+            "page": "front",
+            "headline": "SAVE OF THE DAY: {NAME} LETS IN 112 FOR CHARITY"
+          }
+        },
+        {
+          "label": "Send a signed shirt",
+          "effects": {
+            "loyalty": -2,
+            "honour": 1
+          },
+          "result": "The shirt raises £40. It's a nice shirt."
+        }
+      ]
+    },
+    {
+      "id": "stanAdvice",
+      "friend": "stan",
+      "from": "Stan",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Son. A word from an old pro. The game'll chew you up if you let it. Look after your mum, save your money, and never trust a man in a long coat who says 'trust me'. That's all. Oh, and wear long studs.",
+      "choices": [
+        {
+          "label": "Thank him, properly",
+          "effects": {
+            "loyalty": 8,
+            "family": 2,
+            "honour": 1
+          },
+          "result": "Stan goes quiet, then says 'your grandad would've been proud'. You both pretend you've got something in your eye."
+        },
+        {
+          "label": "'Cheers Stan' (you're busy)",
+          "effects": {
+            "loyalty": -3
+          },
+          "result": "Stan says 'right you are' and tells the same thing to the man in the newsagent."
+        }
       ]
     }
   ]

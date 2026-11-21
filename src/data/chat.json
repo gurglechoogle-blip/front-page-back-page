@@ -1,0 +1,26 @@
+{
+  "_note": "Team group chat. {a} {b} = teammates, {me} = you, {gaffer} = the gaffer, {rival} = the rival striker. Prompts let you post; risky posts can leak to the press.",
+  "banter": [
+    "{a}: who's nicked my flip flops", "{b}: gaffer's wearing the fishing hat again 🎣 we're doing shape all day", "{a}: {me} still owes me a fiver from Tenerife",
+    "{b}: physio said my hamstring's 'concerning'. what does concerning mean", "{a}: [image: a duck wearing {b}'s boots]", "{b}: who parked on the grass. it was the gaffer wasn't it",
+    "{a}: kit man Dennis just told me I'll 'marry a woman called Sue'. I'm already married to Sue", "{b}: pre-match meal is beetroot again. I'm going to Greggs", "{a}: {rival} posted a gym selfie at 5am. who does that",
+    "{b}: the bus driver's put Phil Collins on again 😭", "{a}: anyone got a spare charger. and a spare shin pad. and a lift", "{b}: VOTE: who'd survive longest on a desert island. (not {a})"
+  ],
+  "prompts": [
+    { "q": "{a}: lads what did we think of the gaffer's team talk 😂 something about a pike", "options": [
+      { "text": "😂 the pike bit was elite", "effects": { "teammates": 2 } },
+      { "text": "gaffer's tactics = 🐟💩", "effects": { "teammates": 3 }, "risky": true, "leak": 0.45, "leakEffects": { "manager": -10, "honour": -3 }, "headline": "LEAKED: {NAME}'S FISHY DIG AT GAFFER" },
+      { "text": "say nothing", "effects": {} } ] },
+    { "q": "{b}: {rival} reckons he's taking your shirt this season 👀", "options": [
+      { "text": "he can try 💪", "effects": { "teammates": 2 } },
+      { "text": "{rival} couldn't score in a brewery", "effects": { "teammates": 2, "honour": -1 }, "risky": true, "leak": 0.35, "leakEffects": { "honour": -3, "fans": -2 }, "headline": "BREWERY BUST-UP: {NAME}'S RIVAL RANT LEAKED" },
+      { "text": "good luck to him, honestly", "effects": { "honour": 1 } } ] },
+    { "q": "{a}: who's coming out Saturday night? (we've got a game Sunday 😬)", "options": [
+      { "text": "I'm in 🍻", "effects": { "teammates": 4, "energy": -8 }, "risky": true, "leak": 0.3, "leakEffects": { "manager": -6, "honour": -2 }, "headline": "NIGHT BEFORE: {NAME} ON THE TOWN AHEAD OF BIG GAME" },
+      { "text": "can't, early night", "effects": { "manager": 1, "teammates": -1 } } ] },
+    { "q": "{b}: rate {a}'s new haircut out of 10", "options": [
+      { "text": "solid 7, very brave", "effects": { "teammates": 2 } },
+      { "text": "[sends photo of a startled hedgehog]", "effects": { "teammates": 4 } },
+      { "text": "he looks like a burst sofa", "effects": { "teammates": 1, "honour": -1 }, "risky": true, "leak": 0.15, "leakEffects": { "teammates": -4 }, "headline": "HAIR-RAISING: {NAME} IN DRESSING ROOM BANTER ROW" } ] }
+  ]
+}

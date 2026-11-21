@@ -11,7 +11,7 @@ export function paperHTML(p, page, c) {
   const dateText = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const side = page === 'front'
     ? `<p class="psub">${esc(P.sub)}</p><div class="pbox">${esc(p.dennis)}</div><div class="pbox">${esc(p.gran)}</div>`
-    : `<p class="psub">${esc(P.sub)}</p>${P.quote ? `<blockquote>${esc(P.quote)}</blockquote>` : ''}${P.pos ? `<div class="pbox"><b>${esc(P.div)}:</b> ${esc(c.name)}'s side sit ${P.pos}${['th', 'st', 'nd', 'rd'][P.pos % 10 > 3 || [11, 12, 13].includes(P.pos % 100) ? 0 : P.pos % 10]}.</div>` : ''}`;
+    : `<p class="psub">${esc(P.sub)}</p>${P.quote ? `<blockquote>${esc(P.quote)}</blockquote>` : ''}${P.rival ? `<div class="pbox"><b>Elsewhere:</b> ${esc(P.rival)}</div>` : ''}${P.pos ? `<div class="pbox"><b>${esc(P.div)}:</b> ${esc(c.name)}'s side sit ${P.pos}${['th', 'st', 'nd', 'rd'][P.pos % 10 > 3 || [11, 12, 13].includes(P.pos % 100) ? 0 : P.pos % 10]}.</div>` : ''}`;
   return `<div class="paper ${page}">
     <div class="mast"><b>${esc(p.masthead)}</b><span>No. ${p.n} · ${dateText} · ${esc(p.price)}</span></div>
     <div class="pagelabel">${page === 'front' ? (p.front.photo === 'scandal' ? 'EXCLUSIVE' : 'NEWS') : 'SPORT'}</div>

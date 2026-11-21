@@ -1,0 +1,40 @@
+{
+  "_note": "Friends. kind: chaotic (fun, money schemes, temptation) or grounded (stability, sensible doors). Hanging out uses a time slot, raises loyalty and has a flavour of effects; it can also move their storyline on (chain = their events in order, in events.json). minAge on a hang-out option keeps pubs for 18+.",
+  "friends": [
+    { "id": "deano", "name": "Deano", "kind": "chaotic", "loyalty": 70, "trait": "Your best mate from Sunday league. His business ideas get more ambitious as they get worse.",
+      "hang": { "label": "Pint (of squash) at the Red Lion with Deano", "effects": { "energy": -3, "family": 1 }, "lines": ["Deano pitches you a vape shop for dogs. You say no. He looks hurt, then pitches it again.", "You play darts. Deano hits the barman. Everyone laughs, including the barman, eventually."] },
+      "chain": ["deanoDogVape", "deanoSlippers", "deanoSlippersFallout"] },
+    { "id": "shaz", "name": "Shaz", "kind": "chaotic", "loyalty": 55, "trait": "Throws the best parties in town. Also the loudest. Neighbours have a WhatsApp group about her.",
+      "hang": { "label": "Help Shaz plan her next party", "effects": { "energy": -5, "fans": 1 }, "lines": ["Shaz wants a foam machine AND a petting zoo. You talk her down to just the foam.", "You spend four hours choosing a playlist. It's all Steps."] },
+      "chain": ["shazParty", "shazPhotos"] },
+    { "id": "lee", "name": "Big Lee", "kind": "chaotic", "loyalty": 50, "trait": "Wheeler-dealer. Always has a van. Never says what's in the van.",
+      "hang": { "label": "Ride around in Big Lee's van", "effects": { "energy": -3, "honour": -1 }, "lines": ["Lee drops off 'some parcels'. You don't ask. You really don't ask.", "Lee sells a fridge to a man who already has a fridge. Genius."] },
+      "chain": ["leeTellies", "leeCardNight"] },
+    { "id": "ty", "name": "Ty", "kind": "chaotic", "loyalty": 50, "trait": "Aspiring rapper and influencer. 312 followers. Says he's 'about to blow up'.",
+      "hang": { "label": "Film content with Ty", "effects": { "energy": -2, "fans": 1 }, "lines": ["Ty films you doing keepy-uppies with an egg. The egg loses.", "Ty's new track is called 'Big Ting Energy'. It's 11 minutes long."] },
+      "chain": ["tyFeature", "tyDiss"] },
+    { "id": "priya", "name": "Priya", "kind": "grounded", "loyalty": 60, "trait": "Your sensible mate from school, now studying accountancy. Reads the small print for fun.",
+      "hang": { "label": "Coffee with Priya", "effects": { "energy": 3, "honour": 1 }, "lines": ["Priya explains compound interest with biscuits. You finally get it.", "Priya asks what an agent's 'ten percent' is ten percent OF. You don't know. She's horrified."] },
+      "chain": ["priyaMoney", "priyaProperty"] },
+    { "id": "mo", "name": "Mo", "kind": "grounded", "loyalty": 55, "trait": "Physio student. Will talk about hamstrings at a wedding.",
+      "hang": { "label": "Stretching session with Mo", "effects": { "energy": 6 }, "lines": ["Mo finds a knot in your calf the size of a satsuma. Satisfying.", "Mo makes you do yoga. You fall over in 'tree'. Twice."] },
+      "chain": ["moInjuryTip"] },
+    { "id": "jess", "name": "Jess", "kind": "grounded", "loyalty": 55, "trait": "Grew up next door. Runs a youth charity on a shoestring and a lot of shouting.",
+      "hang": { "label": "Help out at Jess's youth club", "effects": { "honour": 2, "fans": 1, "energy": -2 }, "lines": ["You referee under-9s. You get booked by an under-9.", "Jess makes you judge a talent show. A boy does magic. It goes badly. You love him."] },
+      "chain": ["jessCharity"] },
+    { "id": "stan", "name": "Stan", "kind": "grounded", "loyalty": 50, "trait": "Your grandad's old mate. Played 400 games in the 70s. Has a story for everything, and everything is about mud.",
+      "hang": { "label": "Tea and stories with Stan", "effects": { "energy": 2, "manager": 1 }, "lines": ["Stan played with a broken leg once. 'You just walk it off, son.' You don't think you can walk off a broken leg.", "Stan says 'in my day' nineteen times. You count."] },
+      "chain": ["stanAdvice"] }
+  ],
+  "nightsOut": [
+    { "id": "houseParty", "label": "House party at Shaz's", "minAge": 16, "maxAge": 17, "cost": 10, "effects": { "teammates": 3, "energy": -10, "friend:shaz": 6 }, "risk": 0.15, "lines": ["Someone's brought a karaoke machine. You did Bohemian Rhapsody. All of it. Every part.", "The party ends when Shaz's mum gets home from bingo early."] },
+    { "id": "pub", "label": "Pub with the lads", "minAge": 18, "cost": 40, "effects": { "teammates": 5, "energy": -8 }, "risk": 0.12, "lines": ["Quiz night. Your team, 'Quiz Team Aguilera', comes second to the pensioners.", "Gaz does his dance. A man pays him to stop."] },
+    { "id": "club", "label": "Big night out in town", "minAge": 18, "cost": 120, "effects": { "teammates": 6, "energy": -15, "fans": -1 }, "risk": 0.3, "lines": ["You lose your shoes. You find them in a kebab. Not near a kebab. In it.", "You dance on a table. The table didn't consent."] },
+    { "id": "vip", "label": "VIP table, bottle service", "minAge": 18, "cost": 1500, "effects": { "teammates": 8, "energy": -18, "honour": -2, "fans": 1 }, "risk": 0.45, "lines": ["The bottle comes with sparklers and a man with a trumpet. You paid £1,500 for a man with a trumpet.", "A reality TV star asks who you are. You ask who she is. Stalemate."] }
+  ],
+  "nightRisks": [
+    { "headline": "BOOZE-ER: {NAME} STUMBLES OUT OF NIGHTCLUB AT 4AM", "effects": { "honour": -4, "manager": -4 } },
+    { "headline": "{NAME} IN DANCEFLOOR DUST-UP", "effects": { "honour": -5, "manager": -5, "fans": -2 } },
+    { "headline": "WHERE'S YOUR SHOES? {NAME}'S BAREFOOT KEBAB RUN", "effects": { "honour": -2, "fans": 1 } }
+  ]
+}
