@@ -16,7 +16,7 @@ export function rollInjury(c, S, age, R = Math.random) {
   if (R() > p) return null;
   const [name, a, b] = pick(L2.injuries, R); let weeks = a + Math.floor(R() * (b - a + 1));
   if (c.staff && c.staff.includes('physio')) weeks = Math.max(1, Math.round(weeks * .7));
-  c.injury = { name, weeks }; return c.injury;
+  c.injury = { name, weeks, total: weeks, id: c.week }; return c.injury;
 }
 /** Weekly: injuries heal, bans run down. Returns lines for the phone. */
 export function troubleWeek(c, R = Math.random) {

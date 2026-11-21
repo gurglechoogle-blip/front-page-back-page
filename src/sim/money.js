@@ -2,6 +2,7 @@
 // ladder. Pure logic on the career object.
 import SHOP from '../data/shop.json';
 import { applyEffects, surname } from './life.js';
+import EXTRA from '../data/lenders.json';
 
 export { SHOP };
 const ITEMS = new Map(SHOP.items.map(i => [i.id, i])), HOMES = new Map(SHOP.homes.map(h => [h.id, h])), ROOMS = new Map(SHOP.rooms.map(r => [r.id, r]));
@@ -98,13 +99,24 @@ export function takeFromFund(c, k, amt) { amt = Math.min(amt, c.funds[k]); c.fun
 
 /* ---------- the debt ladder ---------- */
 /** Rungs available when you're in the red, in the order you'd work down them. */
+const lenders = () => Object.assign({}, SHOP.lenders, Object.fromEntries(Object.entries(EXTRA).filter(([k]) => k !== '_note')));
+const lenderMax = (c, L) => L.max === 'wage4' ? c.contract.wage * 4 : L.max;
+function lenderStat(c, m) {
+  if (m.startsWith('friend:')) return (c.friends && c.friends[m.slice(7)] || {}).loyalty ?? 0;
+  if (m === 'partner') return c.partner ? c.partner.meter : 0;
+  if (m === 'agent') return c.agent ? 1 : 0;
+  if (m === 'pro') return /scholarship|academy/i.test(c.contract.kind || '') ? 0 : 1;
+  if (m === 'manager') return c.approval;
+  return c.meters[m] ?? 0;
+}
 export function debtOptions(c) {
   const opts = [];
   c.owned.filter(id => item(id) && item(id).resale).forEach(id => opts.push({ rung: 1, type: 'sell', id, label: `Sell your ${item(id).name}`, value: Math.round(item(id).price * item(id).resale) }));
   if (c.homeOwned) opts.push({ rung: 1, type: 'sellHome', label: `Sell ${home(c.home).name} and move back to Mum's`, value: Math.round(home(c.home).price * .95 + c.rooms.reduce((a, r) => a + room(r).price * .5, 0)) });
   Object.entries(c.funds).filter(([, v]) => v > 0).forEach(([k, v]) => opts.push({ rung: 2, type: 'raid', id: k, label: `Raid the ${SHOP.funds.find(f => f[0] === k)[1].toLowerCase()}`, value: v, warn: k === 'mum' ? 'Mum will find out.' : k === 'holiday' ? 'Somebody was looking forward to that holiday.' : '' }));
-  for (const [key, L] of Object.entries(SHOP.lenders)) {
-    const ok = !L.min || Object.entries(L.min).every(([m, v]) => (c.meters[m] ?? 0) >= v);
+  for (const [key, L0] of Object.entries(lenders())) {
+    const L = Object.assign({}, L0, { max: lenderMax(c, L0) });
+    const ok = !L.min || Object.entries(L.min).every(([m, v]) => lenderStat(c, m) >= v);
     const owing = c.debts.some(d => d.key === key);
     if (ok && !(owing && key !== 'loanShark')) opts.push({ rung: key === 'loanShark' ? 4 : 3, type: 'borrow', id: key, label: `Borrow from ${L.name}`, value: L.max, warn: L.rate ? `${Math.round(L.rate * 100)}% interest a week. Compounding.` : 'They\'ll want it back.' });
   }
@@ -115,8 +127,8 @@ export function takeOption(c, o, need) {
   if (o.type === 'sellHome') { const r = moveHome(c, 'mums', 'rent', 99); return r.sold; }
   if (o.type === 'raid') { const v = takeFromFund(c, o.id, c.funds[o.id]); applyEffects(c, o.id === 'mum' ? { family: -10, honour: -3 } : { family: -3 }); if (o.id === 'mum') (c.weekNews = c.weekNews || []).push({ page: 'front', headline: fill('{NAME} RAIDS MUM\'S PENSION POT', { NAME: surname(c) }) }); return v; }
   if (o.type === 'borrow') {
-    const L = SHOP.lenders[o.id], amt = Math.min(L.max, Math.max(need, 100));
-    c.bank += amt; c.debts.push({ key: o.id, name: L.name, balance: amt, rate: L.rate }); applyEffects(c, L.cost);
+    const L = lenders()[o.id], amt = Math.min(lenderMax(c, L), Math.max(need, Math.min(100, lenderMax(c, L))));
+    c.bank += amt; c.debts.push({ key: o.id, name: L.name, balance: amt, rate: L.rate }); applyEffects(c, L.cost); c.lastLoanLine = L.line || null;
     if (o.id === 'loanShark') (c.weekNews = c.weekNews || []).push({ page: 'front', headline: fill('SKINT! {NAME} IN PAYDAY LOAN SHAME', { NAME: surname(c) }), weak: true });
     return amt;
   }

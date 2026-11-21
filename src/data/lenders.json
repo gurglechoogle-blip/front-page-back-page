@@ -1,0 +1,13 @@
+{
+ "_note": "More people to ask for money, on top of shop.json's lenders. min: meters (family, teammates...), 'friend:<id>' loyalty, 'partner' meter, 'agent' (must have one), 'pro' (on a professional contract). max can be 'wage4' (four weeks' wages).",
+ "mum": { "name": "Mum (just Mum)", "max": 800, "rate": 0, "min": { "family": 45 }, "cost": { "family": -3 }, "line": "She doesn't ask what it's for. She just looks at you. That's worse." },
+ "gran": { "name": "Gran (from under the mattress)", "max": 3000, "rate": 0, "min": { "family": 40 }, "cost": { "family": -2, "honour": -1 }, "line": "The notes smell of lavender and are from 1994. One's an old fiver. She wants it back with 'interest', which means visits." },
+ "priya": { "name": "Priya", "max": 2500, "rate": 0, "min": { "friend:priya": 55 }, "cost": { "friend:priya": -5 }, "line": "She lends it with a spreadsheet and a repayment plan. Colour-coded. You've never felt so loved and so judged." },
+ "lee": { "name": "Big Lee", "max": 10000, "rate": 0.02, "min": { "friend:lee": 40 }, "cost": { "honour": -2 }, "line": "Cash, in a carrier bag, in a lay-by. 'No rush,' says Lee. Then, 'Actually, a bit of a rush.'" },
+ "deano": { "name": "Deano", "max": 40, "rate": 0, "min": { "friend:deano": 30 }, "cost": { "friend:deano": -2 }, "line": "Deano gives you £40 and half a Twix. It's everything he has. You both cry a little." },
+ "stan": { "name": "Stan", "max": 1500, "rate": 0, "min": { "friend:stan": 50 }, "cost": { "manager": 0, "family": 1 }, "line": "Stan hands it over in a brown envelope. 'In my day we were paid in pies,' he says. 'Pay me back in pies.'" },
+ "partner": { "name": "Your other half", "max": 5000, "rate": 0, "min": { "partner": 60 }, "cost": { "partner": -8 }, "line": "They transfer it without a word. The silence at dinner is deafening." },
+ "agent": { "name": "Your agent (an 'advance')", "max": 20000, "rate": 0.006, "min": { "agent": 1 }, "cost": { "honour": -1 }, "line": "Your agent advances you the money 'against future earnings'. They're already doing the sums. Out loud." },
+ "club": { "name": "The club (advance on wages)", "max": "wage4", "rate": 0, "min": { "pro": 1, "manager": 50 }, "cost": { "manager": -4 }, "line": "The club secretary sighs and processes an advance. Word gets round the dressing room by lunchtime." },
+ "captain": { "name": "The club captain", "max": 3000, "rate": 0, "min": { "teammates": 70 }, "cost": { "teammates": -3 }, "line": "The skipper lends it, then announces it in the group chat 'for transparency'. Brilliant." }
+}

@@ -61,5 +61,11 @@ export function showDebt(H, next) {
   let last = 0;
   H.modal(`<div class="evvia">💸 Bank alert</div><h2>You're ${money(need)} overdrawn</h2><p class="evtext">The bank has sent a letter. It's written in red. Even the envelope looks disappointed. Sort it out before next week.</p>
     <div class="choices">${opts.map((o, i) => { const head = o.rung !== last ? `<h3>${RUNG[o.rung]}</h3>` : ''; last = o.rung; return head + `<button class="btn choice" data-i="${i}">${esc(o.label)} <small>${o.type === 'borrow' ? 'up to ' : ''}${money(o.value)}${o.warn ? ' · ' + esc(o.warn) : ''}</small></button>`; }).join('')}</div>`, true);
-  qa(H, '.choice').forEach(b => b.onclick = () => { const o = opts[+b.dataset.i], v = takeOption(c, o, need); H.save(); H.render(); H.toast(`${money(v)} found.`); showDebt(H, next); });
+  qa(H, '.choice').forEach(b => b.onclick = () => { const o = opts[+b.dataset.i], v = takeOption(c, o, need); H.save(); H.render(); H.toast(o.type === 'borrow' && c.lastLoanLine ? `${money(v)}. ${c.lastLoanLine}` : `${money(v)} found.`); showDebt(H, next); });
+}
+/** Ask someone for money, any time. */
+export function showBorrow(H) {
+  const c = H.c, opts = debtOptions(c).filter(o => o.type === 'borrow');
+  H.modal(`<h2>Ask someone for money</h2><p class="dim">Who you can ask depends on how they feel about you. Everyone wants it back.</p><div class="choices">${opts.map((o, i) => `<button class="btn choice" data-i="${i}">${esc(o.label)} <small>up to ${money(o.value)}${o.warn ? ' · ' + esc(o.warn) : ''}</small></button>`).join('') || '<p class="dim">Nobody\'s lending you anything right now. Be nicer to people.</p>'}</div>`);
+  qa(H, '.choice').forEach(b => b.onclick = () => { const o = opts[+b.dataset.i], v = takeOption(c, o, o.value); H.save(); H.render(); H.toast(`${money(v)}. ${c.lastLoanLine || ''}`); showBorrow(H); });
 }

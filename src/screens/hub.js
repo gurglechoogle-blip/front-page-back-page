@@ -20,7 +20,7 @@ import M from '../data/messages.json';
 import { playFixture } from './flow.js';
 import { METERS, meter, EVENTS, chooseEvent, answerPress, paperByN, framePage, applyEffects } from '../sim/life.js';
 import { paperHTML, paperPhotos } from './paper.js';
-import { showBank, showShop, showProperty, showDebt } from './moneyUI.js';
+import { showBank, showShop, showProperty, showDebt, showBorrow } from './moneyUI.js';
 import { FR, friend, hangOut, nightsFor, nightOut, chatPrompt, chatAnswer } from '../sim/social.js';
 import CZ from '../data/casino.json';
 import { drawClipFrame, clipLength } from '../engine/replay.js';
@@ -30,6 +30,8 @@ import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble
 import { ACH, achCount } from '../sim/achievements.js';
 import { clause } from '../sim/contracts.js';
 import { stripHTML, showCalendar } from './calendarUI.js';
+import { welcomeHTML } from './welcome.js';
+import { ACTIVITIES, available as injAvail, doActivity, longInjury } from '../sim/injuryLife.js';
 import { REQUESTS, cantAsk, odds, ask as askGaffer, raiseOffer } from '../sim/gaffer.js';
 import { managerFor } from '../sim/managers.js';
 import { showTalks } from './contractUI.js';
@@ -94,6 +96,8 @@ export function createHubScreen(root, go, params = {}) {
     $('ul').onclick = e => { e.preventDefault(); $('ulf').click(); };
     $('ulf').onchange = async e => { const f = e.target.files[0]; if (!f) return; const ok = await importSave(f); if (ok) location.reload(); else toast('That file isn\'t a Front Page, Back Page save.'); };
     setCam('def'); render();
+    // First day: the head of development's talk.
+    if (!c.flags.welcomeTalk) { c.flags.welcomeTalk = true; save(); modal(welcomeHTML(c) + '<div class="endBtns"><button class="btn gold" id="gotit">Got it, boss</button></div>'); $('gotit').onclick = () => { closeModal(); runPending(() => {}); }; return; }
     // Monday's paper, events and press conferences come first.
     runPending(() => {
       if (params.thenFinish) { finishWeek(c); save(); go('week'); }
@@ -153,6 +157,8 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'League table', go: showTable },
       { label: `Rival: ${esc(c.rival.name)}`, note: `${esc(club(c.rival.clubId).short)} · ${c.rival.seasonGoals} goals this season`, go: showRival },
       { label: 'Contract & transfers', go: showContract },
+      ...(longInjury(c) ? [{ label: 'While you\'re injured', note: `Out for ${c.injury.weeks} more week${c.injury.weeks > 1 ? 's' : ''}: the telly's calling`, main: true, go: showInjured }] : []),
+      { label: 'Head of Development\'s notes', note: 'What\'s ahead, and when', go: () => modal(welcomeHTML(c)) },
       { label: 'Calendar', note: 'Fixtures and your diary', go: () => showCalendar(MH) },
       { label: 'Talk to the gaffer', note: 'Contract, minutes, loans, transfers', go: showGaffer },
       { label: 'Agent', note: agentOf(c) ? agentOf(c).name : age(c) < 17 ? 'At 17' : 'Sign one', go: () => age(c) < 17 ? modal(`<h2>Agent</h2><p>You haven't got one. At 16, agents are mostly blokes in car parks with lanyards they printed themselves. Come back at 17.</p>`) : showAgents(c, () => { save(); render(); }) },
@@ -237,6 +243,15 @@ export function createHubScreen(root, go, params = {}) {
     const mine = root.querySelector('.lt tr.me'); if (mine) mine.scrollIntoView({ block: 'center' });
   }
   const rep = () => reputation(c, skillLevelExact(), age(c));
+  function showInjured() {
+    modal(`<h2>While you're injured</h2><p class="evtext">${esc(c.injury.name.replace(/^./, s => s.toUpperCase()))}. ${c.injury.weeks} more week${c.injury.weeks > 1 ? 's' : ''} out. Your agent's phone hasn't stopped ringing.</p><div class="choices">${ACTIVITIES.map(a => { const why = injAvail(c, a); return `<button class="btn choice" data-ij="${a.id}" ${why || slotsLeft(c) <= 0 ? 'disabled' : ''}>${esc(a.label)}<small>${why || (slotsLeft(c) <= 0 ? 'No slots left' : a.slots === 'all' ? 'all your slots' : '1 slot')}</small></button>`; }).join('')}</div>`);
+    root.querySelectorAll('[data-ij]').forEach(b => b.onclick = () => {
+      const r = doActivity(c, b.dataset.ij, slotsLeft(c)); save(); render();
+      if (!r.ok) return toast(r.why);
+      modal(`<p class="evtext">${esc(r.line)}</p>${r.pay ? `<p>Paid: <b class="good">${money(r.pay)}</b></p>` : ''}<p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="ok">Back</button></div>`);
+      $('ok').onclick = showInjured;
+    });
+  }
   function showGaffer() {
     const boss = managerFor(c.clubId), o = odds(c, avgRating(c)), mood = o > .6 ? 'He rates you. Strike while it\'s hot.' : o > .35 ? 'He\'s on the fence about you.' : 'He\'s not your biggest fan right now.';
     modal(`<h2>${esc(boss.name)}'s office</h2><p class="evtext">The door says "KNOCK". Underneath, in smaller writing: "THEN GO AWAY". ${esc(mood)}</p><div class="choices">${REQUESTS.map(r => { const why = cantAsk(c, r.id, age(c)); return `<button class="btn choice" data-q="${r.id}" ${why ? 'disabled' : ''}>${esc(r.label)}${why ? `<small>${esc(why)}</small>` : ''}</button>`; }).join('')}</div><p class="dim">Your chances depend on his approval of you and how you've been playing.${!agentOf(c) ? ' Without an agent you\'ll get whatever he offers.' : ''}</p>`);
@@ -454,6 +469,7 @@ export function createHubScreen(root, go, params = {}) {
     return [
       { label: 'Bank & loans', note: `${money(c.bank)} · savings funds, debts`, go: () => showBank(MH) },
       { label: 'Shopping', note: 'Look, tech, wheels, bling', go: () => showShop(MH) },
+      { label: 'Ask someone for money', note: c.debts.length ? `${c.debts.length} debt${c.debts.length > 1 ? 's' : ''} outstanding` : 'Friends, family, the club...', go: () => showBorrow(MH) },
       { label: 'Staff', note: c.staff.length ? `${c.staff.length} on the payroll` : 'Hire help', go: () => showStaff(MH) },
       { label: 'Businesses & merch', note: c.business.merch ? 'Merch line, investments' : 'Launch a merch line', go: () => showBusiness(MH) },
       { label: 'Property', note: c.home === 'mums' ? (age(c) < 18 ? 'Still at Mum\'s (18+ to move out)' : 'Still at Mum\'s') : 'Homes and rooms', go: () => showProperty(MH) },

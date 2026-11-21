@@ -2,7 +2,7 @@
 // alongside your fixtures. This week's plan is worked out from weekLog; at the
 // end of each week it's written into c.diary for good.
 const DRILL = { volley: 'Volleys', snapshot: 'Snapshots', header: 'Headers', overhead: 'Overhead kicks', penalty: 'Penalties', freekick: 'Free kicks', turn: 'Turn & shoot', passing: 'Passing', crossing: 'Crossing' };
-const ICON = { train: '⚽', rest: '🛋', friend: '🍻', night: '🌃', date: '❤', post: '📱', community: '🤝', invite: '💌', holiday: '✈', gamble: '🃏', merch: '👕', kids: '🧸', callMum: '📞', gran: '👵', text: '💬', match: '🏟' };
+const ICON = { train: '⚽', rest: '🛋', friend: '🍻', night: '🌃', date: '❤', post: '📱', community: '🤝', invite: '💌', holiday: '✈', gamble: '🃏', merch: '👕', kids: '🧸', callMum: '📞', gran: '👵', text: '💬', match: '🏟', injuryJob: '📺' };
 export const iconFor = t => ICON[t] || '•';
 
 const addDays = (d, n) => { const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };

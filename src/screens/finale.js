@@ -81,7 +81,7 @@ export function createFinaleScreen(root, go) {
   }
 
   function yearLine(i) {
-    const opts = [c.flags.pundit >= 2 ? 'Did the telly. Wore a scarf indoors.' : 'Played five-a-side on Tuesdays. Still the best player there. Still moaned.',
+    const opts = ['Started a Sunday column in The Daily Bulldog, a shouty right-wing tabloid. First one: "VAR is controlled from the moon". Mum has cancelled her subscription.', c.flags.pundit >= 2 ? 'Did the telly. Wore a scarf indoors.' : 'Played five-a-side on Tuesdays. Still the best player there. Still moaned.',
       c.partner ? `Long walks with ${c.partner.name}. Bought a dog. The dog rules the house.` : 'Took up golf. Golf did not take you up.',
       careerGoals(c) >= 100 ? 'Did a book signing. Signed 400 books and one forehead.' : 'Opened a sports shop. Sold mostly goalkeeper gloves to dads.',
       'Coached the under-9s on Sundays. They lost 14-0. You were proud of them anyway.',

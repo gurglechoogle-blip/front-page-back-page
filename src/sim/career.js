@@ -210,6 +210,7 @@ export function recordMatch(c, f, S, R = Math.random) {
   afterMatch(c, S);
   { const team = myTeamIn(c, f) || ''; checkAchievements(c, 'match', { f, S, played, team, senior: played && f.comp !== 'friendly' && !team.endsWith('-u21') && !(f.level && f.level !== 'senior') }); }
   const inj = rollInjury(c, S, age(c), R);
+  if (inj && inj.weeks >= 3) message(c, 'A TV producer', `Sorry to hear about the injury! While you're out, fancy some telly? Punditry, panel shows, maybe even a reality show... Have a look under Football → While you're injured. x`);
   if (inj) { message(c, 'Club physio', `Bad news: ${inj.name}. You're out for ${inj.weeks} week${inj.weeks > 1 ? 's' : ''}. Rest, ice, and no more TikTok dances.`); c.weekNews.push({ page: 'back', headline: `INJURY BLOW FOR ${c.name.trim().split(/\s+/).pop().toUpperCase()}` }); }
   if (played && c.flags.servedBan && c.flags.prison && !c.flags.freeMan) { c.flags.freeMan = true; c.weekNews.push({ page: 'back', headline: `REDEMPTION: ${c.name.trim().split(/\s+/).pop().toUpperCase()} PLAYS AGAIN AFTER PRISON` }); }
   const press = pressAfter(c, f, S, myTeamIn(c, f), R); if (press) c.pending.push(press);

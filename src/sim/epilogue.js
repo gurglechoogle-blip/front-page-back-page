@@ -50,6 +50,12 @@ export const FINAL_SETUP = {
   turn: 'The ball\'s played into you, back to goal. The German centre-half is breathing on your neck.',
 };
 
+// Your retirement gig: a weekly column in a shouty right-wing tabloid.
+export const COLUMN_TITLES = ['VAR IS CONTROLLED FROM THE MOON. I HAVE SEEN THE DOCUMENTS (A NAPKIN)', 'PIGEONS AREN\'T REAL: WHY HAS NO ONE ASKED WHERE THE BABY ONES ARE?', 'THE OFFSIDE RULE WAS INVENTED BY BIG SHIN PAD', 'WHY I\'VE STOPPED TRUSTING ROUNDABOUTS', 'MY KETTLE IS LISTENING TO ME, AND SO IS YOURS', 'THEY\'VE SHRUNK THE GOALS BY AN INCH. I MEASURED THEM WITH MY FEET', 'THE 1966 FINAL WAS FILMED IN A STUDIO IN SLOUGH', 'WHO REALLY OWNS THE CORNER FLAGS? FOLLOW THE MONEY', 'ENERGY DRINKS ARE MADE FROM RECYCLED LINESMEN', 'THE MOON IS JUST A VERY FAR AWAY FOOTBALL. WAKE UP', 'BRING BACK MUD (AND HEAVY BALLS, AND SHORTS YOU COULD SEE YOUR SOUL THROUGH)', 'GRASS IS A LIBERAL INVENTION'];
+export function column(c, R = Math.random) {
+  const t = COLUMN_TITLES.slice().sort(() => R() - .5).slice(0, 3);
+  return `Every Sunday you write "Full Time with ${c.name.trim().split(/\s+/).pop()}" for The Daily Bulldog, a tabloid that's mostly shouting and adverts for stairlifts. Your recent columns: "${t[0]}", "${t[1]}" and "${t[2]}". The editor calls you "box office". Your mum has cancelled her subscription.`;
+}
 /** "Where are they now": a list of [heading, text] for the epilogue. */
 export function epilogue(c, won, scored, R = Math.random) {
   const out = [], sur = c.name.trim().split(/\s+/).pop(), nw = netWorth(c), sc = scandals(c), leg = legacy(c);
@@ -61,6 +67,7 @@ export function epilogue(c, won, scored, R = Math.random) {
   else if (!scored) you += ' People still bring up the chance in Giza. You\'ve learned to smile and say "the pitch was bobbly".';
   if (c.flags.pundit >= 3) you += ' You now do the telly on Saturday nights, in a jacket you\'d never have worn as a player.';
   out.push(['You', you]);
+  out.push(['Your column', column(c, R)]);
   // Love and family.
   const kids = (c.kids || []).map(k => k.name);
   let love = !c.partner ? (c.exes && c.exes.length ? `Single. ${c.exes.length} ex${c.exes.length > 1 ? 'es' : ''} watched the final. At least one cheered for Germany.` : 'Single, happily. Your mum still asks. Every Sunday.')
@@ -81,7 +88,7 @@ export function epilogue(c, won, scored, R = Math.random) {
   if (sc.length) out.push(['The past', `${past[0].toUpperCase() + past.slice(1)}. ${c.honour >= 50 ? 'The papers mention it less every year. You mention it more: in schools, as a warning.' : 'The papers still mention it. Every. Single. Time.'}`]);
   // The rival.
   if (c.rival) out.push([c.rival.name, c.rival.goals > careerGoals(c) ? `Scored ${c.rival.goals} career goals to your ${careerGoals(c)}. Brings it up at every reunion. Was not picked for 2046. You brought that up.` : `Scored ${c.rival.goals} career goals, ${careerGoals(c) - c.rival.goals} fewer than you. Now manages a non-league side. Sent you a text after the final: "decent". From him, that's a hug.`]);
-  void pick; void R;
+  void pick;
   return out;
 }
 /** The numbers on the last page. */
