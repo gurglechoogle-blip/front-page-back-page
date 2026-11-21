@@ -88,7 +88,8 @@ export function netWorth(c) {
   const things = c.owned.reduce((a, id) => a + Math.round((item(id)?.price || 0) * (item(id)?.resale || 0)), 0);
   const prop = c.homeOwned ? home(c.home).price * .95 + c.rooms.reduce((a, r) => a + room(r).price * .5, 0) : 0;
   const funds = Object.values(c.funds).reduce((a, b) => a + b, 0), debt = c.debts.reduce((a, d) => a + d.balance, 0);
-  return Math.round(c.bank + things + prop + funds - debt);
+  const biz = c.business ? c.business.inv.reduce((a, v) => a + v.value, 0) : 0;
+  return Math.round(c.bank + things + prop + funds + biz - debt);
 }
 
 /* ---------- savings funds ---------- */

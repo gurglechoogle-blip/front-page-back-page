@@ -1,0 +1,391 @@
+{
+ "_note": "Social media, community and charity, staff, businesses and merch.",
+ "posts": [
+  {
+   "tone": "humble",
+   "text": "Great team performance today. Proud of the lads 💪",
+   "effects": {
+    "honour": 1
+   },
+   "followers": 0.02
+  },
+  {
+   "tone": "cocky",
+   "text": "Told you. 🐐",
+   "effects": {
+    "fans": 1,
+    "honour": -1
+   },
+   "followers": 0.05
+  },
+  {
+   "tone": "funny",
+   "text": "Me trying to explain the offside rule to Gran 📉",
+   "effects": {
+    "fans": 2
+   },
+   "followers": 0.06
+  },
+  {
+   "tone": "dig",
+   "text": "Some people should stick to the bench 👀",
+   "effects": {
+    "teammates": -4,
+    "honour": -2
+   },
+   "followers": 0.08,
+   "news": "{NAME} IN CRYPTIC SOCIAL MEDIA DIG"
+  }
+ ],
+ "latePosts": [
+  {
+   "tone": "drunk",
+   "text": "luv u all. evn the ref. ESPECILY the ref",
+   "effects": {
+    "fans": 1
+   },
+   "followers": 0.05
+  },
+  {
+   "tone": "drunk",
+   "text": "gaffer if ur reading this ur fishing hat is RUBBISH",
+   "effects": {
+    "manager": -8,
+    "fans": 3
+   },
+   "followers": 0.1,
+   "news": "3AM POST: {NAME} SLAMS GAFFER'S HAT"
+  },
+  {
+   "tone": "drunk",
+   "text": "[a 40-second video of you singing to a kebab]",
+   "effects": {
+    "honour": -2,
+    "fans": 2
+   },
+   "followers": 0.15,
+   "news": "KEBAB SERENADE: {NAME}'S LATE-NIGHT VIDEO"
+  }
+ ],
+ "sponsors": [
+  {
+   "id": "shake",
+   "name": "MuscleMoo protein shakes",
+   "per": 0.02,
+   "effects": {}
+  },
+  {
+   "id": "betting",
+   "name": "BetBros (online betting)",
+   "per": 0.05,
+   "effects": {
+    "honour": -4,
+    "family": -2
+   }
+  },
+  {
+   "id": "crypto",
+   "name": "MoonCoin (a cryptocurrency, apparently)",
+   "per": 0.08,
+   "effects": {
+    "honour": -5
+   },
+   "news": "{NAME} PLUGS DODGY CRYPTO"
+  },
+  {
+   "id": "teeth",
+   "name": "SmileBright teeth whitening",
+   "per": 0.03,
+   "effects": {
+    "fans": -1
+   }
+  }
+ ],
+ "trollReplies": [
+  [
+   "Reply with a burn",
+   "Your reply gets 2 million likes. It also gets you a warning from the club.",
+   {
+    "fans": 4,
+    "manager": -3,
+    "honour": -2
+   }
+  ],
+  [
+   "Ignore it",
+   "You put the phone down. The troll posts 40 more times. You don't see any of them.",
+   {
+    "honour": 1
+   }
+  ],
+  [
+   "Block, report, go for a walk",
+   "Grown-up behaviour. Mum would be proud.",
+   {
+    "honour": 2,
+    "energy": 2
+   }
+  ]
+ ],
+ "community": [
+  {
+   "id": "hospital",
+   "label": "Children's hospital visit",
+   "slots": 1,
+   "cost": 0,
+   "effects": {
+    "honour": 4,
+    "fans": 2
+   },
+   "blurb": "A little girl asks you to sign her cast. Then her drip stand. Then her nurse."
+  },
+  {
+   "id": "referee",
+   "label": "Referee a kids' tournament",
+   "slots": 1,
+   "cost": 0,
+   "effects": {
+    "honour": 2,
+    "family": 1
+   },
+   "blurb": "You get sworn at by an under-8. Respect."
+  },
+  {
+   "id": "radio",
+   "label": "Guest on local radio",
+   "slots": 1,
+   "cost": 0,
+   "effects": {
+    "fans": 2,
+    "honour": 1
+   },
+   "blurb": "You play 'Three Lions' twice. Nobody complains."
+  },
+  {
+   "id": "cornershop",
+   "label": "Open the new corner shop",
+   "slots": 1,
+   "cost": 0,
+   "effects": {
+    "honour": 1
+   },
+   "money": 200,
+   "blurb": "Big scissors. Ribbon. Free scratchcard. You win £2."
+  },
+  {
+   "id": "charitymatch",
+   "label": "Play in a charity match",
+   "slots": 2,
+   "cost": 0,
+   "effects": {
+    "honour": 5,
+    "teammates": 2,
+    "fans": 2
+   },
+   "blurb": "You're marked by a soap star and a weatherman. You score four. They'll never forgive you."
+  },
+  {
+   "id": "school",
+   "label": "Fund a new school building",
+   "slots": 1,
+   "cost": 250000,
+   "effects": {
+    "honour": 15,
+    "fans": 5,
+    "family": 3
+   },
+   "flag": "schoolBuilt",
+   "blurb": "The '[Your Name] Building'. There's a plaque. You cry at the plaque."
+  },
+  {
+   "id": "councillor",
+   "label": "Campaign with Councillor Jean Smith (sensible)",
+   "slots": 1,
+   "cost": 0,
+   "effects": {
+    "honour": 3
+   },
+   "blurb": "Potholes, libraries, a crossing outside the primary school. Boring and brilliant."
+  },
+  {
+   "id": "mp",
+   "label": "Campaign with Rupert Fox MP (very charismatic)",
+   "slots": 1,
+   "cost": 0,
+   "effects": {
+    "honour": 6,
+    "fans": 2
+   },
+   "risk": 0.4,
+   "riskEffects": {
+    "honour": -12
+   },
+   "riskNews": "FOX IN SCANDAL: {NAME}'S POLITICAL PAL DISGRACED",
+   "blurb": "Great hair. Great smile. Great big question mark."
+  }
+ ],
+ "staff": [
+  {
+   "id": "trainer",
+   "name": "Personal trainer",
+   "wage": 400,
+   "perk": "Faster skill gains, slower decline after 30",
+   "oops": "Overtrains you into a niggle",
+   "oopsEffects": {
+    "energy": -15
+   }
+  },
+  {
+   "id": "nutritionist",
+   "name": "Nutritionist",
+   "wage": 300,
+   "perk": "Better energy and recovery",
+   "oops": "Puts you on a diet of exclusively beetroot. Everything is purple now.",
+   "oopsEffects": {
+    "partner": -3
+   }
+  },
+  {
+   "id": "chef",
+   "name": "Personal chef",
+   "wage": 350,
+   "perk": "Recovery bonus, impresses dates",
+   "oops": "Sells the contents of your fridge to a tabloid",
+   "oopsEffects": {
+    "honour": -2
+   },
+   "oopsNews": "REVEALED: WHAT'S IN {NAME}'S FRIDGE (MOSTLY YOGHURT)"
+  },
+  {
+   "id": "physio",
+   "name": "Physio",
+   "wage": 500,
+   "perk": "Shorter injuries",
+   "oops": "Has a theory about magnets. You're wearing 14 of them.",
+   "oopsEffects": {
+    "fans": -1
+   }
+  },
+  {
+   "id": "psych",
+   "name": "Sports psychologist",
+   "wage": 400,
+   "perk": "Better form, fewer slumps after bad games",
+   "oops": "Is writing a book about you. Chapter 3 is called 'The Kebab Years'.",
+   "oopsEffects": {
+    "honour": -1
+   }
+  },
+  {
+   "id": "pa",
+   "name": "Personal assistant",
+   "wage": 300,
+   "perk": "+1 time slot a week",
+   "oops": "Knows all your secrets. Has started hinting about a pay rise.",
+   "oopsEffects": {
+    "money": -1000
+   }
+  },
+  {
+   "id": "adviser",
+   "name": "Financial adviser",
+   "wage": 250,
+   "perk": "Savings grow, warns you about debt",
+   "oops": "The dodgy one runs off with your savings funds",
+   "oopsFunds": true,
+   "oopsNews": "ADVISER VANISHES WITH {NAME}'S SAVINGS"
+  },
+  {
+   "id": "pr",
+   "name": "PR manager",
+   "wage": 600,
+   "perk": "Softer scandals, better press",
+   "oops": "Overspins a non-story into a story",
+   "oopsEffects": {
+    "honour": -2
+   },
+   "oopsNews": "{NAME} PR STUNT BACKFIRES"
+  },
+  {
+   "id": "driver",
+   "name": "Driver and security",
+   "wage": 500,
+   "perk": "Fewer incidents on nights out",
+   "oops": "Crashes the Bentley. Into another Bentley.",
+   "oopsEffects": {
+    "money": -15000
+   }
+  },
+  {
+   "id": "nanny",
+   "name": "Nanny",
+   "wage": 450,
+   "perk": "Family stays happy when you're busy",
+   "oops": "Your partner thinks you're 'too close'. You're not. You've spoken twice.",
+   "oopsEffects": {
+    "partner": -8
+   }
+  }
+ ],
+ "merchSuppliers": [
+  {
+   "id": "cheap",
+   "label": "Cheap overseas supplier",
+   "cost": 5000,
+   "quality": 0.35,
+   "risk": 0.25,
+   "riskNews": "SHODDY! {NAME} MERCH FALLS APART IN THE WASH"
+  },
+  {
+   "id": "proper",
+   "label": "Proper British manufacturer",
+   "cost": 25000,
+   "quality": 0.75,
+   "risk": 0.02
+  },
+  {
+   "id": "deano",
+   "label": "Let Deano run it",
+   "cost": 3000,
+   "quality": 0.15,
+   "risk": 0.4,
+   "riskNews": "40,000 UNSOLD {NAME} SLIPPERS IN GARAGE"
+  }
+ ],
+ "investments": [
+  {
+   "id": "property",
+   "label": "Buy-to-let flats (Priya's idea)",
+   "min": 50000,
+   "weekly": [
+    0.0012,
+    0.0028
+   ],
+   "bust": 0.0,
+   "needs": "priya"
+  },
+  {
+   "id": "restaurant",
+   "label": "A restaurant ('[Name]'s Kitchen')",
+   "min": 80000,
+   "weekly": [
+    -0.01,
+    0.014
+   ],
+   "bust": 0.004,
+   "bustNews": "{NAME}'S KITCHEN GOES BUST"
+  },
+  {
+   "id": "leecoin",
+   "label": "LeeCoin (Big Lee's crypto)",
+   "min": 5000,
+   "weekly": [
+    -0.18,
+    0.2
+   ],
+   "bust": 0.02,
+   "bustNews": "LEECOIN COLLAPSE: {NAME} AMONG VICTIMS",
+   "needs": "lee"
+  }
+ ]
+}

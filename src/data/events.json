@@ -2063,6 +2063,38 @@
           "result": "\"OK.\" The worst word in the English language."
         }
       ]
+    },
+    {
+      "id": "mpScandal",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Sid Scoop. Rupert Fox MP has been caught claiming a duck house on expenses. A gold one. You campaigned with him last month. Comment?",
+      "choices": [
+        {
+          "label": "'I was wrong to back him'",
+          "effects": {
+            "honour": -4
+          },
+          "result": "Short, sharp, done. The story moves on in a day.",
+          "news": {
+            "page": "front",
+            "headline": "{NAME} DUCKS OUT OF FOX ROW"
+          }
+        },
+        {
+          "label": "'He's a good man, I stand by him'",
+          "effects": {
+            "honour": -12,
+            "fans": -4
+          },
+          "result": "Then the second duck house comes out.",
+          "news": {
+            "page": "front",
+            "headline": "DUCK HOUSE SHAME: {NAME} STANDS BY DISGRACED MP"
+          }
+        }
+      ]
     }
   ]
 }

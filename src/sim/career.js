@@ -12,6 +12,7 @@ import { endLoan, agentOf, inWindow, reputation } from './transfers.js';
 import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
 import { initLook, lookFields } from './looks.js';
 import { initTrouble, rollInjury, troubleWeek, kidBills } from './trouble.js';
+import { initFame, staffBills, fameWeek, hasStaff } from './fame.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; }
@@ -55,7 +56,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   buildSeason(c, R); initLife(c); initMoney(c);
   c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
   c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
-  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R); initTrouble(c);
+  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R); initTrouble(c); initFame(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -89,7 +90,7 @@ export const myFixtures = c => c.fixtures.filter(f => isMine(c, f));
 export const nextFixture = c => myFixtures(c).find(f => !f.played);
 export const weekFixtures = (c, w = c.week) => myFixtures(c).filter(f => !f.played && weekOf(f.date) === w);
 export const isPreseason = (c, w = c.week) => weekStart(w) < addDays(DIVS[c.div].start, -6);
-export const slotsTotal = c => isPreseason(c) ? 6 : 4;
+export const slotsTotal = c => (isPreseason(c) ? 6 : 4) + (hasStaff(c, 'pa') ? 1 : 0);
 export const slotsLeft = c => slotsTotal(c) - c.slotsUsed;
 export const age = (c, date = weekStart(c.week)) => { const b = new Date(c.dob), d = new Date(date); let a = d.getFullYear() - b.getFullYear(); if (d < new Date(d.getFullYear(), b.getMonth(), b.getDate())) a--; return a; };
 export const unread = c => c.inbox.filter(m => !m.read).length;
@@ -104,7 +105,7 @@ export function weeklyBills(c) {
   b.push({ what: 'Phone contract', amount: 12 });
   if (!hasCar(c)) b.push({ what: 'Bus pass', amount: 15 });
   const ag = agentOf(c); if (ag) b.push({ what: `Agent's cut (${ag.name.split(' ')[0]})`, amount: Math.round(c.contract.wage * ag.fee) });
-  return [...b, ...moneyBills(c), ...kidBills(c)];
+  return [...b, ...moneyBills(c), ...kidBills(c), ...staffBills(c)];
 }
 export function message(c, from, text) { c.inbox.unshift({ id: ++c.msgId, from, text, week: c.week, read: false }); if (c.inbox.length > 60) c.inbox.length = 60; }
 
@@ -244,6 +245,8 @@ export function finishWeek(c, R = Math.random) {
   c.energy = clamp(c.energy + 12 - Math.max(0, age(c) - 29) * 1.5 * (c.rooms && c.rooms.includes('gym') ? .5 : 1), 0, 100); // recovery slows in your thirties
   familyWeek(c); friendsWeek(c, R);
   troubleWeek(c, R).forEach(([from, text]) => message(c, from, text));
+  const wr = (c.matchday ? c.matchday.results : []).filter(r => r.rating != null);
+  fameWeek(c, wr.reduce((a, r) => a + (r.goals || 0), 0), wr.length ? wr.reduce((a, r) => a + r.rating, 0) / wr.length : 0, R).forEach(([from, text]) => message(c, from, text));
   if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
   const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.

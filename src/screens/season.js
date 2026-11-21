@@ -30,7 +30,7 @@ export function createSeasonScreen(root, go) {
     </div></div>`;
     root.querySelector('#hub').onclick = () => go('hub');
     const openWindow = () => showWindow(c, { rep: reputation(c, skillLevelExact(), age(c)), age: age(c), window: 'summer', midSeason: false, onDone: () => {
-      const lost = ageSkills(age(c), c.rooms && c.rooms.includes('gym'));
+      const lost = ageSkills(age(c), (c.rooms && c.rooms.includes('gym')) || (c.staff || []).includes('trainer'));
       beginSeason(c);
       if (lost) message(c, 'Dennis (kit man)', `Your knees made a noise getting off the bus. The first one's always the worst. (Skills faded a little over the summer${c.rooms && c.rooms.includes('gym') ? ', less thanks to the home gym' : ''}.)`);
       save(); go('hub');

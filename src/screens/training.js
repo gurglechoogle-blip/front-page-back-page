@@ -15,7 +15,7 @@ const ATTEMPTS = 5;
 
 // params.drill + params.career: one drill as a career time slot, then back to the hub.
 export function createTrainingScreen(root, go, params = {}) {
-  const profile = state.profile, career = params.career ? state.career : null, gainMul = career ? career.contract.coaching : 1;
+  const profile = state.profile, career = params.career ? state.career : null, gainMul = career ? career.contract.coaching * ((career.staff || []).includes('trainer') ? 1.15 : 1) : 1;
   let cv, ctx, session = null, moment = null, lastDrill = 'volley';
   const $ = id => root.querySelector('#' + id);
 

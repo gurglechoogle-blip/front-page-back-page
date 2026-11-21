@@ -27,6 +27,7 @@ import { drawClipFrame, clipLength } from '../engine/replay.js';
 import { showAgents, showWindow, showDeadline } from './contractUI.js';
 import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
 import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble.js';
+import { showSocial, showTroll, showCommunity, showInvite, showStaff, showBusiness } from './fameUI.js';
 import { reputation, inWindow, agentOf } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
@@ -36,9 +37,9 @@ import { exportSave, importSave } from '../state/gameState.js';
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
   life: { label: 'Life', icon: '🏠', soon: [] },
-  money: { label: 'Money', icon: '💷', soon: ['Staff', 'Businesses & merch'] },
+  money: { label: 'Money', icon: '💷', soon: [] },
   casino: { label: 'Casino', icon: '🎲', soon: [] },
-  fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Community & charity', 'Achievements'] },
+  fame: { label: 'Fame', icon: '⭐', soon: ['Achievements'] },
 };
 const money = n => (n < 0 ? '-£' : '£') + Math.abs(Math.round(n)).toLocaleString('en-GB');
 const oppOf = (c, f) => { const me = myTeamIn(c, f); return club(f.home === me ? f.away : f.home); };
@@ -397,6 +398,8 @@ export function createHubScreen(root, go, params = {}) {
   }
   function fameItems() {
     return [
+      { label: 'Social media', note: `${c.followers.toLocaleString('en-GB')} followers`, go: () => showSocial(MH) },
+      { label: 'Community & charity', note: c.redeeming > 0 ? 'Pledge running: honour counts double' : 'Uses time slots', go: () => showCommunity(MH) },
       { label: 'Newspapers', note: c.papers.length ? `${c.papers.length} issue${c.papers.length === 1 ? '' : 's'} · ${c.framed.length} framed` : 'The first issue lands Monday', go: showArchive },
       ...(inDisgrace(c) ? [{ label: 'Make amends', note: 'Memoir, interview, community, fresh start', go: showAmends }] : []),
       { label: 'Scrapbook', note: (c.scrapbook || []).length ? `${c.scrapbook.length} goal${c.scrapbook.length === 1 ? '' : 's'} to watch again` : 'Score in a match to start it', go: showScrapbook },
@@ -404,11 +407,13 @@ export function createHubScreen(root, go, params = {}) {
     ];
   }
 
-  const MH = { c, age, modal: (h, n) => modal(h, n), closeModal: () => closeModal(), toast: t => toast(t), save, render: () => render(), root };
+  const MH = { c, age, slotsLeft: () => slotsLeft(c), modal: (h, n) => modal(h, n), closeModal: () => closeModal(), toast: t => toast(t), save, render: () => render(), root };
   function moneyItems() {
     return [
       { label: 'Bank & loans', note: `${money(c.bank)} · savings funds, debts`, go: () => showBank(MH) },
       { label: 'Shopping', note: 'Look, tech, wheels, bling', go: () => showShop(MH) },
+      { label: 'Staff', note: c.staff.length ? `${c.staff.length} on the payroll` : 'Hire help', go: () => showStaff(MH) },
+      { label: 'Businesses & merch', note: c.business.merch ? 'Merch line, investments' : 'Launch a merch line', go: () => showBusiness(MH) },
       { label: 'Property', note: c.home === 'mums' ? (age(c) < 18 ? 'Still at Mum\'s (18+ to move out)' : 'Still at Mum\'s') : 'Homes and rooms', go: () => showProperty(MH) },
     ];
   }
@@ -423,6 +428,8 @@ export function createHubScreen(root, go, params = {}) {
     else if (item.type === 'press') showPress(item, next);
     else if (item.type === 'debt') showDebt(MH, next);
     else if (item.type === 'chat') showChatPrompt(item, next);
+    else if (item.type === 'troll') showTroll(MH, next);
+    else if (item.type === 'invite') showInvite(MH, next);
     else if (item.type === 'window') { closeModal(); showWindow(c, { rep: rep(), age: age(c), window: 'january', midSeason: true, onDone: () => { save(); render(); next(); } }); }
     else if (item.type === 'deadline') { closeModal(); showDeadline(c, { rep: rep(), age: age(c), onDone: () => { save(); render(); next(); } }); }
     else next();
