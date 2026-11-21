@@ -50,6 +50,7 @@ function eligible(c, e) {
   if (e.notFlag && c.flags[e.notFlag]) return false;
   if (e.types && !e.types.includes(c.contract.type)) return false;
   if (e.needPartner && !c.partner) return false;
+  if (e.abroad && !c._abroad) return false;
   if (e.minAgeYears && c._age < e.minAgeYears) return false;
   for (const [k, v] of Object.entries(e.min || {})) if (meter(c, k) < v) return false;
   for (const [k, v] of Object.entries(e.max || {})) if (meter(c, k) > v) return false;

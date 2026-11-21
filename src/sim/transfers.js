@@ -1,6 +1,6 @@
 // Agents, transfer offers, loans, contract talks and moving clubs.
 import AG from '../data/agents.json';
-import { club, divisionClubs, leagueFixtures, quickResult, weekStart, weekOf, CAL, addDays, seasonYear } from './season.js';
+import { club, divisionClubs, leagueFixtures, quickResult, weekStart, weekOf, CAL, addDays, seasonYear, ABROAD } from './season.js';
 import { applyEffects, surname } from './life.js';
 
 export { AG };
@@ -28,7 +28,7 @@ export function inWindow(c) {
 /** Offers from clubs who rate you. */
 export function makeOffers(c, rep, age, window, R = Math.random) {
   const ag = agentOf(c), mult = ag ? ag.offers : .8, want = targetStrength(rep);
-  const pool = ['PL', 'CH', 'L1', 'L2'].flatMap(d => divisionClubs(d)).filter(id => id !== c.clubId && !(c.loan && id === c.loan.parent));
+  const pool = ['PL', 'CH', 'L1', 'L2', ...(rep >= 50 ? ABROAD : [])].flatMap(d => divisionClubs(d)).filter(id => id !== c.clubId && !(c.loan && id === c.loan.parent));
   const scored = pool.map(id => ({ id, d: Math.abs(club(id).strength - want) + R() * 10 })).sort((a, b) => a.d - b.d);
   let n = Math.round((rep / 30 + R()) * mult); if (window === 'january') n = Math.round(n * .6);
   const out = scored.slice(0, clamp(n, 0, 4)).map(x => offerFrom(c, x.id, rep, age, R));
@@ -43,7 +43,7 @@ export function makeOffers(c, rep, age, window, R = Math.random) {
 }
 function offerFrom(c, id, rep, age, R) {
   const cl = club(id), base = Math.round((cl.strength ** 2.6) / 60 + rep * 18);
-  const wage = Math.max(c.contract.wage + 50, Math.round(base * (.8 + R() * .5) / 10) * 10);
+  const wage = Math.max(c.contract.wage + 50, Math.round(base * (.8 + R() * .5) * (ABROAD.includes(cl.league) ? 1.3 : 1) / 10) * 10);
   const role = cl.strength > targetStrength(rep) + 6 ? 'squad player' : cl.strength < targetStrength(rep) - 6 ? 'first choice' : 'rotation player';
   return { type: 'transfer', clubId: id, wage, years: 2 + Math.floor(R() * 3), role, fee: Math.round(rep * rep * 120 / 1000) * 1000, dream: id === c.boyhood };
 }

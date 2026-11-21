@@ -210,7 +210,7 @@ export function createHubScreen(root, go, params = {}) {
       const g = table(c.trophyGroup, c.fixtures.filter(f => f.comp === 'trophy' && f.round === 'G'));
       extra = `<h3>${esc(CAL.cups.trophy.short)} group</h3><table class="lt small"><tr><th></th><th class="tn">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr>${g.map((r, i) => `<tr class="${r.id === c.cups.trophy.team ? 'me' : ''}${i < 2 ? ' z-promo' : ''}"><td>${i + 1}</td><td class="tn">${esc(club(r.id).name)}</td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf - r.ga}</td><td><b>${r.pts}</b></td></tr>`).join('')}</table>`;
     }
-    const cups = Object.entries(c.cups).map(([k, v]) => `<span class="cupst ${v.won ? 'won' : v.alive ? 'alive' : 'out'}">${esc(CAL.cups[k].short)}: ${v.won ? 'WINNERS' : v.alive ? 'in it, ' + (v.round === 'G' ? 'group stage' : roundName({ comp: k, round: v.round })) : 'out'}</span>`).join('');
+    const cups = Object.entries(c.cups).map(([k, v]) => `<span class="cupst ${v.won ? 'won' : v.alive ? 'alive' : 'out'}">${esc(v.cupName || CAL.cups[k].short)}: ${v.won ? 'WINNERS' : v.alive ? 'in it, ' + (v.round === 'G' ? 'group stage' : roundName({ comp: k, round: v.round })) : 'out'}</span>`).join('');
     modal(`<h2>${esc(DIVS[c.div].name)}</h2><div class="scroll"><table class="lt"><tr><th></th><th class="tn">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>F</th><th>A</th><th>GD</th><th>Pts</th><th>Form</th></tr>${rows}</table>${extra}</div><div class="cups">${cups}</div>`);
     const mine = root.querySelector('.lt tr.me'); if (mine) mine.scrollIntoView({ block: 'center' });
   }

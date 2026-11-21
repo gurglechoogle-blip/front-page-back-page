@@ -81,7 +81,8 @@ export const winnerOf = f => f.hs > f.as ? f.home : f.as > f.hs ? f.away : f.pen
 function leagueDates(div) {
   const L = DIVS[div], skip = new Set();
   if (L.skipsBreaks) cal.internationalBreakWeekends.forEach(d => skip.add(d));
-  const fa = cal.cups.facup.rounds, faSkip = div === 'PL' || div === 'CH' ? ['R3', 'R4', 'QF', 'SF'] : ['R1', 'R2', 'R3', 'R4'];
+  const english = ['PL', 'CH', 'L1', 'L2', 'NL'].includes(div);
+  const fa = english ? cal.cups.facup.rounds : [], faSkip = div === 'PL' || div === 'CH' ? ['R3', 'R4', 'QF', 'SF'] : ['R1', 'R2', 'R3', 'R4'];
   fa.filter(r => faSkip.includes(r.id)).forEach(r => skip.add(r.date));
   if (div === 'PL') skip.add(cal.cups.eflcup.rounds.find(r => r.id === 'F').date);
   const sats = [];
@@ -119,14 +120,26 @@ export function leagueFixtures(div, R = Math.random) {
 
 /* ---------- cups ---------- */
 const CUP_NAMES = { league: null, friendly: 'Friendly', eflcup: cal.cups.eflcup.short, facup: cal.cups.facup.short, trophy: cal.cups.trophy.short };
-export const compName = f => f.comp === 'intl' || f.comp === 'tourn' ? f.label : f.comp === 'league' ? DIVS[f.div].short : f.comp === 'friendly' ? 'Pre-season friendly' : `${CUP_NAMES[f.comp]} ${roundName(f)}`;
-export function roundName(f) { if (f.round === 'G') return 'group stage'; const r = cal.cups[f.comp].rounds.find(x => x.id === f.round); return r ? r.name : f.round; }
+export const compName = f => f.comp === 'intl' || f.comp === 'tourn' ? f.label : f.comp === 'natcup' ? `${f.cupName || 'Cup'} ${roundName(f)}` : f.comp === 'league' ? DIVS[f.div].short : f.comp === 'friendly' ? 'Pre-season friendly' : `${CUP_NAMES[f.comp] || (cal.cups[f.comp] || {}).short || f.comp} ${roundName(f)}`;
+export function roundName(f) { if (f.round === 'G') return 'group stage'; if (f.round === 'L') return 'league phase'; const r = cal.cups[f.comp].rounds.find(x => x.id === f.round); return r ? r.name : f.round; }
 const europeClubs = () => divisionClubs('PL').map(club).sort((a, b) => b.strength - a.strength).slice(0, DIVS.PL.europeSpots).map(c => c.id);
 function trophyU21s() { return [...divisionClubs('PL'), ...divisionClubs('CH')].map(club).sort((a, b) => b.strength - a.strength).slice(0, 16).map(c => c.id + '-u21'); }
 
+export const ABROAD = ['ES', 'IT', 'DE', 'FR'];
+/** Champions League and Europa League places: from last season's tables, or club strength at the start. */
+export function europeQualifiers() {
+  if (WORLD.europe) return WORLD.europe;
+  const ucl = [], uel = [];
+  for (const d of ['PL', ...ABROAD]) { const ids = divisionClubs(d).sort((a, b) => club(b).strength - club(a).strength); const n = d === 'FR' ? 3 : 4; ucl.push(...ids.slice(0, n)); uel.push(...ids.slice(n, n + 2)); }
+  return { ucl, uel };
+}
 /** Which round my club enters each cup, and as which team (first team or U21s). */
 export function cupEntries(clubId) {
   const div = club(clubId).league, L = DIVS[div], out = [];
+  const eu = europeQualifiers();
+  if (eu.ucl.includes(clubId)) out.push({ comp: 'ucl', team: clubId, from: 'L' });
+  else if (eu.uel.includes(clubId)) out.push({ comp: 'uel', team: clubId, from: 'L' });
+  if (ABROAD.includes(div)) { out.push({ comp: 'natcup', team: clubId, from: 'R16', cupName: L.natCup }); return out; }
   if (L.eflCupFrom) out.push({ comp: 'eflcup', team: clubId, from: div === 'PL' && europeClubs().includes(clubId) ? L.eflCupFromEurope : L.eflCupFrom });
   out.push({ comp: 'facup', team: clubId, from: L.faCupFrom });
   if (L.trophy === 'group') out.push({ comp: 'trophy', team: clubId, from: 'G' });
@@ -139,6 +152,8 @@ export function drawOpponent(comp, roundId, team, exclude = [], R = Math.random)
   let pool;
   const efl = [...divisionClubs('CH'), ...divisionClubs('L1'), ...divisionClubs('L2')];
   if (comp === 'eflcup') pool = roundId === 'R1' ? efl : roundId === 'R2' ? [...efl, ...divisionClubs('PL').filter(c => !europeClubs().includes(c))] : [...efl, ...divisionClubs('PL')];
+  else if (comp === 'natcup') pool = divisionClubs(club(team.replace(/-u21$/, '')).league);
+  else if (comp === 'ucl' || comp === 'uel') { const eu = europeQualifiers(); pool = [...eu.ucl, ...eu.uel].filter(id => club(id).league !== club(team).league || roundId !== 'L'); }
   else if (comp === 'facup') pool = ['R1', 'R2'].includes(roundId) ? [...divisionClubs('L1'), ...divisionClubs('L2'), ...divisionClubs('NL')] : [...divisionClubs('PL'), ...divisionClubs('CH'), ...divisionClubs('L1'), ...divisionClubs('L2'), ...divisionClubs('NL').slice(0, 4)];
   else pool = [...divisionClubs('L1'), ...divisionClubs('L2'), ...trophyU21s()];
   const own = team.replace(/-u21$/, '');
@@ -163,6 +178,13 @@ export function trophyGroup(team, R = Math.random) {
   return { teams: g, fixtures: fx };
 }
 
+/** A European league phase: six games against teams from other countries. */
+export function europePhase(comp, team, R = Math.random) {
+  const eu = europeQualifiers(), mine = club(team).league;
+  const pool = (comp === 'ucl' ? eu.ucl : [...eu.ucl.slice(-8), ...eu.uel]).filter(id => club(id).league !== mine && id !== team);
+  const opps = pool.sort(() => R() - .5).slice(0, 6);
+  return opps.map((o, i) => ({ id: `${comp}-L${i + 1}`, comp, round: 'L', md: i + 1, date: cal.cups[comp].leagueDates[i], home: i % 2 ? o : team, away: i % 2 ? team : o, mine: true, cupName: cal.cups[comp].short }));
+}
 /* ---------- tables ---------- */
 export function table(teams, fixtures) {
   const T = new Map(teams.map(id => [id, { id, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0, form: [] }]));

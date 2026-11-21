@@ -1,5 +1,5 @@
 {
-  "_note": "The four EFL/Premier League divisions for 2026-27, plus the National League (where relegated League Two clubs go). Club lists come from clubs.json (league field).",
+  "_note": "English divisions for 2026-27 plus the National League, and Europe's other big four leagues (2025-26 line-ups as a starting point; they don't promote or relegate in this game).",
   "divisions": {
     "PL": {
       "name": "Premier League",
@@ -93,6 +93,72 @@
           2,
           5
         ],
+        "relegation": 0
+      }
+    },
+    "ES": {
+      "name": "LaLiga",
+      "short": "La Liga",
+      "country": "Spain",
+      "language": "Spanish",
+      "games": 38,
+      "start": "2026-08-15",
+      "end": "2027-05-23",
+      "finalDaySunday": true,
+      "skipsBreaks": true,
+      "natCup": "Copa del Rey",
+      "places": {
+        "champions": 1,
+        "europe": 5,
+        "relegation": 0
+      }
+    },
+    "IT": {
+      "name": "Serie A",
+      "short": "Serie A",
+      "country": "Italy",
+      "language": "Italian",
+      "games": 38,
+      "start": "2026-08-22",
+      "end": "2027-05-30",
+      "finalDaySunday": true,
+      "skipsBreaks": true,
+      "natCup": "Coppa Italia",
+      "places": {
+        "champions": 1,
+        "europe": 5,
+        "relegation": 0
+      }
+    },
+    "DE": {
+      "name": "Bundesliga",
+      "short": "Bundesliga",
+      "country": "Germany",
+      "language": "German",
+      "games": 34,
+      "start": "2026-08-22",
+      "end": "2027-05-15",
+      "skipsBreaks": true,
+      "natCup": "DFB-Pokal",
+      "places": {
+        "champions": 1,
+        "europe": 5,
+        "relegation": 0
+      }
+    },
+    "FR": {
+      "name": "Ligue 1",
+      "short": "Ligue 1",
+      "country": "France",
+      "language": "French",
+      "games": 34,
+      "start": "2026-08-15",
+      "end": "2027-05-15",
+      "skipsBreaks": true,
+      "natCup": "Coupe de France",
+      "places": {
+        "champions": 1,
+        "europe": 5,
         "relegation": 0
       }
     }

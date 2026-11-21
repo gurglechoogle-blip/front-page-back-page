@@ -14,7 +14,7 @@ export function createSeasonScreen(root, go) {
   const verdict = { champ: 'CHAMPIONS!', europe: 'Europe next season.', promo: 'PROMOTED!', playoff: 'Into the play-offs. (Play-offs coming soon: Dennis says you\'d have won.)', releg: 'Relegated. Mum says it\'s not your fault. Gran disagrees.' }[z] || 'Mid-table. Steady. Like a nice cup of tea.';
   const sfx = n => (n % 100 > 10 && n % 100 < 14) ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th';
   function mount() {
-    const cups = Object.entries(c.cups).map(([k, v]) => `<div class="row"><span>${esc(CAL.cups[k].short)}</span><b>${v.won ? 'WINNERS' : v.alive ? 'still going' : 'out in the ' + (v.round === 'G' ? 'group stage' : roundName({ comp: k, round: v.round }))}</b></div>`).join('');
+    const cups = Object.entries(c.cups).map(([k, v]) => `<div class="row"><span>${esc(v.cupName || CAL.cups[k].short)}</span><b>${v.won ? 'WINNERS' : v.alive ? 'still going' : 'out in the ' + (v.round === 'G' ? 'group stage' : roundName({ comp: k, round: v.round }))}</b></div>`).join('');
     root.innerHTML = `<div id="weekscr"><div class="wpanel narrow">
       <h1>SEASON <span>${esc(c.season)}</span></h1>
       <div class="bigpos">${S.pos}<sup>${sfx(S.pos)}</sup></div><div class="sub">in the ${esc(DIVS[c.div].name)} with ${esc(club(c.clubId).name)}</div>

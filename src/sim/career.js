@@ -3,7 +3,7 @@
 import academies from '../data/academies.json';
 import M from '../data/messages.json';
 import {
-  CAL, DIVS, club, divisionClubs, leagueFixtures, cupEntries, cupFixture, drawOpponent, nextRound, trophyGroup,
+  CAL, DIVS, club, divisionClubs, leagueFixtures, cupEntries, cupFixture, drawOpponent, nextRound, trophyGroup, europePhase, ABROAD,
   quickResult, winnerOf, weekStart, weekOf, lastWeek, prettyDate, addDays, table, compName, roundName, pickR,
   setWorld, firstWeek, seasonYear,
 } from './season.js';
@@ -67,6 +67,8 @@ function buildSeason(c, R) {
   for (const e of cupEntries(c.clubId)) {
     c.cups[e.comp] = { team: e.team, alive: true, round: e.from, played: [] };
     if (e.comp === 'trophy') { const g = trophyGroup(e.team, R); c.trophyGroup = g.teams; fx.push(...g.fixtures); }
+    else if (e.from === 'L') fx.push(...europePhase(e.comp, e.team, R));
+    else if (e.comp === 'natcup') { c.cups[e.comp].cupName = e.cupName; fx.push(Object.assign(cupFixture(e.comp, e.from, e.team, drawOpponent(e.comp, e.from, e.team, [], R), R), { cupName: e.cupName })); }
     else fx.push(cupFixture(e.comp, e.from, e.team, drawOpponent(e.comp, e.from, e.team, [], R), R));
   }
   c.fixtures = fx.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
@@ -189,16 +191,16 @@ export function recordMatch(c, f, S, R = Math.random) {
 function advanceCup(c, f, R) {
   const cup = c.cups[f.comp]; if (!cup) return;
   const won = winnerOf(f) === cup.team; cup.played.push(f.id);
-  if (!won) { cup.alive = false; message(c, club(c.clubId).short + ' News', fill(M.cupOut, { cup: CAL.cups[f.comp].short })); return; }
+  if (!won) { cup.alive = false; message(c, club(c.clubId).short + ' News', fill(M.cupOut, { cup: cup.cupName || CAL.cups[f.comp].short })); return; }
   const nr = nextRound(f.comp, f.round);
-  if (!nr) { cup.alive = false; cup.won = true; message(c, club(c.clubId).short + ' News', `WE'VE WON THE ${CAL.cups[f.comp].short.toUpperCase()}! Open-top bus on Sunday. Bring a coat.`); return; }
+  if (!nr) { cup.alive = false; cup.won = true; message(c, club(c.clubId).short + ' News', `WE'VE WON THE ${(cup.cupName || CAL.cups[f.comp].short).toUpperCase()}! Open-top bus on Sunday. Bring a coat.`); return; }
   drawNext(c, f.comp, nr, R);
 }
 function drawNext(c, comp, nr, R) {
   const cup = c.cups[comp], opp = drawOpponent(comp, nr, cup.team, cup.played.map(id => { const x = c.fixtures.find(y => y.id === id); return x.home === cup.team ? x.away : x.home; }), R);
-  const nf = cupFixture(comp, nr, cup.team, opp, R); cup.round = nr;
+  const nf = cupFixture(comp, nr, cup.team, opp, R); cup.round = nr; if (cup.cupName) nf.cupName = cup.cupName;
   c.fixtures.push(nf); c.fixtures.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
-  message(c, club(c.clubId).short + ' News', fill(M.cupDraw, { cup: CAL.cups[comp].short, round: roundName(nf), home: club(nf.home).name, away: club(nf.away).name, date: prettyDate(nf.date, true) }));
+  message(c, club(c.clubId).short + ' News', fill(M.cupDraw, { cup: cup.cupName || CAL.cups[comp].short, round: roundName(nf), home: club(nf.home).name, away: club(nf.away).name, date: prettyDate(nf.date, true) }));
 }
 
 /* ---------- end of the week ---------- */
@@ -206,6 +208,17 @@ function drawNext(c, comp, nr, R) {
 export function finishWeek(c, R = Math.random) {
   const w = c.week, others = c.fixtures.filter(f => !f.played && !isMine(c, f) && weekOf(f.date) <= w);
   others.forEach(f => Object.assign(f, quickResult(f.home, f.away, { knockout: f.knockout, extraTime: f.extraTime }, R), { played: true }));
+  // European league phase finished? Ten points usually gets you through.
+  for (const comp of ['ucl', 'uel']) {
+    const cup = c.cups[comp]; if (!cup || cup.round !== 'L') continue;
+    const lf = c.fixtures.filter(f => f.comp === comp && f.round === 'L');
+    if (lf.every(f => f.played)) {
+      const pts = lf.reduce((a, f) => { const r = resultFor(c, f); return a + (r === 'W' ? 3 : r === 'D' ? 1 : 0); }, 0);
+      cup.leaguePts = pts; cup.played.push(...lf.map(f => f.id));
+      if (pts >= 10 || (pts >= 7 && R() < .5)) drawNext(c, comp, 'R16', R);
+      else { cup.alive = false; message(c, club(c.clubId).short + ' News', `Out of the ${CAL.cups[comp].name} after the league phase with ${pts} points.`); }
+    }
+  }
   // Trophy group finished? Top two go through.
   if (c.trophyGroup && c.cups.trophy && c.cups.trophy.round === 'G') {
     const gf = c.fixtures.filter(f => f.comp === 'trophy' && f.round === 'G');
@@ -223,7 +236,8 @@ export function finishWeek(c, R = Math.random) {
   const dA = drills.length >= 2 ? taper(c.approval, drills.reduce((a, d) => a + (d.score >= 3 ? 1 : .6), 0)) : 0;
   c.approval = clamp(c.approval + dA, 0, 100);
   c.energy = clamp(c.energy + 12, 0, 100);
-  familyWeek(c); friendsWeek(c, R); partnerWeek(c, age(c), R);
+  familyWeek(c); friendsWeek(c, R);
+  if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
   const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.
   const bills = weeklyBills(c), out = bills.reduce((a, b) => a + b.amount, 0);
@@ -259,7 +273,9 @@ export function nextWeek(c, R = Math.random) {
   }
   if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
+  c._abroad = ABROAD.includes(c.div);
   rollEvents(c, isPreseason(c), R, age(c));
+  delete c._abroad;
   const lvl = maybeCallUp(c, reputation(c, skillLevelExact(), age(c)), age(c), R);
   if (lvl) message(c, 'England', `You've been called up to the England ${LEVELS[lvl] === 'Senior' ? 'senior squad' : LEVELS[lvl]}! Report to St George's Park.${lvl === 'senior' ? ' Gran is already at the bookies.' : ''}`);
   // Transfer windows: offers when January opens, and deadline day at the end of each window.

@@ -1720,6 +1720,1146 @@
     "shorts": "#1c3f94",
     "socks": "#f5a623"
    }
+  },
+  {
+   "id": "x-realmadrid",
+   "name": "Real Madrid",
+   "short": "RMA",
+   "stadium": "the Santiago Bernabéu",
+   "strength": 90,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#d4a017",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-barcelona",
+   "name": "Barcelona",
+   "short": "BAR",
+   "stadium": "the Spotify Camp Nou",
+   "strength": 89,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#a50044",
+    "trim": "#004d98",
+    "shorts": "#004d98",
+    "socks": "#a50044"
+   }
+  },
+  {
+   "id": "x-atletico",
+   "name": "Atlético Madrid",
+   "short": "ATM",
+   "stadium": "the Metropolitano",
+   "strength": 84,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#cb3524",
+    "trim": "#f4f4f4",
+    "shorts": "#1b3a8f",
+    "socks": "#cb3524"
+   }
+  },
+  {
+   "id": "x-athletic",
+   "name": "Athletic Club",
+   "short": "ATH",
+   "stadium": "San Mamés",
+   "strength": 78,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#ee2523",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-villarreal",
+   "name": "Villarreal",
+   "short": "VIL",
+   "stadium": "La Cerámica",
+   "strength": 78,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#ffe667",
+    "trim": "#1b3a8f",
+    "shorts": "#1b3a8f",
+    "socks": "#ffe667"
+   }
+  },
+  {
+   "id": "x-betis",
+   "name": "Real Betis",
+   "short": "BET",
+   "stadium": "the Benito Villamarín",
+   "strength": 77,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#0bb363",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#0bb363"
+   }
+  },
+  {
+   "id": "x-celta",
+   "name": "Celta Vigo",
+   "short": "CEL",
+   "stadium": "Balaídos",
+   "strength": 73,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#8ac3ee",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#8ac3ee"
+   }
+  },
+  {
+   "id": "x-rayo",
+   "name": "Rayo Vallecano",
+   "short": "RAY",
+   "stadium": "Vallecas",
+   "strength": 72,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#e53027",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-osasuna",
+   "name": "Osasuna",
+   "short": "OSA",
+   "stadium": "El Sadar",
+   "strength": 72,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#d91a21",
+    "trim": "#0a346f",
+    "shorts": "#0a346f",
+    "socks": "#0a346f"
+   }
+  },
+  {
+   "id": "x-mallorca",
+   "name": "Mallorca",
+   "short": "MLL",
+   "stadium": "Son Moix",
+   "strength": 71,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#e20613",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-realsociedad",
+   "name": "Real Sociedad",
+   "short": "RSO",
+   "stadium": "Anoeta",
+   "strength": 77,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#0067b1",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-valencia",
+   "name": "Valencia",
+   "short": "VAL",
+   "stadium": "Mestalla",
+   "strength": 74,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#ee3524",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-getafe",
+   "name": "Getafe",
+   "short": "GET",
+   "stadium": "the Coliseum",
+   "strength": 71,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#005999",
+    "trim": "#f4f4f4",
+    "shorts": "#005999",
+    "socks": "#005999"
+   }
+  },
+  {
+   "id": "x-espanyol",
+   "name": "Espanyol",
+   "short": "ESP",
+   "stadium": "the RCDE Stadium",
+   "strength": 70,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#007fc8",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#007fc8"
+   }
+  },
+  {
+   "id": "x-alaves",
+   "name": "Alavés",
+   "short": "ALA",
+   "stadium": "Mendizorroza",
+   "strength": 70,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#0761af",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#0761af"
+   }
+  },
+  {
+   "id": "x-girona",
+   "name": "Girona",
+   "short": "GIR",
+   "stadium": "Montilivi",
+   "strength": 73,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#cd2534",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#cd2534"
+   }
+  },
+  {
+   "id": "x-sevilla",
+   "name": "Sevilla",
+   "short": "SEV",
+   "stadium": "the Ramón Sánchez-Pizjuán",
+   "strength": 75,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#d81e05",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-elche",
+   "name": "Elche",
+   "short": "ELC",
+   "stadium": "the Martínez Valero",
+   "strength": 68,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#05642c",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-levante",
+   "name": "Levante",
+   "short": "LEV",
+   "stadium": "the Ciutat de València",
+   "strength": 67,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#b4053f",
+    "trim": "#1b3a8f",
+    "shorts": "#1b3a8f",
+    "socks": "#b4053f"
+   }
+  },
+  {
+   "id": "x-oviedo",
+   "name": "Real Oviedo",
+   "short": "OVI",
+   "stadium": "the Carlos Tartiere",
+   "strength": 66,
+   "league": "ES",
+   "abroad": true,
+   "home": {
+    "shirt": "#0047ab",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#0047ab"
+   }
+  },
+  {
+   "id": "x-napoli",
+   "name": "Napoli",
+   "short": "NAP",
+   "stadium": "the Diego Armando Maradona",
+   "strength": 85,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#12a0d7",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#12a0d7"
+   }
+  },
+  {
+   "id": "x-inter",
+   "name": "Inter",
+   "short": "INT",
+   "stadium": "San Siro",
+   "strength": 87,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#0068a8",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-atalanta",
+   "name": "Atalanta",
+   "short": "ATA",
+   "stadium": "the Gewiss Stadium",
+   "strength": 81,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#1e71b8",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-juventus",
+   "name": "Juventus",
+   "short": "JUV",
+   "stadium": "the Allianz Stadium",
+   "strength": 84,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-roma",
+   "name": "Roma",
+   "short": "ROM",
+   "stadium": "the Stadio Olimpico",
+   "strength": 80,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#8e1f2f",
+    "trim": "#f0bc42",
+    "shorts": "#f4f4f4",
+    "socks": "#8e1f2f"
+   }
+  },
+  {
+   "id": "x-fiorentina",
+   "name": "Fiorentina",
+   "short": "FIO",
+   "stadium": "the Artemio Franchi",
+   "strength": 77,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#482e92",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#482e92"
+   }
+  },
+  {
+   "id": "x-lazio",
+   "name": "Lazio",
+   "short": "LAZ",
+   "stadium": "the Stadio Olimpico",
+   "strength": 78,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#87d8f7",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-milan",
+   "name": "Milan",
+   "short": "MIL",
+   "stadium": "San Siro",
+   "strength": 83,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#fb090b",
+    "trim": "#1d1d1d",
+    "shorts": "#f4f4f4",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-bologna",
+   "name": "Bologna",
+   "short": "BOL",
+   "stadium": "the Renato Dall'Ara",
+   "strength": 77,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#a21c26",
+    "trim": "#1a2f48",
+    "shorts": "#1a2f48",
+    "socks": "#1a2f48"
+   }
+  },
+  {
+   "id": "x-como",
+   "name": "Como",
+   "short": "COM",
+   "stadium": "the Stadio Sinigaglia",
+   "strength": 75,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#1e5aa8",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1e5aa8"
+   }
+  },
+  {
+   "id": "x-torino",
+   "name": "Torino",
+   "short": "TOR",
+   "stadium": "the Stadio Olimpico Grande Torino",
+   "strength": 73,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#881f19",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#881f19"
+   }
+  },
+  {
+   "id": "x-udinese",
+   "name": "Udinese",
+   "short": "UDI",
+   "stadium": "the Bluenergy Stadium",
+   "strength": 71,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-genoa",
+   "name": "Genoa",
+   "short": "GEN",
+   "stadium": "the Luigi Ferraris",
+   "strength": 71,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#a51d23",
+    "trim": "#1b2b4b",
+    "shorts": "#1b2b4b",
+    "socks": "#1b2b4b"
+   }
+  },
+  {
+   "id": "x-verona",
+   "name": "Verona",
+   "short": "VER",
+   "stadium": "the Bentegodi",
+   "strength": 68,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#1b3a8f",
+    "trim": "#f2c230",
+    "shorts": "#1b3a8f",
+    "socks": "#1b3a8f"
+   }
+  },
+  {
+   "id": "x-cagliari",
+   "name": "Cagliari",
+   "short": "CAG",
+   "stadium": "the Unipol Domus",
+   "strength": 69,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#a51d23",
+    "trim": "#1b2b4b",
+    "shorts": "#1b2b4b",
+    "socks": "#1b2b4b"
+   }
+  },
+  {
+   "id": "x-parma",
+   "name": "Parma",
+   "short": "PAR",
+   "stadium": "the Ennio Tardini",
+   "strength": 69,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-lecce",
+   "name": "Lecce",
+   "short": "LEC",
+   "stadium": "the Via del Mare",
+   "strength": 67,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#f2d43a",
+    "trim": "#c8102e",
+    "shorts": "#1b2b4b",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "x-sassuolo",
+   "name": "Sassuolo",
+   "short": "SAS",
+   "stadium": "the Mapei Stadium",
+   "strength": 69,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#1a9a48",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1a9a48"
+   }
+  },
+  {
+   "id": "x-pisa",
+   "name": "Pisa",
+   "short": "PIS",
+   "stadium": "the Arena Garibaldi",
+   "strength": 66,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#1b2b4b",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1b2b4b"
+   }
+  },
+  {
+   "id": "x-cremonese",
+   "name": "Cremonese",
+   "short": "CRE",
+   "stadium": "the Giovanni Zini",
+   "strength": 65,
+   "league": "IT",
+   "abroad": true,
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#7a8a99",
+    "shorts": "#c8102e",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "x-bayern",
+   "name": "Bayern Munich",
+   "short": "BAY",
+   "stadium": "the Allianz Arena",
+   "strength": 90,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#dc052d",
+    "trim": "#f4f4f4",
+    "shorts": "#dc052d",
+    "socks": "#dc052d"
+   }
+  },
+  {
+   "id": "x-leverkusen",
+   "name": "Bayer Leverkusen",
+   "short": "LEV",
+   "stadium": "the BayArena",
+   "strength": 83,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#e32221",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#e32221"
+   }
+  },
+  {
+   "id": "x-frankfurt",
+   "name": "Eintracht Frankfurt",
+   "short": "SGE",
+   "stadium": "the Deutsche Bank Park",
+   "strength": 79,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#1d1d1d",
+    "trim": "#e1000f",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-dortmund",
+   "name": "Borussia Dortmund",
+   "short": "BVB",
+   "stadium": "Signal Iduna Park",
+   "strength": 84,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#fde100",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#fde100"
+   }
+  },
+  {
+   "id": "x-freiburg",
+   "name": "Freiburg",
+   "short": "SCF",
+   "stadium": "the Europa-Park Stadion",
+   "strength": 75,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#1d1d1d",
+    "trim": "#e30613",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-mainz",
+   "name": "Mainz",
+   "short": "M05",
+   "stadium": "the Mewa Arena",
+   "strength": 72,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#c3141e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#c3141e"
+   }
+  },
+  {
+   "id": "x-leipzig",
+   "name": "RB Leipzig",
+   "short": "RBL",
+   "stadium": "the Red Bull Arena",
+   "strength": 81,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#dd0741",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-bremen",
+   "name": "Werder Bremen",
+   "short": "SVW",
+   "stadium": "the Weserstadion",
+   "strength": 72,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#1d9053",
+    "trim": "#f4f4f4",
+    "shorts": "#1d9053",
+    "socks": "#1d9053"
+   }
+  },
+  {
+   "id": "x-stuttgart",
+   "name": "VfB Stuttgart",
+   "short": "VFB",
+   "stadium": "the MHPArena",
+   "strength": 79,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#e32219",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-gladbach",
+   "name": "Borussia Mönchengladbach",
+   "short": "BMG",
+   "stadium": "Borussia-Park",
+   "strength": 73,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d9053",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-wolfsburg",
+   "name": "Wolfsburg",
+   "short": "WOB",
+   "stadium": "the Volkswagen Arena",
+   "strength": 73,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#65b32e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#65b32e"
+   }
+  },
+  {
+   "id": "x-augsburg",
+   "name": "Augsburg",
+   "short": "FCA",
+   "stadium": "the WWK Arena",
+   "strength": 70,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#ba3733",
+    "trim": "#46714d",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-union",
+   "name": "Union Berlin",
+   "short": "FCU",
+   "stadium": "An der Alten Försterei",
+   "strength": 71,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#d4011d",
+    "trim": "#f4f4f4",
+    "shorts": "#d4011d",
+    "socks": "#d4011d"
+   }
+  },
+  {
+   "id": "x-stpauli",
+   "name": "St. Pauli",
+   "short": "STP",
+   "stadium": "the Millerntor",
+   "strength": 68,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#624839",
+    "trim": "#f4f4f4",
+    "shorts": "#624839",
+    "socks": "#624839"
+   }
+  },
+  {
+   "id": "x-hoffenheim",
+   "name": "Hoffenheim",
+   "short": "TSG",
+   "stadium": "the PreZero Arena",
+   "strength": 73,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#1961b5",
+    "trim": "#f4f4f4",
+    "shorts": "#1961b5",
+    "socks": "#1961b5"
+   }
+  },
+  {
+   "id": "x-heidenheim",
+   "name": "Heidenheim",
+   "short": "HDH",
+   "stadium": "the Voith-Arena",
+   "strength": 67,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#e2001a",
+    "trim": "#003b79",
+    "shorts": "#003b79",
+    "socks": "#e2001a"
+   }
+  },
+  {
+   "id": "x-koln",
+   "name": "1. FC Köln",
+   "short": "KOE",
+   "stadium": "the RheinEnergieStadion",
+   "strength": 69,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#ed1c24",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-hamburg",
+   "name": "Hamburg",
+   "short": "HSV",
+   "stadium": "the Volksparkstadion",
+   "strength": 70,
+   "league": "DE",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#0a3f86",
+    "shorts": "#c8102e",
+    "socks": "#0a3f86"
+   }
+  },
+  {
+   "id": "x-psg",
+   "name": "Paris Saint-Germain",
+   "short": "PSG",
+   "stadium": "the Parc des Princes",
+   "strength": 89,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#004170",
+    "trim": "#da291c",
+    "shorts": "#004170",
+    "socks": "#004170"
+   }
+  },
+  {
+   "id": "x-marseille",
+   "name": "Marseille",
+   "short": "OM",
+   "stadium": "the Vélodrome",
+   "strength": 80,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#2faee0",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-monaco",
+   "name": "Monaco",
+   "short": "ASM",
+   "stadium": "the Stade Louis II",
+   "strength": 79,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#e7212a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e7212a"
+   }
+  },
+  {
+   "id": "x-nice",
+   "name": "Nice",
+   "short": "NIC",
+   "stadium": "the Allianz Riviera",
+   "strength": 75,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-lille",
+   "name": "Lille",
+   "short": "LIL",
+   "stadium": "the Stade Pierre-Mauroy",
+   "strength": 78,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#e01e13",
+    "trim": "#1b2b4b",
+    "shorts": "#1b2b4b",
+    "socks": "#e01e13"
+   }
+  },
+  {
+   "id": "x-lyon",
+   "name": "Lyon",
+   "short": "OL",
+   "stadium": "the Groupama Stadium",
+   "strength": 78,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1b3a8f",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-strasbourg",
+   "name": "Strasbourg",
+   "short": "RCS",
+   "stadium": "the Stade de la Meinau",
+   "strength": 74,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#009fe3",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#009fe3"
+   }
+  },
+  {
+   "id": "x-lens",
+   "name": "Lens",
+   "short": "RCL",
+   "stadium": "the Stade Bollaert-Delelis",
+   "strength": 76,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#ffe600",
+    "trim": "#e31a2a",
+    "shorts": "#e31a2a",
+    "socks": "#ffe600"
+   }
+  },
+  {
+   "id": "x-brest",
+   "name": "Brest",
+   "short": "SB29",
+   "stadium": "the Stade Francis-Le Blé",
+   "strength": 71,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#e3001b",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#e3001b"
+   }
+  },
+  {
+   "id": "x-toulouse",
+   "name": "Toulouse",
+   "short": "TFC",
+   "stadium": "the Stadium de Toulouse",
+   "strength": 70,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#6d2c8f",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#6d2c8f"
+   }
+  },
+  {
+   "id": "x-auxerre",
+   "name": "Auxerre",
+   "short": "AJA",
+   "stadium": "the Stade de l'Abbé-Deschamps",
+   "strength": 67,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1b3a8f",
+    "shorts": "#1b3a8f",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "x-rennes",
+   "name": "Rennes",
+   "short": "SRFC",
+   "stadium": "Roazhon Park",
+   "strength": 75,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#e13327",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-nantes",
+   "name": "Nantes",
+   "short": "FCN",
+   "stadium": "La Beaujoire",
+   "strength": 68,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#fce300",
+    "trim": "#00803e",
+    "shorts": "#00803e",
+    "socks": "#fce300"
+   }
+  },
+  {
+   "id": "x-angers",
+   "name": "Angers",
+   "short": "SCO",
+   "stadium": "the Stade Raymond-Kopa",
+   "strength": 66,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#1d1d1d",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "x-lehavre",
+   "name": "Le Havre",
+   "short": "HAC",
+   "stadium": "the Stade Océane",
+   "strength": 66,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#7fb3e0",
+    "trim": "#1b2b4b",
+    "shorts": "#1b2b4b",
+    "socks": "#7fb3e0"
+   }
+  },
+  {
+   "id": "x-lorient",
+   "name": "Lorient",
+   "short": "FCL",
+   "stadium": "the Stade du Moustoir",
+   "strength": 66,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#f58220",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f58220"
+   }
+  },
+  {
+   "id": "x-parisfc",
+   "name": "Paris FC",
+   "short": "PFC",
+   "stadium": "the Stade Jean-Bouin",
+   "strength": 67,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#1b2b4b",
+    "trim": "#f4f4f4",
+    "shorts": "#1b2b4b",
+    "socks": "#1b2b4b"
+   }
+  },
+  {
+   "id": "x-metz",
+   "name": "Metz",
+   "short": "FCM",
+   "stadium": "the Stade Saint-Symphorien",
+   "strength": 65,
+   "league": "FR",
+   "abroad": true,
+   "home": {
+    "shirt": "#7a1631",
+    "trim": "#f4f4f4",
+    "shorts": "#7a1631",
+    "socks": "#7a1631"
+   }
   }
  ]
 }

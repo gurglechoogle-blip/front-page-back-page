@@ -1513,6 +1513,85 @@
         }
       ],
       "repeatable": true
+    },
+    {
+      "id": "language",
+      "from": "Club interpreter",
+      "via": "moment",
+      "abroad": true,
+      "weight": 4,
+      "text": "Your new teammates keep laughing at something you said in training. The interpreter explains: you've been calling the gaffer 'my little cabbage' all week.",
+      "choices": [
+        {
+          "label": "Book language lessons (uses a time slot)",
+          "effects": {
+            "slot": 1,
+            "teammates": 6,
+            "manager": 3
+          },
+          "result": "Three weeks later you can order a coffee, apologise to the gaffer, and swear fluently. In that order.",
+          "flag": "lessons"
+        },
+        {
+          "label": "Keep smiling and nodding",
+          "effects": {
+            "teammates": -3,
+            "energy": 2
+          },
+          "result": "You agree to a lot of things. One of them, it turns out, was carrying the kit bags until Christmas."
+        }
+      ]
+    },
+    {
+      "id": "homesick",
+      "from": "Mum",
+      "via": "call",
+      "abroad": true,
+      "weight": 3,
+      "text": "Are you eating, love? I've posted you a box: PG Tips, Branston, a Greggs steak bake (it might not survive) and a photo of the dog. Your Gran says the foreign food will make you soft.",
+      "choices": [
+        {
+          "label": "Video call for an hour",
+          "effects": {
+            "family": 6,
+            "energy": 2
+          },
+          "result": "The dog licks the screen. You cry a bit. Nobody needs to know."
+        },
+        {
+          "label": "Too busy, text her later",
+          "effects": {
+            "family": -4
+          },
+          "result": "The steak bake arrives three weeks later. It has become a different substance."
+        }
+      ]
+    },
+    {
+      "id": "localPress",
+      "from": "Local sports paper",
+      "via": "call",
+      "abroad": true,
+      "weight": 2,
+      "text": "A local journalist asks, through a translator, whether you prefer it here or back home. The whole city will read the answer.",
+      "choices": [
+        {
+          "label": "'I love it here, this is my home now'",
+          "effects": {
+            "fans": 6,
+            "family": -2
+          },
+          "result": "The city loves you. Your mum reads it on Google Translate and goes quiet for a day."
+        },
+        {
+          "label": "'Nothing beats a rainy Tuesday in England'",
+          "effects": {
+            "fans": -5,
+            "honour": 1
+          },
+          "result": "The headline translates roughly as 'ENGLISHMAN SAYS OUR WEATHER IS BAD'. Which, to be fair, it isn't."
+        }
+      ]
     }
   ]
 }
