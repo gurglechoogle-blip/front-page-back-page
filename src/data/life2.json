@@ -1,0 +1,230 @@
+{
+ "_note": "Injuries, co-commentary, holidays and redemption.",
+ "injuries": [
+  [
+   "a tight hamstring",
+   1,
+   3
+  ],
+  [
+   "a twisted ankle",
+   2,
+   4
+  ],
+  [
+   "a groin strain",
+   2,
+   5
+  ],
+  [
+   "knee ligament damage",
+   8,
+   16
+  ],
+  [
+   "a broken metatarsal",
+   6,
+   10
+  ],
+  [
+   "a dead leg (very embarrassing)",
+   1,
+   1
+  ],
+  [
+   "a back spasm from lifting a sofa",
+   1,
+   2
+  ]
+ ],
+ "cocomm": [
+  {
+   "q": "The commentator asks: 'What's going wrong for the lads today?'",
+   "a": [
+    [
+     "insight",
+     "\"We're too narrow. Their full-backs are getting forward and nobody's tracking them.\"",
+     {
+      "honour": 2,
+      "manager": 2
+     }
+    ],
+    [
+     "bland",
+     "\"Football's a funny old game, Jim.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"Honestly? The ref's useless and our left-back's slower than my nan.\"",
+     {
+      "fans": -4,
+      "teammates": -5,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Their striker's having a great game. What do you make of him?'",
+   "a": [
+    [
+     "insight",
+     "\"Clever movement. He drifts off the centre-half's shoulder, then attacks the near post.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"He's got two feet and he uses them.\"",
+     {}
+    ],
+    [
+     "gaffe",
+     "\"He's alright. My rival {RIVAL} reckons he's better than me. He's not.\"",
+     {
+      "fans": -3,
+      "honour": -2
+     }
+    ]
+   ]
+  },
+  {
+   "q": "'Penalty! Should it be given?'",
+   "a": [
+    [
+     "insight",
+     "\"Clumsy from the defender. He's gone to ground too early. Fair decision.\"",
+     {
+      "honour": 2
+     }
+    ],
+    [
+     "bland",
+     "\"I'd want it if it was us.\"",
+     {
+      "fans": 1
+     }
+    ],
+    [
+     "gaffe",
+     "\"Robbery. The ref's been bought. Write that down.\"",
+     {
+      "honour": -5,
+      "fans": 2,
+      "manager": -3
+     }
+    ]
+   ]
+  }
+ ],
+ "holidays": [
+  {
+   "id": "caravan",
+   "label": "Caravan in Skegness with the family",
+   "cost": 400,
+   "slots": 2,
+   "effects": {
+    "family": 8,
+    "energy": 10
+   },
+   "blurb": "It rains. You play Uno for 14 hours. Mum wins every game."
+  },
+  {
+   "id": "magaluf",
+   "label": "Lads' holiday in Magaluf",
+   "cost": 1500,
+   "slots": 2,
+   "minAge": 18,
+   "effects": {
+    "teammates": 8,
+    "energy": -10
+   },
+   "risk": 0.4,
+   "headline": "MAGA-LOOSE: {NAME}'S HOLIDAY HIGH JINKS",
+   "blurb": "What happens in Magaluf goes in the Weekly Splash."
+  },
+  {
+   "id": "maldives",
+   "label": "The Maldives with your partner",
+   "cost": 9000,
+   "slots": 2,
+   "minAge": 18,
+   "needPartner": true,
+   "effects": {
+    "partner": 15,
+    "energy": 15
+   },
+   "blurb": "A villa on stilts. A turtle. No phone signal. Bliss."
+  },
+  {
+   "id": "disney",
+   "label": "Disneyland with the kids",
+   "cost": 5500,
+   "slots": 2,
+   "needKids": true,
+   "effects": {
+    "family": 14,
+    "energy": -4
+   },
+   "blurb": "You queue for 3 hours for a 90-second ride. The kids will remember it forever."
+  }
+ ],
+ "interview": {
+  "journalist": "Dame Fiona Bluntly (the nation's most feared interviewer)",
+  "questions": [
+   {
+    "q": "Let's start simply. Why should anyone believe you're sorry?",
+    "a": [
+     [
+      "\"Because I am. What I did was wrong and I let a lot of people down.\"",
+      3
+     ],
+     [
+      "\"Look, everyone makes mistakes, it's been blown out of proportion.\"",
+      -3
+     ],
+     [
+      "\"(Bursts into tears)\"",
+      -1
+     ]
+    ]
+   },
+   {
+    "q": "Who exactly did you let down?",
+    "a": [
+     [
+      "\"My family. My teammates. The fans who bought my shirt. Kids who looked up to me.\"",
+      3
+     ],
+     [
+      "\"Mostly myself, if I'm honest.\"",
+      -1
+     ],
+     [
+      "\"My agent, he's very upset.\"",
+      -3
+     ]
+    ]
+   },
+   {
+    "q": "And what happens now?",
+    "a": [
+     [
+      "\"I'm working with a charity every week, and I've paid back what I can. I'll earn it back, slowly.\"",
+      3
+     ],
+     [
+      "\"I just want to focus on my football.\"",
+      -1
+     ],
+     [
+      "\"I'm launching a podcast about it.\"",
+      -3
+     ]
+    ]
+   }
+  ]
+ }
+}

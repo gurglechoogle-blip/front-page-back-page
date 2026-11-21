@@ -42,7 +42,7 @@ export const surname = c => c.name.trim().split(/\s+/).pop().toUpperCase();
 /* ---------- events ---------- */
 function eligible(c, e) {
   if (e.followUpOnly || (c.eventsSeen[e.id] && !e.repeatable)) return false;
-  if (e.repeatable && c.eventsSeen[e.id] && c.week - (c.lastSeenWeek || {})[e.id] < 20) return false;
+  if (e.repeatable && c.eventsSeen[e.id] && c.week - (c.lastSeenWeek || {})[e.id] < (e.cooldown || 20)) return false;
   if (e.minWeek && c.week < e.minWeek) return false;
   if (e.maxWeek && c.week > e.maxWeek) return false;
   if (e.notPreseason && c._preseason) return false;
@@ -51,14 +51,17 @@ function eligible(c, e) {
   if (e.types && !e.types.includes(c.contract.type)) return false;
   if (e.needPartner && !c.partner) return false;
   if (e.abroad && !c._abroad) return false;
+  if (e.needStage && (!c.partner || !e.needStage.includes(c.partner.stage))) return false;
+  if (e.maxKids != null && ((c.kids || []).length >= e.maxKids || c.babyDue)) return false;
+  if (e.needRecede && (c._recede || 0) < e.needRecede) return false;
   if (e.minAgeYears && c._age < e.minAgeYears) return false;
   for (const [k, v] of Object.entries(e.min || {})) if (meter(c, k) < v) return false;
   for (const [k, v] of Object.entries(e.max || {})) if (meter(c, k) > v) return false;
   return true;
 }
 /** At the start of a week: follow-ups that are due, else maybe a new event. */
-export function rollEvents(c, preseason, R = Math.random, age = 16) {
-  c._preseason = preseason; c._age = age;
+export function rollEvents(c, preseason, R = Math.random, age = 16, recede = 0) {
+  c._preseason = preseason; c._age = age; c._recede = recede;
   const due = c.followUps.filter((f, i, a) => f.week <= c.week && (!c.eventsSeen[f.id] || (EVENTS.get(f.id) || {}).repeatable) && a.findIndex(x => x.id === f.id) === i);
   c.followUps = c.followUps.filter(f => f.week > c.week);
   due.forEach(f => c.pending.push({ type: 'event', id: f.id }));
@@ -70,14 +73,23 @@ export function rollEvents(c, preseason, R = Math.random, age = 16) {
       c.pending.push({ type: 'event', id: ev.id });
     }
   }
-  delete c._preseason; delete c._age;
+  delete c._preseason; delete c._age; delete c._recede;
 }
 /** Pick a choice. Returns { result, effects }. */
 export function chooseEvent(c, id, i, R = Math.random) {
   const e = EVENTS.get(id), ch = e.choices[i];
   if (ch.partnerStage && c.partner) { c.partner.stage = ch.partnerStage; c.partner.weeks = 0; }
+  if (ch.ban) { c.ban = Math.max(c.ban || 0, ch.ban); c.flags.banned = true; }
+  if (ch.debt) (c.debts = c.debts || []).push(Object.assign({ key: 'bookie' }, ch.debt));
+  if (ch.transplant && c.look) c.look.transplant = ch.transplant;
+  if (ch.look && c.look) c.look.hair = ch.look;
+  if (ch.baby) c.babyDue = c.week + 30;
   c.eventsSeen[id] = true; (c.lastSeenWeek = c.lastSeenWeek || {})[id] = c.week;
-  const eff = Object.assign({}, ch.effects); if (eff.loyalty != null) { if (e.friend) eff['friend:' + e.friend] = eff.loyalty; delete eff.loyalty; }
+  const eff = Object.assign({}, ch.effects);
+  // The fixer makes problems smaller (for a price you'll pay later).
+  if (c.agent === 'grey' && eff.honour < 0) { eff.honour = Math.round(eff.honour * .6); c.flags.greyKnows = true; }
+  if (c.staff && c.staff.includes('pr') && eff.honour < 0) eff.honour = Math.round(eff.honour * .8);
+  if (eff.loyalty != null) { if (e.friend) eff['friend:' + e.friend] = eff.loyalty; delete eff.loyalty; }
   const effects = applyEffects(c, eff);
   if (ch.flag) c.flags[ch.flag] = true;
   if (ch.next && R() < (ch.next.chance ?? 1)) c.followUps.push({ id: ch.next.id, week: c.week + ch.next.in });

@@ -26,6 +26,7 @@ import CZ from '../data/casino.json';
 import { drawClipFrame, clipLength } from '../engine/replay.js';
 import { showAgents, showWindow, showDeadline } from './contractUI.js';
 import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
+import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble.js';
 import { reputation, inWindow, agentOf } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
@@ -34,7 +35,7 @@ import { exportSave, importSave } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
-  life: { label: 'Life', icon: '🏠', soon: ['Holidays'] },
+  life: { label: 'Life', icon: '🏠', soon: [] },
   money: { label: 'Money', icon: '💷', soon: ['Staff', 'Businesses & merch'] },
   casino: { label: 'Casino', icon: '🎲', soon: [] },
   fame: { label: 'Fame', icon: '⭐', soon: ['Social media', 'Community & charity', 'Achievements'] },
@@ -144,6 +145,7 @@ export function createHubScreen(root, go, params = {}) {
   /* ---------- actions ---------- */
   function trainingPicker() {
     if (slotsLeft(c) <= 0) return toast('No time slots left this week. Time for the match.');
+    if (c.injury) return toast(`You're injured (${c.injury.name}, ${c.injury.weeks} week${c.injury.weeks > 1 ? 's' : ''} left). The physio says rest. The physio is very firm about it.`);
     modal(`<h2>Training</h2><p class="dim">One drill uses one time slot. Coaching at ${esc(me.name)}: ${c.contract.coaching > 1 ? 'top class' : c.contract.coaching < 1 ? 'well-meaning' : 'decent'} (x${c.contract.coaching} skill points).</p>
       <div class="grid">${SKILLS.map(([k, , t]) => `<button class="btn" data-k="${k}">${t}<small>Skill ${state.profile.skills[k]}</small></button>`).join('')}</div>
       <div class="endBtns"><button class="btn gold" id="restBtn">Rest instead<small>+energy</small></button></div>`);
@@ -177,10 +179,11 @@ export function createHubScreen(root, go, params = {}) {
     const mine = club(myTeamIn(c, f));
     modal(`<h2 class="ts">TEAM SHEET</h2><div class="tsfix"><small>${esc(compName(f))} · ${prettyDate(f.date, true)}${f.neutral ? ' · ' + esc(f.neutral) : ''}</small>
       <b>${esc(club(f.home).name)} v ${esc(club(f.away).name)}</b></div>
-      <p class="tsrole ${role}">${esc(M.selection[role])}</p>
+      <p class="tsrole ${role}">${esc(role === 'none' && c.injury ? `You're injured (${c.injury.name}). The club channel wants you on co-commentary.` : role === 'none' && c.ban > 0 ? `You're banned (${c.ban} more week${c.ban > 1 ? 's' : ''}). ${c.flags.prison && !c.flags.servedBan ? 'You\'re listening on the radio in your cell.' : 'You\'re watching from your sofa.'}` : role === 'none' && c.intlWeek === c.week && f.comp !== 'intl' ? 'You\'re away with England this week.' : M.selection[role])}</p>
       ${mine.id.endsWith('-u21') ? `<p class="dim">It's the under-21s. Proper game though: the ${esc(CAL.cups.trophy.short)} puts you up against men with mortgages.</p>` : ''}
       <div class="endBtns">${role === 'none' ? `<button class="btn" id="watch">See how they get on</button>` : `<button class="btn gold" id="toMatch">TO THE MATCH ▶</button>`}</div>`, true);
-    if (role === 'none') {
+    if (role === 'none' && c.injury) { $('watch').textContent = 'Co-commentate 🎙'; $('watch').onclick = () => coCommentary(f); }
+    else if (role === 'none') {
       $('watch').onclick = () => {
       const sim = playHeadless(c, f), S = sim.summary(); recordMatch(c, f, S); save();
       const sc = `${club(f.home).name} ${S.score.home}-${S.score.away} ${club(f.away).name}${S.pens ? ` (${S.pens.home}-${S.pens.away} pens)` : ''}`;
@@ -241,12 +244,66 @@ export function createHubScreen(root, go, params = {}) {
     const called = c.weekLog.some(x => x.t === 'callMum');
     return [
       { label: c.partner ? `Partner: ${esc(c.partner.name.split(' ')[0])}` : 'Partner', note: c.partner ? `${STAGES[c.partner.stage]} · ${Math.round(c.partner.meter)}/100` : 'Single. Very single.', go: showPartner },
+      { label: 'Family', note: c.kids.length ? `${c.kids.length} kid${c.kids.length > 1 ? 's' : ''}, Mum, Gran` : 'Mum, Gran', go: showFamily },
+      { label: 'Holidays', note: 'Two time slots', go: showHolidays },
       { label: 'Your look', note: 'Barber, beard, tattoos', go: showLook },
       { label: 'Friends', note: `${FR.friends.length} mates · uses a slot`, go: showFriends },
       { label: 'Nights out', note: age(c) < 18 ? 'House parties (18+ for pubs and clubs)' : 'Pub, clubs, VIP tables', go: showNights },
       { label: 'Call Mum', note: called ? 'Already rung her this week' : 'Free, once a week', go: () => { if (called) return toast('You rang her already. She\'s still talking.'); c.weekLog.push({ t: 'callMum' }); applyEffects(c, { family: 3 }); save(); render(); toast(pickLine(['Mum: "Are you eating properly?" (x4)', 'Mum tells you about next door\'s extension for 25 minutes. Family +3', 'Mum: "Your Gran\'s got a tattoo." You don\'t ask.'])); } },
       { label: 'Visit Gran', note: 'Uses a slot · family, energy', go: () => { if (slotsLeft(c) <= 0) return toast('No time slots left this week.'); c.slotsUsed++; c.weekLog.push({ t: 'gran' }); applyEffects(c, { family: 6, energy: 4 }); save(); render(); toast(pickLine(['Gran makes you a fry-up and asks for a tip on the 3.40 at Kempton.', 'Gran shows you her new betting app. She\'s up £340.', 'You watch Countdown with Gran. She gets a nine-letter word. It\'s rude.'])); } },
     ];
+  }
+  function coCommentary(f) {
+    const sim = playHeadless(c, f), S = sim.summary(); let i = 0;
+    const qs = L2.cocomm.slice().sort(() => Math.random() - .5);
+    const step = () => {
+      if (i >= qs.length) {
+        recordMatch(c, f, S); save();
+        const sc = `${club(f.home).name} ${S.score.home}-${S.score.away} ${club(f.away).name}`;
+        modal(`<h2>FULL TIME</h2><p class="bigscore">${esc(sc)}</p><p class="dim">${c.flags.commentaryGaffe ? 'Your clip is doing the rounds online. Not in a good way.' : 'The producer says you\'re a natural. Possibly a future pundit.'}</p><div class="endBtns"><button class="btn gold" id="cont">Continue</button></div>`, true);
+        $('cont').onclick = () => { closeModal(); proceed(); }; return;
+      }
+      const q = qs[i++];
+      modal(`<div class="evvia">🎙 Co-commentary · ${esc(club(f.home).short)} v ${esc(club(f.away).short)}</div><p class="evtext">${esc(q.q)}</p><div class="choices">${q.a.map((a, k) => `<button class="btn choice" data-k="${k}">${esc(a[1].replace('{RIVAL}', c.rival ? c.rival.short : 'the new lad'))}</button>`).join('')}</div>`, true);
+      root.querySelectorAll('[data-k]').forEach(b => b.onclick = () => {
+        const a = q.a[+b.dataset.k]; applyEffects(c, a[2]);
+        if (a[0] === 'gaffe') { c.flags.commentaryGaffe = true; c.weekNews.push({ page: 'front', headline: `MIC DROP: ${c.name.trim().split(/\s+/).pop().toUpperCase()}'S COMMENTARY GAFFE GOES VIRAL` }); }
+        if (a[0] === 'insight') c.flags.pundit = (c.flags.pundit || 0) + 1;
+        step();
+      });
+    };
+    step();
+  }
+  function showFamily() {
+    const kids = c.kids.map(k => `${esc(k.name)} (${Math.floor((c.week - k.born) / 52)})`).join(', ');
+    modal(`<h2>Family</h2><div class="row"><span>Mum</span><b>Worries about you. Loves you.</b></div><div class="row"><span>Gran</span><b>${c.flags.granWon ? 'Up on the bookies, thanks to you' : 'Waiting for you to score'}</b></div>${c.kids.length ? `<div class="row"><span>Kids</span><b>${kids}</b></div>` : ''}
+      ${c.kids.length ? `<div class="endBtns"><button class="btn gold" id="kids" ${slotsLeft(c) <= 0 ? 'disabled' : ''}>Spend the day with the kids (a slot)</button></div>` : '<p class="dim">No kids yet. Settle down, and one day there might be.</p>'}`);
+    if ($('kids')) $('kids').onclick = () => { c.slotsUsed++; c.weekLog.push({ t: 'kids' }); applyEffects(c, { family: 7, energy: -3 }); save(); render(); closeModal(); toast(pickLine(['Soft play. You get stuck in the tube slide. A seven-year-old rescues you.', 'You build a den. It\'s structurally unsound. It\'s perfect.', 'Kickabout in the park. Your kid nutmegs you. You\'ve never been prouder.'])); };
+  }
+  function showHolidays() {
+    const a = age(c);
+    modal(`<h2>Holidays</h2><p class="dim">A holiday uses two time slots.</p><div class="scroll shop">${L2.holidays.map(h => { const why = h.minAge && a < h.minAge ? h.minAge + '+' : h.needPartner && !c.partner ? 'Need a partner' : h.needKids && !c.kids.length ? 'Need kids' : c.bank < h.cost ? 'Skint' : slotsLeft(c) < h.slots ? 'Not enough slots' : null; return `<div class="item"><div><b>${esc(h.label)}</b><span class="price">${money(h.cost)}</span><p>${esc(h.blurb)}</p></div><button class="btn small gold" data-hol="${h.id}" ${why ? 'disabled' : ''}>${why || 'Book it'}</button></div>`; }).join('')}</div>`);
+    root.querySelectorAll('[data-hol]').forEach(b => b.onclick = () => { const r = holiday(c, b.dataset.hol, a); save(); render(); closeModal(); toast(r.ok ? r.line : r.why); });
+  }
+  function showAmends() {
+    modal(`<h2>Make amends</h2><p class="dim">Every way back can go wrong. Strongest when the damage came from one big act.</p><div class="choices">
+      <button class="btn choice" id="mem" ${c.flags.memoir ? 'disabled' : ''}>Write a tell-all memoir <small>£60k advance</small></button>
+      <button class="btn choice" id="intv" ${c.flags.interviewed ? 'disabled' : ''}>Sit-down interview with Dame Fiona Bluntly</button>
+      <button class="btn choice" id="pledge">Pledge yourself to community work <small>see Fame &gt; Community & charity</small></button>
+      <button class="btn choice" id="fresh">A fresh start abroad <small>clubs abroad care less about the English press</small></button></div>`);
+    $('mem').onclick = () => modal(`<h2>The memoir</h2><p class="evtext">Your ghostwriter, Clive (not that Clive), needs to know the angle.</p><div class="choices"><button class="btn choice" id="hon">Honest: it was my fault</button><button class="btn choice" id="blame">Settle some scores</button></div>`) || ($('hon').onclick = () => { memoir(c, true); save(); render(); closeModal(); toast('"Front Page, Back Page: My Story" goes to number 3 in the charts. Number 1 is a cookbook by a dog.'); }, $('blame').onclick = () => { memoir(c, false); save(); render(); closeModal(); toast('It sells. Everyone you mentioned is furious.'); });
+    $('intv').onclick = () => {
+      const I = L2.interview; let k = 0, score = 0;
+      const ask = () => {
+        if (k >= I.questions.length) { const r = interviewResult(c, score); save(); render(); modal(`<h2>${r === 'great' ? 'The nation forgives you (a bit)' : r === 'bad' ? 'That went badly' : 'That was... fine'}</h2><p class="evtext">${r === 'great' ? 'Dame Fiona nods once. From her, that\'s a standing ovation.' : r === 'bad' ? 'Clips of you are already memes. One has been set to sad violin music.' : 'Neither a disaster nor a triumph. Gran thought you looked thin.'}</p><div class="endBtns"><button class="btn gold" id="ok">OK</button></div>`); $('ok').onclick = closeModal; return; }
+        const q = I.questions[k++];
+        modal(`<div class="evvia">📺 ${esc(I.journalist)}</div><p class="evtext">"${esc(q.q)}"</p><div class="choices">${q.a.map((a, j) => `<button class="btn choice" data-j="${j}">${esc(a[0])}</button>`).join('')}</div>`, true);
+        root.querySelectorAll('[data-j]').forEach(b => b.onclick = () => { score += q.a[+b.dataset.j][1]; ask(); });
+      };
+      ask();
+    };
+    $('pledge').onclick = () => { c.redeeming = 10; save(); closeModal(); toast('Ten weeks of community work will count double for your honour. Stay out of trouble.'); };
+    $('fresh').onclick = () => { closeModal(); toast(age(c) < 18 ? 'You\'re a bit young to emigrate. Mum says no.' : 'Your reputation travels less abroad. Look for foreign clubs in the next transfer window.'); };
   }
   function showLook() {
     const a = age(c), L = c.look;
@@ -341,6 +398,7 @@ export function createHubScreen(root, go, params = {}) {
   function fameItems() {
     return [
       { label: 'Newspapers', note: c.papers.length ? `${c.papers.length} issue${c.papers.length === 1 ? '' : 's'} · ${c.framed.length} framed` : 'The first issue lands Monday', go: showArchive },
+      ...(inDisgrace(c) ? [{ label: 'Make amends', note: 'Memoir, interview, community, fresh start', go: showAmends }] : []),
       { label: 'Scrapbook', note: (c.scrapbook || []).length ? `${c.scrapbook.length} goal${c.scrapbook.length === 1 ? '' : 's'} to watch again` : 'Score in a match to start it', go: showScrapbook },
       { label: 'Press cuttings', note: c.quotes.length ? `${c.quotes.length} quote${c.quotes.length === 1 ? '' : 's'}` : 'Nothing said yet', go: () => modal(`<h2>Press cuttings</h2><div class="scroll">${c.quotes.map(q => `<div class="msg"><b>${esc(q.journo)}</b><span>Week ${q.week + 1}</span><p class="dim">${esc(q.q)}</p><p>${esc(q.a)}</p></div>`).join('') || '<p class="dim">You haven\'t faced the press yet.</p>'}</div>`) },
     ];

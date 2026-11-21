@@ -10,7 +10,8 @@ import {
 import { endSeason } from './world.js';
 import { endLoan, agentOf, inWindow, reputation } from './transfers.js';
 import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
-import { initLook } from './looks.js';
+import { initLook, lookFields } from './looks.js';
+import { initTrouble, rollInjury, troubleWeek, kidBills } from './trouble.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; }
@@ -54,7 +55,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   buildSeason(c, R); initLife(c); initMoney(c);
   c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
   c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
-  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R);
+  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R); initTrouble(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -103,7 +104,7 @@ export function weeklyBills(c) {
   b.push({ what: 'Phone contract', amount: 12 });
   if (!hasCar(c)) b.push({ what: 'Bus pass', amount: 15 });
   const ag = agentOf(c); if (ag) b.push({ what: `Agent's cut (${ag.name.split(' ')[0]})`, amount: Math.round(c.contract.wage * ag.fee) });
-  return [...b, ...moneyBills(c)];
+  return [...b, ...moneyBills(c), ...kidBills(c)];
 }
 export function message(c, from, text) { c.inbox.unshift({ id: ++c.msgId, from, text, week: c.week, read: false }); if (c.inbox.length > 60) c.inbox.length = 60; }
 
@@ -119,8 +120,9 @@ export function logRest(c) { c.slotsUsed++; c.weekLog.push({ t: 'rest' }); c.ene
 /** Who picks you? Start, bench or stand. U21 and early-cup games favour the kids. */
 export function selection(c, f, R = Math.random) {
   if (f.comp === 'friendly') return R() < .75 ? 'start' : 'sub';
-  if (f.comp === 'intl') return R() < .7 ? 'start' : 'sub';
+  if (f.comp === 'intl') return c.injury || c.ban > 0 ? 'none' : R() < .7 ? 'start' : 'sub';
   if (c.intlWeek === c.week) return 'none'; // away with England
+  if (c.injury || c.ban > 0) return 'none';
   if (myTeamIn(c, f).endsWith('-u21')) return R() < .9 ? 'start' : 'sub';
   // Approval matters more where there's a real pathway: at an elite academy
   // even the gaffer's favourite kid mostly watches.
@@ -181,6 +183,9 @@ export function recordMatch(c, f, S, R = Math.random) {
     if (played && S.my.goals > 0) c.flags.granWon = true;
   }
   afterMatch(c, S);
+  const inj = rollInjury(c, S, age(c), R);
+  if (inj) { message(c, 'Club physio', `Bad news: ${inj.name}. You're out for ${inj.weeks} week${inj.weeks > 1 ? 's' : ''}. Rest, ice, and no more TikTok dances.`); c.weekNews.push({ page: 'back', headline: `INJURY BLOW FOR ${c.name.trim().split(/\s+/).pop().toUpperCase()}` }); }
+  if (played && c.flags.servedBan && c.flags.prison && !c.flags.freeMan) { c.flags.freeMan = true; c.weekNews.push({ page: 'back', headline: `REDEMPTION: ${c.name.trim().split(/\s+/).pop().toUpperCase()} PLAYS AGAIN AFTER PRISON` }); }
   const press = pressAfter(c, f, S, myTeamIn(c, f), R); if (press) c.pending.push(press);
   // Form: your last five ratings.
   const recent = myFixtures(c).filter(x => x.rating != null).slice(-5).map(x => x.rating);
@@ -238,6 +243,7 @@ export function finishWeek(c, R = Math.random) {
   c.approval = clamp(c.approval + dA, 0, 100);
   c.energy = clamp(c.energy + 12 - Math.max(0, age(c) - 29) * 1.5 * (c.rooms && c.rooms.includes('gym') ? .5 : 1), 0, 100); // recovery slows in your thirties
   familyWeek(c); friendsWeek(c, R);
+  troubleWeek(c, R).forEach(([from, text]) => message(c, from, text));
   if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
   const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.
@@ -275,7 +281,7 @@ export function nextWeek(c, R = Math.random) {
   if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   c._abroad = ABROAD.includes(c.div);
-  rollEvents(c, isPreseason(c), R, age(c));
+  rollEvents(c, isPreseason(c), R, age(c), lookFields(c, age(c)).recede || 0);
   delete c._abroad;
   const lvl = maybeCallUp(c, reputation(c, skillLevelExact(), age(c)), age(c), R);
   if (lvl) message(c, 'England', `You've been called up to the England ${LEVELS[lvl] === 'Senior' ? 'senior squad' : LEVELS[lvl]}! Report to St George's Park.${lvl === 'senior' ? ' Gran is already at the bookies.' : ''}`);

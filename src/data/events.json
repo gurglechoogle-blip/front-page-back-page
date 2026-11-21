@@ -1592,6 +1592,477 @@
           "result": "The headline translates roughly as 'ENGLISHMAN SAYS OUR WEATHER IS BAD'. Which, to be fair, it isn't."
         }
       ]
+    },
+    {
+      "id": "fixingAsk",
+      "from": "Big Lee",
+      "via": "call",
+      "minWeek": 20,
+      "weight": 1.5,
+      "minAgeYears": 18,
+      "notPreseason": true,
+      "text": "Mate. Tiny favour. Get yourself booked in the first ten minutes Saturday. That's it. A little yellow card. My cousin's got a bet on. £5,000 in your hand. Nobody gets hurt. It's a yellow card.",
+      "choices": [
+        {
+          "label": "Take the £5,000",
+          "effects": {
+            "money": 5000
+          },
+          "result": "Lee gives you an envelope in a Greggs bag. You get booked for a 'clumsy challenge' in the seventh minute. Your heart is going like the clappers.",
+          "flag": "fixed1",
+          "next": {
+            "id": "fixingMore",
+            "in": 5,
+            "chance": 0.8
+          }
+        },
+        {
+          "label": "Absolutely not",
+          "effects": {
+            "honour": 3,
+            "friend:lee": -10
+          },
+          "result": "Lee laughs it off. 'Only joking.' He wasn't joking."
+        }
+      ]
+    },
+    {
+      "id": "fixingMore",
+      "from": "Big Lee",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "That went beautiful. Now my cousin's mate wants something bigger. Miss a penalty. Just one. £20,000. You're in it now, son. Be a shame if anyone found out about the yellow card.",
+      "choices": [
+        {
+          "label": "Do it (£20,000)",
+          "effects": {
+            "money": 20000,
+            "honour": -5
+          },
+          "result": "You blaze it over the bar. The crowd groans. You feel sick for a week.",
+          "flag": "fixed2",
+          "next": {
+            "id": "fixingProbe",
+            "in": 6,
+            "chance": 0.75
+          }
+        },
+        {
+          "label": "Go to the FA yourself",
+          "effects": {
+            "honour": 6,
+            "manager": -6,
+            "friend:lee": -40
+          },
+          "result": "The FA thank you for your honesty. You get a six-week ban for the yellow card. Lee stops speaking to you. The papers call you 'the whistleblower'.",
+          "ban": 6,
+          "news": {
+            "page": "front",
+            "headline": "WHISTLEBLOWER {NAME} SHOPS BETTING GANG"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixingProbe",
+      "from": "The FA",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "The FA's integrity unit would like a word about some unusual betting patterns. On you. A yellow card and a penalty. They have phone records. And a Greggs bag.",
+      "choices": [
+        {
+          "label": "Confess everything",
+          "effects": {
+            "honour": -18,
+            "manager": -25,
+            "fans": -15
+          },
+          "result": "A ten-month ban. Your name is mud. But it's over, and you told the truth.",
+          "ban": 40,
+          "flag": "fixingBan",
+          "news": {
+            "page": "front",
+            "headline": "SHAME OF {NAME}: STRIKER BANNED FOR MATCH FIXING"
+          }
+        },
+        {
+          "label": "Deny it",
+          "effects": {
+            "honour": -8
+          },
+          "result": "Your lawyer says 'it'll be fine'. It is not fine.",
+          "next": {
+            "id": "fixingTrial",
+            "in": 4,
+            "chance": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixingTrial",
+      "from": "Crown Court",
+      "via": "moment",
+      "followUpOnly": true,
+      "text": "Guilty. Conspiracy to defraud. The judge looks at you over her glasses: 'You had everything, and you threw it away for a Greggs bag.' Eighteen months, out in nine.",
+      "choices": [
+        {
+          "label": "Go down quietly",
+          "effects": {
+            "honour": -25,
+            "fans": -20,
+            "family": -10,
+            "manager": -40
+          },
+          "result": "Prison is a chapter, not the end. You'll be out in nine months. Then the hard part starts.",
+          "ban": 38,
+          "flag": "prison",
+          "news": {
+            "page": "front",
+            "headline": "JAILED: {NAME} GETS 18 MONTHS FOR FIXING"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bookieCredit",
+      "from": "BetBros (online bookmaker)",
+      "via": "text",
+      "followUpOnly": true,
+      "text": "VIP offer for our favourite customer! £20,000 credit line, no checks, no questions. Win it all back this weekend!",
+      "choices": [
+        {
+          "label": "Take the credit",
+          "effects": {
+            "money": 20000
+          },
+          "result": "It feels like free money. It isn't free and it isn't money.",
+          "debt": {
+            "name": "BetBros credit line",
+            "balance": 24000,
+            "rate": 0.05
+          },
+          "flag": "bookieDebt",
+          "next": {
+            "id": "betOnSelf",
+            "in": 4,
+            "chance": 0.7
+          }
+        },
+        {
+          "label": "Delete the app",
+          "effects": {
+            "honour": 3,
+            "family": 3
+          },
+          "result": "You delete it. Then you delete the other three. Priya is very proud."
+        }
+      ]
+    },
+    {
+      "id": "betOnSelf",
+      "from": "Your phone",
+      "via": "moment",
+      "followUpOnly": true,
+      "text": "The odds on your team losing Saturday are 4/1. You're owed £24,000. You know the team news. One bet would clear it all.",
+      "choices": [
+        {
+          "label": "Place the bet",
+          "effects": {
+            "money": 12000,
+            "honour": -20,
+            "manager": -20
+          },
+          "result": "You win. Then the FA's systems flag it within the hour.",
+          "ban": 20,
+          "news": {
+            "page": "front",
+            "headline": "{NAME} BET AGAINST OWN TEAM: FA BAN"
+          }
+        },
+        {
+          "label": "Get help instead",
+          "effects": {
+            "honour": 5,
+            "family": 6,
+            "energy": 5
+          },
+          "result": "You ring a gambling helpline at 2am. A woman called Pat talks to you for an hour. You owe Pat everything."
+        }
+      ]
+    },
+    {
+      "id": "tappingUp",
+      "from": "A man in a long coat",
+      "via": "call",
+      "minAgeYears": 19,
+      "minWeek": 10,
+      "weight": 1.5,
+      "notPreseason": true,
+      "text": "I represent a much bigger club. I can't say which. It rhymes with 'Smarsenal'. We'd love a quiet coffee. Nobody needs to know.",
+      "choices": [
+        {
+          "label": "Take the meeting quietly",
+          "effects": {
+            "money": 0
+          },
+          "result": "The coffee is lovely. The offer is lovelier. You leave by the back door, like a spy.",
+          "flag": "tapped",
+          "next": {
+            "id": "tapLeak",
+            "in": 3,
+            "chance": 0.4
+          }
+        },
+        {
+          "label": "Report it to your club",
+          "effects": {
+            "manager": 8,
+            "honour": 4
+          },
+          "result": "The chairman is touched. He gives you a framed photo of himself. You didn't want it."
+        },
+        {
+          "label": "Leak it to force a move",
+          "effects": {
+            "manager": -15,
+            "fans": -10,
+            "honour": -3
+          },
+          "result": "It's on every back page by Thursday. The fans burn a replica shirt. It doesn't burn well (polyester).",
+          "flag": "forcedOut",
+          "news": {
+            "page": "back",
+            "headline": "GET ME OUT: {NAME} WANTS BIG MOVE"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tapLeak",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Sid Scoop. Lovely photo of you leaving a coffee shop by the back door. With a man in a long coat. Fancy explaining?",
+      "choices": [
+        {
+          "label": "'I was buying a coffee'",
+          "effects": {
+            "manager": -10,
+            "fans": -8
+          },
+          "result": "Nobody believes you. Not even the barista.",
+          "news": {
+            "page": "back",
+            "headline": "TAPPED UP! {NAME} IN SECRET COFFEE SUMMIT"
+          }
+        },
+        {
+          "label": "Come clean to the gaffer",
+          "effects": {
+            "manager": -4,
+            "honour": 2
+          },
+          "result": "He sighs. 'Everyone's got a price, son. Just don't make me find out from Sid Scoop next time.'"
+        }
+      ]
+    },
+    {
+      "id": "teammatePartner",
+      "from": "A party at Gaz's",
+      "via": "moment",
+      "minAgeYears": 20,
+      "minWeek": 10,
+      "weight": 1,
+      "text": "Gaz's other half has had a few. She's been flirting with you all night, and now she's suggesting you 'get some air' together. Gaz is in the kitchen doing his dance.",
+      "choices": [
+        {
+          "label": "Get some air together",
+          "effects": {
+            "energy": -5
+          },
+          "result": "It's a bad idea and you both know it. You do it anyway.",
+          "flag": "affair",
+          "next": {
+            "id": "affairOut",
+            "in": 4,
+            "chance": 0.65
+          }
+        },
+        {
+          "label": "Find Gaz and go and dance badly",
+          "effects": {
+            "teammates": 3,
+            "honour": 2
+          },
+          "result": "You and Gaz dance until 3am. It's horrific. It's the right choice."
+        }
+      ]
+    },
+    {
+      "id": "affairOut",
+      "from": "The dressing room",
+      "via": "moment",
+      "followUpOnly": true,
+      "text": "Gaz knows. Everyone knows. Nobody's passing to you in training. Gaz threw a boot at you. Then the other boot.",
+      "choices": [
+        {
+          "label": "Apologise to Gaz in front of everyone",
+          "effects": {
+            "teammates": -15,
+            "honour": -6,
+            "partner": -35
+          },
+          "result": "He doesn't accept it. But the lads respect that you stood there and took it.",
+          "news": {
+            "page": "front",
+            "headline": "LOVE RAT {NAME}: AFFAIR WITH TEAMMATE'S PARTNER"
+          }
+        },
+        {
+          "label": "Ask for a transfer",
+          "effects": {
+            "teammates": -30,
+            "honour": -10,
+            "manager": -10,
+            "partner": -50
+          },
+          "result": "The dressing room has collapsed. The gaffer has gone fishing and isn't answering.",
+          "flag": "forcedOut",
+          "news": {
+            "page": "front",
+            "headline": "DRESSING ROOM WAR: {NAME} AFFAIR SHAME"
+          }
+        }
+      ]
+    },
+    {
+      "id": "hairTransplant",
+      "from": "Your mirror",
+      "via": "moment",
+      "minAgeYears": 31,
+      "weight": 2,
+      "needRecede": 0.35,
+      "text": "The forehead's winning. Gaz has started calling you 'The Moon'. A clinic in Istanbul does a package: flights, hotel, 4,000 grafts and a bandana. £6,000.",
+      "choices": [
+        {
+          "label": "Book the flights",
+          "effects": {
+            "money": -6000
+          },
+          "result": "Six weeks in a bandana. Then: hair! Actual hair! Gaz has to find a new nickname.",
+          "transplant": 0.75,
+          "next": {
+            "id": "hairPapped",
+            "in": 1,
+            "chance": 0.4
+          }
+        },
+        {
+          "label": "Shave it all off and own it",
+          "effects": {
+            "fans": 2,
+            "honour": 1
+          },
+          "result": "You look like a Bond villain. A handsome one. Your partner approves.",
+          "look": "shaved"
+        }
+      ]
+    },
+    {
+      "id": "hairPapped",
+      "from": "Sid Scoop (journalist)",
+      "via": "call",
+      "followUpOnly": true,
+      "text": "Sid Scoop. Funny photo: you, an airport, a bandana. Want to tell the nation about your 'holiday'?",
+      "choices": [
+        {
+          "label": "'Yes, I had a hair transplant. Look at it!'",
+          "effects": {
+            "fans": 3,
+            "honour": 2
+          },
+          "result": "The honesty goes down a storm. The clinic sends you a fruit basket.",
+          "news": {
+            "page": "front",
+            "headline": "HAIR TODAY: {NAME} COMES CLEAN OVER TURKEY TRANSPLANT"
+          }
+        },
+        {
+          "label": "'It's a new conditioner'",
+          "effects": {
+            "fans": -2,
+            "honour": -2
+          },
+          "result": "The internet zooms in on your scalp. The internet is merciless.",
+          "news": {
+            "page": "front",
+            "headline": "BALD-FACED LIE: {NAME}'S 'CONDITIONER' CLAIM"
+          }
+        }
+      ]
+    },
+    {
+      "id": "babyNews",
+      "from": "{PARTNER}",
+      "via": "moment",
+      "minAgeYears": 22,
+      "needPartner": true,
+      "needStage": [
+        "living",
+        "married",
+        "engaged"
+      ],
+      "weight": 1,
+      "maxKids": 3,
+      "repeatable": true,
+      "text": "They hand you a little stick with two lines on it. 'So,' they say. 'That happened.'",
+      "choices": [
+        {
+          "label": "Cry happy tears",
+          "effects": {
+            "partner": 10,
+            "family": 8
+          },
+          "result": "You both cry. Then you ring your mum. Then she cries. Then Gran puts a bet on the name.",
+          "baby": true
+        },
+        {
+          "label": "Panic, then cry happy tears",
+          "effects": {
+            "partner": 6,
+            "family": 6
+          },
+          "result": "You go white, sit down, stand up, sit down, then hug them for ten minutes.",
+          "baby": true
+        }
+      ],
+      "cooldown": 110
+    },
+    {
+      "id": "missedBirthday",
+      "from": "Your kid",
+      "via": "call",
+      "followUpOnly": true,
+      "repeatable": true,
+      "text": "\"Dad, you missed my birthday. Mum said you were at training. It's fine. Grandma made the cake.\"",
+      "choices": [
+        {
+          "label": "Drive over with a present right now (uses a time slot)",
+          "effects": {
+            "family": 8,
+            "slot": 1
+          },
+          "result": "You arrive at bedtime with a remote-control dinosaur. Best day ever, apparently."
+        },
+        {
+          "label": "Promise you'll make it next year",
+          "effects": {
+            "family": -6
+          },
+          "result": "\"OK.\" The worst word in the English language."
+        }
+      ]
     }
   ]
 }

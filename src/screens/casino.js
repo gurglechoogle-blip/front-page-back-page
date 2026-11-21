@@ -113,6 +113,8 @@ export function createCasinoScreen(root, go, params) {
     const final = poker ? poker.you.stack : bj.stack, net = final - buyIn;
     c.bank += final; c.casinoLive = null; c.weekLog.push({ t: 'gamble', venue: V.id, net });
     c.gambling = c.gambling || { sessions: 0, net: 0, biggestWin: 0 }; c.gambling.sessions++; c.gambling.net += net; c.gambling.biggestWin = Math.max(c.gambling.biggestWin, net);
+    if (V.id === 'casino' && params.buyIn >= 10000 && params.game === 'poker' && net > 0) c.flags.cardShark = true;
+    if (c.gambling.net < -20000 && !c.flags.bookieOffered) { c.flags.bookieOffered = true; c.followUps.push({ id: 'bookieCredit', week: c.week + 1 }); }
     if (V.id === 'gran') { applyEffects(c, net > 0 ? { family: 1 } : { family: 2 }); message(c, 'Gran', net > 0 ? `You took ${fmt(net)} off me! You're out of the will. (You're back in the will.)` : `Thanks for the ${fmt(-net)}, pet. That's my bus fare sorted.`); }
     if (V.risk && Math.random() < V.risk) { applyEffects(c, { honour: -3 }); (c.weekNews = c.weekNews || []).push({ page: 'front', headline: (V.news || '{NAME} SPOTTED AT CASINO').replace('{NAME}', surname(c)) }); }
     if (V.bigNews && Math.abs(net) >= V.bigNews) { applyEffects(c, net > 0 ? { fans: 1, honour: -1 } : { honour: -3, family: -3 }); (c.weekNews = c.weekNews || []).push({ page: 'front', headline: net > 0 ? `JACKPOT! ${surname(c)} SCOOPS ${fmt(net)} AT CASINO` : `${surname(c)}'S ${fmt(-net)} CASINO BLOWOUT` }); }
