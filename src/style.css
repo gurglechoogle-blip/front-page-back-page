@@ -337,3 +337,5 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .finale .epi{text-align:left}.finale .epi h3{margin-top:14px}.finale .epi p{line-height:1.45}
 .finale .paperwrap{margin:12px auto;max-width:560px;text-align:left}
 .finale .panel .row{text-align:left}
+.msg.invite{border-left:3px solid #ffc928}.invbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.invbtns .btn{font-size:13px;padding:6px 10px}
+.phone-list h3{margin:8px 0 4px}

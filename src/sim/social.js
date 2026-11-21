@@ -2,7 +2,7 @@
 import FR from '../data/friends.json';
 import CH from '../data/chat.json';
 import names from '../data/names.json';
-import { applyEffects, surname } from './life.js';
+import { applyEffects, surname, fresh } from './life.js';
 import { club, divisionClubs } from './season.js';
 import { makeSquad } from './squads.js';
 
@@ -99,10 +99,10 @@ function chatVars(c, R) {
   return { a, b, me: c.name, rival: c.rival ? c.rival.short : 'the new lad', gaffer: 'the gaffer' };
 }
 export function chatWeek(c, R = Math.random) {
-  const v = chatVars(c, R), n = 2 + Math.floor(R() * 3);
-  for (let i = 0; i < n; i++) c.chat.push({ week: c.week, text: fill(pick(CH.banter, R), v) });
+  const v = chatVars(c, R), n = 1 + Math.floor(R() * 2);
+  for (let i = 0; i < n; i++) c.chat.push({ week: c.week, text: fill(fresh(c, 'banter', CH.banter, R), v) });
   if (c.chat.length > 80) c.chat.splice(0, c.chat.length - 80);
-  if (R() < .25) { const p = pick(CH.prompts, R), i = CH.prompts.indexOf(p); c.pending.push({ type: 'chat', i, vars: v }); }
+  if (R() < .2) { const i = fresh(c, 'prompts', CH.prompts.map((x, k) => k), R); c.pending.push({ type: 'chat', i, vars: v }); }
 }
 export const chatPrompt = item => { const p = CH.prompts[item.i]; return { q: fill(p.q, item.vars), options: p.options.map(o => Object.assign({}, o, { text: fill(o.text, item.vars) })) }; };
 export function chatAnswer(c, item, k, R = Math.random) {

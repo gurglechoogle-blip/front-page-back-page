@@ -14,6 +14,7 @@ import { initLook, lookFields } from './looks.js';
 import { initTrouble, rollInjury, troubleWeek, kidBills } from './trouble.js';
 import { initFame, staffBills, fameWeek, hasStaff } from './fame.js';
 import { initAch, checkAchievements } from './achievements.js';
+import { initInvites, inviteWeek, makeSquad } from './invites.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; }
@@ -57,7 +58,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   buildSeason(c, R); initLife(c); initMoney(c);
   c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
   c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
-  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R); initTrouble(c); initFame(c); initAch(c);
+  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R); initTrouble(c); initFame(c); initAch(c); initInvites(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -94,7 +95,7 @@ export const isPreseason = (c, w = c.week) => weekStart(w) < addDays(DIVS[c.div]
 export const slotsTotal = c => (isPreseason(c) ? 6 : 4) + (hasStaff(c, 'pa') ? 1 : 0);
 export const slotsLeft = c => slotsTotal(c) - c.slotsUsed;
 export const age = (c, date = weekStart(c.week)) => { const b = new Date(c.dob), d = new Date(date); let a = d.getFullYear() - b.getFullYear(); if (d < new Date(d.getFullYear(), b.getMonth(), b.getDate())) a--; return a; };
-export const unread = c => c.inbox.filter(m => !m.read).length;
+export const unread = c => c.inbox.filter(m => !m.read).length + (c.invites || []).filter(v => !v.seen).length;
 export const leagueTable = c => table(divisionClubs(c.div), c.fixtures.filter(f => f.comp === 'league'));
 export const position = c => leagueTable(c).findIndex(r => r.id === c.clubId) + 1;
 export const avgRating = c => c.stats.ratings.length ? c.stats.ratings.reduce((a, b) => a + b, 0) / c.stats.ratings.length : 0;
@@ -108,7 +109,11 @@ export function weeklyBills(c) {
   const ag = agentOf(c); if (ag) b.push({ what: `Agent's cut (${ag.name.split(' ')[0]})`, amount: Math.round(c.contract.wage * ag.fee) });
   return [...b, ...moneyBills(c), ...kidBills(c), ...staffBills(c)];
 }
-export function message(c, from, text) { c.inbox.unshift({ id: ++c.msgId, from, text, week: c.week, read: false }); if (c.inbox.length > 60) c.inbox.length = 60; }
+// Club news, the kit man, the physio and the gaffer go on the noticeboard,
+// not your phone: texts are for people who want something from you.
+const NOTICE = /( News$|^Dennis|^Club physio$|^The Gaffer$|^England$)/;
+export function notice(c, from, text) { (c.notices = c.notices || []).unshift({ from, text, week: c.week }); if (c.notices.length > 60) c.notices.length = 60; }
+export function message(c, from, text) { if (NOTICE.test(from)) return notice(c, from, text); c.inbox.unshift({ id: ++c.msgId, from, text, week: c.week, read: false }); if (c.inbox.length > 60) c.inbox.length = 60; }
 
 /* ---------- training and rest (time slots) ---------- */
 export function logTraining(c, drill, score, gained) {
@@ -277,14 +282,14 @@ export function nextWeek(c, R = Math.random) {
   if (c.week > lastWeek() || !myFixtures(c).some(f => !f.played) && weekStart(c.week) > CAL.seasonEnd) { c.seasonOver = true; return false; }
   const ws = weekStart(c.week), we = addDays(ws, 6);
   if (c.dob.slice(5) >= ws.slice(5) && c.dob.slice(5) <= we.slice(5) && age(c, we) === 17) message(c, M.birthday.from, M.birthday.text);
+  inviteWeek(c, age(c), Object.values(makeSquad(c.clubId, club(c.clubId).league)).flat(), R);
   const nf = weekFixtures(c)[0];
-  if (nf) {
+  if (nf && R() < .15) {
     const opp = club(nf.home === myTeamIn(c, nf) ? nf.away : nf.home), odds = pickR(['3/1', '4/1', '9/2', '6/1', '8/1', '12/1'], R), stake = pickR(M.granStakes, R);
     const n = +odds.split('/')[0], win = Math.round(5 * (n + 1));
     c.granBet = { fixture: nf.id, win };
     message(c, 'Gran', fill(M.granOdds, { odds, stake, opp: opp.name }));
   }
-  if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   c._abroad = ABROAD.includes(c.div);
   rollEvents(c, isPreseason(c), R, age(c), lookFields(c, age(c)).recede || 0);

@@ -110,8 +110,8 @@ export function pressAfter(c, f, S, myTeam, R = Math.random) {
   let ctx = S.my.goals ? 'scored' : S.role === 'sub' ? 'benched' : S.rating < 6.2 ? 'missed' : won ? 'won' : lost ? 'lost' : 'gaffer';
   if (S.rating >= 7.6 && R() < .25) ctx = 'rumour';
   if (R() < .12) ctx = 'gaffer';
-  const q = pick(PR.questions[ctx], R), opp = club(f.home === myTeam ? f.away : f.home);
-  return { type: 'press', journo: pick(PR.journalists, R), q: fill(q.q, { OPP: opp.name, TEAM: club(myTeam).name }), answers: q.answers, ctx, fixture: f.id };
+  const q = fresh(c, 'press-' + ctx, PR.questions[ctx], R), opp = club(f.home === myTeam ? f.away : f.home);
+  return { type: 'press', journo: fresh(c, 'journo', PR.journalists, R), q: fill(q.q, { OPP: opp.name, TEAM: club(myTeam).name }), answers: q.answers, ctx, fixture: f.id };
 }
 export function answerPress(c, item, i) {
   const a = item.answers[i], effects = applyEffects(c, a.effects);
@@ -201,3 +201,15 @@ export function framePage(c, n, page) {
   c.framed.unshift(Object.assign({}, p, { page })); return true;
 }
 export { prettyDate, CAL };
+
+/** Pick from a list without repeats: every item comes up once before any repeats.
+ * key names the list in c.seen; list is the array of choices (items or indices). */
+export function fresh(c, key, list, R = Math.random) {
+  c.seen = c.seen || {}; const used = c.seen[key] = c.seen[key] || [];
+  const ids = list.map((x, i) => i);
+  let left = ids.filter(i => !used.includes(typeof list[i] === 'number' ? list[i] : i));
+  if (!left.length) { c.seen[key] = []; left = ids; }
+  const i = left[Math.floor(R() * left.length)], v = list[i];
+  c.seen[key].push(typeof v === 'number' ? v : i);
+  return v;
+}

@@ -1,16 +1,75 @@
 {
   "_note": "Post-match press questions. Context picks the pool: scored, missed (played, no goal, low rating), won, lost, benched, rumour, gaffer. Each answer has a tone (humble, cocky, funny, dig), effects on meters, and a quote for Monday's paper ({NAME}, {OPP}, {TEAM}).",
-  "journalists": ["Sid Scoop (Weekly Splash)", "Brenda Banter (Radio Bantam)", "Clive from the Echo", "A teenager with a podcast"],
+  "journalists": [
+    "Sid Scoop (Weekly Splash)",
+    "Brenda Banter (Radio Bantam)",
+    "Clive from the Echo",
+    "A teenager with a podcast",
+    "Margaret Thump (The Daily Hoofer)",
+    "Dougie Spiel (Matchday Gazette)",
+    "Priya Pundit (Sport Sizzle Radio)",
+    "Big Terry (Terrace Talk Fanzine)",
+    "Fenella Fizz (The Sunday Rattle)",
+    "Kev Klaxon (Back Page Bugle)",
+    "Nigel Notepad (The Evening Whistle)",
+    "Shaz Gossage (Hot Goss Weekly)",
+    "Barry from the Supporters' Club Newsletter",
+    "Rhiannon Ruckus (Pitchside FM)"
+  ],
   "questions": {
     "scored": [
       { "q": "What a goal against {OPP}. Where does that rank in your career so far?", "answers": [
         { "tone": "humble", "text": "\"It's all about the team. The lads made it easy for me.\"", "effects": { "teammates": 3, "honour": 2 } },
-        { "tone": "cocky", "text": "\"Top of the list. Then again, I'm only 16, so it's a short list.\"", "effects": { "fans": 3, "honour": -2, "teammates": -1 } },
+        { "tone": "cocky", "text": "\"Top of the list. Then again, it's still quite a short list.\"", "effects": { "fans": 3, "honour": -2, "teammates": -1 } },
         { "tone": "funny", "text": "\"I was aiming for the corner flag, to be honest.\"", "effects": { "fans": 4, "honour": 1 } } ] },
       { "q": "The fans were singing your name. How did that feel?", "answers": [
         { "tone": "humble", "text": "\"Unreal. I'll never take that for granted.\"", "effects": { "fans": 4, "honour": 2 } },
         { "tone": "cocky", "text": "\"They'd better get used to it.\"", "effects": { "fans": 2, "honour": -3 } },
-        { "tone": "dig", "text": "\"Louder than they sing for some of the others, that's for sure.\"", "effects": { "teammates": -7, "fans": 3, "honour": -3 } } ] }
+        { "tone": "dig", "text": "\"Louder than they sing for some of the others, that's for sure.\"", "effects": { "teammates": -7, "fans": 3, "honour": -3 } } ] },
+      { "q": "Talk us through the celebration. Was that planned?", "answers": [
+        { "tone": "humble", "text": "\"No, it just happened. I mostly ran towards whoever looked happiest.\"", "effects": { "teammates": 2, "honour": 1 } },
+        { "tone": "cocky", "text": "\"I've been practising it in the mirror for weeks. It deserved a goal.\"", "effects": { "fans": 3, "honour": -2, "teammates": -1 } },
+        { "tone": "funny", "text": "\"It was meant to be a knee slide. It turned into a sort of apology on grass.\"", "effects": { "fans": 4 } } ] },
+      { "q": "Who are you dedicating that goal to?", "answers": [
+        { "tone": "humble", "text": "\"My mum. She's driven me to more training sessions than the bus company.\"", "effects": { "family": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"Gran. She promised me a fiver per goal and she's about to regret it.\"", "effects": { "family": 3, "fans": 3 } },
+        { "tone": "cocky", "text": "\"Myself, mainly. I did all the hard bits.\"", "effects": { "fans": 1, "honour": -3, "teammates": -2 } } ] },
+      { "q": "Did you mean it, or was it a cross that went in?", "answers": [
+        { "tone": "humble", "text": "\"Bit of both. I'll take the luck, I've earned some.\"", "effects": { "honour": 2, "fans": 1 } },
+        { "tone": "cocky", "text": "\"Meant every inch. Check the replay, I looked at the keeper first.\"", "effects": { "fans": 3, "honour": -2 } },
+        { "tone": "funny", "text": "\"I'll tell you after the goal of the month vote closes.\"", "effects": { "fans": 4 } } ] },
+      { "q": "Your boots looked brand new today. Lucky pair?", "answers": [
+        { "tone": "humble", "text": "\"They were a present from my family, so they had to score really.\"", "effects": { "family": 3, "honour": 1 } },
+        { "tone": "funny", "text": "\"They're lucky now. Last week they were just painful.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"It's not the boots. It's the feet in the boots.\"", "effects": { "fans": 2, "honour": -2, "teammates": -1 } } ] },
+      { "q": "You've been on a bit of a drought. Relief to finally get one?", "answers": [
+        { "tone": "humble", "text": "\"Massive relief. The lads never stopped backing me.\"", "effects": { "teammates": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"I'd started thinking about goalkeeping. Glad it didn't come to that.\"", "effects": { "fans": 3, "teammates": 1 } },
+        { "tone": "dig", "text": "\"Funny how it comes when someone finally passes it to me.\"", "effects": { "teammates": -7, "fans": 2, "honour": -3 } } ] },
+      { "q": "Their keeper said before the game you didn't worry him. Anything to say to him?", "answers": [
+        { "tone": "humble", "text": "\"He's a good keeper. Today just went my way.\"", "effects": { "honour": 3, "teammates": 1 } },
+        { "tone": "cocky", "text": "\"Hope he's worrying now. He looked worried when he was picking it out the net.\"", "effects": { "fans": 4, "honour": -3 } },
+        { "tone": "funny", "text": "\"I've sent him a get-well-soon card. And a calendar of my goals.\"", "effects": { "fans": 4, "honour": -1 } } ] },
+      { "q": "Is it true you've started doing yoga? Is that the secret?", "answers": [
+        { "tone": "humble", "text": "\"It helps. Mostly it's just the work on the training ground.\"", "effects": { "manager": 2, "honour": 1 } },
+        { "tone": "funny", "text": "\"I can't touch my toes yet but I can touch the back of the net.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"The secret is I'm just better than I was. Write that down.\"", "effects": { "fans": 2, "honour": -2 } } ] },
+      { "q": "You scored in the rain and then took your shirt off. Cold?", "answers": [
+        { "tone": "humble", "text": "\"Freezing. I apologise to everyone who had to see that.\"", "effects": { "fans": 2, "honour": 1 } },
+        { "tone": "funny", "text": "\"I've lost all feeling. Worth it. Mum's already rung to tell me off.\"", "effects": { "fans": 3, "family": 2 } },
+        { "tone": "cocky", "text": "\"Had to give the cameras something. Fans pay good money.\"", "effects": { "fans": 3, "honour": -2, "manager": -1 } } ] },
+      { "q": "Did you hear the ref tell you to calm down after you scored?", "answers": [
+        { "tone": "humble", "text": "\"Fair enough. I got carried away. I'll apologise.\"", "effects": { "honour": 3, "manager": 1 } },
+        { "tone": "funny", "text": "\"I thought he was asking for a selfie, if I'm honest.\"", "effects": { "fans": 3 } },
+        { "tone": "dig", "text": "\"First thing he got right all afternoon.\"", "effects": { "fans": 3, "honour": -4, "manager": -2 } } ] },
+      { "q": "Your goal's gone viral online. Have you read the comments?", "answers": [
+        { "tone": "humble", "text": "\"Never read the comments. Mum reads them and tells me the nice ones.\"", "effects": { "family": 2, "honour": 2 } },
+        { "tone": "funny", "text": "\"Someone said I run like a startled deer. I've made it my profile picture.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"Seen them. They're all correct. Especially the ones calling me a genius.\"", "effects": { "fans": 2, "honour": -3 } } ] },
+      { "q": "That's your first goal at this ground. Anything special about it?", "answers": [
+        { "tone": "humble", "text": "\"The groundsman. He gave me a nod. That meant a lot.\"", "effects": { "honour": 2, "fans": 2 } },
+        { "tone": "funny", "text": "\"The away end has the best pies in the country and I'll be telling everyone.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"It'll be the first of many. They should name a stand after me.\"", "effects": { "fans": 2, "honour": -3, "teammates": -1 } } ] }
     ],
     "missed": [
       { "q": "You had chances today. What went wrong?", "answers": [
@@ -19,36 +78,322 @@
         { "tone": "funny", "text": "\"The goal moved. I've got video evidence.\"", "effects": { "fans": 3 } } ] },
       { "q": "Some fans are saying you're not ready. Are they right?", "answers": [
         { "tone": "humble", "text": "\"I've got a lot to learn. I'll prove them wrong.\"", "effects": { "fans": 3, "honour": 2 } },
-        { "tone": "cocky", "text": "\"Some fans also think the Earth is flat.\"", "effects": { "fans": -5, "honour": -2 } } ] }
+        { "tone": "cocky", "text": "\"Some fans also think the Earth is flat.\"", "effects": { "fans": -5, "honour": -2 } },
+        { "tone": "funny", "text": "\"I'm ready. I just didn't tell my legs.\"", "effects": { "fans": 2, "honour": 1 } } ] },
+      { "q": "That miss in the second half. Have you seen it back yet?", "answers": [
+        { "tone": "humble", "text": "\"I've seen it. I'll keep seeing it until I've fixed it.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"I'm told it's now a ringtone. Smashing.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"Nine times out of ten that's in. This was the tenth.\"", "effects": { "fans": -1, "honour": -2 } } ] },
+      { "q": "Was the pitch to blame today? It looked heavy.", "answers": [
+        { "tone": "humble", "text": "\"Same pitch for both teams. No excuses.\"", "effects": { "honour": 3, "manager": 2 } },
+        { "tone": "funny", "text": "\"I lost a boot in the six-yard box. If anyone finds it, it's a size nine.\"", "effects": { "fans": 3 } },
+        { "tone": "dig", "text": "\"Ask the groundsman. Actually, ask whoever pays the groundsman.\"", "effects": { "manager": -4, "fans": 2, "honour": -3 } } ] },
+      { "q": "You were hooked just after the hour. Fair decision?", "answers": [
+        { "tone": "humble", "text": "\"Completely fair. I wasn't at it today.\"", "effects": { "manager": 4, "honour": 2 } },
+        { "tone": "dig", "text": "\"I'd have liked longer. Some lads get the full ninety whatever they do.\"", "effects": { "teammates": -6, "manager": -4, "fans": 2, "honour": -3 } },
+        { "tone": "funny", "text": "\"I'd run out of ideas and also out of breath, so good timing really.\"", "effects": { "fans": 3, "manager": 1 } } ] },
+      { "q": "Your mum was in the stand. What's she going to say?", "answers": [
+        { "tone": "humble", "text": "\"She'll say keep your head up. She always does.\"", "effects": { "family": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"She'll say my hair looked nice. That's how I know it went badly.\"", "effects": { "family": 2, "fans": 3 } },
+        { "tone": "cocky", "text": "\"She'll say I was the best player on the pitch. Mums are always right.\"", "effects": { "family": 2, "fans": -1, "honour": -2 } } ] },
+      { "q": "Did the wind get to you out there?", "answers": [
+        { "tone": "humble", "text": "\"Everyone had the same wind. I need to adapt better.\"", "effects": { "honour": 2, "manager": 2 } },
+        { "tone": "funny", "text": "\"One of my crosses is still going. Probably over Belgium by now.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"Wind, ref, the lot. Nothing went our way, nothing.\"", "effects": { "honour": -3, "fans": 1, "manager": -2 } } ] },
+      { "q": "Is there something going on off the pitch? You looked distracted.", "answers": [
+        { "tone": "humble", "text": "\"No, all good. Just an off day, they happen.\"", "effects": { "honour": 2, "manager": 1 } },
+        { "tone": "funny", "text": "\"I left the oven on. I'm almost sure of it. Still am.\"", "effects": { "fans": 3, "family": 1 } },
+        { "tone": "cocky", "text": "\"Distracted? I was saving myself for a big game.\"", "effects": { "fans": -3, "manager": -3, "honour": -2 } } ] },
+      { "q": "You've been posting a lot online lately. Is it affecting your football?", "answers": [
+        { "tone": "humble", "text": "\"Fair question. I'll put the phone down for a bit.\"", "effects": { "manager": 3, "honour": 2, "fans": 1 } },
+        { "tone": "funny", "text": "\"My last post was a picture of a sandwich. I don't think the sandwich is to blame.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"My followers don't seem bothered. Maybe you should follow me.\"", "effects": { "fans": -2, "honour": -3 } } ] },
+      { "q": "That poor first touch kept letting you down. Anything wrong with the ball?", "answers": [
+        { "tone": "humble", "text": "\"Nothing wrong with the ball. Plenty wrong with my touch. I'll sort it.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"The ball and I are on a break. We're talking it through.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"Ball was fine. Some of the passes coming at me were lethal though.\"", "effects": { "teammates": -6, "honour": -3, "fans": 1 } } ] },
+      { "q": "Their full-back had you in his pocket. Did he say anything to you?", "answers": [
+        { "tone": "humble", "text": "\"He played well. Credit where it's due.\"", "effects": { "honour": 3, "teammates": 1 } },
+        { "tone": "funny", "text": "\"He kept asking where I got my headband. I didn't have the heart to say Gran knitted it.\"", "effects": { "fans": 3, "family": 2 } },
+        { "tone": "cocky", "text": "\"Enjoy it while it lasts. Next time I'll be in his nightmares.\"", "effects": { "fans": 2, "honour": -3 } } ] },
+      { "q": "Your rating in the papers will be low. Bothered?", "answers": [
+        { "tone": "humble", "text": "\"Deserved. I'll take it on the chin and go again.\"", "effects": { "honour": 3, "manager": 2 } },
+        { "tone": "funny", "text": "\"I'll frame it. Something to look back on when I'm a legend.\"", "effects": { "fans": 3 } },
+        { "tone": "dig", "text": "\"Bit rich from people who've never kicked a ball. No offence.\"", "effects": { "fans": 1, "honour": -4, "manager": -1 } } ] },
+      { "q": "You skied that penalty. What happened?", "answers": [
+        { "tone": "humble", "text": "\"Not good enough. I let the lads down and I'll make it up to them.\"", "effects": { "teammates": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"I've always wanted to hit the moon. Nearly managed it.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"I'll be taking the next one. And I'll score it.\"", "effects": { "fans": 1, "teammates": -2, "honour": -1 } } ] }
     ],
     "won": [
       { "q": "Big win. How's the mood in the dressing room?", "answers": [
         { "tone": "humble", "text": "\"Buzzing. Credit to the gaffer, he had us ready.\"", "effects": { "manager": 4, "honour": 1 } },
         { "tone": "funny", "text": "\"Gaz is doing his dance. It's horrific. Send help.\"", "effects": { "teammates": 3, "fans": 2 } },
-        { "tone": "cocky", "text": "\"We'll beat anyone playing like that. Anyone.\"", "effects": { "fans": 3, "honour": -1 } } ] }
+        { "tone": "cocky", "text": "\"We'll beat anyone playing like that. Anyone.\"", "effects": { "fans": 3, "honour": -1 } } ] },
+      { "q": "You didn't score but you were everywhere. Satisfied?", "answers": [
+        { "tone": "humble", "text": "\"I just do my job. The goals will come.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"I covered so much ground I've been charged for a second ticket.\"", "effects": { "fans": 3, "teammates": 1 } },
+        { "tone": "cocky", "text": "\"Satisfied? I carried that midfield. My back's sore.\"", "effects": { "fans": 2, "teammates": -4, "honour": -2 } } ] },
+      { "q": "Three points against {OPP}. Does that send a message?", "answers": [
+        { "tone": "humble", "text": "\"It's one game. We stay humble and go again.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "cocky", "text": "\"Message sent, delivered and read. Two blue ticks.\"", "effects": { "fans": 4, "honour": -2 } },
+        { "tone": "funny", "text": "\"The message is: we're quite good when it doesn't rain.\"", "effects": { "fans": 3 } } ] },
+      { "q": "What did the gaffer say at half-time?", "answers": [
+        { "tone": "humble", "text": "\"He told us to be braver, and we were. Spot on.\"", "effects": { "manager": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"Something about a pike he once caught. Still not sure how it relates. It worked though.\"", "effects": { "manager": 2, "fans": 3 } },
+        { "tone": "dig", "text": "\"Honestly, we sorted it ourselves on the pitch.\"", "effects": { "manager": -6, "teammates": 3, "honour": -3 } } ] },
+      { "q": "Clean sheet as well. Credit to the defence?", "answers": [
+        { "tone": "humble", "text": "\"All of it. The back line were brilliant. I just tried to help.\"", "effects": { "teammates": 5, "honour": 1 } },
+        { "tone": "funny", "text": "\"Our keeper did a save with his face. He's now got a new face.\"", "effects": { "teammates": 3, "fans": 2 } },
+        { "tone": "cocky", "text": "\"I did a lot of defending myself, to be fair. Someone had to.\"", "effects": { "teammates": -4, "fans": 1, "honour": -2 } } ] },
+      { "q": "The travelling fans were incredible today. Any message for them?", "answers": [
+        { "tone": "humble", "text": "\"Thank you. That journey's long and they still turned up singing.\"", "effects": { "fans": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"Whoever brought the inflatable banana: you're the real MVP.\"", "effects": { "fans": 5 } },
+        { "tone": "cocky", "text": "\"Keep coming. You're watching something special.\"", "effects": { "fans": 3, "honour": -2 } } ] },
+      { "q": "The ice bath must feel good after a win like that.", "answers": [
+        { "tone": "humble", "text": "\"It's part of the job. Recovery matters.\"", "effects": { "manager": 2, "honour": 1 } },
+        { "tone": "funny", "text": "\"Nothing feels good in an ice bath. I made a noise I've never made before.\"", "effects": { "fans": 3, "teammates": 2 } },
+        { "tone": "cocky", "text": "\"I skip it. Some of us recover naturally.\"", "effects": { "manager": -3, "fans": 1, "honour": -2 } } ] },
+      { "q": "What's the plan to celebrate tonight?", "answers": [
+        { "tone": "humble", "text": "\"Early night. Big week coming.\"", "effects": { "manager": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"Gran's doing a roast. That's the party. It's a very good roast.\"", "effects": { "family": 4, "fans": 2 } },
+        { "tone": "cocky", "text": "\"Can't say. But keep an eye on social media.\"", "effects": { "fans": 1, "manager": -4, "honour": -3 } } ] },
+      { "q": "The new kit's had some stick. Lucky charm now?", "answers": [
+        { "tone": "humble", "text": "\"I'll wear whatever they give me. Proud to wear the badge.\"", "effects": { "fans": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"It looked like a deckchair until we won. Now it's a classic.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"It's growing on me. Unlike the training kit, which is growing mould.\"", "effects": { "fans": 2, "manager": -2, "honour": -1 } } ] },
+      { "q": "The ref had a busy afternoon. Did he get the big calls right?", "answers": [
+        { "tone": "humble", "text": "\"Refs have a tough job. He was fair to both sides.\"", "effects": { "honour": 3 } },
+        { "tone": "funny", "text": "\"I've no idea. I spent most of the game trying to avoid his elbows.\"", "effects": { "fans": 3 } },
+        { "tone": "dig", "text": "\"He got the result right, which was mostly in spite of himself.\"", "effects": { "fans": 3, "honour": -4, "manager": -1 } } ] },
+      { "q": "You picked up a knock late on. Anything to worry about?", "answers": [
+        { "tone": "humble", "text": "\"Should be fine. I'll do whatever the physio says.\"", "effects": { "manager": 2, "honour": 1 } },
+        { "tone": "funny", "text": "\"The physio said it's a bruise. Mum says it's a broken leg. We'll see who wins.\"", "effects": { "family": 3, "fans": 2 } },
+        { "tone": "cocky", "text": "\"I'll be fine. I'd play on one leg against this lot.\"", "effects": { "fans": 2, "honour": -2 } } ] },
+      { "q": "{TEAM} looked a different side today. What's changed?", "answers": [
+        { "tone": "humble", "text": "\"Hard work in training. The gaffer's been on at us all week.\"", "effects": { "manager": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"We've switched to porridge. Never underestimate oats.\"", "effects": { "fans": 3, "teammates": 1 } },
+        { "tone": "dig", "text": "\"A few of us finally got the shirts we should have had all along.\"", "effects": { "teammates": -5, "manager": -3, "fans": 2, "honour": -3 } } ] },
+      { "q": "Who was your man of the match today?", "answers": [
+        { "tone": "humble", "text": "\"Our keeper. Without him we're nowhere.\"", "effects": { "teammates": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"The bloke selling programmes. He worked harder than anyone.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"Me. Obviously. Next question.\"", "effects": { "fans": 1, "teammates": -4, "honour": -3 } } ] }
     ],
     "lost": [
       { "q": "Tough afternoon. Is the gaffer getting it wrong?", "answers": [
         { "tone": "humble", "text": "\"No chance. That's on us players.\"", "effects": { "manager": 6, "teammates": 1, "honour": 2 } },
         { "tone": "dig", "text": "\"I'm not paid to pick the team. If I was, I'd be in it more.\"", "effects": { "manager": -10, "fans": 3, "honour": -4 } },
-        { "tone": "funny", "text": "\"Honestly, I was just thinking about my tea.\"", "effects": { "fans": 1, "manager": -1 } } ] }
+        { "tone": "funny", "text": "\"Honestly, I was just thinking about my tea.\"", "effects": { "fans": 1, "manager": -1 } } ] },
+      { "q": "{OPP} wanted it more today. Fair?", "answers": [
+        { "tone": "humble", "text": "\"Fair. We need to look at ourselves.\"", "effects": { "honour": 3, "manager": 2 } },
+        { "tone": "funny", "text": "\"They wanted it more, they got it more. Basic maths.\"", "effects": { "fans": 2 } },
+        { "tone": "dig", "text": "\"Some of us wanted it. Some of us were thinking about their hair.\"", "effects": { "teammates": -8, "fans": 2, "honour": -3 } } ] },
+      { "q": "What do you say to the fans who travelled today?", "answers": [
+        { "tone": "humble", "text": "\"Sorry. Simple as that. You deserved better.\"", "effects": { "fans": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"Sorry, and I'll pay for someone's chips. Not everyone's. One person's.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"Stick with us. I'll make it up to you personally.\"", "effects": { "fans": 2, "honour": -1 } } ] },
+      { "q": "Was VAR against you today?", "answers": [
+        { "tone": "humble", "text": "\"We can't hide behind that. We weren't good enough.\"", "effects": { "honour": 3, "manager": 2 } },
+        { "tone": "funny", "text": "\"If they have VAR here, it was hiding. I couldn't find it.\"", "effects": { "fans": 3 } },
+        { "tone": "dig", "text": "\"Whoever was watching the screen must have been watching the snooker.\"", "effects": { "fans": 3, "honour": -4, "manager": -2 } } ] },
+      { "q": "You looked frustrated at the final whistle. What was said?", "answers": [
+        { "tone": "humble", "text": "\"Just frustration. Nothing that leaves the dressing room.\"", "effects": { "teammates": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"I said a word I'm not allowed to repeat in front of Gran.\"", "effects": { "fans": 3, "family": -1 } },
+        { "tone": "dig", "text": "\"Some home truths. A few people needed to hear them.\"", "effects": { "teammates": -6, "fans": 2, "manager": -2, "honour": -2 } } ] },
+      { "q": "That's a few defeats now. Is there a crisis at {TEAM}?", "answers": [
+        { "tone": "humble", "text": "\"No crisis. We stick together and work our way out.\"", "effects": { "teammates": 3, "manager": 3, "honour": 1 } },
+        { "tone": "funny", "text": "\"A crisis is when the tea urn breaks. This is just a bad run.\"", "effects": { "fans": 3, "teammates": 1 } },
+        { "tone": "cocky", "text": "\"There's no crisis while I'm here.\"", "effects": { "fans": 2, "teammates": -3, "honour": -2 } } ] },
+      { "q": "The pitch looked like a ploughed field. Did it suit them more?", "answers": [
+        { "tone": "humble", "text": "\"Same pitch for both sides. They handled it better.\"", "effects": { "honour": 3 } },
+        { "tone": "funny", "text": "\"I saw a farmer looking at it with real interest.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"It suited their style. Their style being hoofing it.\"", "effects": { "fans": 2, "honour": -3, "manager": -1 } } ] },
+      { "q": "The referee gave very little your way. Thoughts?", "answers": [
+        { "tone": "humble", "text": "\"He's got a hard job. We didn't do enough to make it easy.\"", "effects": { "honour": 3, "manager": 1 } },
+        { "tone": "funny", "text": "\"I'm not allowed to comment. My wallet's still sore from last time.\"", "effects": { "fans": 3 } },
+        { "tone": "dig", "text": "\"He'll be in their club bar later, I'd imagine.\"", "effects": { "fans": 3, "honour": -5, "manager": -3 } } ] },
+      { "q": "How long until you can put this one behind you?", "answers": [
+        { "tone": "humble", "text": "\"Tomorrow morning, in the gym. That's how you move on.\"", "effects": { "manager": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"Mum's lasagne usually does it in about forty minutes.\"", "effects": { "family": 3, "fans": 2 } },
+        { "tone": "cocky", "text": "\"Already have. I don't do sulking.\"", "effects": { "fans": 1, "honour": -1, "teammates": -1 } } ] },
+      { "q": "The team bus got held up on the way here. Did that affect you?", "answers": [
+        { "tone": "humble", "text": "\"No excuses. We were here in plenty of time.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"We spent forty minutes on the hard shoulder listening to the kit man's playlist. Scarred.\"", "effects": { "fans": 3, "teammates": 2 } },
+        { "tone": "dig", "text": "\"Maybe the club could spring for a bus built this century.\"", "effects": { "manager": -4, "fans": 2, "honour": -2 } } ] },
+      { "q": "Do you think some of your teammates hid today?", "answers": [
+        { "tone": "humble", "text": "\"No. We win together and lose together.\"", "effects": { "teammates": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"Only Gaz, and he was hiding from his ex, who was in the stand.\"", "effects": { "teammates": 1, "fans": 3 } },
+        { "tone": "dig", "text": "\"I won't name names. They know who they are.\"", "effects": { "teammates": -9, "fans": 2, "honour": -4 } } ] },
+      { "q": "Was there a tactical problem today, playing that system?", "answers": [
+        { "tone": "humble", "text": "\"The system's fine. We didn't carry it out.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"I'd tell you the system but I'd have to draw it, and I can't draw.\"", "effects": { "fans": 3 } },
+        { "tone": "dig", "text": "\"Ask whoever drew it on the board. I think it was upside down.\"", "effects": { "manager": -8, "fans": 2, "honour": -3 } } ] },
+      { "q": "How do you pick yourself up for the next one?", "answers": [
+        { "tone": "humble", "text": "\"Watch it back, learn from it, work harder.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"Ice bath, chips, sleep. In that order. Not at the same time.\"", "effects": { "fans": 3, "teammates": 1 } },
+        { "tone": "cocky", "text": "\"I don't need picking up. I'm already up.\"", "effects": { "fans": 1, "honour": -2 } } ] }
     ],
     "benched": [
       { "q": "You didn't start today. Frustrated?", "answers": [
         { "tone": "humble", "text": "\"The gaffer picks the team. I'll keep working.\"", "effects": { "manager": 5, "honour": 2 } },
-        { "tone": "dig", "text": "\"Frustrated? I've been sat so long I've got splinters.\"", "effects": { "manager": -7, "fans": 4, "honour": -2 } } ] }
+        { "tone": "dig", "text": "\"Frustrated? I've been sat so long I've got splinters.\"", "effects": { "manager": -7, "fans": 4, "honour": -2 } },
+        { "tone": "funny", "text": "\"I've got a lovely view from the bench. Best seat in the house.\"", "effects": { "fans": 3, "manager": 1 } } ] },
+      { "q": "You made an impact off the bench. Point proved?", "answers": [
+        { "tone": "humble", "text": "\"I just wanted to help the team. That's my job.\"", "effects": { "manager": 4, "honour": 2 } },
+        { "tone": "cocky", "text": "\"Point proved, underlined, and laminated.\"", "effects": { "fans": 3, "manager": -2, "honour": -2 } },
+        { "tone": "dig", "text": "\"Imagine what I'd do with ninety minutes. Someone should.\"", "effects": { "manager": -7, "fans": 4, "honour": -3 } } ] },
+      { "q": "What's it like warming up on the touchline for an hour?", "answers": [
+        { "tone": "humble", "text": "\"You stay ready. You never know when you're needed.\"", "effects": { "manager": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"I've done that many lunges I've lunged into a new postcode.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"Lovely. I'm the fittest substitute in history.\"", "effects": { "manager": -5, "fans": 3, "honour": -2 } } ] },
+      { "q": "Did the gaffer explain why you weren't in the starting eleven?", "answers": [
+        { "tone": "humble", "text": "\"He did, and I respect it. It's on me to change his mind.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"He did. It involved a long story about a trout. I think the trout was me.\"", "effects": { "manager": 1, "fans": 3 } },
+        { "tone": "dig", "text": "\"He tried. I'm still waiting for the bit that made sense.\"", "effects": { "manager": -8, "fans": 2, "honour": -3 } } ] },
+      { "q": "You only got ten minutes. Enough time to show what you can do?", "answers": [
+        { "tone": "humble", "text": "\"Every minute counts. I'll take whatever I'm given.\"", "effects": { "manager": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"Ten minutes is enough to boil an egg. I just wanted to boil an egg.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"Ten minutes was plenty. Did you see that turn?\"", "effects": { "fans": 2, "honour": -2 } } ] },
+      { "q": "Are you worried about losing your place for good?", "answers": [
+        { "tone": "humble", "text": "\"Competition's healthy. It pushes everyone.\"", "effects": { "teammates": 4, "manager": 3, "honour": 1 } },
+        { "tone": "funny", "text": "\"My place on the bench is very secure, thanks for asking.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"No. They need me, they just haven't realised yet.\"", "effects": { "fans": 1, "manager": -3, "honour": -2 } } ] },
+      { "q": "It was freezing out there. How did you keep warm on the bench?", "answers": [
+        { "tone": "humble", "text": "\"Kept moving, kept focused. Same as always.\"", "effects": { "manager": 3, "honour": 1 } },
+        { "tone": "funny", "text": "\"Gran knitted me a bench blanket. With my name on it. In sequins.\"", "effects": { "family": 4, "fans": 4 } },
+        { "tone": "dig", "text": "\"Some of us were sat out there long enough to know.\"", "effects": { "manager": -5, "fans": 2, "honour": -2 } } ] },
+      { "q": "Your family came to watch and you only played the last few minutes. Disappointed for them?", "answers": [
+        { "tone": "humble", "text": "\"They'll be proud I got on. They always are.\"", "effects": { "family": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"Mum saw me take my tracksuit off and cheered like I'd scored. Bless her.\"", "effects": { "family": 3, "fans": 3 } },
+        { "tone": "dig", "text": "\"I'd love to have shown them more. Maybe next time, eh gaffer?\"", "effects": { "manager": -6, "family": 2, "fans": 2, "honour": -2 } } ] },
+      { "q": "You came on and the first thing you did was concede a free kick. Rusty?", "answers": [
+        { "tone": "humble", "text": "\"Little bit, yeah. Game time sorts that out.\"", "effects": { "manager": 2, "honour": 2 } },
+        { "tone": "funny", "text": "\"My legs had gone to sleep. They woke up angry.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"Tactical foul. Read the game. Very clever, actually.\"", "effects": { "fans": 1, "honour": -2 } } ] },
+      { "q": "The fans were chanting for you to come on. Did you hear them?", "answers": [
+        { "tone": "humble", "text": "\"I did. It means the world. I'll repay them.\"", "effects": { "fans": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"I thought they were chanting for the pie man. Very flattering either way.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"Everyone heard them. Well, almost everyone.\"", "effects": { "manager": -7, "fans": 5, "honour": -3 } } ] },
+      { "q": "You were spotted chatting to the kit man all game. What about?", "answers": [
+        { "tone": "humble", "text": "\"He's a good bloke. Been at the club years. You learn things.\"", "effects": { "teammates": 2, "honour": 2 } },
+        { "tone": "funny", "text": "\"The best way to fold a towel. It's a three-part fold. Life-changing.\"", "effects": { "fans": 3, "teammates": 1 } },
+        { "tone": "dig", "text": "\"Tactics. He's got some good ideas. Better than some.\"", "effects": { "manager": -6, "fans": 2, "honour": -2 } } ] },
+      { "q": "Would you consider a loan move to get regular football?", "answers": [
+        { "tone": "humble", "text": "\"I'm focused here. I'll fight for my place.\"", "effects": { "manager": 4, "fans": 2, "honour": 2 } },
+        { "tone": "funny", "text": "\"I've got a loan already. It's for a car that doesn't start.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"If someone's offering minutes, I'm listening.\"", "effects": { "fans": -3, "manager": -5, "honour": -1 } } ] },
+      { "q": "What do you actually do on the bench for an hour?", "answers": [
+        { "tone": "humble", "text": "\"Watch, learn, see where I can hurt them when I come on.\"", "effects": { "manager": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"Count seagulls. Fourteen today. A personal best.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"Mostly I work out how I'd pick the team. It's quite different.\"", "effects": { "manager": -7, "fans": 3, "honour": -3 } } ] }
     ],
     "rumour": [
       { "q": "There's talk of bigger clubs watching you. Would you be tempted?", "answers": [
         { "tone": "humble", "text": "\"I'm happy here. I just want to play.\"", "effects": { "fans": 4, "manager": 3, "honour": 2 } },
         { "tone": "cocky", "text": "\"Never say never. My agent's got a fax machine.\"", "effects": { "fans": -6, "manager": -5, "honour": -2 } },
-        { "tone": "funny", "text": "\"The only club I'm joining is Gran's bingo club.\"", "effects": { "fans": 3, "family": 2 } } ] }
+        { "tone": "funny", "text": "\"The only club I'm joining is Gran's bingo club.\"", "effects": { "fans": 3, "family": 2 } } ] },
+      { "q": "A scout from a big club was in the stand today. Did you know?", "answers": [
+        { "tone": "humble", "text": "\"I didn't. I just play for the badge.\"", "effects": { "fans": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"I thought he was the bloke from the gas board. He had a clipboard.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"Hope he enjoyed the show. Tickets for the next one are going fast.\"", "effects": { "fans": -3, "manager": -3, "honour": -2 } } ] },
+      { "q": "Would you kiss the badge to calm the fans' nerves?", "answers": [
+        { "tone": "humble", "text": "\"I'd rather show them with my performances than with a kiss.\"", "effects": { "fans": 3, "honour": 3 } },
+        { "tone": "funny", "text": "\"I kissed it once and got a mouthful of fabric softener. Never again.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"I'll kiss whatever badge is on my shirt at the time.\"", "effects": { "fans": -7, "manager": -3, "honour": -3 } } ] },
+      { "q": "Your agent was seen having lunch with another club's director. Anything in it?", "answers": [
+        { "tone": "humble", "text": "\"He has lunch with everyone. I'm focused on the next game.\"", "effects": { "manager": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"He'll have lunch with anyone. He once had lunch with my dentist.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"I'd be worried if he wasn't having lunch with people.\"", "effects": { "fans": -4, "manager": -4, "honour": -2 } } ] },
+      { "q": "A paper says you've already agreed personal terms elsewhere. True?", "answers": [
+        { "tone": "humble", "text": "\"Rubbish. Not true at all. I'm going nowhere.\"", "effects": { "fans": 5, "manager": 3, "honour": 1 } },
+        { "tone": "funny", "text": "\"The only terms I've agreed are with Mum, about doing the washing up.\"", "effects": { "family": 3, "fans": 3 } },
+        { "tone": "dig", "text": "\"Whoever wrote that should stick to the horoscopes.\"", "effects": { "fans": 2, "honour": -3, "manager": -1 } } ] },
+      { "q": "What would it take to keep you at {TEAM}?", "answers": [
+        { "tone": "humble", "text": "\"Nothing. I love it here. That's the honest answer.\"", "effects": { "fans": 5, "manager": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"A parking space closer to the door. And biscuits in the canteen. The good ones.\"", "effects": { "fans": 3, "manager": 1 } },
+        { "tone": "dig", "text": "\"A bit more ambition from upstairs wouldn't hurt.\"", "effects": { "manager": -6, "fans": 2, "honour": -3 } } ] },
+      { "q": "Have you spoken to your family about a possible move?", "answers": [
+        { "tone": "humble", "text": "\"Family come first. Right now we're all happy where we are.\"", "effects": { "family": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"Gran says she's not moving anywhere that hasn't got her chippy.\"", "effects": { "family": 3, "fans": 3 } },
+        { "tone": "cocky", "text": "\"They'll go wherever I go. They know which way the wind's blowing.\"", "effects": { "family": -3, "fans": -3, "honour": -2 } } ] },
+      { "q": "Fans are worried you'll be gone by the end of the window. What do you say to them?", "answers": [
+        { "tone": "humble", "text": "\"Don't worry. I'm committed to this club.\"", "effects": { "fans": 5, "manager": 2, "honour": 2 } },
+        { "tone": "funny", "text": "\"I've just bought a season ticket for my mum. I'm not wasting that.\"", "effects": { "fans": 4, "family": 2 } },
+        { "tone": "cocky", "text": "\"Enjoy me while you've got me.\"", "effects": { "fans": -6, "manager": -4, "honour": -3 } } ] },
+      { "q": "Is it true you've been learning a foreign language?", "answers": [
+        { "tone": "humble", "text": "\"Only so I can talk to our new signing. He's a lovely lad.\"", "effects": { "teammates": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"I can say 'one more chips please' in four languages. That's it.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"Let's just say it might come in handy. Adiós.\"", "effects": { "fans": -6, "manager": -5, "honour": -2 } } ] },
+      { "q": "Your social media has just started following a rival club. Explain?", "answers": [
+        { "tone": "humble", "text": "\"Pure accident. My thumb's got a mind of its own. Sorry, everyone.\"", "effects": { "fans": 3, "honour": 2 } },
+        { "tone": "funny", "text": "\"That was my little cousin. He's been banned from my phone. And from Christmas.\"", "effects": { "fans": 4, "family": -1 } },
+        { "tone": "cocky", "text": "\"I follow lots of things. Read into it what you like.\"", "effects": { "fans": -6, "manager": -4, "honour": -2 } } ] },
+      { "q": "After today's performance, is your price going up?", "answers": [
+        { "tone": "humble", "text": "\"I don't think about price. I think about the next game.\"", "effects": { "honour": 3, "manager": 2 } },
+        { "tone": "funny", "text": "\"Last I checked I was worth about three Freddos and a bus pass.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"I'd hope so. Quality costs.\"", "effects": { "fans": -2, "honour": -3, "teammates": -2 } } ] },
+      { "q": "A big club's manager called you 'one to watch'. Flattered?", "answers": [
+        { "tone": "humble", "text": "\"It's nice, but it's my own gaffer's opinion that matters.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"I've been 'one to watch' since primary school. Mainly by dinner ladies.\"", "effects": { "fans": 4 } },
+        { "tone": "dig", "text": "\"Nice to be appreciated somewhere, isn't it.\"", "effects": { "manager": -8, "fans": -2, "honour": -3 } } ] },
+      { "q": "If the right offer came in, would you push for a move?", "answers": [
+        { "tone": "humble", "text": "\"I'd never push. I'd only ever leave the right way.\"", "effects": { "honour": 4, "manager": 2, "fans": 1 } },
+        { "tone": "funny", "text": "\"I can't even push a trolley in a straight line. No chance.\"", "effects": { "fans": 3 } },
+        { "tone": "cocky", "text": "\"I'd at least push the door open and have a look.\"", "effects": { "fans": -6, "manager": -6, "honour": -2 } } ] }
     ],
     "gaffer": [
       { "q": "What's the gaffer like to work for?", "answers": [
         { "tone": "humble", "text": "\"He's taught me loads. Mostly about fish, but loads.\"", "effects": { "manager": 5, "honour": 2 } },
         { "tone": "dig", "text": "\"Bit old school. Thinks a tactics board is for drawing trout.\"", "effects": { "manager": -9, "fans": 2, "honour": -3 } },
-        { "tone": "funny", "text": "\"Don't get him started on carp. Seriously. Don't.\"", "effects": { "manager": 2, "fans": 2 } } ] }
+        { "tone": "funny", "text": "\"Don't get him started on carp. Seriously. Don't.\"", "effects": { "manager": 2, "fans": 2 } } ] },
+      { "q": "Is it true you and the gaffer had words at training this week?", "answers": [
+        { "tone": "humble", "text": "\"We talk all the time. He wants the best for me.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"We did. The words were 'tench' and 'tackle'. It was about fishing.\"", "effects": { "manager": 2, "fans": 3 } },
+        { "tone": "dig", "text": "\"He had words. I had better ones.\"", "effects": { "manager": -9, "fans": 2, "honour": -4 } } ] },
+      { "q": "Would you say you're one of the gaffer's favourites?", "answers": [
+        { "tone": "humble", "text": "\"He treats everyone the same. That's why the lads respect him.\"", "effects": { "manager": 4, "teammates": 3, "honour": 1 } },
+        { "tone": "funny", "text": "\"He gave me a maggot once. I think that's a sign of affection.\"", "effects": { "manager": 2, "fans": 3 } },
+        { "tone": "cocky", "text": "\"I'd be everyone's favourite if they had any taste.\"", "effects": { "teammates": -4, "fans": 1, "honour": -3 } } ] },
+      { "q": "The gaffer's under pressure. Do the players still back him?", "answers": [
+        { "tone": "humble", "text": "\"One hundred percent. We're playing for him.\"", "effects": { "manager": 7, "teammates": 2, "honour": 2 } },
+        { "tone": "funny", "text": "\"We back him. We'd back him even more if he stopped bringing bait to the canteen.\"", "effects": { "manager": 1, "fans": 3 } },
+        { "tone": "dig", "text": "\"You'd have to ask the players. I'm only one of them.\"", "effects": { "manager": -9, "fans": 2, "honour": -4 } } ] },
+      { "q": "What's the best bit of advice the gaffer's ever given you?", "answers": [
+        { "tone": "humble", "text": "\"'Do the simple things well.' I think about it every game.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"'Never trust a man who doesn't own a flask.' Not football, but true.\"", "effects": { "manager": 3, "fans": 3 } },
+        { "tone": "dig", "text": "\"Still waiting for it, to be honest.\"", "effects": { "manager": -8, "fans": 2, "honour": -3 } } ] },
+      { "q": "The gaffer's tactics have been called boring. Fair?", "answers": [
+        { "tone": "humble", "text": "\"Boring wins games. I'm happy with boring.\"", "effects": { "manager": 5, "honour": 1 } },
+        { "tone": "funny", "text": "\"He'd call it 'patient'. Like fishing. He calls everything like fishing.\"", "effects": { "manager": 2, "fans": 3 } },
+        { "tone": "dig", "text": "\"I've had more excitement watching a kettle boil.\"", "effects": { "manager": -9, "fans": 3, "honour": -3 } } ] },
+      { "q": "How does the gaffer react after a defeat?", "answers": [
+        { "tone": "humble", "text": "\"Calm. He tells us what went wrong and we fix it.\"", "effects": { "manager": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"He goes very quiet and stares at a photo of a large pike.\"", "effects": { "manager": 2, "fans": 3 } },
+        { "tone": "dig", "text": "\"Throws a teacup. Usually near me. I'm sure that's coincidence.\"", "effects": { "manager": -7, "fans": 2, "honour": -3 } } ] },
+      { "q": "Have you been round to the gaffer's house?", "answers": [
+        { "tone": "humble", "text": "\"Once, for a team barbecue. Lovely family.\"", "effects": { "manager": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"Yes. There's a fish tank in every room. Including the loo.\"", "effects": { "manager": 1, "fans": 4 } },
+        { "tone": "cocky", "text": "\"No, but he's always welcome round mine. Bigger telly.\"", "effects": { "manager": -2, "fans": 2, "honour": -2 } } ] },
+      { "q": "Does the gaffer give a good team talk?", "answers": [
+        { "tone": "humble", "text": "\"The best. He knows exactly what to say.\"", "effects": { "manager": 5, "honour": 1 } },
+        { "tone": "funny", "text": "\"Last one lasted twenty minutes and only six of those were about football.\"", "effects": { "manager": 1, "fans": 3, "teammates": 2 } },
+        { "tone": "dig", "text": "\"When he's awake for it, yeah.\"", "effects": { "manager": -9, "fans": 2, "honour": -4 } } ] },
+      { "q": "Would you like to be a manager yourself one day?", "answers": [
+        { "tone": "humble", "text": "\"Maybe. I'd want to be like ours. He's taught me a lot.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"Only if I can wear a big coat and shout at a fourth official.\"", "effects": { "fans": 4 } },
+        { "tone": "cocky", "text": "\"I'd be good at it. Couldn't be much worse than some I've seen.\"", "effects": { "manager": -6, "fans": 2, "honour": -3 } } ] },
+      { "q": "The gaffer's been seen in the same tracksuit for three weeks. Should someone say something?", "answers": [
+        { "tone": "humble", "text": "\"If it works for him, it works for us.\"", "effects": { "manager": 4, "honour": 1 } },
+        { "tone": "funny", "text": "\"It's a lucky tracksuit. It can now stand up on its own. We don't ask.\"", "effects": { "manager": 2, "fans": 3, "teammates": 1 } },
+        { "tone": "dig", "text": "\"Someone should say something. Ideally the laundry.\"", "effects": { "manager": -6, "fans": 3, "honour": -2 } } ] },
+      { "q": "Is the gaffer strict about diet?", "answers": [
+        { "tone": "humble", "text": "\"Very. And he's right. I feel the difference.\"", "effects": { "manager": 4, "honour": 2 } },
+        { "tone": "funny", "text": "\"No chips. Except Fridays. Except when we win. So no chips.\"", "effects": { "fans": 3, "teammates": 1 } },
+        { "tone": "dig", "text": "\"Strict for us. He had a bacon roll at half-time.\"", "effects": { "manager": -7, "fans": 2, "teammates": 1, "honour": -3 } } ] },
+      { "q": "Does the gaffer understand modern football?", "answers": [
+        { "tone": "humble", "text": "\"He's sharper than people think. Trust me.\"", "effects": { "manager": 5, "honour": 2 } },
+        { "tone": "funny", "text": "\"He's just discovered emojis. He only uses the fish one, but it's a start.\"", "effects": { "manager": 2, "fans": 4 } },
+        { "tone": "dig", "text": "\"He thinks 'pressing' is something you do to trousers.\"", "effects": { "manager": -9, "fans": 3, "honour": -3 } } ] }
     ]
   }
 }

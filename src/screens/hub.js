@@ -28,6 +28,7 @@ import { showAgents, showWindow, showDeadline } from './contractUI.js';
 import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
 import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble.js';
 import { ACH, achCount } from '../sim/achievements.js';
+import { inviteText, inviteFrom, inviteData, acceptInvite, declineInvite } from '../sim/invites.js';
 import { showSocial, showTroll, showCommunity, showInvite, showStaff, showBusiness } from './fameUI.js';
 import { reputation, inWindow, agentOf } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
@@ -239,12 +240,23 @@ export function createHubScreen(root, go, params = {}) {
     modal(`<h2>Contract</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind) + ' · ' + esc(k.label))}${row('Wages', money(k.wage) + ' a week')}${row('Signing-on fee', money(k.signingFee))}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${row('Coaching', 'x' + k.coaching)}${row('Prestige', star(k.prestige))}${row('Housing', k.housing ? 'Club digs, free' : 'At home with Mum')}
       <h3>Transfers</h3><p class="dim">You're 16. Nobody's buying yet. Loans, first pro contracts and transfers are coming in a later update.</p>`);
   }
-  function showPhone() {
-    const list = c.inbox.map(m => `<div class="msg ${m.read ? '' : 'new'}"><b>${esc(m.from)}</b><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">No messages. Nobody loves you yet.</p>';
+  function showPhone(tab = 'msgs') {
+    const fname = id => (friend(id) || { name: id }).name;
+    const invs = c.invites.map((v, k) => { const d = inviteData(v), full = !d.venue && slotsLeft(c) <= 0; return `<div class="msg invite ${v.seen ? '' : 'new'}"><b>${esc(inviteFrom(v, fname))}</b><p>${esc(inviteText(v))}</p><div class="invbtns"><button class="btn small gold" data-acc="${k}" ${full ? 'disabled title="No time slots left this week"' : ''}>${esc(d.label)}${d.venue ? '' : ' (1 slot)'}</button><button class="btn small" data-dec="${k}">Not this time</button></div></div>`; }).join('');
+    const list = (invs ? `<h3>Invitations</h3>${invs}<p class="dim small">Ignore them and they lapse at the end of the week (friends notice).</p><h3>Messages</h3>` : '') + (c.inbox.map(m => `<div class="msg ${m.read ? '' : 'new'}"><b>${esc(m.from)}</b><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">No messages. Nobody loves you yet.</p>');
     const chat = c.chat.slice(-40).map(m => `<div class="cm ${m.me ? 'me' : ''}">${esc(m.text)}</div>`).join('') || '<p class="dim">The lads haven\'t added you yet.</p>';
-    modal(`<h2>Phone</h2><div class="tabs"><button class="tab on" data-t="msgs">Messages</button><button class="tab" data-t="chat">${esc(club(c.clubId).short)} LADS</button></div><div class="scroll phone-list" id="pmsgs">${list}</div><div class="scroll chatlog hidden" id="pchat">${chat}</div>`);
-    root.querySelectorAll('.tab[data-t]').forEach(b => b.onclick = () => { root.querySelectorAll('.tab[data-t]').forEach(x => x.classList.toggle('on', x === b)); $('pmsgs').classList.toggle('hidden', b.dataset.t !== 'msgs'); $('pchat').classList.toggle('hidden', b.dataset.t !== 'chat'); const pc = $('pchat'); pc.scrollTop = pc.scrollHeight; });
-    c.inbox.forEach(m => m.read = true); save(); render();
+    const notes = (c.notices || []).map(m => `<div class="msg"><b>${esc(m.from)}</b><span>${esc(prettyDate(weekStart(m.week)))}</span><p>${esc(m.text)}</p></div>`).join('') || '<p class="dim">Nothing on the noticeboard. Dennis has pinned up a lost sock.</p>';
+    modal(`<h2>Phone</h2><div class="tabs"><button class="tab" data-t="msgs">Messages${c.invites.length ? ` (${c.invites.length})` : ''}</button><button class="tab" data-t="chat">${esc(club(c.clubId).short)} LADS</button><button class="tab" data-t="notes">Noticeboard</button></div><div class="scroll phone-list" id="pmsgs">${list}</div><div class="scroll chatlog" id="pchat">${chat}</div><div class="scroll phone-list" id="pnotes">${notes}</div>`);
+    const pick = t => { root.querySelectorAll('.tab[data-t]').forEach(x => x.classList.toggle('on', x.dataset.t === t)); ['msgs', 'chat', 'notes'].forEach(k => $('p' + k).classList.toggle('hidden', k !== t)); const pc = $('pchat'); pc.scrollTop = pc.scrollHeight; };
+    root.querySelectorAll('.tab[data-t]').forEach(b => b.onclick = () => pick(b.dataset.t)); pick(tab);
+    root.querySelectorAll('[data-acc]').forEach(b => b.onclick = () => {
+      const r = acceptInvite(c, +b.dataset.acc); save(); render();
+      if (r.venue) { const v = CZ.venues.find(x => x.id === r.venue); if (v.needs) c.flags[v.needs] = true; save(); return showVenue(v); }
+      modal(`<div class="evvia">📱 Invitation</div><p class="evtext">${esc(r.line)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="ok">Back to the phone</button></div>`);
+      $('ok').onclick = () => showPhone();
+    });
+    root.querySelectorAll('[data-dec]').forEach(b => b.onclick = () => { declineInvite(c, +b.dataset.dec); save(); render(); showPhone(); toast('Maybe next time. (They\'ll remember.)'); });
+    c.inbox.forEach(m => m.read = true); c.invites.forEach(v => v.seen = true); save(); render();
   }
 
   /* ---------- life and fame ---------- */
