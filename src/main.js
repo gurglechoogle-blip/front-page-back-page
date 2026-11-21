@@ -1,6 +1,8 @@
 import './style.css';
 import { startLoop, setScreen } from './engine/loop.js';
-import { state } from './state/gameState.js';
+import { state, skillLevelExact } from './state/gameState.js';
+import { setSkillSource } from './sim/career.js';
+setSkillSource(skillLevelExact);
 import { resumeLiveMatch } from './screens/flow.js';
 import { createTrainingScreen } from './screens/training.js';
 import { createMatchSetupScreen } from './screens/matchSetup.js';
@@ -10,11 +12,12 @@ import { createHubScreen } from './screens/hub.js';
 import { createWeekScreen } from './screens/week.js';
 import { createSeasonScreen } from './screens/season.js';
 import { createCasinoScreen } from './screens/casino.js';
+import { createTournamentScreen } from './screens/tournament.js';
 import { message } from './sim/career.js';
 import { save } from './state/gameState.js';
 
 const root = document.getElementById('root');
-const SCREENS = { start: createStartScreen, hub: createHubScreen, week: createWeekScreen, season: createSeasonScreen, casino: createCasinoScreen, training: createTrainingScreen, setup: createMatchSetupScreen, match: createMatchScreen };
+const SCREENS = { start: createStartScreen, hub: createHubScreen, week: createWeekScreen, season: createSeasonScreen, casino: createCasinoScreen, tournament: createTournamentScreen, training: createTrainingScreen, setup: createMatchSetupScreen, match: createMatchScreen };
 /** Switch screen: go('match', { ...params }). */
 function go(name, params) {
   try { setScreen(SCREENS[name](root, go, params || {})); window.scrollTo(0, 0); }
@@ -31,5 +34,5 @@ window.addEventListener('error', e => { if (!document.querySelector('.modal:not(
 const c = state.career;
 if (c && c.casinoLive) { message(c, 'The casino', `You walked out without cashing in your ${c.casinoLive.buyIn < 1 ? 'pennies' : 'chips'}. We'll keep those. Thanks!`); c.casinoLive = null; save(); }
 if (c && c.liveMatch) resumeLiveMatch(go);
-else go(c ? (c.seasonOver || c.summer ? 'season' : 'hub') : 'start');
+else go(c ? (c.summer && c.summer.stage === 'tournament' ? 'tournament' : c.seasonOver || c.summer ? 'season' : 'hub') : 'start');
 startLoop();

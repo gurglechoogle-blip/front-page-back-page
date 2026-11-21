@@ -1,0 +1,603 @@
+{
+ "_note": "National teams (strength 0-100, kits) and tournaments. Hosts up to 2034 are the real ones; later hosts are invented, as the design doc says.",
+ "nations": [
+  {
+   "id": "nat-eng",
+   "name": "England",
+   "short": "ENG",
+   "strength": 86,
+   "league": "INT",
+   "stadium": "Wembley Stadium",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#c8102e",
+    "shorts": "#1b2b4b",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-ger",
+   "name": "Germany",
+   "short": "GER",
+   "strength": 85,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-fra",
+   "name": "France",
+   "short": "FRA",
+   "strength": 87,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1b3a8f",
+    "trim": "#c8102e",
+    "shorts": "#f4f4f4",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-esp",
+   "name": "Spain",
+   "short": "ESP",
+   "strength": 86,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f2c230",
+    "shorts": "#1b3a8f",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-bra",
+   "name": "Brazil",
+   "short": "BRA",
+   "strength": 85,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f2d43a",
+    "trim": "#1d8a3a",
+    "shorts": "#1b3a8f",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-arg",
+   "name": "Argentina",
+   "short": "ARG",
+   "strength": 86,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#7ec3ec",
+    "trim": "#f4f4f4",
+    "shorts": "#1d1d1d",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-por",
+   "name": "Portugal",
+   "short": "POR",
+   "strength": 84,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#a80d1f",
+    "trim": "#1d6a3a",
+    "shorts": "#1d6a3a",
+    "socks": "#a80d1f"
+   }
+  },
+  {
+   "id": "nat-ned",
+   "name": "Netherlands",
+   "short": "NED",
+   "strength": 83,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f47b20",
+    "trim": "#1d1d1d",
+    "shorts": "#f47b20",
+    "socks": "#f47b20"
+   }
+  },
+  {
+   "id": "nat-ita",
+   "name": "Italy",
+   "short": "ITA",
+   "strength": 81,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1d58b8",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1d58b8"
+   }
+  },
+  {
+   "id": "nat-bel",
+   "name": "Belgium",
+   "short": "BEL",
+   "strength": 80,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f2c230",
+    "shorts": "#c8102e",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-cro",
+   "name": "Croatia",
+   "short": "CRO",
+   "strength": 79,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#e8e8e8",
+    "trim": "#c8102e",
+    "shorts": "#1b3a8f",
+    "socks": "#1b3a8f"
+   }
+  },
+  {
+   "id": "nat-uru",
+   "name": "Uruguay",
+   "short": "URU",
+   "strength": 78,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#7ec3ec",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#1d1d1d"
+   }
+  },
+  {
+   "id": "nat-den",
+   "name": "Denmark",
+   "short": "DEN",
+   "strength": 77,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-sui",
+   "name": "Switzerland",
+   "short": "SUI",
+   "strength": 76,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-usa",
+   "name": "USA",
+   "short": "USA",
+   "strength": 76,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1b2b4b",
+    "shorts": "#1b2b4b",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-mex",
+   "name": "Mexico",
+   "short": "MEX",
+   "strength": 75,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1d6a3a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-jpn",
+   "name": "Japan",
+   "short": "JPN",
+   "strength": 77,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1b2b8b",
+    "trim": "#f4f4f4",
+    "shorts": "#1b2b8b",
+    "socks": "#1b2b8b"
+   }
+  },
+  {
+   "id": "nat-mar",
+   "name": "Morocco",
+   "short": "MAR",
+   "strength": 79,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#1d6a3a",
+    "shorts": "#1d6a3a",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-sen",
+   "name": "Senegal",
+   "short": "SEN",
+   "strength": 76,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d8a3a",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-col",
+   "name": "Colombia",
+   "short": "COL",
+   "strength": 77,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f2d43a",
+    "trim": "#1b3a8f",
+    "shorts": "#1b3a8f",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-kor",
+   "name": "South Korea",
+   "short": "KOR",
+   "strength": 74,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#1d1d1d",
+    "shorts": "#1d1d1d",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-aus",
+   "name": "Australia",
+   "short": "AUS",
+   "strength": 71,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f2c230",
+    "trim": "#1d6a3a",
+    "shorts": "#1d6a3a",
+    "socks": "#f2c230"
+   }
+  },
+  {
+   "id": "nat-nga",
+   "name": "Nigeria",
+   "short": "NGA",
+   "strength": 73,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1d8a3a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1d8a3a"
+   }
+  },
+  {
+   "id": "nat-nor",
+   "name": "Norway",
+   "short": "NOR",
+   "strength": 76,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1b2b4b"
+   }
+  },
+  {
+   "id": "nat-swe",
+   "name": "Sweden",
+   "short": "SWE",
+   "strength": 74,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f2d43a",
+    "trim": "#1b58b8",
+    "shorts": "#1b58b8",
+    "socks": "#f2d43a"
+   }
+  },
+  {
+   "id": "nat-pol",
+   "name": "Poland",
+   "short": "POL",
+   "strength": 73,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#c8102e",
+    "shorts": "#c8102e",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-wal",
+   "name": "Wales",
+   "short": "WAL",
+   "strength": 70,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#c8102e",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-sco",
+   "name": "Scotland",
+   "short": "SCO",
+   "strength": 71,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1b2b5b",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1b2b5b"
+   }
+  },
+  {
+   "id": "nat-irl",
+   "name": "Republic of Ireland",
+   "short": "IRL",
+   "strength": 69,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1d8a3a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1d8a3a"
+   }
+  },
+  {
+   "id": "nat-aut",
+   "name": "Austria",
+   "short": "AUT",
+   "strength": 75,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-tur",
+   "name": "Turkey",
+   "short": "TUR",
+   "strength": 75,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-ukr",
+   "name": "Ukraine",
+   "short": "UKR",
+   "strength": 74,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f2d43a",
+    "trim": "#1b58b8",
+    "shorts": "#f2d43a",
+    "socks": "#f2d43a"
+   }
+  },
+  {
+   "id": "nat-srb",
+   "name": "Serbia",
+   "short": "SRB",
+   "strength": 73,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#1b2b8b",
+    "shorts": "#1b2b8b",
+    "socks": "#f4f4f4"
+   }
+  },
+  {
+   "id": "nat-can",
+   "name": "Canada",
+   "short": "CAN",
+   "strength": 72,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#c8102e",
+    "trim": "#f4f4f4",
+    "shorts": "#c8102e",
+    "socks": "#c8102e"
+   }
+  },
+  {
+   "id": "nat-ksa",
+   "name": "Saudi Arabia",
+   "short": "KSA",
+   "strength": 68,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#1d8a3a",
+    "trim": "#f4f4f4",
+    "shorts": "#f4f4f4",
+    "socks": "#1d8a3a"
+   }
+  },
+  {
+   "id": "nat-gha",
+   "name": "Ghana",
+   "short": "GHA",
+   "strength": 71,
+   "league": "INT",
+   "stadium": "the national stadium",
+   "home": {
+    "shirt": "#f4f4f4",
+    "trim": "#1d1d1d",
+    "shorts": "#f4f4f4",
+    "socks": "#f4f4f4"
+   }
+  }
+ ],
+ "tournaments": [
+  {
+   "year": 2028,
+   "name": "Euro 2028",
+   "type": "euro",
+   "hosts": "the UK and Ireland",
+   "final": "Wembley Stadium"
+  },
+  {
+   "year": 2030,
+   "name": "World Cup 2030",
+   "type": "wc",
+   "hosts": "Spain, Portugal and Morocco (with the opening games in South America)",
+   "final": "the Santiago Bernabéu"
+  },
+  {
+   "year": 2032,
+   "name": "Euro 2032",
+   "type": "euro",
+   "hosts": "Italy and Turkey",
+   "final": "the Stadio Olimpico"
+  },
+  {
+   "year": 2034,
+   "name": "World Cup 2034",
+   "type": "wc",
+   "hosts": "Saudi Arabia",
+   "final": "the King Salman Stadium"
+  },
+  {
+   "year": 2036,
+   "name": "Euro 2036",
+   "type": "euro",
+   "hosts": "Denmark, Norway and Sweden (invented: real hosts not chosen yet)",
+   "final": "Parken"
+  },
+  {
+   "year": 2038,
+   "name": "World Cup 2038",
+   "type": "wc",
+   "hosts": "Australia and New Zealand (invented)",
+   "final": "Stadium Australia"
+  },
+  {
+   "year": 2040,
+   "name": "Euro 2040",
+   "type": "euro",
+   "hosts": "Germany and Austria (invented)",
+   "final": "the Olympiastadion"
+  },
+  {
+   "year": 2042,
+   "name": "World Cup 2042",
+   "type": "wc",
+   "hosts": "Brazil and Argentina (invented)",
+   "final": "the Maracanã"
+  },
+  {
+   "year": 2044,
+   "name": "Euro 2044",
+   "type": "euro",
+   "hosts": "the Netherlands and Belgium (invented)",
+   "final": "the Johan Cruyff Arena"
+  },
+  {
+   "year": 2046,
+   "name": "World Cup 2046",
+   "type": "wc",
+   "hosts": "Egypt and Greece, the 'Ancient Wonders' bid (invented)",
+   "final": "the Pharaoh Arena, Giza"
+  }
+ ],
+ "europeans": [
+  "nat-ger",
+  "nat-fra",
+  "nat-esp",
+  "nat-por",
+  "nat-ned",
+  "nat-ita",
+  "nat-bel",
+  "nat-cro",
+  "nat-den",
+  "nat-sui",
+  "nat-nor",
+  "nat-swe",
+  "nat-pol",
+  "nat-wal",
+  "nat-sco",
+  "nat-irl",
+  "nat-aut",
+  "nat-tur",
+  "nat-ukr",
+  "nat-srb"
+ ]
+}

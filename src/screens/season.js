@@ -7,6 +7,7 @@ import { showWindow } from './contractUI.js';
 import { reputation } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { seasonYear } from '../sim/season.js';
+import { tournamentFor, createTournament } from '../sim/international.js';
 
 export function createSeasonScreen(root, go) {
   const c = state.career, S = seasonSummary(c), z = zone(c.div, S.pos, S.of);
@@ -26,8 +27,17 @@ export function createSeasonScreen(root, go) {
     </div></div>`;
     root.querySelector('#hub').onclick = () => go('hub');
     const openWindow = () => showWindow(c, { rep: reputation(c, skillLevelExact(), age(c)), age: age(c), window: 'summer', midSeason: false, onDone: () => { beginSeason(c); save(); go('hub'); } });
-    root.querySelector('#nextSeason').onclick = () => { rollWorld(c); save(); openWindow(); };
-    if (c.summer) openWindow(); // came back mid-summer
+    root.querySelector('#nextSeason').onclick = () => {
+      rollWorld(c);
+      // Tournament summer? England first, then the window.
+      const t = tournamentFor(seasonYear()), rep = reputation(c, skillLevelExact(), age(c));
+      if (t && !t.finaleOnly && age(c) >= 17) {
+        const caps = c.intl.caps.senior, selected = rep >= 58 || (caps >= 2 && rep >= 52);
+        createTournament(c, t, selected, rep >= 68 ? 'start' : 'sub'); c.summer.stage = 'tournament'; save(); go('tournament'); return;
+      }
+      save(); openWindow();
+    };
+    if (c.summer && c.summer.stage === 'window') openWindow(); // came back mid-summer
     root.querySelector('#new').onclick = () => { if (confirm('Start a new career? This one goes in the bin.')) { state.career = null; save(); go('start'); } };
   }
   return { mount, frame() { } };

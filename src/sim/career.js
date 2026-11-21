@@ -8,7 +8,11 @@ import {
   setWorld, firstWeek, seasonYear,
 } from './season.js';
 import { endSeason } from './world.js';
-import { endLoan, agentOf, inWindow } from './transfers.js';
+import { endLoan, agentOf, inWindow, reputation } from './transfers.js';
+import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
+// The training profile's skill level is handed in by the app (keeps this module DOM-free).
+let skillLevelExact = () => 30;
+export function setSkillSource(fn) { skillLevelExact = fn; }
 import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './money.js';
 import { initPartner, partnerWeek } from './partner.js';
 import { initSocial, friendsWeek, nightPenalty, rivalWeek, rivalSummer, rivalSelectionPenalty, chatWeek } from './social.js';
@@ -49,7 +53,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   buildSeason(c, R); initLife(c); initMoney(c);
   c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
   c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
-  initSocial(c, R); initPartner(c);
+  initSocial(c, R); initPartner(c); initIntl(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -69,7 +73,7 @@ function buildSeason(c, R) {
 }
 
 /* ---------- queries ---------- */
-export const myTeamIn = (c, f) => [f.home, f.away].find(id => id === c.clubId || id === c.clubId + '-u21');
+export const myTeamIn = (c, f) => f.myTeam || [f.home, f.away].find(id => id === c.clubId || id === c.clubId + '-u21');
 export const isMine = (c, f) => !!myTeamIn(c, f);
 /** 'W' | 'D' | 'L' from your side's point of view (penalties decide cup ties). */
 export function resultFor(c, f) {
@@ -112,6 +116,8 @@ export function logRest(c) { c.slotsUsed++; c.weekLog.push({ t: 'rest' }); c.ene
 /** Who picks you? Start, bench or stand. U21 and early-cup games favour the kids. */
 export function selection(c, f, R = Math.random) {
   if (f.comp === 'friendly') return R() < .75 ? 'start' : 'sub';
+  if (f.comp === 'intl') return R() < .7 ? 'start' : 'sub';
+  if (c.intlWeek === c.week) return 'none'; // away with England
   if (myTeamIn(c, f).endsWith('-u21')) return R() < .9 ? 'start' : 'sub';
   // Approval matters more where there's a real pathway: at an elite academy
   // even the gaffer's favourite kid mostly watches.
@@ -155,11 +161,12 @@ export function recordMatch(c, f, S, R = Math.random) {
   if (played) {
     f.rating = S.rating; f.myGoals = S.my.goals; f.myAssists = S.my.assists;
     const gb = (c.contract.clauses || {}).goalBonus; if (gb && S.my.goals && f.comp !== 'friendly') c.bank += gb * S.my.goals;
-    if (f.comp !== 'friendly') {
+    if (f.comp === 'intl') recordIntl(c, f, S);
+    else if (f.comp !== 'friendly') {
       const st = c.stats; st.apps++; if (S.role === 'start') st.starts++; else st.subs++; st.goals += S.my.goals; st.assists += S.my.assists; st.ratings.push(S.rating);
       if (myTeamIn(c, f).endsWith('-u21')) st.u21++;
     }
-    let d = (S.rating - 6.6) * 3; if (d < 0) d *= c.contract.patience * honourPatience(c); if (f.comp === 'friendly' || myTeamIn(c, f).endsWith('-u21')) d *= .5;
+    let d = (S.rating - 6.6) * 3; if (d < 0) d *= c.contract.patience * honourPatience(c); if (f.comp === 'friendly' || myTeamIn(c, f).endsWith('-u21')) d *= .5; if (f.comp === 'intl') d = 0;
     d = taper(c.approval, d); c.approval = clamp(c.approval + d, 0, 100); res.approval = d;
     c.energy = clamp(c.energy - (S.role === 'start' ? 18 : 8), 0, 100);
     if (S.rating < 5.5) message(c, 'The Gaffer', pickR(M.gafferAngry, R).replace(/^The Gaffer: /, ''));
@@ -253,6 +260,8 @@ export function nextWeek(c, R = Math.random) {
   if (R() < .2) message(c, 'Dennis (kit man)', pickR(M.kitman, R).replace(/^Dennis \(kit man\): /, ''));
   if (c.contract.type === 'money' && R() < .12) message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   rollEvents(c, isPreseason(c), R, age(c));
+  const lvl = maybeCallUp(c, reputation(c, skillLevelExact(), age(c)), age(c), R);
+  if (lvl) message(c, 'England', `You've been called up to the England ${LEVELS[lvl] === 'Senior' ? 'senior squad' : LEVELS[lvl]}! Report to St George's Park.${lvl === 'senior' ? ' Gran is already at the bookies.' : ''}`);
   // Transfer windows: offers when January opens, and deadline day at the end of each window.
   const win = inWindow(c);
   if (win === 'january' && !c.janWindowSeen) { c.janWindowSeen = true; c.pending.push({ type: 'window', window: 'january' }); }

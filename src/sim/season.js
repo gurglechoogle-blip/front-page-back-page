@@ -3,6 +3,7 @@
 import clubsData from '../data/clubs.json';
 import leagues from '../data/leagues.json';
 import cal from '../data/calendar.json';
+import NAT from '../data/nations.json';
 
 // The calendar and divisions for the CURRENT season. They start as 2026-27 and
 // are rebuilt in place by setWorld() each summer (same pattern, a year on).
@@ -28,7 +29,15 @@ export const seasonYear = () => 2026 + WORLD.year;
 export const divisionClubs = div => clubsData.clubs.filter(c => (WORLD.leagues[c.id] || c.league) === div).map(c => c.id);
 
 /* ---------- clubs (incl. under-21 sides for the EFL Trophy) ---------- */
+const NATIONS = new Map(NAT.nations.map(n => [n.id, n]));
+const YOUTH = { u17: ['Under-17s', 34], u19: ['Under-19s', 30], u21: ['Under-21s', 24] };
 export function club(id) {
+  if (id.startsWith('nat-')) {
+    const m = id.match(/^(nat-[a-z]+)(?:-(u17|u19|u21))?$/), n = NATIONS.get(m[1]);
+    if (!m[2]) return n;
+    const [lbl, minus] = YOUTH[m[2]];
+    return Object.assign({}, n, { id, name: `${n.name} ${lbl}`, strength: n.strength - minus, stadium: n.id === 'nat-eng' ? "St George's Park" : n.stadium });
+  }
   if (id.endsWith('-u21')) {
     const b = club(id.slice(0, -4));
     return Object.assign({}, b, { id, name: b.name + ' U21', stadium: `the ${b.name} academy ground`, strength: Math.round(b.strength * .5 + 18), league: 'U21', parent: b.id });
@@ -110,7 +119,7 @@ export function leagueFixtures(div, R = Math.random) {
 
 /* ---------- cups ---------- */
 const CUP_NAMES = { league: null, friendly: 'Friendly', eflcup: cal.cups.eflcup.short, facup: cal.cups.facup.short, trophy: cal.cups.trophy.short };
-export const compName = f => f.comp === 'league' ? DIVS[f.div].short : f.comp === 'friendly' ? 'Pre-season friendly' : `${CUP_NAMES[f.comp]} ${roundName(f)}`;
+export const compName = f => f.comp === 'intl' || f.comp === 'tourn' ? f.label : f.comp === 'league' ? DIVS[f.div].short : f.comp === 'friendly' ? 'Pre-season friendly' : `${CUP_NAMES[f.comp]} ${roundName(f)}`;
 export function roundName(f) { if (f.round === 'G') return 'group stage'; const r = cal.cups[f.comp].rounds.find(x => x.id === f.round); return r ? r.name : f.round; }
 const europeClubs = () => divisionClubs('PL').map(club).sort((a, b) => b.strength - a.strength).slice(0, DIVS.PL.europeSpots).map(c => c.id);
 function trophyU21s() { return [...divisionClubs('PL'), ...divisionClubs('CH')].map(club).sort((a, b) => b.strength - a.strength).slice(0, 16).map(c => c.id + '-u21'); }

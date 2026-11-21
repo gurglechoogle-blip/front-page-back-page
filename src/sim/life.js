@@ -135,7 +135,7 @@ function verb(c, R) { const v = NP.verbs[surname(c)[0]] || NP.verbs.S; return pi
 export function makePaper(c, R = Math.random) {
   const L = c.lastWeek, NAME = surname(c), myClub = club(c.clubId);
   const res = (L && L.results) || [], fx = id => c.fixtures.find(f => f.id === id);
-  const mineOf = f => [f.home, f.away].find(id => id === c.clubId || id === c.clubId + '-u21');
+  const mineOf = f => f.myTeam || [f.home, f.away].find(id => id === c.clubId || id === c.clubId + '-u21');
   // Back page: the biggest football story of the week.
   let key = 'quiet', star = null;
   const played = res.filter(r => r.role !== 'none'), goals = res.reduce((a, r) => a + (r.goals || 0), 0);
