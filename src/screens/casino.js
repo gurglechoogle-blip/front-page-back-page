@@ -5,7 +5,7 @@ import { state, save } from '../state/gameState.js';
 import CZ from '../data/casino.json';
 import { Poker, setMoneyFormat } from '../sim/poker.js';
 import { Blackjack, value } from '../sim/blackjack.js';
-import { label, red } from '../sim/cards.js';
+import { label, red, describe } from '../sim/cards.js';
 import { applyEffects, surname } from '../sim/life.js';
 import { message } from '../sim/career.js';
 
@@ -20,7 +20,7 @@ export function createCasinoScreen(root, go, params) {
 
   function mount() {
     root.innerHTML = `<div id="casino"><div class="ctop"><div><b>${esc(V.name)}</b><small>${params.game === 'poker' ? `Texas Hold'em · blinds ${fmt(V.blinds[0])}/${fmt(V.blinds[1])}` : `Blackjack · bets ${fmt(V.bet[0])}-${fmt(V.bet[1])}`}</small></div><div class="chips" id="chips"></div><button class="btn red small" id="cash">Cash out</button></div>
-      <div class="felt" id="felt"></div><div class="ctalk" id="talk"></div></div>`;
+      <div class="felt" id="felt"></div><div class="flash" id="flash"></div><div class="ctalk" id="talk"></div></div>`;
     $('cash').onclick = cashOut;
     if (params.game === 'poker') {
       poker = new Poker({ you: { name: c.name, stack: buyIn }, opponents: V.opponents.map(o => Object.assign({ stack: buyIn * (.8 + Math.random() * .6) }, o)), blinds: V.blinds });
@@ -32,11 +32,39 @@ export function createCasinoScreen(root, go, params) {
   function talk(t) { const d = document.createElement('div'); d.textContent = t; $('talk').prepend(d); while ($('talk').children.length > 8) $('talk').lastChild.remove(); }
 
   /* ---------- poker ---------- */
+  /* Flashcards: every action, every new street and every result gets its own
+     card in the middle of the table, one at a time, so nothing gets missed. */
+  const flashQ = []; let flashing = false, seenLog = 0, seenBoard = 0, yourTurnShown = false;
+  function flash(text, kind) { flashQ.push({ text, kind }); if (!flashing) nextFlash(); }
+  function nextFlash() {
+    const f = flashQ.shift(), el = $('flash'); if (!el) { flashing = false; return; }
+    if (!f) { flashing = false; el.className = 'flash'; draw(); return; }
+    flashing = true; el.textContent = f.text; el.className = 'flash show ' + (f.kind || '');
+    setTimeout(nextFlash, f.kind === 'turn' ? 900 : 1150);
+  }
+  function syncFlash() {
+    if (!poker) return;
+    const log = poker.log;
+    if (seenLog > log.length) seenLog = 0;
+    for (; seenLog < log.length; seenLog++) {
+      const t = log[seenLog];
+      if (/^— Hand/.test(t)) { seenBoard = 0; yourTurnShown = false; flash(t.replace(/—/g, '').trim().toUpperCase(), 'street'); continue; }
+      flash(t, /wins/.test(t) ? 'win' : /raises|ALL IN/.test(t) ? 'raise' : /folds/.test(t) ? 'fold' : '');
+    }
+    const b = poker.board ? poker.board.length : 0;
+    if (b > seenBoard && poker.street !== 'done' || (b === 5 && seenBoard < 5)) { const name = b >= 5 && seenBoard < 5 && b - seenBoard > 1 ? 'THE BOARD RUNS OUT' : { 3: 'THE FLOP', 4: 'THE TURN', 5: 'THE RIVER' }[b]; if (name && b > seenBoard) flash(name, 'street'); seenBoard = b; }
+    const myTurn = poker.street !== 'done' && poker.toAct >= 0 && poker.players[poker.toAct].human;
+    if (myTurn && !yourTurnShown) { flash('YOUR TURN', 'turn'); yourTurnShown = true; }
+    if (!myTurn) yourTurnShown = false;
+  }
   function stepAI() {
     clearTimeout(timer);
+    syncFlash();
     if (!poker || poker.street === 'done' || poker.toAct < 0) return draw();
     if (poker.players[poker.toAct].human) return draw();
-    timer = setTimeout(() => { poker.aiAct(); if (Math.random() < .12) talk(V.talk[++talkI % V.talk.length]); stepAI(); }, 650);
+    // Wait for the flashcards to catch up before the next player acts.
+    if (flashing || flashQ.length) { timer = setTimeout(stepAI, 250); return draw(); }
+    timer = setTimeout(() => { poker.aiAct(); if (Math.random() < .12) talk(V.talk[++talkI % V.talk.length]); stepAI(); }, 500);
     draw();
   }
   function drawPoker() {
@@ -45,13 +73,15 @@ export function createCasinoScreen(root, go, params) {
     $('felt').innerHTML = `<div class="opps">${g.players.slice(1).map((p, i) => seat(p, i + 1)).join('')}</div>
       <div class="board">${g.board.map(cd => cardHTML(cd)).join('') || '<span class="dim">Pre-flop</span>'}<div class="pot">Pot ${fmt(g.pot())}</div></div>
       ${done && g.result ? `<div class="hres">${g.result.lines.map(esc).join('<br>')}</div>` : ''}
-      <div class="mine">${seat(g.you, 0)}</div>
+      <div class="mine">${seat(g.you, 0)}${g.you.hole.length && !g.you.folded ? `<div class="myhand"><small>YOUR HAND</small>${esc(describe(g.you.hole.concat(g.board)))}</div>` : ''}</div>
       <div class="acts">${g.over ? `<p>${g.you.stack <= 0 ? 'You\'re cleaned out.' : 'Everyone else is bust. You\'ve cleaned the table out!'}</p>` : done ? '<button class="btn gold" id="nextHand">Next hand ▶</button>' : myTurn ? `
         <button class="btn red" data-a="fold">Fold</button>
         <button class="btn" data-a="${o.canCheck ? 'check' : 'call'}">${o.canCheck ? 'Check' : 'Call ' + fmt(o.toCall)}</button>
         ${o.maxTo > g.currentBet ? `<button class="btn gold" data-a="raise" data-to="${o.minTo}">Raise to ${fmt(o.minTo)}</button>${o.potTo > o.minTo ? `<button class="btn gold" data-a="raise" data-to="${o.potTo}">Pot: ${fmt(o.potTo)}</button>` : ''}<button class="btn gold" data-a="raise" data-to="${o.maxTo}">All in</button>` : ''}` : '<p class="dim">Waiting for the others...</p>'}</div>`;
     root.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { g.act(b.dataset.a, +b.dataset.to || 0); stepAI(); });
     if ($('nextHand')) $('nextHand').onclick = () => { if (!g.newHand()) return draw(); stepAI(); };
+    // Your buttons wake up once the flashcards have caught up.
+    if (flashing || flashQ.length) root.querySelectorAll('[data-a], #nextHand').forEach(b => { b.disabled = true; });
   }
 
   /* ---------- blackjack ---------- */

@@ -47,3 +47,23 @@ export function equity(hole, board, opp, iters = 120, R = Math.random) {
   }
   return win / iters;
 }
+
+const RN = { 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: 'Jack', 12: 'Queen', 13: 'King', 14: 'Ace' };
+const pl = r => (r === 6 ? 'Sixes' : RN[r] + (r > 10 ? 's' : 's'));
+/** Plain-English name of your best hand so far, e.g. "Three of a kind, 7s". */
+export function describe(cs) {
+  if (cs.length < 5) { const [a, b] = cs.map(c => c.r).sort((x, y) => y - x); return a === b ? `Pair of ${pl(a)}` : `${RN[a]} high`; }
+  const s = best(cs), n = HAND_NAMES[s[0]];
+  switch (s[0]) {
+    case 8: return s[1] === 14 ? 'Royal flush!' : `Straight flush, ${RN[s[1]]} high`;
+    case 7: return `Four of a kind, ${pl(s[1])}`;
+    case 6: return `Full house, ${pl(s[1])} over ${pl(s[2])}`;
+    case 5: return `Flush, ${RN[s[1]]} high`;
+    case 4: return `Straight, ${RN[s[1]]} high`;
+    case 3: return `Three of a kind, ${pl(s[1])}`;
+    case 2: return `Two pair, ${pl(s[1])} and ${pl(s[2])}`;
+    case 1: return `Pair of ${pl(s[1])}`;
+    default: return `${RN[s[1]]} high`;
+  }
+  void n;
+}
