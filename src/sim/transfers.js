@@ -14,12 +14,29 @@ export function reputation(c, skill, age) {
   const avg = c.stats.ratings.length ? c.stats.ratings.reduce((a, b) => a + b, 0) / c.stats.ratings.length : (c.history.length ? c.history[c.history.length - 1].avg || 6.3 : 6.3);
   const goals = c.stats.goals + (c.history.length ? c.history[c.history.length - 1].goals : 0) * .6;
   const lvl = club(c.clubId).strength;
-  return clamp(skill * .45 + (avg - 6) * 14 + goals * .9 + lvl * .25 + (c.honour - 50) * .1 - Math.max(0, age - 30) * 3, 0, 100);
+  // Nobody rates a player they've never seen play: senior games are what count.
+  const seen = clamp(seniorApps(c) / 25, .15, 1);
+  return clamp((skill * .4 + (avg - 6) * 14 + goals * .9 + lvl * .12) * seen + (c.honour - 50) * .1 - Math.max(0, age - 30) * 3, 0, 100);
+}
+/** Senior (non-U21) league and cup appearances this season and last, last season counting half. */
+export function seniorApps(c) {
+  const now = c.stats.apps - (c.stats.u21 || 0), last = c.history.length ? c.history[c.history.length - 1] : null;
+  return now + (last ? Math.max(0, (last.apps || 0) - (last.u21 || 0)) * .5 : 0);
 }
 /** The strength of club you're good enough for. */
 const targetStrength = rep => 28 + rep * .68;
 
 /* ---------- transfer windows ---------- */
+/** During a window, offers trickle in week by week (with a text to tell you). Returns the new ones. */
+export function windowWeek(c, rep, age, R = Math.random) {
+  const win = inWindow(c); if (!win || age < 17) return [];
+  const year = weekStart(c.week).slice(0, 4);
+  if (!c.windowOffers || c.windowOffers.window !== win || c.windowOffers.year !== year) c.windowOffers = { window: win, year, list: [] };
+  if (R() > .45) return [];
+  const fresh = makeOffers(c, rep, age, win, R).filter(o => !c.windowOffers.list.some(x => x.clubId === o.clubId && x.type === o.type)).slice(0, 1 + (R() < .3 ? 1 : 0));
+  c.windowOffers.list.push(...fresh);
+  return fresh;
+}
 export function inWindow(c) {
   const d = weekStart(c.week), y = d.slice(0, 4), md = d.slice(5);
   if (md >= '06-01' && md <= '09-01') return 'summer';
@@ -32,13 +49,20 @@ export function makeOffers(c, rep, age, window, R = Math.random) {
   const pool = ['PL', 'CH', 'L1', 'L2', ...(rep >= 50 ? ABROAD : [])].flatMap(d => divisionClubs(d)).filter(id => id !== c.clubId && !(c.loan && id === c.loan.parent));
   const scored = pool.map(id => ({ id, d: Math.abs(club(id).strength - want) + R() * 10 })).sort((a, b) => a.d - b.d);
   let n = Math.round((rep / 30 + R()) * mult) + (c.transferListed ? 2 : 0); if (window === 'january') n = Math.round(n * .6);
-  const out = scored.slice(0, clamp(n, 0, 4)).map(x => offerFrom(c, x.id, rep, age, R));
+  // Young and not playing: the phone rings with loan offers from lower down, not Real Madrid.
+  const apps = seniorApps(c), unproven = apps < 12;
+  let picks = scored;
+  if (unproven) picks = scored.filter(x => club(x.id).strength <= club(c.loan ? c.loan.parent : c.clubId).strength - 4 && !ABROAD.includes(club(x.id).league));
+  const out = picks.slice(0, clamp(unproven ? Math.min(n, 1) : n, 0, 4)).map(x => offerFrom(c, x.id, rep, age, R));
   // Boyhood club: the dream move, if you're good enough.
   if (c.boyhood && c.boyhood !== c.clubId && Math.abs(club(c.boyhood).strength - want) < 12 && R() < .5 && !out.some(o => o.clubId === c.boyhood)) out.push(offerFrom(c, c.boyhood, rep, age, R));
   // Big club, young, not playing: a loan.
   const myStr = club(c.loan ? c.loan.parent : c.clubId).strength;
-  if (!c.loan && (c.wantLoan || age <= 21 && myStr > want + 8 && window === 'summer' && R() < .8)) {
-    const lower = pool.filter(id => Math.abs(club(id).strength - (want - 4)) < 8); if (lower.length) out.unshift(Object.assign(offerFrom(c, pick(lower, R), rep, age, R), { type: 'loan', wage: c.contract.wage, years: 1, fee: 0 }));
+  if (!c.loan && (c.wantLoan || age <= 23 && (unproven || myStr > want + 8) && R() < .85)) {
+    // Loans: mostly from a division or two below, where you'd actually play.
+    const lower = pool.filter(id => club(id).strength < myStr - 6 && !ABROAD.includes(club(id).league)).sort(() => R() - .5);
+    const k = unproven ? 1 + (R() < .6 ? 1 : 0) + (R() < .3 ? 1 : 0) : 1;
+    lower.slice(0, k).forEach(id => out.unshift(Object.assign(offerFrom(c, id, rep, age, R), { type: 'loan', wage: c.contract.wage, years: 1, fee: 0, role: 'first choice' })));
   }
   return out;
 }

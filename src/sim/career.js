@@ -8,7 +8,7 @@ import {
   setWorld, firstWeek, seasonYear,
 } from './season.js';
 import { endSeason } from './world.js';
-import { endLoan, agentOf, inWindow, reputation } from './transfers.js';
+import { endLoan, agentOf, inWindow, reputation, windowWeek } from './transfers.js';
 import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
 import { initLook, lookFields } from './looks.js';
 import { initTrouble, rollInjury, troubleWeek, kidBills } from './trouble.js';
@@ -321,6 +321,10 @@ export function nextWeek(c, R = Math.random) {
   const win = inWindow(c);
   if (win === 'january' && !c.janWindowSeen) { c.janWindowSeen = true; c.pending.push({ type: 'window', window: 'january' }); }
   if (win !== 'january') c.janWindowSeen = false;
+  windowWeek(c, reputation(c, skillLevelExact(), age(c)), age(c), R).forEach(o => {
+    const cl = club(o.clubId), ag = agentOf(c);
+    message(c, ag ? ag.name : 'The club secretary', o.type === 'loan' ? `${cl.name} want you on loan for the season. You'd be ${o.role === 'first choice' ? 'their first-choice striker' : 'in the squad'}. Have a look: Football → Contract & transfers.` : `${cl.name} have made an offer. ${o.role === 'squad player' ? 'Be warned: they\'ve been clear you wouldn\'t start.' : o.role === 'first choice' ? 'They see you as a starter.' : 'You\'d be rotating.'} Football → Contract & transfers.`);
+  });
   const deadline = d => ws <= d && d <= we;
   if ((deadline(ws.slice(0, 4) + '-02-02') || deadline(ws.slice(0, 4) + '-09-01')) && age(c) >= 17 && R() < .55) c.pending.push({ type: 'deadline' });
   chatWeek(c, R);
@@ -332,7 +336,7 @@ export const seasonWeek = c => c.week - firstWeek() + 1;
 /** Summer, part 1: wrap up the season and move the world on a year. */
 export function rollWorld(c, R = Math.random) {
   const S = seasonSummary(c), oldClub = club(c.clubId);
-  c.history.push({ season: CAL.season, club: c.clubId, div: c.div, pos: S.pos, apps: c.stats.apps, goals: c.stats.goals, assists: c.stats.assists, avg: S.avg, cups: Object.fromEntries(Object.entries(c.cups).map(([k, v]) => [k, v.won ? 'won' : v.round])) });
+  c.history.push({ season: CAL.season, club: c.clubId, div: c.div, pos: S.pos, apps: c.stats.apps, u21: c.stats.u21 || 0, goals: c.stats.goals, assists: c.stats.assists, avg: S.avg, cups: Object.fromEntries(Object.entries(c.cups).map(([k, v]) => [k, v.won ? 'won' : v.round])) });
   ['apps', 'goals', 'assists'].forEach(k => c.totals[k] += c.stats[k]); c.totals.seasons++;
   const { world, moves } = endSeason(c.div, c.fixtures, R);
   c.world = world; setWorld(world);

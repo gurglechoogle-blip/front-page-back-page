@@ -108,8 +108,14 @@ export function chooseEvent(c, id, i, R = Math.random) {
 /** Maybe a press conference after a match you were involved in. */
 export function pressAfter(c, f, S, myTeam, R = Math.random) {
   if (f.comp === 'friendly' || S.role === 'none') return null;
-  const big = S.my.goals >= 2 || S.rating >= 8.3 || S.rating <= 5.2;
-  if (!big && R() > .45) return null;
+  // Nobody wants a 16-year-old's thoughts. Demand grows with fame, level and performances.
+  const TIER = { PL: .2, ES: .2, IT: .2, DE: .2, FR: .18, CH: .1, L1: .05, L2: .02, NL: 0, INT: .25 };
+  const big = S.my.goals >= 2 || S.rating >= 8.3;
+  c.pressGap = (c.pressGap || 0) + 1;
+  const demand = clamp(.04 + (c.meters.fans - 45) / 180 + (TIER[club(myTeam).league] ?? 0) + ((c.followers || 0) > 1e5 ? .08 : 0), .03, .55);
+  const p = big ? demand + .3 : c.pressGap < 3 ? demand * .25 : demand;
+  if (R() > p) return null;
+  c.pressGap = 0;
   const won = S.result === 'W', lost = S.result === 'L';
   let ctx = S.my.goals ? 'scored' : S.role === 'sub' ? 'benched' : S.rating < 6.2 ? 'missed' : won ? 'won' : lost ? 'lost' : 'gaffer';
   if (S.rating >= 7.6 && R() < .25) ctx = 'rumour';
@@ -131,7 +137,7 @@ export function answerPress(c, item, i) {
 export function afterMatch(c, S) {
   // The fans forget you if you're not playing.
   c.recentGames = (c.recentGames || []).concat({ played: S.role !== 'none', rating: S.rating }).slice(-6);
-  if (S.role === 'none') { c.meters.fans = clamp(c.meters.fans - 1.2, 5, 100); return; }
+  if (S.role === 'none') { c.meters.fans = clamp(c.meters.fans - (c.meters.fans > 30 ? .7 : .3), 15, 100); return; }
   c.meters.fans = clamp(c.meters.fans + taper(c.meters.fans, (S.rating - 6.6) * 1.4 + S.my.goals * 1.2), 0, 100);
 }
 /** Good news counts for less when everyone already loves you. */

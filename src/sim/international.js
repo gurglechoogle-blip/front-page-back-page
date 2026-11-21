@@ -9,8 +9,18 @@ export const LEVELS = { u17: 'Under-17s', u19: 'Under-19s', u21: 'Under-21s', se
 export function initIntl(c) { c.intl = c.intl || { caps: { u17: 0, u19: 0, u21: 0, senior: 0 }, goals: { u17: 0, u19: 0, u21: 0, senior: 0 }, tournaments: [] }; return c; }
 
 /** Which England side would pick you, if any. */
-export function levelFor(age, rep) {
-  if (rep >= 60 && age >= 17) return 'senior';
+// Senior call-ups need proper top-flight football (or a decent youth record and
+// regular games at the next level down). Youth call-ups need you to be playing.
+const TOP = ['PL', 'ES', 'IT', 'DE', 'FR'];
+function topFlightApps(c) {
+  const now = TOP.includes(c.div) ? c.stats.apps - (c.stats.u21 || 0) : 0, last = c.history.length ? c.history[c.history.length - 1] : null;
+  return now + (last && TOP.includes(last.div) ? Math.max(0, last.apps - (last.u21 || 0)) : 0);
+}
+const youthCaps = c => c.intl ? c.intl.caps.u17 + c.intl.caps.u19 + c.intl.caps.u21 : 0;
+export function levelFor(age, rep, c) {
+  const playing = !c || c.stats.apps >= 3 || (c.history.length && c.history[c.history.length - 1].apps >= 8);
+  if (c && rep >= 60 && age >= 18 && (topFlightApps(c) >= 8 || (youthCaps(c) >= 4 && c.stats.apps - (c.stats.u21 || 0) >= 15 && c.div === 'CH'))) return 'senior';
+  if (!playing) return null;
   if (age <= 16) return rep >= 22 ? 'u17' : null;
   if (age <= 18) return rep >= 28 ? 'u19' : null;
   if (age <= 20) return rep >= 36 ? 'u21' : null;
@@ -27,7 +37,7 @@ function opponent(strength, R, pool) {
 }
 /** International break: maybe a call-up, and a match for England this week. */
 export function maybeCallUp(c, rep, age, R = Math.random) {
-  const date = breakIn(c), level = date && levelFor(age, rep);
+  const date = breakIn(c), level = date && levelFor(age, rep, c);
   if (!level || c.intlWeek === c.week) return null;
   const mine = teamId(level), next = NAT.tournaments.find(t => t.year > +date.slice(0, 4) || (t.year === +date.slice(0, 4) && date.slice(5) < '06-01'));
   const oppBase = opponent(club('nat-eng').strength, R), opp = level === 'senior' ? oppBase : `${oppBase}-${level}`;

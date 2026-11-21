@@ -1,7 +1,7 @@
 // Transfer windows, contract talks, agents and deadline day. Self-contained
 // pop-ups, usable from the hub and from the summer screen.
 import { esc } from '../engine/util.js';
-import { club, DIVS } from '../sim/season.js';
+import { club, DIVS, weekStart } from '../sim/season.js';
 import { clause, standardBonuses } from '../sim/contracts.js';
 import { AG, agentOf, makeOffers, renewalOffer, contractEnding, patience, respond, sign } from '../sim/transfers.js';
 import { applyEffects, surname } from '../sim/life.js';
@@ -43,15 +43,16 @@ export function showAgents(c, done) {
 /* ---------- a transfer window ---------- */
 /** opts: { rep, age, window, midSeason, onDone } */
 export function showWindow(c, opts) {
-  const list = c.windowOffers && c.windowOffers.week === c.week && c.windowOffers.window === opts.window ? c.windowOffers.list : makeOffers(c, opts.rep, opts.age, opts.window);
-  c.windowOffers = { week: c.week, window: opts.window, list };
+  const year = weekStart(c.week).slice(0, 4), have = c.windowOffers && c.windowOffers.window === opts.window && c.windowOffers.year === year && c.windowOffers.list.length;
+  const list = have ? c.windowOffers.list : makeOffers(c, opts.rep, opts.age, opts.window);
+  c.windowOffers = { window: opts.window, year, list };
   const ending = opts.window === 'summer' && contractEnding(c) && !c.loan;
   const offers = ending ? [renewalOffer(c, opts.rep), ...list] : list;
   const ag = agentOf(c);
   const p = pop(`<h2>${opts.window === 'summer' ? 'Summer' : 'January'} transfer window</h2>
     ${ending ? '<p class="bad">Your contract is up this summer. Sign something, or the club will offer you a year out of pity.</p>' : ''}
     ${ag ? `<p class="evtext"><b>${esc(ag.name)}:</b> ${esc(pick(ag.advice))}</p>` : ''}
-    <div class="scroll shop">${offers.map((o, i) => { const cl = club(o.clubId); return `<div class="item ${o.dream ? 'owned' : ''}"><div><b>${esc(cl.name)}</b> <small class="kind">${offerTitle(o)}</small>${o.dream ? ' <small class="kind dream">★ BOYHOOD CLUB</small>' : ''}<p>${esc(DIVS[cl.league] ? DIVS[cl.league].short : '')} · ${esc(o.role)} · ${money(o.wage)}/wk · ${o.years} year${o.years > 1 ? 's' : ''}${o.fee ? ` · fee ${money(o.fee)}` : ''}</p></div><button class="btn small gold" data-o="${i}">Talk terms</button></div>`; }).join('') || '<p class="dim">Nobody\'s come in for you. Yet.</p>'}</div>
+    <div class="scroll shop">${offers.map((o, i) => { const cl = club(o.clubId); return `<div class="item ${o.dream ? 'owned' : ''}"><div><b>${esc(cl.name)}</b> <small class="kind">${offerTitle(o)}</small>${o.dream ? ' <small class="kind dream">★ BOYHOOD CLUB</small>' : ''}<p>${esc(DIVS[cl.league] ? DIVS[cl.league].short : '')} · ${esc(o.role)} · ${money(o.wage)}/wk · ${o.years} year${o.years > 1 ? 's' : ''}${o.fee ? ` · fee ${money(o.fee)}` : ''}</p>${o.role === 'squad player' ? '<p class="bad small">They\'ve been honest: you won\'t start. You\'d be training with the first team and watching from the stand.</p>' : o.role === 'first choice' ? '<p class="good small">They see you as a starter.</p>' : ''}</div><button class="btn small gold" data-o="${i}">Talk terms</button></div>`; }).join('') || '<p class="dim">Nobody\'s come in for you. Yet.</p>'}</div>
     <div class="endBtns"><button class="btn" id="stay">${ending ? 'Done' : 'Stay where I am'}</button></div>`);
   p.all('[data-o]').forEach(b => b.onclick = () => { const o = offers[+b.dataset.o]; p.close(); showTalks(c, o, opts, signed => { if (signed) opts.onDone && opts.onDone(true); else showWindow(c, opts); }); });
   p.$('#stay').onclick = () => {

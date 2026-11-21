@@ -5,7 +5,7 @@ import { applyEffects, fresh } from './life.js';
 import { makeSquad } from './squads.js';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-export const FROM = { mum: 'Mum', gran: 'Gran', squad: 'Squad group chat' };
+export const FROM = { mum: 'Mum', gran: 'Gran', squad: 'Squad group chat', work: 'Work offer' };
 export function initInvites(c) { c.invites = c.invites || []; return c; }
 const listFor = from => INV.friends[from] || INV[from];
 export const inviteData = inv => listFor(inv.from)[inv.i];
@@ -27,6 +27,15 @@ export function inviteWeek(c, age, names, R = Math.random) {
   if (R() < .1) add('mum', R);
   if (R() < .08) add('gran', R);
   if (R() < .2) add('squad', R);
+  // Work: radio, openings, photoshoots. Comes with fame, and after a big game.
+  if (INV.work) {
+    const last = (c.recentGames || []).slice(-2).filter(g => g.played), hot = last.some(g => g.rating >= 7.8);
+    const p = .02 + Math.max(0, c.meters.fans - 40) / 300 + (hot ? .25 : 0);
+    if (R() < p) {
+      const ok = INV.work.map((x, i) => i).filter(i => (INV.work[i].minFame || 0) <= c.meters.fans && (!INV.work[i].minAge || age >= INV.work[i].minAge));
+      if (ok.length) { const i = fresh(c, 'inv-work', ok, R); c.invites.push({ from: 'work', i, week: c.week, a: 'Gaz' }); }
+    }
+  }
 }
 export const inviteText = inv => inviteData(inv).text.replace(/\{a\}/g, inv.a || 'Gaz');
 export const inviteResult = inv => (inviteData(inv).result || '').replace(/\{a\}/g, inv.a || 'Gaz');
@@ -39,6 +48,7 @@ export function acceptInvite(c, k) {
   if (inv.from === 'mum' || inv.from === 'gran') applyEffects(c, { family: 1 });
   if (d.venue) return { venue: d.venue };
   c.slotsUsed++; c.weekLog.push({ t: 'invite', from: inv.from, label: d.label });
+  if (d.pay) c.bank += d.pay;
   return { effects: applyEffects(c, d.effects || {}), line: inviteResult(inv) };
 }
 export function declineInvite(c, k) {
