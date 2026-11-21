@@ -17,7 +17,8 @@ export function createStartScreen(root, go) {
   }
   function nameStep() {
     const sc = scoutRating(), tried = state.profile.tried || {}, todo = SKILLS.filter(([k]) => !tried[k] && !state.profile.best[k]);
-    if (!boyhood) { const all = allClubs().filter(x => x.league !== 'NL'); boyhood = all[Math.floor(Math.random() * all.length)].id; }
+    if (!boyhood) boyhood = state.profile.boyhood;
+    if (!boyhood) { const all = allClubs().filter(x => x.league !== 'NL'); boyhood = all[Math.floor(Math.random() * all.length)].id; state.profile.boyhood = boyhood; save(); }
     $('sp').innerHTML = `<h1>FRONT PAGE, <span>BACK PAGE</span></h1>
       <div class="sub">Summer 2026. You're 16, you're English, you're a striker, and the scouts have been watching.</div>
       <div class="namebox">Your name <input id="nm" maxlength="16" placeholder="Surname works best" value="${esc(state.profile.name)}"></div>
@@ -26,7 +27,7 @@ export function createStartScreen(root, go) {
       ${todo.length ? `<p class="bad">The scouts won't come until they've seen you try every drill. Still to do: <b>${todo.map(([, , t]) => esc(t)).join(', ')}</b>.</p><div class="endBtns"><button class="btn gold big" id="tg2">TO THE TRAINING GROUND ▶</button></div>` : '<div class="endBtns"><button class="btn gold big" id="go">FIND ME A CLUB ▶</button></div>'}
       <div class="hint"><a href="#" id="tg">Training ground (free practice)</a></div>`;
     if ($('tg2')) $('tg2').onclick = () => { const n = $('nm').value.trim(); if (n) { state.profile.name = n; save(); } go('training'); };
-    $('boy').onchange = e => { boyhood = e.target.value; };
+    $('boy').onchange = e => { boyhood = e.target.value; state.profile.boyhood = boyhood; save(); };
     if ($('go')) $('go').onclick = () => { const n = $('nm').value.trim(); if (!n) { $('nm').focus(); $('nm').classList.add('shake'); return; } state.profile.name = n; save(); offerStep(); };
     $('nm').onkeydown = e => { if (e.key === 'Enter' && $('go')) $('go').click(); };
     $('tg').onclick = e => { e.preventDefault(); go('training'); };

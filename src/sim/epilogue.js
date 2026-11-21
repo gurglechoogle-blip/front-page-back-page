@@ -86,8 +86,6 @@ export function epilogue(c, won, scored, R = Math.random) {
   // Scandals.
   const past = sc.map(k => SCANDALS[k]).join(', ').replace(/, ([^,]*)$/, ' and $1');
   if (sc.length) out.push(['The past', `${past[0].toUpperCase() + past.slice(1)}. ${c.honour >= 50 ? 'The papers mention it less every year. You mention it more: in schools, as a warning.' : 'The papers still mention it. Every. Single. Time.'}`]);
-  // The rival.
-  if (c.rival) out.push([c.rival.name, c.rival.goals > careerGoals(c) ? `Scored ${c.rival.goals} career goals to your ${careerGoals(c)}. Brings it up at every reunion. Was not picked for 2046. You brought that up.` : `Scored ${c.rival.goals} career goals, ${careerGoals(c) - c.rival.goals} fewer than you. Now manages a non-league side. Sent you a text after the final: "decent". From him, that's a hug.`]);
   void pick;
   return out;
 }

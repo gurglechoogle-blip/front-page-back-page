@@ -360,3 +360,5 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .gctl{position:fixed;right:8px;bottom:8px;display:flex;gap:4px;z-index:80;opacity:.7}.gctl:hover{opacity:1}
 .gctl button{background:#1b1f24;border:1px solid #3a4048;color:#fff;border-radius:6px;width:34px;height:30px;font-size:15px;cursor:pointer;padding:0}
 .gctl button.off{opacity:.45;text-decoration:line-through}
+.raisebox{display:inline-flex;gap:4px;align-items:center}.raisebox input{width:90px;padding:8px;border-radius:6px;border:1px solid #3a4048;background:#14171a;color:#fff;font:inherit;font-weight:700}
+.buyin input[type=number]{width:140px;padding:8px;border-radius:6px;border:1px solid #3a4048;background:#14171a;color:#fff;font:inherit;font-weight:700}

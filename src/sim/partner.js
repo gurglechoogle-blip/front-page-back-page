@@ -54,7 +54,11 @@ export function partnerWeek(c, age, R = Math.random) {
   const job = PD.jobs.find(j => j.job === p.job); if (job) applyEffects(c, job.perWeek);
   if (p.meter >= 60) applyEffects(c, { energy: 2, family: .3 });
   const queued = id => c.followUps.some(f => f.id === id) || c.pending.some(x => x.id === id);
-  if (p.meter < 18 && !queued('partnerEnds')) c.followUps.push({ id: 'partnerEnds', week: c.week + 1 });
+  // Two chances, then that's it: the third time, they just go.
+  if (p.meter < 18 && !queued('partnerEnds')) {
+    if ((p.chances || 0) >= 2) { const nm = p.name; breakUp(c, 'third strike'); (c.inbox = c.inbox || []).unshift({ id: ++c.msgId, from: nm, text: 'I gave you two chances. There isn\'t a third. I\'ve taken the good mugs. Goodbye.', week: c.week, read: false }); (c.weekNews = c.weekNews || []).push({ page: 'front', headline: `THIRD TIME UNLUCKY: ${c.name.trim().split(/\s+/).pop().toUpperCase()} DUMPED` }); return; }
+    p.chances = (p.chances || 0) + 1; c.followUps.push({ id: 'partnerEnds', week: c.week + 1 });
+  }
   else if (p.stage === 'dating' && age >= 18 && p.weeks >= 12 && p.weeks % 12 === 0 && p.meter >= 70 && !queued('moveIn')) c.followUps.push({ id: 'moveIn', week: c.week + 1 });
   else if (p.stage === 'living' && age >= 20 && p.weeks >= 40 && p.weeks % 20 === 0 && p.meter >= 80 && !queued('propose')) c.followUps.push({ id: 'propose', week: c.week + 1 });
   else if (p.stage === 'engaged' && p.weeks >= 70 && !queued('wedding')) c.followUps.push({ id: 'wedding', week: c.week + 2 });

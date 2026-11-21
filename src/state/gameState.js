@@ -57,6 +57,10 @@ function load() {
 }
 export const state = load();
 setWorld(state.career ? state.career.world : null); // the right season's calendar and divisions
+/** A brand-new game: no career, no skills, no drill records. The name is kept as a convenience. */
+export function newGame() {
+  state.career = null; state.profile = normaliseProfile({ name: state.profile.name }); setWorld(null); save();
+}
 
 let lastSaved = 0;
 /** Save everything now. */

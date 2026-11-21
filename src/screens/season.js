@@ -1,6 +1,7 @@
+import { ask } from '../engine/ask.js';
 // SEASON REVIEW: where you finished and what you did. Season two comes later.
 import { esc } from '../engine/util.js';
-import { state, save } from '../state/gameState.js';
+import { state, save , newGame } from '../state/gameState.js';
 import { club, zone, DIVS, CAL, roundName } from '../sim/season.js';
 import { seasonSummary, rollWorld, beginSeason, age, message } from '../sim/career.js';
 import { showWindow } from './contractUI.js';
@@ -51,7 +52,7 @@ export function createSeasonScreen(root, go) {
       });
     }
     // Retirement is your choice, from 33.
-    if (age(c) >= 33 && !c.retired) { const d = document.createElement('div'); d.className = 'endBtns'; d.innerHTML = '<button class="btn red" id="retire">Hang up your boots</button>'; root.querySelector('.wpanel').appendChild(d); root.querySelector('#retire').onclick = () => { if (confirm('Retire? Your playing days end here. The phone may ring again one day...')) { c.retired = true; c.retiredAt = age(c); rollWorld(c); c.summer = null; save(); go('finale'); } }; }
+    if (age(c) >= 33 && !c.retired) { const d = document.createElement('div'); d.className = 'endBtns'; d.innerHTML = '<button class="btn red" id="retire">Hang up your boots</button>'; root.querySelector('.wpanel').appendChild(d); root.querySelector('#retire').onclick = () => ask('Retire? Your playing days end here. The phone may ring again one day...', 'Retire', 'Not yet').then(ok => { if (ok) { c.retired = true; c.retiredAt = age(c); rollWorld(c); c.summer = null; save(); go('finale'); } }); }
     root.querySelector('#nextSeason').onclick = () => {
       rollWorld(c);
       // Tournament summer? England first, then the window.
@@ -65,7 +66,7 @@ export function createSeasonScreen(root, go) {
       save(); openWindow();
     };
     if (c.summer && c.summer.stage === 'window') openWindow(); // came back mid-summer
-    root.querySelector('#new').onclick = () => { if (confirm('Start a new career? This one goes in the bin.')) { state.career = null; save(); go('start'); } };
+    root.querySelector('#new').onclick = () => ask('Start a new career? This one goes in the bin.', 'Start again', 'Not yet').then(ok => { if (ok) { newGame(); go('start'); } });
   }
   return { mount, frame() { } };
 }

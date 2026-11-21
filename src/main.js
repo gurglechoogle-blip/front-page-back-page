@@ -31,6 +31,18 @@ function controls() {
   d.querySelector('#g-mus').onclick = () => { setMusic(!settings.music); paint(); };
   if (fs) d.querySelector('#g-fs').onclick = () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => { }); };
   paint();
+  // In full screen, scale the whole game up to fill the screen (not just hide the browser bars).
+  const fit = () => {
+    const r = document.getElementById('root'); if (!r) return;
+    if (!document.fullscreenElement) { r.style.zoom = ''; return; }
+    r.style.zoom = '';
+    const k = r.firstElementChild, b = k ? k.getBoundingClientRect() : { width: 1000, height: 700 };
+    const w = Math.max(b.width, 600), h = Math.max(b.height, 500) + 20;
+    r.style.zoom = Math.max(1, Math.min(window.innerWidth / w, window.innerHeight / h)).toFixed(3);
+  };
+  document.addEventListener('fullscreenchange', () => setTimeout(fit, 60));
+  window.addEventListener('resize', () => setTimeout(fit, 60));
+  window.__refit = fit;
 }
 controls();
 document.addEventListener('click', e => { if (e.target.closest && e.target.closest('button.btn')) sfx.tick(); });
@@ -40,7 +52,7 @@ const SCREENS = { start: createStartScreen, hub: createHubScreen, week: createWe
 /** Switch screen: go('match', { ...params }). */
 function go(name, params) {
   stopCrowd(); if (MUSIC_SCREENS.includes(name)) startMusic(); else stopMusic();
-  try { setScreen(SCREENS[name](root, go, params || {})); window.scrollTo(0, 0); }
+  try { setScreen(SCREENS[name](root, go, params || {})); window.scrollTo(0, 0); if (window.__refit) setTimeout(window.__refit, 50); }
   catch (err) { console.error(err); showError(err); }
 }
 // If a screen ever fails to open, say so instead of leaving a dead button.

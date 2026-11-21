@@ -1,3 +1,4 @@
+import { ask } from '../engine/ask.js';
 // MATCH DAY: score blocks on top, live commentary feed in the middle, clock
 // bottom-left, your rating bottom-right, quick stats and the gaffer on the side.
 // When a chance comes your way the clock stops and the moment plays in place.
@@ -123,7 +124,7 @@ export function createMatchScreen(root, go, params) {
     }
     $('pause').onclick = () => { paused = !paused; $('pause').textContent = paused ? '▶ Play' : '❚❚ Pause'; };
     $('fast').onclick = () => { fast = !fast; $('fast').classList.toggle('on', fast); };
-    if (!career) $('leave').onclick = () => { if (phase === 'ft' || confirm('Leave the match? It won\'t count.')) { setCam('def'); go('setup'); } };
+    if (!career) $('leave').onclick = () => { if (phase === 'ft') { setCam('def'); go('setup'); } else ask('Leave the match? It won\'t count.', 'Leave', 'Stay').then(ok => { if (ok) { setCam('def'); go('setup'); } }); };
     setCam('def'); renderStats(); setQuote(true);
   }
 

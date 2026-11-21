@@ -96,13 +96,21 @@ export const rivalSelectionPenalty = c => c.rival && c.rival.clubId === c.clubId
 function chatVars(c, R) {
   const sq = makeSquad(c.clubId), pool = [...sq.def, ...sq.mid, ...sq.fwd];
   const a = pick(pool, R); let b = pick(pool, R); if (b === a) b = pick(pool, R);
-  return { a, b, me: c.name, rival: c.rival ? c.rival.short : 'the new lad', gaffer: 'the gaffer' };
+  return { a, b, me: c.name, rival: pick(pool.filter(n => n !== a && n !== b), R) || 'the new lad', gaffer: 'the gaffer' };
+}
+// Prompts that only make sense once something is true (a car, a partner, being 18).
+function promptOk(c, p) {
+  const t = JSON.stringify(p).toLowerCase();
+  if (/your new motor|your car|your new car|your motor/.test(t) && !(c.owned || []).some(id => /corsa|range|lambo|car|fiest|bent|merc|royce|bugatt/i.test(id))) return false;
+  if (/your (missus|girlfriend|boyfriend|other half|partner)/.test(t) && !c.partner) return false;
+  if (/(pub|club|pint|night out|vegas|casino)/.test(t) && (c._age || 16) < 18) return false;
+  return true;
 }
 export function chatWeek(c, R = Math.random) {
   const v = chatVars(c, R), n = 1 + Math.floor(R() * 2);
   for (let i = 0; i < n; i++) c.chat.push({ week: c.week, text: fill(fresh(c, 'banter', CH.banter, R), v) });
   if (c.chat.length > 80) c.chat.splice(0, c.chat.length - 80);
-  if (R() < .2) { const i = fresh(c, 'prompts', CH.prompts.map((x, k) => k), R); c.pending.push({ type: 'chat', i, vars: v }); }
+  if (R() < .2) { const ok = CH.prompts.map((x, k) => k).filter(k => promptOk(c, CH.prompts[k])); if (!ok.length) return; const i = fresh(c, 'prompts', ok, R); c.pending.push({ type: 'chat', i, vars: v }); }
 }
 export const chatPrompt = item => { const p = CH.prompts[item.i]; return { q: fill(p.q, item.vars), options: p.options.map(o => Object.assign({}, o, { text: fill(o.text, item.vars) })) }; };
 export function chatAnswer(c, item, k, R = Math.random) {

@@ -23,7 +23,7 @@ import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './m
 import { initPartner, partnerWeek } from './partner.js';
 import { archiveWeek } from './calendar.js';
 import { friend as friendOf } from './social.js';
-import { initSocial, friendsWeek, nightPenalty, rivalWeek, rivalSummer, rivalSelectionPenalty, chatWeek } from './social.js';
+import { initSocial, friendsWeek, nightPenalty, chatWeek } from './social.js';
 import { MatchSim } from './matchSim.js';
 import { initLife, rollEvents, makePaper, pressAfter, afterMatch, honourPatience, support, familyWeek, taper } from './life.js';
 
@@ -147,7 +147,6 @@ export function selection(c, f, R = Math.random) {
   let p = c.contract.pathway + ((c.approval - 50) / 110 + (c.form - 50) / 220) * (.4 + c.contract.pathway);
   if (f.comp !== 'league') p += ['R1', 'R2', 'G'].includes(f.round) ? .3 : .1;
   if (c.energy < 30) p -= .15;
-  p -= rivalSelectionPenalty(c);
   if (c.promised >= c.week) p += .15;
   if (c.transferListed) p *= .75;
   p = clamp(p, .02, .92);
@@ -276,7 +275,6 @@ export function finishWeek(c, R = Math.random) {
   fameWeek(c, wr.reduce((a, r) => a + (r.goals || 0), 0), wr.length ? wr.reduce((a, r) => a + r.rating, 0) / wr.length : 0, R).forEach(([from, text]) => message(c, from, text));
   checkAchievements(c, 'week');
   if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
-  const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.
   c.lastWeekDate = weekStart(c.week);
   const [fines, fineNotes] = clauseWeek(c, (c.matchday ? c.matchday.results : []).some(r => r.role !== 'none'), R);
@@ -349,8 +347,6 @@ export function rollWorld(c, R = Math.random) {
   checkAchievements(c, 'season', { pos: S.pos, avg: S.avg, div: c.history[c.history.length - 1].div, wasLoan: !!c.loan, mv });
   clauseSummer(c, mv).forEach(t => notice(c, 'Contract', t));
   if (c.loan) { const back = endLoan(c); message(c, club(back).short + ' News', `Your loan's over. Welcome back to ${club(back).name}. Your peg's still there. Someone's been using it.`); }
-  const rv = rivalSummer(c, R);
-  if (rv) { const to = club(rv.to); c.weekNews.push({ page: 'back', headline: `RIVAL ${c.rival.short.toUpperCase()} JOINS ${to.name.toUpperCase()}` }); message(c, 'Dennis (kit man)', rv.wanted ? `${c.rival.name}'s signed for ${to.name}. The club you turned down. I said this would happen. I didn't, but I thought it.` : `${c.rival.name}'s off to ${to.name}. Good riddance, he never put his bibs in the basket.`); }
   c.summer = { stage: 'window' };
   return { moves, mv };
 }

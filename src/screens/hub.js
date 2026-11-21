@@ -1,3 +1,4 @@
+import { ask } from '../engine/ask.js';
 // THE HUB: your week at a glance. Centre: you in club kit, the week and the
 // gaffer's approval. Left: career stats and skills. Right: money and honour.
 // Top: next fixture, time slots, phone. Bottom: five category buttons.
@@ -8,7 +9,7 @@ import { esc } from '../engine/util.js';
 import { clock } from '../engine/clock.js';
 import { playerKitFrom } from '../engine/kits.js';
 import { SKILLS } from '../moments/index.js';
-import { state, save, skillLevelText, SKILL_MAX } from '../state/gameState.js';
+import { state, save, skillLevelText, SKILL_MAX , newGame } from '../state/gameState.js';
 import {
   club, compName, prettyDate, weekStart, DIVS, CAL, zone, table, roundName,
 } from '../sim/season.js';
@@ -91,13 +92,13 @@ export function createHubScreen(root, go, params = {}) {
     $('paperbtn').onclick = e => { e.stopPropagation(); const u = c.unreadPapers || []; if (!u.length) return showArchive(); const readNext = () => { const n = u.shift(); save(); render(); if (n != null) showPaper(n, u.length ? readNext : null); }; readNext(); };
     $('nextfx').onclick = e => { e.stopPropagation(); matchday(); };
     $('mclose').onclick = closeModal; $('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
-    $('newCareer').onclick = e => { e.preventDefault(); modal(`<h2>Start a new career?</h2><p>This one will be gone for good. Gran will be devastated.</p><div class="endBtns"><button class="btn red" id="reallyNew">Yes, start again</button><button class="btn" id="keep">Keep this one</button></div>`); $('reallyNew').onclick = () => { state.career = null; save(); go('start'); }; $('keep').onclick = closeModal; };
+    $('newCareer').onclick = e => { e.preventDefault(); modal(`<h2>Start a new career?</h2><p>This one will be gone for good. Gran will be devastated.</p><div class="endBtns"><button class="btn red" id="reallyNew">Yes, start again</button><button class="btn" id="keep">Keep this one</button></div>`); $('reallyNew').onclick = () => { newGame(); go('start'); }; $('keep').onclick = closeModal; };
     $('dl').onclick = e => { e.preventDefault(); exportSave(); toast('Save file downloaded. Keep it somewhere safe, like under the mattress.'); };
     $('ul').onclick = e => { e.preventDefault(); $('ulf').click(); };
     $('ulf').onchange = async e => { const f = e.target.files[0]; if (!f) return; const ok = await importSave(f); if (ok) location.reload(); else toast('That file isn\'t a Front Page, Back Page save.'); };
     setCam('def'); render();
     // First day: the head of development's talk.
-    if (!c.flags.welcomeTalk) { c.flags.welcomeTalk = true; save(); modal(welcomeHTML(c) + '<div class="endBtns"><button class="btn gold" id="gotit">Got it, boss</button></div>'); $('gotit').onclick = () => { closeModal(); runPending(() => {}); }; return; }
+    if (!c.flags.welcomeTalk) { c.flags.welcomeTalk = true; save(); modal(welcomeHTML(c, true) + '<div class="endBtns"><button class="btn gold" id="gotit">Got it, boss</button></div>'); $('gotit').onclick = () => { closeModal(); runPending(() => {}); }; return; }
     // Monday's paper, events and press conferences come first.
     runPending(() => {
       if (params.thenFinish) { finishWeek(c); save(); go('week'); }
@@ -155,7 +156,6 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'Rest', note: 'Uses a slot, +energy', go: rest },
       { label: 'Fixtures & results', go: showFixtures },
       { label: 'League table', go: showTable },
-      { label: `Rival: ${esc(c.rival.name)}`, note: `${esc(club(c.rival.clubId).short)} · ${c.rival.seasonGoals} goals this season`, go: showRival },
       { label: 'Contract & transfers', go: showContract },
       ...(longInjury(c) ? [{ label: 'While you\'re injured', note: `Out for ${c.injury.weeks} more week${c.injury.weeks > 1 ? 's' : ''}: the telly's calling`, main: true, go: showInjured }] : []),
       { label: 'Head of Development\'s notes', note: 'What\'s ahead, and when', go: () => modal(welcomeHTML(c)) },
@@ -203,10 +203,10 @@ export function createHubScreen(root, go, params = {}) {
     const mine = club(myTeamIn(c, f));
     modal(`<h2 class="ts">TEAM SHEET</h2><div class="tsfix"><small>${esc(compName(f))} · ${prettyDate(f.date, true)}${f.neutral ? ' · ' + esc(f.neutral) : ''}</small>
       <b>${esc(club(f.home).name)} v ${esc(club(f.away).name)}</b></div>
-      <p class="tsrole ${role}">${esc(role === 'none' && (md.why || {})[id] === 'rest' ? `You played on ${prettyDate(c.lastPlayed, true)}. That's under 60 hours ago, so the physio has hidden your boots. You're resting this one.` : role === 'none' && c.injury ? `You're injured (${c.injury.name}). The club channel wants you on co-commentary.` : role === 'none' && c.ban > 0 ? `You're banned (${c.ban} more week${c.ban > 1 ? 's' : ''}). ${c.flags.prison && !c.flags.servedBan ? 'You\'re listening on the radio in your cell.' : 'You\'re watching from your sofa.'}` : role === 'none' && c.intlWeek === c.week && f.comp !== 'intl' ? 'You\'re away with England this week.' : M.selection[role])}</p>
+      <p class="tsrole ${role}">${esc(role === 'none' && (md.why || {})[id] === 'rest' ? `You played on ${prettyDate(c.lastPlayed, true)}. That's under 60 hours ago, so the physio has hidden your boots. You're resting this one.` : role === 'none' && c.injury ? `You're injured (${c.injury.name}).${c.cocommSeason !== c.season ? ' The club channel wants you on co-commentary.' : ' You watch from the stand with a blanket and a Bovril.'}` : role === 'none' && c.ban > 0 ? `You're banned (${c.ban} more week${c.ban > 1 ? 's' : ''}). ${c.flags.prison && !c.flags.servedBan ? 'You\'re listening on the radio in your cell.' : 'You\'re watching from your sofa.'}` : role === 'none' && c.intlWeek === c.week && f.comp !== 'intl' ? 'You\'re away with England this week.' : M.selection[role])}</p>
       ${mine.id.endsWith('-u21') ? `<p class="dim">It's the under-21s. Proper game though: the ${esc(CAL.cups.trophy.short)} puts you up against men with mortgages.</p>` : ''}
       <div class="endBtns">${role === 'none' ? `<button class="btn" id="watch">See how they get on</button>` : `<button class="btn gold" id="toMatch">TO THE MATCH ▶</button>`}</div>`, true);
-    if (role === 'none' && c.injury) { $('watch').textContent = 'Co-commentate 🎙'; $('watch').onclick = () => coCommentary(f); }
+    if (role === 'none' && c.injury && c.cocommSeason !== c.season) { $('watch').textContent = 'Co-commentate 🎙'; $('watch').onclick = () => { c.cocommSeason = c.season; save(); coCommentary(f); }; }
     else if (role === 'none') {
       $('watch').onclick = () => {
       const sim = playHeadless(c, f), S = sim.summary(); recordMatch(c, f, S); save();
@@ -311,7 +311,7 @@ export function createHubScreen(root, go, params = {}) {
   }
   function coCommentary(f) {
     const sim = playHeadless(c, f), S = sim.summary(); let i = 0, gaffe = false;
-    const qs = L2.cocomm.slice().sort(() => Math.random() - .5);
+    const qs = L2.cocomm.slice().sort(() => Math.random() - .5).slice(0, 4);
     const step = () => {
       if (i >= qs.length) {
         if (!gaffe) c.flags.cleanCommentary = true;
@@ -405,7 +405,7 @@ export function createHubScreen(root, go, params = {}) {
     root.querySelectorAll('[data-d]').forEach(b => b.onclick = () => { const r = date(c, b.dataset.d); save(); render(); if (!r.ok) return toast(r.why); showPartner(); toast(r.line); });
     root.querySelectorAll('[data-g]').forEach(b => b.onclick = () => { const r = gift(c, b.dataset.g); save(); render(); if (!r.ok) return toast(r.why); showPartner(); toast('They love it. Or they\'re very good at pretending.'); });
     $('txt').onclick = () => { toast(textThem(c) ? 'You send three hearts and a pigeon emoji. They send seven hearts back.' : 'You\'ve already texted this week. Don\'t be needy.'); save(); render(); };
-    $('dump').onclick = () => { if (confirm(`Break up with ${p.name}?`)) { breakUp(c, 'you ended it'); save(); render(); closeModal(); toast('It\'s over. Mum brings a lasagne round.'); } };
+    $('dump').onclick = () => ask(`Break up with ${p.name}?`, 'End it', 'Keep trying').then(ok => { if (ok) { breakUp(c, 'you ended it'); save(); render(); closeModal(); toast('It\'s over. Mum brings a lasagne round.'); } });
   }
   function casinoItems() {
     const a = age(c);
@@ -415,15 +415,15 @@ export function createHubScreen(root, go, params = {}) {
     });
   }
   function showVenue(v) {
-    const lo = v.buyIn[0], hi = Math.min(v.buyIn[1], Math.max(lo, Math.floor(c.bank)));
+    const lo = v.buyIn[0], hi = Math.max(lo, Math.floor(c.bank)); // no limit: whatever you can afford
     const canAfford = c.bank >= lo, slot = slotsLeft(c) > 0;
     modal(`<h2>${esc(v.name)}</h2><p class="evtext">${esc(v.blurb)}</p>
-      ${canAfford && slot ? `<div class="buyin"><span>Buy-in</span><input type="range" id="bi" min="${lo}" max="${hi}" step="${lo < 1 ? 1 : lo}" value="${lo}"><b id="biv">${money(lo)}</b></div>
+      ${canAfford && slot ? `<div class="buyin"><span>Buy-in</span><input type="number" id="bi" min="${lo}" max="${hi}" step="1" value="${lo}"><b id="biv">${money(lo)}</b></div><p class="dim small">Anything from ${money(lo)} up to everything you've got (${money(hi)}). Bigger buy-ins, bigger blinds.</p>
       <div class="choices">${v.games.map(g => `<button class="btn gold choice" data-g="${g}">${g === 'poker' ? 'Texas Hold\'em' : 'Blackjack'}</button>`).join('')}</div>
       <p class="dim">Uses a time slot. Pretend money only, but it comes out of your bank. ${v.risk ? 'People talk.' : ''}</p>` : `<p class="bad">${!slot ? 'No time slots left this week.' : `You need at least ${money(lo)} to sit down.`}</p>`}`);
-    const bi = $('bi'); if (bi) bi.oninput = () => $('biv').textContent = money(+bi.value);
+    const bi = $('bi'); if (bi) bi.oninput = () => $('biv').textContent = money(Math.max(lo, Math.min(hi, +bi.value || lo)));
     root.querySelectorAll('[data-g]').forEach(b => b.onclick = () => {
-      const buy = +bi.value; c.bank -= buy; c.slotsUsed++; c.casinoLive = { venue: v.id, buyIn: buy }; save(); closeModal();
+      const buy = Math.max(lo, Math.min(hi, Math.floor(+bi.value) || lo)); c.bank -= buy; c.slotsUsed++; c.casinoLive = { venue: v.id, buyIn: buy }; save(); closeModal();
       go('casino', { venue: v.id, game: b.dataset.g, buyIn: buy });
     });
   }
@@ -510,7 +510,7 @@ export function createHubScreen(root, go, params = {}) {
     modal(`<div class="evvia">💬 ${esc(club(c.clubId).short)} LADS (group chat)</div><div class="chatlog">${c.chat.slice(-4).map(m => `<div class="cm">${esc(m.text)}</div>`).join('')}<div class="cm q">${esc(P.q)}</div></div><div class="choices">${P.options.map((o, i) => `<button class="btn choice" data-i="${i}">${esc(o.text)}</button>`).join('')}</div>`, true);
     root.querySelectorAll('.choice').forEach(b => b.onclick = () => {
       const r = chatAnswer(c, item, +b.dataset.i); save(); render();
-      modal(`<div class="evvia">💬 Group chat</div><h2>${r.leaked ? 'Uh oh.' : 'Sent.'}</h2><p class="evtext">${r.leaked ? 'Someone screenshotted it. It\'s already with Sid Scoop. Monday\'s paper will be fun.' : 'The lads react with 14 crying-laughing emojis.'}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
+      modal(`<div class="evvia">💬 Group chat</div><h2>${r.leaked ? 'Uh oh.' : 'Sent.'}</h2><p class="evtext">${r.leaked ? 'Someone screenshotted it. It\'s already with Sid Scoop. Monday\'s paper will be fun.' : chatReaction(r.effects)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="evok">OK</button></div>`, true);
       $('evok').onclick = next;
     });
   }
@@ -557,6 +557,13 @@ export function createHubScreen(root, go, params = {}) {
   function showCabinet() {
     const tiers = ['gold', 'silver', 'bronze'];
     modal(`<h2>Trophy cabinet</h2><p class="dim">${achCount(c)} of ${ACH.length}. Mum's dusted them all.</p><div class="scroll">${tiers.map(t => `<h3>${t[0].toUpperCase() + t.slice(1)}</h3><div class="cabinet">${ACH.filter(a => a.tier === t).map(a => { const got = c.achievements[a.id]; return `<div class="trophy ${t} ${got ? '' : 'locked'}"><span class="medal">${got ? MEDAL[t] : '🔒'}</span><b>${esc(a.name)}</b><p>${esc(a.how)}</p>${got ? `<p>${esc(got.season || '')}</p>` : ''}</div>`; }).join('')}</div>`).join('')}</div>`);
+  }
+  function chatReaction(eff) {
+    const t = (eff && (eff.teammates || 0) + (eff.fans || 0)) || 0;
+    const good = ['The lads react with 14 crying-laughing emojis.', 'Three voice notes of pure laughter. One is just someone wheezing.', 'The captain replies "🐐". High praise.', 'Someone makes it the group chat picture. You\'re immortal.', '"HAHAHA" from everyone, including the physio, who isn\'t in the chat. Nobody knows how.', 'It gets pinned. Nothing ever gets pinned.', 'The kit man replies with a thumbs up. From Dennis, that\'s a standing ovation.'];
+    const bad = ['Silence. Then: "...ok". The worst reply in the English language.', 'Two people leave the group. One rejoins to say "no".', 'Someone screenshots it "for the lads". It\'s not for the lads.', 'Read by 23. Replies: 0.', '"bro" says the captain. Just "bro".'];
+    const meh = ['A couple of thumbs-ups. The chat moves on to someone\'s new trainers.', 'Nobody replies. Someone posts a dog video. Fair enough.', 'One "lol". You\'ll take it.', '"👍" from the goalkeeper, who reacts to everything with 👍.', 'Ignored, because someone\'s just posted a picture of a massive sandwich.'];
+    return pickLine(t > 0 ? good : t < 0 ? bad : meh);
   }
   function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 3200); }
   const pickLine = a => a[Math.floor(Math.random() * a.length)];

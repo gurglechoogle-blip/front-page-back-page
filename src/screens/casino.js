@@ -1,3 +1,4 @@
+import { ask } from '../engine/ask.js';
 // CASINO: poker or blackjack at a venue, with chips bought in from your bank.
 // params: { venue, game, buyIn }
 import { esc } from '../engine/util.js';
@@ -14,7 +15,10 @@ setMoneyFormat(fmt);
 const cardHTML = (c, hidden) => hidden ? '<span class="card back"></span>' : `<span class="card ${red(c) ? 'red' : ''}">${label(c)}</span>`;
 
 export function createCasinoScreen(root, go, params) {
-  const c = state.career, V = CZ.venues.find(v => v.id === params.venue), buyIn = params.buyIn;
+  const c = state.career, V0 = CZ.venues.find(v => v.id === params.venue), buyIn = params.buyIn;
+  // Bigger buy-ins mean bigger blinds: the big blind is about a fiftieth of the buy-in.
+  const nice = v => { const p = Math.pow(10, Math.floor(Math.log10(v))), m = v / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; };
+  const bb = Math.max(V0.blinds[1], nice(buyIn / 50)), V = Object.assign({}, V0, { blinds: [bb / 2, bb] });
   const $ = id => root.querySelector('#' + id);
   let poker = null, bj = null, timer = 0, talkI = 0, betAmt = V.bet ? V.bet[0] : 0, finished = false;
 
@@ -77,8 +81,9 @@ export function createCasinoScreen(root, go, params) {
       <div class="acts">${g.over ? `<p>${g.you.stack <= 0 ? 'You\'re cleaned out.' : 'Everyone else is bust. You\'ve cleaned the table out!'}</p>` : done ? '<button class="btn gold" id="nextHand">Next hand ▶</button>' : myTurn ? `
         <button class="btn red" data-a="fold">Fold</button>
         <button class="btn" data-a="${o.canCheck ? 'check' : 'call'}">${o.canCheck ? 'Check' : 'Call ' + fmt(o.toCall)}</button>
-        ${o.maxTo > g.currentBet ? `<button class="btn gold" data-a="raise" data-to="${o.minTo}">Raise to ${fmt(o.minTo)}</button>${o.potTo > o.minTo ? `<button class="btn gold" data-a="raise" data-to="${o.potTo}">Pot: ${fmt(o.potTo)}</button>` : ''}<button class="btn gold" data-a="raise" data-to="${o.maxTo}">All in</button>` : ''}` : '<p class="dim">Waiting for the others...</p>'}</div>`;
-    root.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { g.act(b.dataset.a, +b.dataset.to || 0); stepAI(); });
+        ${o.maxTo > g.currentBet ? `<span class="raisebox"><input type="number" id="rto" min="${o.minTo}" max="${o.maxTo}" step="${g.bb < 1 ? .01 : 1}" value="${o.minTo}"><button class="btn gold" data-a="raise" id="rbtn" data-to="${o.minTo}">Raise to</button></span>${o.potTo > o.minTo ? `<button class="btn gold" data-a="raise" data-to="${o.potTo}">Pot: ${fmt(o.potTo)}</button>` : ''}<button class="btn gold" data-a="raise" data-to="${o.maxTo}">All in</button>` : ''}` : '<p class="dim">Waiting for the others...</p>'}</div>`;
+    if ($('rto')) { const sync = () => { const v = Math.max(o.minTo, Math.min(o.maxTo, +$('rto').value || o.minTo)); $('rbtn').dataset.to = v; $('rbtn').textContent = `Raise to ${fmt(v)}`; }; $('rto').oninput = sync; sync(); }
+    root.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { if (b.id === 'rbtn' && $('rto')) b.dataset.to = Math.max(o.minTo, Math.min(o.maxTo, +$('rto').value || o.minTo)); g.act(b.dataset.a, +b.dataset.to || 0); stepAI(); });
     if ($('nextHand')) $('nextHand').onclick = () => { if (!g.newHand()) return draw(); stepAI(); };
     // Your buttons wake up once the flashcards have caught up.
     if (flashing || flashQ.length) root.querySelectorAll('[data-a], #nextHand').forEach(b => { b.disabled = true; });
@@ -107,8 +112,8 @@ export function createCasinoScreen(root, go, params) {
     const ch = chips(), net = ch - buyIn;
     $('chips').innerHTML = `Chips <b>${fmt(ch)}</b> <span class="${net >= 0 ? 'good' : 'bad'}">${net >= 0 ? '+' : ''}${fmt(net)}</span>`;
   }
-  function cashOut() {
-    if (poker && poker.street !== 'done' && !poker.you.folded && poker.you.contrib > 0 && !poker.over && !confirm('Leave mid-hand? You\'ll forfeit what you\'ve put in.')) return;
+  function cashOut(sure) {
+    if (!sure && poker && poker.street !== 'done' && !poker.you.folded && poker.you.contrib > 0 && !poker.over) { ask('Leave mid-hand? You\'ll forfeit what you\'ve put in.', 'Leave', 'Stay').then(ok => ok && cashOut(true)); return; }
     clearTimeout(timer); finished = true;
     const final = poker ? poker.you.stack : bj.stack, net = final - buyIn;
     c.bank += final; c.casinoLive = null; c.weekLog.push({ t: 'gamble', venue: V.id, net });

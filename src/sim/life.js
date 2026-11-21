@@ -40,7 +40,11 @@ export function applyEffects(c, eff = {}) {
 export const surname = c => c.name.trim().split(/\s+/).pop().toUpperCase();
 
 /* ---------- events ---------- */
+// Some events only make sense if you've actually been playing (and playing well).
+const recentPlayed = c => (c.recentGames || []).filter(g => g.played);
+const PERFORMANCE = { fansPOTM: c => { const r = recentPlayed(c); return r.length >= 3 && r.reduce((a, g) => a + g.rating, 0) / r.length >= 6.9; } };
 function eligible(c, e) {
+  if (PERFORMANCE[e.id] && !PERFORMANCE[e.id](c)) return false;
   if (e.followUpOnly || (c.eventsSeen[e.id] && !e.repeatable)) return false;
   if (e.repeatable && c.eventsSeen[e.id] && c.week - (c.lastSeenWeek || {})[e.id] < (e.cooldown || 20)) return false;
   if (e.minWeek && c.week < e.minWeek) return false;
@@ -65,7 +69,7 @@ export function rollEvents(c, preseason, R = Math.random, age = 16, recede = 0) 
   const due = c.followUps.filter((f, i, a) => f.week <= c.week && (!c.eventsSeen[f.id] || (EVENTS.get(f.id) || {}).repeatable) && a.findIndex(x => x.id === f.id) === i);
   c.followUps = c.followUps.filter(f => f.week > c.week);
   due.forEach(f => c.pending.push({ type: 'event', id: f.id }));
-  if (!due.length && R() < .6) {
+  if (!due.length && R() < .3) {
     const pool = E.events.filter(e => eligible(c, e));
     if (pool.length) {
       let r = R() * pool.reduce((a, e) => a + (e.weight || 1), 0), ev = pool[0];
@@ -125,7 +129,9 @@ export function answerPress(c, item, i) {
 /* ---------- match effects ---------- */
 /** How a match moves the fans; how honour softens or sharpens the gaffer. */
 export function afterMatch(c, S) {
-  if (S.role === 'none') return;
+  // The fans forget you if you're not playing.
+  c.recentGames = (c.recentGames || []).concat({ played: S.role !== 'none', rating: S.rating }).slice(-6);
+  if (S.role === 'none') { c.meters.fans = clamp(c.meters.fans - 1.2, 5, 100); return; }
   c.meters.fans = clamp(c.meters.fans + taper(c.meters.fans, (S.rating - 6.6) * 1.4 + S.my.goals * 1.2), 0, 100);
 }
 /** Good news counts for less when everyone already loves you. */

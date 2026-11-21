@@ -34,9 +34,9 @@ export function showAgents(c, done) {
     };
     return;
   }
-  c.agentPitch = c.agentPitch || AG.agents.slice().sort(() => Math.random() - .5).slice(0, 3).map(a => a.id);
-  const list = c.agentPitch.map(id => AG.agents.find(a => a.id === id));
-  const p = pop(`<h2>Agents</h2><p class="dim">They take a cut of your wages. They bring offers, and they bring motives.</p><div class="shop">${list.map(a => `<div class="item"><div><b>${esc(a.name)}</b><span class="price">${Math.round(a.fee * 100)}% cut</span><p>${esc(a.pitch)}</p></div><button class="btn small gold" data-a="${a.id}">Sign with them</button></div>`).join('')}</div>`);
+  if (!c.agentPitch || !c.agentPitch.ids || c.agentPitch.season !== c.season) c.agentPitch = { season: c.season, ids: AG.agents.slice().sort(() => Math.random() - .5).slice(0, 3).map(a => a.id) };
+  const list = c.agentPitch.ids.map(id => AG.agents.find(a => a.id === id));
+  const p = pop(`<h2>Agents available</h2><p class="dim">These three want to represent you this season. Next season it'll be a different bunch. They take a cut of your wages; they bring offers, and they bring motives.</p><div class="shop">${list.map(a => `<div class="item"><div><b>${esc(a.name)}</b><span class="price">${Math.round(a.fee * 100)}% cut</span><p>${esc(a.pitch)}</p></div><button class="btn small gold" data-a="${a.id}">Sign with them</button></div>`).join('')}</div>`);
   p.all('[data-a]').forEach(b => b.onclick = () => { c.agent = b.dataset.a; c.agentPitch = null; message(c, AG.agents.find(a => a.id === c.agent).name, pick(AG.agents.find(a => a.id === c.agent).advice)); p.close(); done && done(); });
 }
 

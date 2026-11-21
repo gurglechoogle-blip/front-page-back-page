@@ -1,3 +1,4 @@
+import { ask } from '../engine/ask.js';
 // THE FINALE: testimonial, the years passing, a scrapbook montage, the call
 // nobody expected, one chance in the 2046 World Cup final, and the epilogue.
 // Progress is saved in c.finale.phase, so a reload picks up where you were.
@@ -8,7 +9,7 @@ import { esc } from '../engine/util.js';
 import { makeKitSet, matchColours, playerKitFrom, teamKitFrom, keeperKitFor } from '../engine/kits.js';
 import { drawClipFrame, clipLength } from '../engine/replay.js';
 import { createMoment, MOMENTS } from '../moments/index.js';
-import { state, save, skillF } from '../state/gameState.js';
+import { state, save, skillF , newGame } from '../state/gameState.js';
 import { club, seasonYear } from '../sim/season.js';
 import { age } from '../sim/career.js';
 import { lookFields } from '../sim/looks.js';
@@ -143,7 +144,7 @@ export function createFinaleScreen(root, go) {
       <h3>The numbers</h3>${stats.map(([k, v]) => `<div class="row"><span>${esc(k)}</span><b>${esc(String(v))}</b></div>`).join('')}
       <h3>Trophy cabinet</h3><p class="dim">${got.map(a => esc(a.name)).join(' · ') || 'Empty. Mum put a photo of you in it instead.'}</p>
       <p class="evtext" style="margin-top:14px"><b>THE END.</b> Thanks for playing Front Page, Back Page.</p></div>`, [['new', 'Start a new career', 'red']]);
-    on('new', () => { if (confirm('Start a new career? This one goes in the record books (and the bin).')) { state.career = null; save(); go('start'); } });
+    on('new', () => ask('Start a new career? This one goes in the record books (and the bin).', 'Start again', 'Not yet').then(ok => { if (ok) { newGame(); go('start'); } }));
   }
 
   function frame() {
