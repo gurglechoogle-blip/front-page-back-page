@@ -13,6 +13,7 @@ import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
 import { initLook, lookFields } from './looks.js';
 import { initTrouble, rollInjury, troubleWeek, kidBills } from './trouble.js';
 import { initFame, staffBills, fameWeek, hasStaff } from './fame.js';
+import { initAch, checkAchievements } from './achievements.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; }
@@ -56,7 +57,7 @@ export function createCareer(name, offer, R = Math.random, extra = {}) {
   buildSeason(c, R); initLife(c); initMoney(c);
   c.boyhood = extra.boyhood || null; c.spurned = extra.spurned || [];
   c.hometown = c.boyhood ? club(c.boyhood).name.replace(/ (City|Town|United|Rovers|Athletic|Wanderers|Albion|County|Alexandra|Argyle|Hotspur|Stanley|& Hove Albion|North End|Orient|Wednesday)$/, '') : null;
-  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R); initTrouble(c); initFame(c);
+  initSocial(c, R); initPartner(c); initIntl(c); initLook(c, R); initTrouble(c); initFame(c); initAch(c);
   M.start.forEach(m => message(c, m.from, fill(m.text, { name })));
   if (offer.type === 'money') message(c, 'Unknown number', pickR(M.shark, R).replace(/^Unknown number: /, ''));
   return c;
@@ -184,6 +185,7 @@ export function recordMatch(c, f, S, R = Math.random) {
     if (played && S.my.goals > 0) c.flags.granWon = true;
   }
   afterMatch(c, S);
+  { const team = myTeamIn(c, f) || ''; checkAchievements(c, 'match', { f, S, played, team, senior: played && f.comp !== 'friendly' && !team.endsWith('-u21') && !(f.level && f.level !== 'senior') }); }
   const inj = rollInjury(c, S, age(c), R);
   if (inj) { message(c, 'Club physio', `Bad news: ${inj.name}. You're out for ${inj.weeks} week${inj.weeks > 1 ? 's' : ''}. Rest, ice, and no more TikTok dances.`); c.weekNews.push({ page: 'back', headline: `INJURY BLOW FOR ${c.name.trim().split(/\s+/).pop().toUpperCase()}` }); }
   if (played && c.flags.servedBan && c.flags.prison && !c.flags.freeMan) { c.flags.freeMan = true; c.weekNews.push({ page: 'back', headline: `REDEMPTION: ${c.name.trim().split(/\s+/).pop().toUpperCase()} PLAYS AGAIN AFTER PRISON` }); }
@@ -247,6 +249,7 @@ export function finishWeek(c, R = Math.random) {
   troubleWeek(c, R).forEach(([from, text]) => message(c, from, text));
   const wr = (c.matchday ? c.matchday.results : []).filter(r => r.rating != null);
   fameWeek(c, wr.reduce((a, r) => a + (r.goals || 0), 0), wr.length ? wr.reduce((a, r) => a + r.rating, 0) / wr.length : 0, R).forEach(([from, text]) => message(c, from, text));
+  checkAchievements(c, 'week');
   if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
   const rl = rivalWeek(c, isPreseason(c), (c.matchday ? c.matchday.results : []).map(r => r.role), R); if (rl) c.weekNews.push({ rival: rl });
   // Money.
@@ -315,6 +318,7 @@ export function rollWorld(c, R = Math.random) {
     message(c, news, up ? `We're going up to ${DIVS[c.div].name}${mv.why === 'play-offs' ? ' through the play-offs' : ''}! Bigger crowds, better pies.` : `Relegated to ${DIVS[c.div].name}. The chairman's selling the team bus.`);
     c.weekNews.push({ page: 'back', headline: up ? `${oldClub.name.toUpperCase()} GO UP!` : `${oldClub.name.toUpperCase()} GO DOWN` });
   }
+  checkAchievements(c, 'season', { pos: S.pos, avg: S.avg, div: c.history[c.history.length - 1].div, wasLoan: !!c.loan, mv });
   if (c.loan) { const back = endLoan(c); message(c, club(back).short + ' News', `Your loan's over. Welcome back to ${club(back).name}. Your peg's still there. Someone's been using it.`); }
   const rv = rivalSummer(c, R);
   if (rv) { const to = club(rv.to); c.weekNews.push({ page: 'back', headline: `RIVAL ${c.rival.short.toUpperCase()} JOINS ${to.name.toUpperCase()}` }); message(c, 'Dennis (kit man)', rv.wanted ? `${c.rival.name}'s signed for ${to.name}. The club you turned down. I said this would happen. I didn't, but I thought it.` : `${c.rival.name}'s off to ${to.name}. Good riddance, he never put his bibs in the basket.`); }

@@ -27,6 +27,7 @@ import { drawClipFrame, clipLength } from '../engine/replay.js';
 import { showAgents, showWindow, showDeadline } from './contractUI.js';
 import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
 import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble.js';
+import { ACH, achCount } from '../sim/achievements.js';
 import { showSocial, showTroll, showCommunity, showInvite, showStaff, showBusiness } from './fameUI.js';
 import { reputation, inWindow, agentOf } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
@@ -39,12 +40,13 @@ const MENUS = {
   life: { label: 'Life', icon: '🏠', soon: [] },
   money: { label: 'Money', icon: '💷', soon: [] },
   casino: { label: 'Casino', icon: '🎲', soon: [] },
-  fame: { label: 'Fame', icon: '⭐', soon: ['Achievements'] },
+  fame: { label: 'Fame', icon: '⭐', soon: [] },
 };
 const money = n => (n < 0 ? '-£' : '£') + Math.abs(Math.round(n)).toLocaleString('en-GB');
 const oppOf = (c, f) => { const me = myTeamIn(c, f); return club(f.home === me ? f.away : f.home); };
 const ha = (c, f) => f.neutral ? 'N' : f.home === myTeamIn(c, f) ? 'H' : 'A';
 
+const MEDAL = { bronze: '🥉', silver: '🥈', gold: '🥇' }, TIER = { bronze: '#c98b4b', silver: '#c0c7cf', gold: '#ffc928' };
 export function createHubScreen(root, go, params = {}) {
   const c = state.career, me = club(c.clubId), kit = Object.assign(playerKitFrom(me.home), lookFields(c, age(c)));
   let pctx, openMenu = null;
@@ -93,6 +95,7 @@ export function createHubScreen(root, go, params = {}) {
 
   /* ---------- panels ---------- */
   function render() {
+    showAchToasts();
     const nf = nextFixture(c), wf = weekFixtures(c), sl = slotsLeft(c), st = c.stats;
     $('nextfx').innerHTML = nf
       ? `<small>${wf.length ? 'THIS WEEK' : 'NEXT FIXTURE'} · ${esc(compName(nf))}</small><b>${esc(oppOf(c, nf).name)} (${ha(c, nf)})</b><span>${prettyDate(nf.date, true)}${wf.length ? ' · <i>Play ▶</i>' : ''}</span>`
@@ -255,10 +258,11 @@ export function createHubScreen(root, go, params = {}) {
     ];
   }
   function coCommentary(f) {
-    const sim = playHeadless(c, f), S = sim.summary(); let i = 0;
+    const sim = playHeadless(c, f), S = sim.summary(); let i = 0, gaffe = false;
     const qs = L2.cocomm.slice().sort(() => Math.random() - .5);
     const step = () => {
       if (i >= qs.length) {
+        if (!gaffe) c.flags.cleanCommentary = true;
         recordMatch(c, f, S); save();
         const sc = `${club(f.home).name} ${S.score.home}-${S.score.away} ${club(f.away).name}`;
         modal(`<h2>FULL TIME</h2><p class="bigscore">${esc(sc)}</p><p class="dim">${c.flags.commentaryGaffe ? 'Your clip is doing the rounds online. Not in a good way.' : 'The producer says you\'re a natural. Possibly a future pundit.'}</p><div class="endBtns"><button class="btn gold" id="cont">Continue</button></div>`, true);
@@ -268,7 +272,7 @@ export function createHubScreen(root, go, params = {}) {
       modal(`<div class="evvia">🎙 Co-commentary · ${esc(club(f.home).short)} v ${esc(club(f.away).short)}</div><p class="evtext">${esc(q.q)}</p><div class="choices">${q.a.map((a, k) => `<button class="btn choice" data-k="${k}">${esc(a[1].replace('{RIVAL}', c.rival ? c.rival.short : 'the new lad'))}</button>`).join('')}</div>`, true);
       root.querySelectorAll('[data-k]').forEach(b => b.onclick = () => {
         const a = q.a[+b.dataset.k]; applyEffects(c, a[2]);
-        if (a[0] === 'gaffe') { c.flags.commentaryGaffe = true; c.weekNews.push({ page: 'front', headline: `MIC DROP: ${c.name.trim().split(/\s+/).pop().toUpperCase()}'S COMMENTARY GAFFE GOES VIRAL` }); }
+        if (a[0] === 'gaffe') { gaffe = true; c.flags.commentaryGaffe = true; c.weekNews.push({ page: 'front', headline: `MIC DROP: ${c.name.trim().split(/\s+/).pop().toUpperCase()}'S COMMENTARY GAFFE GOES VIRAL` }); }
         if (a[0] === 'insight') c.flags.pundit = (c.flags.pundit || 0) + 1;
         step();
       });
@@ -403,6 +407,7 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'Newspapers', note: c.papers.length ? `${c.papers.length} issue${c.papers.length === 1 ? '' : 's'} · ${c.framed.length} framed` : 'The first issue lands Monday', go: showArchive },
       ...(inDisgrace(c) ? [{ label: 'Make amends', note: 'Memoir, interview, community, fresh start', go: showAmends }] : []),
       { label: 'Scrapbook', note: (c.scrapbook || []).length ? `${c.scrapbook.length} goal${c.scrapbook.length === 1 ? '' : 's'} to watch again` : 'Score in a match to start it', go: showScrapbook },
+      { label: 'Achievements', note: `${achCount(c)} of ${ACH.length} in the cabinet`, go: showCabinet },
       { label: 'Press cuttings', note: c.quotes.length ? `${c.quotes.length} quote${c.quotes.length === 1 ? '' : 's'}` : 'Nothing said yet', go: () => modal(`<h2>Press cuttings</h2><div class="scroll">${c.quotes.map(q => `<div class="msg"><b>${esc(q.journo)}</b><span>Week ${q.week + 1}</span><p class="dim">${esc(q.q)}</p><p>${esc(q.a)}</p></div>`).join('') || '<p class="dim">You haven\'t faced the press yet.</p>'}</div>`) },
     ];
   }
@@ -487,6 +492,19 @@ export function createHubScreen(root, go, params = {}) {
   function modal(html, noClose) { $('mbody').innerHTML = html; $('modal').classList.remove('hidden'); $('mclose').style.display = noClose ? 'none' : ''; }
   function closeModal() { $('modal').classList.add('hidden'); }
   let toastT = 0;
+  function showAchToasts() {
+    if (window.__achBusy || !c.achNew || !c.achNew.length) return;
+    const id = c.achNew.shift(), a = ACH.find(x => x.id === id); save(); if (!a) return showAchToasts();
+    let el = document.getElementById('achtoast'); if (!el) { el = document.createElement('div'); el.id = 'achtoast'; el.className = 'achtoast'; document.body.appendChild(el); } window.__achBusy = true;
+    el.style.setProperty('--tier', TIER[a.tier]);
+    el.innerHTML = `<span class="medal">${MEDAL[a.tier]}</span><div><small>Achievement unlocked</small><b>${esc(a.name)}</b><br><small style="text-transform:none;letter-spacing:0">${esc(a.how)}</small></div>`;
+    el.classList.add('show');
+    setTimeout(() => { el.classList.remove('show'); setTimeout(() => { window.__achBusy = false; if (document.body.contains(root)) showAchToasts(); }, 350); }, 3400);
+  }
+  function showCabinet() {
+    const tiers = ['gold', 'silver', 'bronze'];
+    modal(`<h2>Trophy cabinet</h2><p class="dim">${achCount(c)} of ${ACH.length}. Mum's dusted them all.</p><div class="scroll">${tiers.map(t => `<h3>${t[0].toUpperCase() + t.slice(1)}</h3><div class="cabinet">${ACH.filter(a => a.tier === t).map(a => { const got = c.achievements[a.id]; return `<div class="trophy ${t} ${got ? '' : 'locked'}"><span class="medal">${got ? MEDAL[t] : '🔒'}</span><b>${esc(a.name)}</b><p>${esc(a.how)}</p>${got ? `<p>${esc(got.season || '')}</p>` : ''}</div>`; }).join('')}</div>`).join('')}</div>`);
+  }
   function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 3200); }
   const pickLine = a => a[Math.floor(Math.random() * a.length)];
 

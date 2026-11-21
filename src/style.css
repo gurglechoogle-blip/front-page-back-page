@@ -323,3 +323,12 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .gcard .nm{font-family:Anton,Impact,sans-serif;font-size:20px;margin:6px 0;border-top:2px solid rgba(0,0,0,.2);border-bottom:2px solid rgba(0,0,0,.2)}
 .gcard .attrs{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;font-size:13px;text-align:left}.gcard .attrs b{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:16px}
 .choices.small .btn{font-size:13px;padding:7px 10px}
+/* Achievements */
+.achtoast{position:fixed;right:20px;top:20px;display:flex;gap:10px;align-items:center;background:#1c2128;border:2px solid var(--tier,#c98b4b);border-radius:10px;padding:10px 14px;z-index:70;opacity:0;transform:translateY(-16px);transition:.3s;pointer-events:none;max-width:min(360px,calc(100vw - 32px));box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.achtoast.show{opacity:1;transform:none}
+.achtoast .medal{font-size:30px}.achtoast small{display:block;color:#9aa3ad;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.achtoast b{color:#fff}
+.cabinet{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.trophy{background:#22282f;border-radius:8px;padding:10px;text-align:center;border:1px solid #333b44}
+.trophy .medal{font-size:28px;display:block}.trophy b{display:block;font-size:13px;margin:4px 0}.trophy p{font-size:11px;color:#9aa3ad;margin:0}
+.trophy.locked{opacity:.4}.trophy.locked .medal{filter:grayscale(1)}
+.trophy.gold{border-color:#ffc928}.trophy.silver{border-color:#c0c7cf}.trophy.bronze{border-color:#c98b4b}

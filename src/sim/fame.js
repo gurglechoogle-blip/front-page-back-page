@@ -60,7 +60,8 @@ export function invest(c, id, amount) {
 export function cashOutInvestment(c, i) { const v = c.business.inv[i]; c.bank += Math.round(v.value); c.business.inv.splice(i, 1); return v.value; }
 
 /** How many followers your fame can sustain: a few thousand for a youth player, millions for a superstar. */
-export const followerCeiling = c => Math.round(3000 + Math.pow(Math.max(0, c.meters.fans), 2.4) * 18 + (c.flags.firstCap ? 150000 : 0));
+const STAGE = { PL: 1, ES: 1, IT: 1, DE: 1, FR: 1, CH: .3, L1: .12, L2: .06, NL: .03 };
+export const followerCeiling = c => Math.round(2000 + Math.pow(Math.max(0, c.meters.fans), 2.4) * 18 * (STAGE[c.div] ?? .1) * (c.contract && /scholarship|academy/i.test(c.contract.kind || '') ? .3 : 1) + (c.flags.firstCap ? 150000 : 0));
 /** Weekly: followers, invitations, staff mishaps, business returns. */
 export function fameWeek(c, matchGoals, avgRating, R = Math.random) {
   const out = [];
