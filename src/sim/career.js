@@ -21,6 +21,8 @@ let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; }
 import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './money.js';
 import { initPartner, partnerWeek } from './partner.js';
+import { archiveWeek } from './calendar.js';
+import { friend as friendOf } from './social.js';
 import { initSocial, friendsWeek, nightPenalty, rivalWeek, rivalSummer, rivalSelectionPenalty, chatWeek } from './social.js';
 import { MatchSim } from './matchSim.js';
 import { initLife, rollEvents, makePaper, pressAfter, afterMatch, honourPatience, support, familyWeek, taper } from './life.js';
@@ -186,6 +188,8 @@ export function recordMatch(c, f, S, R = Math.random) {
   const played = S.role === 'start' || S.role === 'sub';
   const res = { id: f.id, role: S.role, rating: played ? S.rating : null, goals: S.my.goals, assists: S.my.assists, headline: S.headline, unused: !!S.unusedSub, hooked: S.hooked || null, verdict: S.gafferLine || gafferVerdict(S, R) };
   if (played) c.lastPlayed = f.date;
+  { const mt = myTeamIn(c, f) || c.clubId, opp = club(f.home === mt ? f.away : f.home), us = f.home === mt ? S.score.home : S.score.away, them = f.home === mt ? S.score.away : S.score.home;
+    (c.diary = c.diary || {})[f.date] = (c.diary[f.date] || []).concat({ t: 'match', text: `${compName(f)}: ${f.home === mt ? 'v' : '@'} ${opp.name} ${us}-${them}${played ? ` · you: ${S.rating.toFixed(1)}${S.my.goals ? `, ${S.my.goals} goal${S.my.goals > 1 ? 's' : ''}` : ''}` : S.unusedSub ? ' · unused sub' : ' · not involved'}` }); }
   res.pay = matchPay(c, f, S); res.pay.forEach(x => c.bank += x.amount);
   if (played) {
     f.rating = S.rating; f.myGoals = S.my.goals; f.myAssists = S.my.assists;
@@ -234,6 +238,7 @@ function drawNext(c, comp, nr, R) {
 /* ---------- end of the week ---------- */
 /** Simulate everyone else's games this week, settle money and approval. */
 export function finishWeek(c, R = Math.random) {
+  archiveWeek(c, weekStart(c.week), myFixtures(c).map(f => f.date), id => (friendOf(id) || { name: id }).name);
   const w = c.week, others = c.fixtures.filter(f => !f.played && !isMine(c, f) && weekOf(f.date) <= w);
   others.forEach(f => Object.assign(f, quickResult(f.home, f.away, { knockout: f.knockout, extraTime: f.extraTime }, R), { played: true }));
   // European league phase finished? Ten points usually gets you through.

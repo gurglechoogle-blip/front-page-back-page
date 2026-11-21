@@ -342,3 +342,16 @@ ul.others{list-style:none;padding:0;margin:0;font-size:13px;color:#cfd5db}ul.oth
 .smallprint{background:#f3efe4;color:#222;border-radius:6px;padding:8px 12px;margin:8px 0;font-size:13px;text-align:left}.smallprint b{display:block;font-family:Georgia,serif;margin-bottom:2px}
 .ftpay{background:#1b1f24;border-radius:8px;padding:8px 12px;margin:10px auto;max-width:440px;text-align:left;font-size:14px}.ftpay>b{display:block;color:#ffc928;margin-bottom:4px}
 .wverdict{font-style:italic;font-size:13px;color:#cfd5db;margin:2px 0 8px 6px}.wpay{font-size:12px;margin:0 0 10px 6px;color:#9aa3ad}
+/* Calendar */
+.calstrip{display:grid;grid-template-columns:1fr 1.25fr 1fr auto;gap:6px;padding:6px 8px 0;background:#14171a;cursor:pointer}
+.cday{background:#1b1f24;border:1px solid #2b2f35;border-radius:6px;padding:5px 8px;font-size:12px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cday small{color:#9aa3ad;font-size:10px;letter-spacing:.05em;text-transform:uppercase}.cday span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cday.today{border-color:#ffc928;background:#262117}.cday.today small{color:#ffc928}.cday .cm-match{color:#8fdc5a;font-weight:700}
+.calopen{align-self:center;font-size:20px;padding:0 4px}
+.calstrip:hover .cday{border-color:#4a525c}.calstrip:hover .cday.today{border-color:#ffc928}
+.calnav{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:8px}.calnav b{min-width:150px;text-align:center}
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.mhead{font-size:11px;color:#9aa3ad;text-align:center;text-transform:uppercase}
+.mcell{background:#1b1f24;border-radius:4px;min-height:64px;padding:3px;font-size:10px;line-height:1.25;overflow:hidden;display:flex;flex-direction:column;gap:1px}
+.mcell b{font-size:11px;color:#9aa3ad}.mcell.empty{background:transparent}.mcell.today{outline:2px solid #ffc928}.mcell.match{background:#1f2a1b}.mcell span.up{color:#8fdc5a}
+@media(max-width:620px){.calstrip{grid-template-columns:1fr 1fr 1fr}.calopen{display:none}.mcell{min-height:44px;font-size:9px}}

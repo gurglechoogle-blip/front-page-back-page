@@ -29,6 +29,7 @@ import { LK, lookFields, haircut, tattoo } from '../sim/looks.js';
 import { L2, holiday, inDisgrace, memoir, interviewResult } from '../sim/trouble.js';
 import { ACH, achCount } from '../sim/achievements.js';
 import { clause } from '../sim/contracts.js';
+import { stripHTML, showCalendar } from './calendarUI.js';
 import { REQUESTS, cantAsk, odds, ask as askGaffer, raiseOffer } from '../sim/gaffer.js';
 import { managerFor } from '../sim/managers.js';
 import { showTalks } from './contractUI.js';
@@ -71,6 +72,7 @@ export function createHubScreen(root, go, params = {}) {
     <div class="hcentre">
       <div class="weekbadge" id="weekbadge"></div>
       <canvas id="pc" width="${W}" height="${H}"></canvas>
+      <div id="calbox"></div>
       <div class="meters" id="meters"></div>
     </div>
     <aside class="hcol" id="right"></aside>
@@ -113,6 +115,7 @@ export function createHubScreen(root, go, params = {}) {
     $('badge-football').textContent = wf.length ? wf.length : ''; $('badge-football').style.display = wf.length ? '' : 'none';
     root.querySelectorAll('.badge').forEach(b => { if (!b.textContent) b.style.display = 'none'; });
     $('weekbadge').innerHTML = `<b>${esc(CAL.season)} · WEEK ${seasonWeek(c)}</b> · w/c ${prettyDate(weekStart(c.week))} ${weekStart(c.week).slice(0, 4)}${isPreseason(c) ? ' · PRE-SEASON' : ''}`;
+    $('calbox').innerHTML = stripHTML(c); $('calstrip').onclick = () => showCalendar(MH);
     const bar = (label, v, cls) => `<div class="meter ${cls || ''}"><span>${label}</span><div class="bar"><i style="width:${Math.round(v)}%"></i></div><b>${Math.round(v)}</b></div>`;
     $('meters').innerHTML = bar('Manager approval', c.approval, 'appr') + `<div class="two">${bar('Form', c.form, 'form')}${bar('Energy', c.energy, 'energy')}</div>`;
     const avg = avgRating(c);
@@ -150,6 +153,7 @@ export function createHubScreen(root, go, params = {}) {
       { label: 'League table', go: showTable },
       { label: `Rival: ${esc(c.rival.name)}`, note: `${esc(club(c.rival.clubId).short)} · ${c.rival.seasonGoals} goals this season`, go: showRival },
       { label: 'Contract & transfers', go: showContract },
+      { label: 'Calendar', note: 'Fixtures and your diary', go: () => showCalendar(MH) },
       { label: 'Talk to the gaffer', note: 'Contract, minutes, loans, transfers', go: showGaffer },
       { label: 'Agent', note: agentOf(c) ? agentOf(c).name : age(c) < 17 ? 'At 17' : 'Sign one', go: () => age(c) < 17 ? modal(`<h2>Agent</h2><p>You haven't got one. At 16, agents are mostly blokes in car parks with lanyards they printed themselves. Come back at 17.</p>`) : showAgents(c, () => { save(); render(); }) },
     ];
