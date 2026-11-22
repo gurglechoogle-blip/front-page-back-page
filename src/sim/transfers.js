@@ -10,13 +10,28 @@ import { clubClauses, standardBonuses } from './contracts.js';
 export const agentOf = c => c.agent ? AG.agents.find(a => a.id === c.agent) : null;
 
 /** How the football world rates you, 0-100. */
+/* ---------- levels: what you've proven, and how far a club is above it ---------- */
+const WEIGHT = { PL: 1, ES: 1, IT: 1, DE: 1, FR: .95, CH: .7, L1: .5, L2: .35, NL: .2 };
+const LEVEL_WEIGHT = div => WEIGHT[div] ?? .5;
+const TIER = { NL: 0, L2: 1, L1: 2, CH: 3, PL: 4, ES: 4, IT: 4, DE: 4, FR: 4 };
+/** A club's level: the elite (strength 85+) are a step above the rest of the top flight. */
+export const clubTier = id => { const cl = club(id), t = TIER[cl.league] ?? 1; return t === 4 && cl.strength >= 85 ? 5 : t; };
+/** The highest level you've played regularly at (15+ senior games in a season, this one included). */
+export function provenTier(c) {
+  let best = -1;
+  for (const h of c.history) if ((h.apps || 0) - (h.u21 || 0) >= 15) best = Math.max(best, h.club ? clubTier(h.club) : TIER[h.div] ?? 0);
+  if (c.stats.apps - (c.stats.u21 || 0) >= 15) best = Math.max(best, clubTier(c.loan ? c.clubId : c.clubId));
+  return best;
+}
 export function reputation(c, skill, age) {
   const avg = c.stats.ratings.length ? c.stats.ratings.reduce((a, b) => a + b, 0) / c.stats.ratings.length : (c.history.length ? c.history[c.history.length - 1].avg || 6.3 : 6.3);
-  const goals = c.stats.goals + (c.history.length ? c.history[c.history.length - 1].goals : 0) * .6;
-  const lvl = club(c.clubId).strength;
+  // Goals and ratings count for more the higher the level they came at.
+  const last = c.history.length ? c.history[c.history.length - 1] : null;
+  const goals = c.stats.goals * LEVEL_WEIGHT(c.div) + (last ? last.goals * LEVEL_WEIGHT(last.div) : 0) * .6;
+  const lvl = club(c.clubId).strength, perf = (avg - 6) * 14 * (avg > 6 ? LEVEL_WEIGHT(c.div) : 1);
   // Nobody rates a player they've never seen play: senior games are what count.
   const seen = clamp(seniorApps(c) / 25, .15, 1);
-  return clamp((skill * .4 + (avg - 6) * 14 + goals * .9 + lvl * .12) * seen + (c.honour - 50) * .1 - Math.max(0, age - 30) * 3, 0, 100);
+  return clamp((skill * .4 + perf + goals * .9 + lvl * .12) * seen + (c.honour - 50) * .1 - Math.max(0, age - 30) * 3, 0, 100);
 }
 /** Senior (non-U21) league and cup appearances this season and last, last season counting half. */
 export function seniorApps(c) {
@@ -47,13 +62,20 @@ export function inWindow(c) {
 export function makeOffers(c, rep, age, window, R = Math.random) {
   const ag = agentOf(c), mult = ag ? ag.offers : .8, want = targetStrength(rep);
   const pool = ['PL', 'CH', 'L1', 'L2', ...(rep >= 50 ? ABROAD : [])].flatMap(d => divisionClubs(d)).filter(id => id !== c.clubId && !(c.loan && id === c.loan.parent));
-  const scored = pool.map(id => ({ id, d: Math.abs(club(id).strength - want) + R() * 10 })).sort((a, b) => a.d - b.d);
+  // Clubs don't leap more than two levels above what you've proven, unless you're
+  // young with real potential (and then only as a squad player).
+  const proven = Math.max(0, provenTier(c)), prospect = age <= 21 && rep >= 55;
+  // Most interest comes from about one level above what you've proven.
+  const MID = [28, 41, 49, 62, 76, 87], aim = Math.min(want, MID[Math.min(5, proven + 1)] + 4);
+  const scored = pool.filter(id => clubTier(id) - proven <= 2).map(id => ({ id, d: Math.abs(club(id).strength - aim) + R() * 10 })).sort((a, b) => a.d - b.d);
   let n = Math.round((rep / 30 + R()) * mult) + (c.transferListed ? 2 : 0); if (window === 'january') n = Math.round(n * .6);
   // Young and not playing: the phone rings with loan offers from lower down, not Real Madrid.
   const apps = seniorApps(c), unproven = apps < 12;
   let picks = scored;
   if (unproven) picks = scored.filter(x => club(x.id).strength <= club(c.loan ? c.loan.parent : c.clubId).strength - 4 && !ABROAD.includes(club(x.id).league));
   const out = picks.slice(0, clamp(unproven ? Math.min(n, 1) : n, 0, 4)).map(x => offerFrom(c, x.id, rep, age, R));
+  // A young prospect banging them in can catch a big club's eye: a development signing, never a starter.
+  if (prospect && R() < .3) { const big = pool.filter(id => clubTier(id) - proven >= 3 && !out.some(o => o.clubId === id)); if (big.length) out.push(offerFrom(c, pick(big, R), rep, age, R)); }
   // Boyhood club: the dream move, if you're good enough.
   if (c.boyhood && c.boyhood !== c.clubId && Math.abs(club(c.boyhood).strength - want) < 12 && R() < .5 && !out.some(o => o.clubId === c.boyhood)) out.push(offerFrom(c, c.boyhood, rep, age, R));
   // Big club, young, not playing: a loan.
@@ -69,8 +91,11 @@ export function makeOffers(c, rep, age, window, R = Math.random) {
 function offerFrom(c, id, rep, age, R) {
   const cl = club(id), base = Math.round((cl.strength ** 2.6) / 60 + rep * 18);
   const wage = Math.max(c.contract.wage + 50, Math.round(base * (.8 + R() * .5) * (ABROAD.includes(cl.league) ? 1.3 : 1) / 10) * 10);
-  const role = cl.strength > targetStrength(rep) + 6 ? 'squad player' : cl.strength < targetStrength(rep) - 6 ? 'first choice' : 'rotation player';
-  return { type: 'transfer', clubId: id, wage, years: 2 + Math.floor(R() * 3), role, fee: Math.round(rep * rep * 120 / 1000) * 1000, dream: id === c.boyhood, clubClauses: clubClauses(R) };
+  let role = cl.strength > targetStrength(rep) + 6 ? 'squad player' : cl.strength < targetStrength(rep) - 6 ? 'first choice' : 'rotation player';
+  // Two or more levels above what you've proven: you're a squad player, full stop.
+  const steps = clubTier(id) - Math.max(0, provenTier(c)), dev = steps >= 3;
+  if (steps >= 2) role = 'squad player';
+  return { type: 'transfer', clubId: id, wage, years: 2 + Math.floor(R() * 3), role, fee: Math.round(rep * rep * 120 / 1000) * 1000, dream: id === c.boyhood, clubClauses: clubClauses(R), dev };
 }
 /** Your own club offers a new deal when yours is running down. */
 export function renewalOffer(c, rep) {
