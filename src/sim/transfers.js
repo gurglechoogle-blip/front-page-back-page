@@ -82,7 +82,8 @@ export const contractEnding = c => c.contract.until <= addDays(CAL.seasonEnd, 40
 /** How much a club wants you: patience for your demands. */
 export function patience(c, offer, rep) {
   const ag = agentOf(c);
-  return clamp(1 + (rep - (club(offer.clubId).strength - 28) / .68) / 40 + (ag ? ag.haggle : 0), .4, 2);
+  const r = Number.isFinite(rep) ? rep : 40;
+  return clamp(1 + (r - (club(offer.clubId).strength - 28) / .68) / 40 + (ag ? ag.haggle : 0), .4, 2);
 }
 /** ask: { wage, years, imageRights, goalBonus, releaseClause, silly } -> { verdict, counter } */
 export function respond(offer, ask, pat, round, R = Math.random) {
@@ -90,7 +91,8 @@ export function respond(offer, ask, pat, round, R = Math.random) {
   greed += round * .08;
   if (greed <= pat * .45) return { verdict: 'accept' };
   if (greed > pat * 1.25 || round >= 3) return greed > pat * .9 ? { verdict: 'walk' } : { verdict: 'accept' };
-  const counter = Object.assign({}, ask, { wage: Math.round((offer.wage + (ask.wage - offer.wage) * (pat * .5 / greed)) / 10) * 10 });
+  const w = Math.round((offer.wage + (ask.wage - offer.wage) * (pat * .5 / greed)) / 10) * 10;
+  const counter = Object.assign({}, ask, { wage: Number.isFinite(w) ? Math.max(offer.wage, w) : offer.wage });
   if (R() < .5) counter.silly = null; else if (counter.imageRights && R() < .5) counter.imageRights = false;
   return { verdict: 'counter', counter };
 }

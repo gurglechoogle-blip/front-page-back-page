@@ -41,6 +41,15 @@ export function migrate(s) {
     initLife(c); initMoney(c); initSocial(c); initPartner(c); initIntl(c); initLook(c); initTrouble(c); initFame(c); initAch(c); initInvites(c); c.liveMatch = c.liveMatch || null;
     c.world = c.world || { year: 0, leagues: {}, strength: {} }; c.totals = c.totals || { apps: 0, goals: 0, assists: 0, seasons: 0 }; c.history = c.history || []; c.inbox = c.inbox || []; c.weekLog = c.weekLog || [];
   }
+  // Repair any NaN money from the old contract-talks bug.
+  if (s.career) {
+    const c = s.career, ok = v => typeof v === 'number' && Number.isFinite(v);
+    if (!ok(c.contract.wage)) c.contract.wage = ok(c.lastWeek && c.lastWeek.wage) ? c.lastWeek.wage : 500;
+    for (const k of ['appearanceFee', 'winBonus', 'goalBonus', 'assistBonus', 'releaseClause']) if (c.contract.clauses && c.contract.clauses[k] != null && !ok(c.contract.clauses[k])) c.contract.clauses[k] = 0;
+    if (!ok(c.bank)) { c.bank = ok(c.lastWeek && c.lastWeek.bank) ? c.lastWeek.bank : c.contract.wage * 4; c.flags = c.flags || {}; c.flags.bankRepaired = true; (c.inbox = c.inbox || []).unshift({ id: (c.msgId = (c.msgId || 0) + 1), from: 'The bank', text: 'Sorry about that. A glitch in our systems scrambled your balance. We\'ve restored it to the last figure we trust. Have a free pen.', week: c.week, read: false }); }
+    if (c.lastWeek) { if (!ok(c.lastWeek.bank)) c.lastWeek.bank = c.bank; if (!ok(c.lastWeek.wage)) c.lastWeek.wage = c.contract.wage; }
+    (c.debts || []).forEach(d => { if (!ok(d.balance)) d.balance = 0; });
+  }
   s.version = SAVE_VERSION;
   return s;
 }

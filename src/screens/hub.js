@@ -286,7 +286,7 @@ export function createHubScreen(root, go, params = {}) {
       if (id === 'endLoan' && r.yes) { const back = endLoanNow(c); moveClub(c, back, true); c.matchday = null; save(); render(); }
       modal(`<h2>${r.yes ? 'He says yes' : 'He says no'}</h2><p class="evtext">${esc(r.line)}</p>${id === 'loan' && r.yes ? `<p>${win ? 'The window\'s open, so let\'s see who wants you.' : 'He\'ll find you a club when the next window opens.'}</p>` : ''}${id === 'minutes' && r.yes ? '<p>You\'ll get more chances over the next six weeks.</p>' : ''}${id === 'endLoan' && r.yes ? `<p>Your loan's over. You're back at ${esc(club(c.clubId).name)}.</p>` : ''}${id === 'transfer' && r.yes ? '<p>You\'re on the transfer list. Expect more offers in the next window, and fewer minutes until then.</p>' : ''}<div class="endBtns">${r.raise ? '<button class="btn gold" id="talks">Talk terms</button>' : ''}${id === 'loan' && r.yes && win ? '<button class="btn gold" id="win">See loan offers</button>' : ''}<button class="btn" id="ok">Leave his office</button></div>`);
       $('ok').onclick = closeModal;
-      if ($('talks')) $('talks').onclick = () => { closeModal(); showTalks(c, raiseOffer(c, rep()), { midSeason: !c.summer }, () => { save(); render(); }); };
+      if ($('talks')) $('talks').onclick = () => { closeModal(); showTalks(c, raiseOffer(c, rep()), { rep: rep(), age: age(c), midSeason: !c.summer }, () => { save(); render(); }); };
       if ($('win')) $('win').onclick = () => { closeModal(); showWindow(c, { rep: rep(), age: age(c), window: win, midSeason: win === 'january' || !c.summer, onDone: () => { save(); go('hub'); } }); };
     });
   }
