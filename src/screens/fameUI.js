@@ -25,12 +25,12 @@ export function showTroll(H, next) {
 }
 export function showCommunity(H) {
   const c = H.c;
-  H.modal(`<h2>Community & charity</h2><p class="dim">${c.redeeming > 0 ? `Your pledge is running: honour counts double for ${c.redeeming} more weeks.` : 'Uses time slots. Honest, slow, safe.'} Events attended: ${c.charity}.</p><div class="scroll shop">${L3.community.map(a => { const why = H.slotsLeft() < a.slots ? 'Not enough slots' : c.bank < a.cost ? 'Can\'t afford it' : a.flag && c.flags[a.flag] ? 'Done' : null; return `<div class="item"><div><b>${esc(a.label)}</b><span class="price">${a.cost ? money(a.cost) + ' · ' : ''}${a.slots} slot${a.slots > 1 ? 's' : ''}</span><p>${esc(a.blurb)}</p></div><button class="btn small gold" data-a="${a.id}" ${why ? 'disabled' : ''}>${why || 'Do it'}</button></div>`; }).join('')}</div>`);
+  H.modal(`<h2>Community & charity</h2><p class="dim">${c.redeeming > 0 ? `Your pledge is running: honour counts double for ${c.redeeming} more weeks.` : 'Takes a day or two. Honest, slow, safe.'} Events attended: ${c.charity}.</p><div class="scroll shop">${L3.community.map(a => { const why = H.slotsLeft() < a.slots ? 'Not enough slots' : c.bank < a.cost ? 'Can\'t afford it' : a.flag && c.flags[a.flag] ? 'Done' : null; return `<div class="item"><div><b>${esc(a.label)}</b><span class="price">${a.cost ? money(a.cost) + ' · ' : ''}${a.slots} slot${a.slots > 1 ? 's' : ''}</span><p>${esc(a.blurb)}</p></div><button class="btn small gold" data-a="${a.id}" ${why ? 'disabled' : ''}>${why || 'Do it'}</button></div>`; }).join('')}</div>`);
   qa(H, '[data-a]').forEach(b => b.onclick = () => { const r = community(c, b.dataset.a); H.save(); H.render(); H.closeModal(); H.toast(r.ok ? r.line : r.why); });
 }
 export function showInvite(H, next) {
   const c = H.c, a = L3.community[Math.floor(Math.random() * 4)];
-  H.modal(`<div class="evvia">💌 Invitation</div><h2>${esc(a.label)}</h2><p class="evtext">They'd love you to come along this week. Saying no will be noticed.</p><div class="choices"><button class="btn choice" id="yes" ${H.slotsLeft() <= 0 ? 'disabled' : ''}>Go (uses a time slot)</button><button class="btn choice" id="no">Politely decline</button></div>`, true);
+  H.modal(`<div class="evvia">💌 Invitation</div><h2>${esc(a.label)}</h2><p class="evtext">They'd love you to come along this week. Saying no will be noticed.</p><div class="choices"><button class="btn choice" id="yes" ${H.slotsLeft() <= 0 ? 'disabled' : ''}>Go (takes your day)</button><button class="btn choice" id="no">Politely decline</button></div>`, true);
   q(H, '#yes').onclick = () => { community(c, a.id); H.save(); H.render(); H.toast(a.blurb); next(); };
   q(H, '#no').onclick = () => { applyEffects(c, { honour: -2 }); H.save(); H.render(); H.toast('"Too busy," says the local paper. Honour -2.'); next(); };
 }

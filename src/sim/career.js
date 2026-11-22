@@ -97,8 +97,41 @@ export const myFixtures = c => c.fixtures.filter(f => isMine(c, f));
 export const nextFixture = c => myFixtures(c).find(f => !f.played);
 export const weekFixtures = (c, w = c.week) => myFixtures(c).filter(f => !f.played && weekOf(f.date) === w);
 export const isPreseason = (c, w = c.week) => weekStart(w) < addDays(DIVS[c.div].start, -6);
-export const slotsTotal = c => (isPreseason(c) ? 6 : 4) + (hasStaff(c, 'pa') ? 1 : 0);
-export const slotsLeft = c => slotsTotal(c) - c.slotsUsed;
+/* ---------- days: one activity a day, matches on their actual date ---------- */
+export const dayDate = c => addDays(weekStart(c.week), c.day || 0);
+const unplayedOn = (c, d) => weekFixtures(c).filter(f => f.date === d && !f.played);
+/** Your unplayed fixture today, if any. */
+export const todaysFixture = c => unplayedOn(c, dayDate(c))[0] || null;
+/** Free days this week (days without one of your matches). */
+export const slotsTotal = c => { const ws = weekStart(c.week); let n = 0; for (let d = 0; d < 7; d++) if (!weekFixtures(c).some(f => f.date === addDays(ws, d))) n++; return Math.max(1, n); };
+/** How many days of activity you can start today: 0 if you've already done something, or it's a match day.
+ * Otherwise the run of free days from today (multi-day things like holidays need several). */
+export function slotsLeft(c) {
+  consumeDays(c);
+  if (c.seasonOver || c.dayUsed === (c.day || 0) || todaysFixture(c)) return 0;
+  const ws = weekStart(c.week); let n = 0;
+  for (let d = c.day || 0; d <= 6; d++) { if (unplayedOn(c, addDays(ws, d)).length) break; n++; }
+  return n;
+}
+/** Called after anything that used time: today's done (and multi-day things move the clock on). */
+export function consumeDays(c) {
+  if (c._slotsSeen == null) c._slotsSeen = c.slotsUsed;
+  const used = c.slotsUsed - c._slotsSeen; c._slotsSeen = c.slotsUsed;
+  (c.weekLog || []).forEach(e => { if (e.day == null) e.day = c.day || 0; });
+  if (used <= 0) return;
+  // A personal assistant juggles your diary: once a week, a single activity doesn't use up the day.
+  if (used === 1 && hasStaff(c, 'pa') && !c.paUsedWeek) { c.paUsedWeek = true; return; }
+  c.day = Math.min(6, (c.day || 0) + used - 1); c.dayUsed = c.day;
+}
+/** Continue: move on a day. Returns 'match' (a game today: play it first), 'day' or 'endweek'. */
+export function advanceDay(c) {
+  consumeDays(c);
+  if (todaysFixture(c)) return 'match';
+  if ((c.day || 0) >= 6) return 'endweek';
+  if (c.dayUsed !== c.day) c.energy = clamp(c.energy + 3, 0, 100); // a quiet day
+  c.day = (c.day || 0) + 1;
+  return todaysFixture(c) ? 'match' : 'day';
+}
 export const age = (c, date = weekStart(c.week)) => { const b = new Date(c.dob), d = new Date(date); let a = d.getFullYear() - b.getFullYear(); if (d < new Date(d.getFullYear(), b.getMonth(), b.getDate())) a--; return a; };
 export const unread = c => c.inbox.filter(m => !m.read).length + (c.invites || []).filter(v => !v.seen).length;
 export const leagueTable = c => table(divisionClubs(c.div), c.fixtures.filter(f => f.comp === 'league'));
@@ -194,6 +227,7 @@ export function recordMatch(c, f, S, R = Math.random) {
   const played = S.role === 'start' || S.role === 'sub';
   const res = { id: f.id, role: S.role, rating: played ? S.rating : null, goals: S.my.goals, assists: S.my.assists, headline: S.headline, unused: !!S.unusedSub, hooked: S.hooked || null, verdict: S.gafferLine || gafferVerdict(S, R) };
   if (played) c.lastPlayed = f.date;
+  if (f.date === dayDate(c)) { consumeDays(c); c.dayUsed = c.day; } // a match day is a match day
   if (played && f.comp !== 'friendly') logApp(c, myTeamIn(c, f) || c.clubId, f.comp === 'intl' ? 'intl-' + (f.level || 'senior') : f.comp, S);
   { const mt = myTeamIn(c, f) || c.clubId, opp = club(f.home === mt ? f.away : f.home), us = f.home === mt ? S.score.home : S.score.away, them = f.home === mt ? S.score.away : S.score.home;
     (c.diary = c.diary || {})[f.date] = (c.diary[f.date] || []).concat({ t: 'match', text: `${compName(f)}: ${f.home === mt ? 'v' : '@'} ${opp.name} ${us}-${them}${played ? ` · you: ${S.rating.toFixed(1)}${S.my.goals ? `, ${S.my.goals} goal${S.my.goals > 1 ? 's' : ''}` : ''}` : S.unusedSub ? ' · unused sub' : ' · not involved'}` }); }
@@ -308,7 +342,7 @@ export function finishWeek(c, R = Math.random) {
 /** Roll on to next week; returns false when the season is over. */
 export function nextWeek(c, R = Math.random) {
   buildIntlSeason(c, seasonYear(), R); // no-op if this season's already built (older saves pick it up here)
-  c.week++; c.slotsUsed = 0; c.weekLog = [];
+  c.week++; c.slotsUsed = 0; c.weekLog = []; c.day = 0; c.dayUsed = -1; c._slotsSeen = 0; c.paUsedWeek = false;
   if (c.lastWeek) makePaper(c, R);
   if (c.week > lastWeek() || !myFixtures(c).some(f => !f.played) && weekStart(c.week) > CAL.seasonEnd) { c.seasonOver = true; return false; }
   const ws = weekStart(c.week), we = addDays(ws, 6);

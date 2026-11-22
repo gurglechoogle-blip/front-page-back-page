@@ -38,7 +38,7 @@ export function doActivity(c, id, slotsLeft, R = Math.random) {
   const a = ACTIVITIES.find(x => x.id === id), why = available(c, a);
   if (why) return { ok: false, why };
   const need = a.slots === 'all' ? Math.max(1, slotsLeft) : a.slots;
-  if (slotsLeft < 1) return { ok: false, why: 'No time slots left this week' };
+  if (slotsLeft < 1) return { ok: false, why: 'Done for today' };
   c.slotsUsed += need; c.weekLog.push({ t: 'injuryJob', label: a.label.replace(/ \(.*\)$/, '') });
   (c.injuryDone = c.injuryDone || {})[id] = a.career ? true : c.injury.id;
   const good = R() < .55 + (c.honour - 50) / 200, pay = a.pay(c);

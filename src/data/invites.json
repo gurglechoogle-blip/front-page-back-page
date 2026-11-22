@@ -1,5 +1,5 @@
 {
- "_note": "Texts that invite you to do something. Accepting uses a time slot. from: a friend id, 'mum', 'gran' or 'squad'. venue: opens that casino venue instead (gran / lee). minAge optional. {a} = a teammate's surname.",
+ "_note": "Texts that invite you to do something. Accepting takes your day. from: a friend id, 'mum', 'gran' or 'squad'. venue: opens that casino venue instead (gran / lee). minAge optional. {a} = a teammate's surname.",
  "friends": {
   "deano": [
    {

@@ -1,5 +1,5 @@
 {
-  "_note": "Life events. Each arrives as a call, text or moment in the dressing room, with choices that cost something. Effects: honour, manager, teammates, fans, family, money, energy, slot (uses a time slot this week), flag (remembered), unflag. 'next' queues a follow-up {id, in: weeks, chance}. 'news' puts a story in Monday's paper: page front|back, headline with {NAME}. Conditions: minWeek, notPreseason, needFlag, notFlag, meter minimums (min) / maximums (max), contract types (types), weight. Design rule: the bad choice is always tempting. Age rule: anything about the player's car or driving needs minAgeYears 18 and needFlag 'canDrive' (set by the driving lessons in the shop); pubs, nightclubs, alcohol and casinos need minAgeYears 18.",
+  "_note": "Life events. Each arrives as a call, text or moment in the dressing room, with choices that cost something. Effects: honour, manager, teammates, fans, family, money, energy, slot (takes your day this week), flag (remembered), unflag. 'next' queues a follow-up {id, in: weeks, chance}. 'news' puts a story in Monday's paper: page front|back, headline with {NAME}. Conditions: minWeek, notPreseason, needFlag, notFlag, meter minimums (min) / maximums (max), contract types (types), weight. Design rule: the bad choice is always tempting. Age rule: anything about the player's car or driving needs minAgeYears 18 and needFlag 'canDrive' (set by the driving lessons in the shop); pubs, nightclubs, alcohol and casinos need minAgeYears 18.",
   "events": [
     {
       "id": "coverGaz",
@@ -141,7 +141,7 @@
       "text": "Hi! We'd love you to visit the children's ward on Thursday. Bring a smile and some signed photos. (Gaz says the lads are going to Wetherspoons that night. Ignore Gaz.)",
       "choices": [
         {
-          "label": "Visit the hospital (uses a time slot)",
+          "label": "Visit the hospital (takes your day)",
           "effects": {
             "honour": 7,
             "fans": 4,
@@ -254,7 +254,7 @@
       "text": "It's my birthday dinner Wednesday love. Your auntie Carol's coming. She's bringing the trifle. Please come. The coach mentioned extra shooting practice though didn't he?",
       "choices": [
         {
-          "label": "Go to Mum's dinner (uses a time slot)",
+          "label": "Go to Mum's dinner (takes your day)",
           "effects": {
             "family": 9,
             "energy": 6,
@@ -371,7 +371,7 @@
       "text": "Son. I'm down the allotment Sunday. Dawn start. Bring a flask and a spade. Don't tell the others, they'll want to come and they dig like idiots.",
       "choices": [
         {
-          "label": "Dig the allotment with the gaffer (uses a time slot)",
+          "label": "Dig the allotment with the gaffer (takes your day)",
           "effects": {
             "manager": 10,
             "teammates": -2,
@@ -427,7 +427,7 @@
       "text": "Oi superstar. The Red Lion are in the cup final Sunday and we're short. Come on, one game, for old times. Ref's blind. Pitch is a swamp. You'll love it.",
       "choices": [
         {
-          "label": "Play for the Red Lion (uses a time slot)",
+          "label": "Play for the Red Lion (takes your day)",
           "effects": {
             "family": 4,
             "fans": 4,
@@ -573,7 +573,7 @@
       "text": "Dear former pupil. We'd love you to present the prizes at Prize Day. Mr Hargreaves (PE) says he 'always knew'. He did not always know.",
       "choices": [
         {
-          "label": "Present the prizes (uses a time slot)",
+          "label": "Present the prizes (takes your day)",
           "effects": {
             "honour": 6,
             "family": 5,
@@ -698,7 +698,7 @@
       "text": "Love, the club nutritionist rang. She says you've been living on Pot Noodles. I've booked you a cooking class with Auntie Carol. Thursday. It's non-negotiable. x",
       "choices": [
         {
-          "label": "Go to the cooking class (uses a time slot)",
+          "label": "Go to the cooking class (takes your day)",
           "effects": {
             "family": 6,
             "energy": 10,
@@ -1234,7 +1234,7 @@
       "text": "Watched your last game. Your left hamstring's tight, you're landing heavy on it. Come round, I'll sort you a routine. Free. I need the practice and you need the hamstring.",
       "choices": [
         {
-          "label": "Go round (uses a time slot)",
+          "label": "Go round (takes your day)",
           "effects": {
             "loyalty": 6,
             "energy": 15,
@@ -1260,7 +1260,7 @@
       "text": "The youth club roof's leaking again. We're doing a sponsored penalty shoot-out. Would you go in goal? The kids want to score past a 'real footballer'. Even a striker.",
       "choices": [
         {
-          "label": "Go in goal (uses a time slot)",
+          "label": "Go in goal (takes your day)",
           "effects": {
             "loyalty": 8,
             "honour": 6,
@@ -1318,7 +1318,7 @@
       "text": "We need to talk. You're never here. When you are here, you're watching yourself on Match of the Day. I think we're done.",
       "choices": [
         {
-          "label": "Beg for one more chance (uses a time slot)",
+          "label": "Beg for one more chance (takes your day)",
           "effects": {
             "slot": 1,
             "partner": 25,
@@ -1528,7 +1528,7 @@
       "text": "Your new teammates keep laughing at something you said in training. The interpreter explains: you've been calling the gaffer 'my little cabbage' all week.",
       "choices": [
         {
-          "label": "Book language lessons (uses a time slot)",
+          "label": "Book language lessons (takes your day)",
           "effects": {
             "slot": 1,
             "teammates": 6,
@@ -2053,7 +2053,7 @@
       "text": "\"Dad, you missed my birthday. Mum said you were at training. It's fine. Grandma made the cake.\"",
       "choices": [
         {
-          "label": "Drive over with a present right now (uses a time slot)",
+          "label": "Drive over with a present right now (takes your day)",
           "effects": {
             "family": 8,
             "slot": 1
@@ -2281,7 +2281,7 @@
       "text": "Emergency! It's the half-time mascot race and we're one short. Could you wear the spare costume? It's a giant sausage roll. It smells a bit. It smells a lot, actually.",
       "choices": [
         {
-          "label": "Be the sausage roll (uses a time slot)",
+          "label": "Be the sausage roll (takes your day)",
           "effects": {
             "slot": 1,
             "fans": 6,
@@ -2345,7 +2345,7 @@
       "text": "HIYA!! It's the big school reunion next Friday!! Everyone's coming. I'm doing a slideshow. Yes, THAT photo is in it. Can't wait xx",
       "choices": [
         {
-          "label": "Go along (uses a time slot)",
+          "label": "Go along (takes your day)",
           "effects": {
             "slot": 1,
             "family": 3,
@@ -2403,7 +2403,7 @@
       "text": "Hi! We're short-staffed Saturday morning. Could you do an hour on the till? Customers love it. Please don't touch the scarf display, it's load-bearing.",
       "choices": [
         {
-          "label": "Work the till (uses a time slot)",
+          "label": "Work the till (takes your day)",
           "effects": {
             "slot": 1,
             "fans": 6,
@@ -2605,7 +2605,7 @@
       "text": "Mr Pickering here, number 14. Your hedge is over my fence. Also your football came over. Also it beheaded my gnome. Also, for the record, I have a season ticket for the other lot.",
       "choices": [
         {
-          "label": "Trim the hedge yourself (uses a time slot)",
+          "label": "Trim the hedge yourself (takes your day)",
           "effects": {
             "slot": 1,
             "honour": 3,
@@ -2831,7 +2831,7 @@
       "text": "Son, I'm away on a coaching course this weekend. Can you look after Brian? He's a Great Dane. He eats shoes. He's very gentle with them, mind.",
       "choices": [
         {
-          "label": "Dog-sit Brian (uses a time slot)",
+          "label": "Dog-sit Brian (takes your day)",
           "effects": {
             "slot": 1,
             "manager": 8,
@@ -2992,7 +2992,7 @@
       "text": "You've put up a shelf for your trophies. It's at a 30-degree angle. Everything slides off. The neighbour asked if you were building a ski jump.",
       "choices": [
         {
-          "label": "Fix it properly (uses a time slot)",
+          "label": "Fix it properly (takes your day)",
           "effects": {
             "slot": 1,
             "honour": 2,
@@ -3047,7 +3047,7 @@
       "text": "Barry here, Barry's School of Motoring. Your mum's booked you a taster lesson. I've seen you play, so please check your mirrors more than you check for a pass.",
       "choices": [
         {
-          "label": "Do the taster lesson (uses a time slot)",
+          "label": "Do the taster lesson (takes your day)",
           "effects": {
             "slot": 1,
             "family": 3,
@@ -3191,7 +3191,7 @@
       "text": "STAG DO IN RIGA BROS!!! 3 days. matching t-shirts with my face on. the gaffer said 'over my dead body' but he says that about everything",
       "choices": [
         {
-          "label": "Go to Riga (uses a time slot)",
+          "label": "Go to Riga (takes your day)",
           "effects": {
             "slot": 1,
             "teammates": 8,
@@ -3311,7 +3311,7 @@
       "text": "Love, Graham's coming to Sunday lunch. Yes, he supports the other lot. Yes, he's wearing the shirt. It's derby week, I know. Please be nice. x",
       "choices": [
         {
-          "label": "Be nice (uses a time slot)",
+          "label": "Be nice (takes your day)",
           "effects": {
             "slot": 1,
             "family": 6,
@@ -3452,7 +3452,7 @@
       "text": "The new signing doesn't speak much English yet. His only phrase so far is 'Where is the toaster?' The gaffer asks you to show him round.",
       "choices": [
         {
-          "label": "Take him under your wing (uses a time slot)",
+          "label": "Take him under your wing (takes your day)",
           "effects": {
             "slot": 1,
             "teammates": 6,
@@ -3537,7 +3537,7 @@
       "text": "Our main sponsor, Pringleton Windows, is holding its annual awards. They'd love a player to present 'Double Glazer of the Year'. It's a big deal in double glazing.",
       "choices": [
         {
-          "label": "Present the award (uses a time slot)",
+          "label": "Present the award (takes your day)",
           "effects": {
             "slot": 1,
             "honour": 2,
@@ -3623,7 +3623,7 @@
       "text": "Good news! I've signed you up for the charity 10k on Sunday. You're running it dressed as a banana. Bad news: the banana costume is a size small.",
       "choices": [
         {
-          "label": "Run as the banana (uses a time slot)",
+          "label": "Run as the banana (takes your day)",
           "effects": {
             "slot": 1,
             "honour": 4,
@@ -3768,7 +3768,7 @@
       "text": "Dear former pupil. Mrs Abernathy (Geography) is retiring after 41 years. She has asked if you'd come and say a few words. She would also like her protractor back. She knows you have it.",
       "choices": [
         {
-          "label": "Go and give a speech, protractor in hand (uses a time slot)",
+          "label": "Go and give a speech, protractor in hand (takes your day)",
           "effects": {
             "slot": 1,
             "honour": 4,

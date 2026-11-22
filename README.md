@@ -72,6 +72,9 @@ src/
     calendar.js         the diary: activities get days, results get logged
     injuryLife.js       telly work and other things to do on a long injury
     managers.js         a different manager for every team (club, U21s, each England side)
+    intlSchedule.js     England's calendar: Nations League, March games, qualifiers, friendlies
+    headlines.js        today's headline for the hub ticker
+    squads.js           also picks surnames by country (data/worldNames.json)
     text.js             pick a line, fill its {placeholders}
   screens/
     start.js            name entry and academy offers
@@ -85,6 +88,7 @@ src/
     fameUI.js           social media, community, staff and business pop-ups
     contractUI.js  tournament.js   transfer window and contract talks; England in the summer
     calendarUI.js       the yesterday/today/tomorrow strip and month view
+    statsUI.js          competitions (every table and cup run) and your stats by team and competition
     welcome.js          the head of development's first-day talk
     finale.js           the end: testimonial, the years passing, scrapbook montage, the 2046 final, epilogue
     casino.js           the poker and blackjack tables
@@ -125,6 +129,8 @@ tools/
 Writing commentary is just editing `src/data/commentary.json`; no code changes needed.
 
 ### How a career works
+
+The career moves a day at a time. Each day you get one main activity (training, rest, seeing people, a night out); quick things like texts are free. Press Continue to move on a day. Matches are played on their actual date, with at least 60 hours between your games. After Sunday the week's results come up.
 
 You start at 16 in summer 2026, pick a name, and choose from 3-4 academy offers (elite academy, pathway club, money club, family club). Your training-ground skill level decides which clubs come calling. Each week you get 4 time slots (6 in pre-season) to spend on drills or rest, then matchday: the team sheet says whether you start, sit on the bench (1-2 chances if you come on) or watch from the stand, depending on the club's pathway, manager approval and form. The week ends with your rating, approval, wages in and bills out, results around the league and the table.
 

@@ -23,7 +23,7 @@ function thisWeek(c) { const ws = weekStart(c.week), fx = myFixtures(c).filter(f
 export const todayDate = c => thisWeek(c).today;
 export function stripHTML(c) {
   const { plan, today } = thisWeek(c);
-  const cell = (d, label, cls) => { const e = entries(c, d, plan); return `<div class="cday ${cls}"><small>${label} · ${nice(d)}</small>${e.length ? e.slice(0, 3).map(x => `<span class="${x.t === 'match' ? 'cm-match' : ''}">${iconFor(x.t)} ${esc(x.text)}</span>`).join('') : `<span class="dim">${cls === 'today' ? 'Nothing yet. Use a time slot.' : 'Nothing'}</span>`}</div>`; };
+  const cell = (d, label, cls) => { const e = entries(c, d, plan); return `<div class="cday ${cls}"><small>${label} · ${nice(d)}</small>${e.length ? e.slice(0, 3).map(x => `<span class="${x.t === 'match' ? 'cm-match' : ''}">${iconFor(x.t)} ${esc(x.text)}</span>`).join('') : `<span class="dim">${cls === 'today' ? 'Free: do one thing today' : 'Nothing'}</span>`}</div>`; };
   return `<div class="calstrip" id="calstrip" title="Open the calendar">${cell(addDays(today, -1), 'Yesterday', 'yday')}${cell(today, 'Today', 'today')}${cell(addDays(today, 1), 'Tomorrow', 'tmrw')}<b class="calopen">📅</b></div>`;
 }
 

@@ -42,11 +42,11 @@ export function weekPlan(c, weekStartDate, myDates, names, played = false) {
   (c.weekLog || []).forEach(e => {
     // Texts, calls and posts are quick: they share a day with whatever came before.
     const quick = ['text', 'callMum', 'post'].includes(e.t);
-    const d = before[Math.min(before.length - 1, quick ? Math.max(0, i - 1) : i)];
+    const d = e.day != null ? days[e.day] : before[Math.min(before.length - 1, quick ? Math.max(0, i - 1) : i)];
     if (!quick) i++;
     (plan[d] = plan[d] || []).push({ t: e.t, text: describe(e, names) });
   });
-  const today = played ? (mine[mine.length - 1] || days[6]) : i < before.length ? before[i] : (first || before[before.length - 1]);
+  const today = c.day != null && c.weekLog ? days[c.day] : played ? (mine[mine.length - 1] || days[6]) : i < before.length ? before[i] : (first || before[before.length - 1]);
   return { plan, today, days };
 }
 /** End of the week: keep the diary. */
