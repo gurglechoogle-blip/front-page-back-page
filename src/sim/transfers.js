@@ -58,7 +58,7 @@ export function makeOffers(c, rep, age, window, R = Math.random) {
   if (c.boyhood && c.boyhood !== c.clubId && Math.abs(club(c.boyhood).strength - want) < 12 && R() < .5 && !out.some(o => o.clubId === c.boyhood)) out.push(offerFrom(c, c.boyhood, rep, age, R));
   // Big club, young, not playing: a loan.
   const myStr = club(c.loan ? c.loan.parent : c.clubId).strength;
-  if (!c.loan && (c.wantLoan || age <= 23 && (unproven || myStr > want + 8) && R() < .85)) {
+  if ((c.wantLoan || age <= 23 && (unproven || myStr > want + 8) && R() < .85)) {
     // Loans: mostly from a division or two below, where you'd actually play.
     const lower = pool.filter(id => club(id).strength < myStr - 6 && !ABROAD.includes(club(id).league)).sort(() => R() - .5);
     const k = unproven ? 1 + (R() < .6 ? 1 : 0) + (R() < .3 ? 1 : 0) : 1;
@@ -99,9 +99,10 @@ export function respond(offer, ask, pat, round, R = Math.random) {
 export function sign(c, offer, terms, midSeason, R = Math.random) {
   const ag = agentOf(c), until = `${seasonYear() + terms.years + (midSeason ? 0 : 1)}-06-30`;
   const prev = c.clubId; c.wantLoan = false; c.transferListed = false;
-  if (offer.type === 'loan') { c.loan = { parent: c.clubId, until: CAL.seasonEnd }; }
+  // A new loan while already on loan still belongs to the same parent club.
+  if (offer.type === 'loan') { c.loan = { parent: c.loan ? c.loan.parent : c.clubId, until: CAL.seasonEnd, prev: c.loan ? c.loan.prev : Object.assign({}, c.contract) }; }
   else if (c.loan && offer.clubId !== c.loan.parent) c.loan = null;
-  c.contract = Object.assign({}, c.contract, { kind: offer.type === 'loan' ? `Season-long loan from ${club(prev).name}` : 'Professional contract', label: offer.type === 'loan' ? 'Loan' : offer.role, wage: terms.wage, until: offer.type === 'loan' ? c.contract.until : until, clauses: { imageRights: !!terms.imageRights, goalBonus: terms.goalBonus || 0, assistBonus: terms.assistBonus || 0, releaseClause: terms.releaseClause || 0, silly: terms.silly || null, ...standardBonuses(terms.wage), club: offer.clubClauses || [] }, pathway: offer.role === 'first choice' ? .55 : offer.role === 'rotation player' ? .35 : offer.role === 'squad player' ? .15 : c.contract.pathway, housing: false });
+  c.contract = Object.assign({}, c.contract, { kind: offer.type === 'loan' ? `Season-long loan from ${club(prev).name}` : 'Professional contract', label: offer.type === 'loan' ? 'Loan' : offer.type === 'renewal' ? c.contract.label : offer.role, role: offer.type === 'renewal' ? (c.contract.role || c.contract.label) : offer.role, wage: terms.wage, until: offer.type === 'loan' ? c.contract.until : until, clauses: { imageRights: !!terms.imageRights, goalBonus: terms.goalBonus || 0, assistBonus: terms.assistBonus || 0, releaseClause: terms.releaseClause || 0, silly: terms.silly || null, ...standardBonuses(terms.wage), club: offer.clubClauses || [] }, pathway: offer.role === 'first choice' ? .55 : offer.role === 'rotation player' ? .35 : offer.role === 'squad player' ? .15 : c.contract.pathway, housing: false });
   if (ag && offer.type === 'transfer') { const cut = Math.round(offer.fee * .02); c.bank -= Math.min(cut, Math.max(0, c.bank)); }
   if (terms.silly) (c.weekNews = c.weekNews || []).push({ page: 'front', headline: `${surname(c)}'S CONTRACT DEMAND: "${terms.silly.toUpperCase()}"` });
   if (offer.type !== 'renewal') { moveClub(c, offer.clubId, midSeason, R); c.transfers = c.transfers || []; c.transfers.push({ from: prev, to: offer.clubId, season: CAL.season, type: offer.type, fee: offer.fee }); }
@@ -120,5 +121,5 @@ export function moveClub(c, id, midSeason, R = Math.random) {
   for (const k in c.cups) c.cups[k].alive = false; c.trophyGroup = null;
 }
 /** End of a loan: back to the parent club. */
-export function endLoan(c) { if (!c.loan) return null; const back = c.loan.parent; c.loan = null; c.clubId = back; c.div = club(back).league; c.contract.kind = 'Professional contract'; return back; }
+export function endLoan(c) { if (!c.loan) return null; const back = c.loan.parent, prev = c.loan.prev; c.loan = null; c.clubId = back; c.div = club(back).league; if (prev) c.contract = Object.assign({}, prev); else c.contract.kind = 'Professional contract'; return back; }
 export { pick, weekOf };

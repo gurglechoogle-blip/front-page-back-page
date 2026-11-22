@@ -36,7 +36,8 @@ import { welcomeHTML } from './welcome.js';
 import { avatar } from '../engine/avatar.js';
 import { showCompetitions, showMyStats } from './statsUI.js';
 import { ACTIVITIES, available as injAvail, doActivity, longInjury } from '../sim/injuryLife.js';
-import { REQUESTS, cantAsk, odds, ask as askGaffer, raiseOffer } from '../sim/gaffer.js';
+import { requestsFor, cantAsk, odds, ask as askGaffer, raiseOffer } from '../sim/gaffer.js';
+import { endLoan as endLoanNow, moveClub } from '../sim/transfers.js';
 import { managerFor } from '../sim/managers.js';
 import { showTalks } from './contractUI.js';
 import { inviteText, inviteFrom, inviteData, acceptInvite, declineInvite } from '../sim/invites.js';
@@ -81,7 +82,7 @@ export function createHubScreen(root, go, params = {}) {
       <div id="calbox"></div>
       <div class="meters" id="meters"></div>
     </div>
-    <aside class="hcol" id="right"></aside>
+    <div class="rcol"><aside class="hcol" id="right"></aside><div id="contbox"></div></div>
   </div>
   <div class="hbar" id="hbar">${Object.entries(MENUS).map(([k, m]) => `<div class="hbtn-wrap"><button class="btn hbtn" data-m="${k}"><span>${m.icon}</span>${m.label}<em class="badge" id="badge-${k}"></em></button><div class="menu hidden" id="menu-${k}"></div></div>`).join('')}</div>
   <div class="hfoot"><span id="saved">Saved automatically</span> · <a href="#" id="dl">Download save file</a> · <a href="#" id="ul">Load save file</a><input type="file" id="ulf" accept=".json,application/json" hidden> · <a href="#" id="newCareer">Start a new career</a></div>
@@ -119,7 +120,8 @@ export function createHubScreen(root, go, params = {}) {
       : `<small>NO FIXTURES LEFT</small><b>Season's done</b>`;
     { const ws = weekStart(c.week), D = ['M', 'T', 'W', 'T', 'F', 'S', 'S'], tf = todaysFixture(c), used = c.dayUsed === (c.day || 0);
       $('slots').innerHTML = `<small>${esc(prettyDate(dayDate(c), true).toUpperCase())}${isPreseason(c) ? ' · PRE-SEASON' : ''}</small><div class="days">${D.map((d, i) => { const ds = addDays(ws, i), m = weekFixtures(c).some(f => f.date === ds); return `<i class="${i < (c.day || 0) ? 'past' : i === (c.day || 0) ? 'today' : ''} ${m ? 'mday' : ''}">${m ? '⚽' : d}</i>`; }).join('')}</div>
-        <span>${tf ? 'Match day!' : used ? 'Done for today' : 'Free day: do one thing'}</span><button class="btn gold small" id="dayCont">${tf ? 'TO THE MATCH ▶' : (c.day || 0) >= 6 ? 'END WEEK ▶' : 'CONTINUE ▶'}</button>`;
+        <span>${tf ? 'Match day!' : used ? 'Done for today' : 'Free day: do one thing'}</span>`;
+      $('contbox').innerHTML = `<button class="btn gold bigcont" id="dayCont"><b>${tf ? 'TO THE MATCH' : (c.day || 0) >= 6 ? 'END WEEK' : 'CONTINUE'} ▶</b><small>${tf ? esc(oppOf(c, tf).name) + ' (' + ha(c, tf) + ')' : (c.day || 0) >= 6 ? 'See the week\'s results' : 'On to ' + esc(prettyDate(addDays(dayDate(c), 1), true))}</small></button>`;
       $("dayCont").onclick = e => { e.stopPropagation(); continueDay(); }; }
     const u = unread(c); $('unread').textContent = u || ''; $('unread').style.display = u ? '' : 'none';
     { const td = todayDate(c), H0 = headlineFor(c, td); $('hline').textContent = H0.h; $('hldate').textContent = prettyDate(td); $('paperbtn').classList.toggle('mine', H0.mine); }
@@ -157,7 +159,6 @@ export function createHubScreen(root, go, params = {}) {
   function footballItems() {
     const wf = weekFixtures(c), sl = slotsLeft(c);
     return [
-      { label: wf.length ? `▶ Matchday: ${esc(oppOf(c, wf[0]).name)} (${ha(c, wf[0])})` : '▶ End the week', note: wf.length ? esc(compName(wf[0])) : 'No match this week', main: true, go: matchday },
       { label: 'Training', note: `${sl} slot${sl === 1 ? '' : 's'} left`, go: trainingPicker },
       { label: 'Rest', note: 'Takes your day, +energy', go: rest },
       { label: 'Fixtures & results', go: showFixtures },
@@ -278,11 +279,12 @@ export function createHubScreen(root, go, params = {}) {
   }
   function showGaffer() {
     const boss = managerFor(c.clubId), o = odds(c, avgRating(c)), mood = o > .6 ? 'He rates you. Strike while it\'s hot.' : o > .35 ? 'He\'s on the fence about you.' : 'He\'s not your biggest fan right now.';
-    modal(`<h2>${esc(boss.name)}'s office</h2><p class="evtext">The door says "KNOCK". Underneath, in smaller writing: "THEN GO AWAY". ${esc(mood)}</p><div class="choices">${REQUESTS.map(r => { const why = cantAsk(c, r.id, age(c)); return `<button class="btn choice" data-q="${r.id}" ${why ? 'disabled' : ''}>${esc(r.label)}${why ? `<small>${esc(why)}</small>` : ''}</button>`; }).join('')}</div><p class="dim">Your chances depend on his approval of you and how you've been playing.${!agentOf(c) ? ' Without an agent you\'ll get whatever he offers.' : ''}</p>`);
+    modal(`<h2>${esc(boss.name)}'s office</h2><p class="evtext">The door says "KNOCK". Underneath, in smaller writing: "THEN GO AWAY". ${esc(mood)}</p><div class="choices">${requestsFor(c).map(r => { const why = cantAsk(c, r.id, age(c)); return `<button class="btn choice" data-q="${r.id}" ${why ? 'disabled' : ''}>${esc(r.label)}${why ? `<small>${esc(why)}</small>` : ''}</button>`; }).join('')}</div><p class="dim">Your chances depend on his approval of you and how you've been playing.${!agentOf(c) ? ' Without an agent you\'ll get whatever he offers.' : ''}</p>`);
     root.querySelectorAll('[data-q]').forEach(b => b.onclick = () => {
       const id = b.dataset.q, r = askGaffer(c, id, avgRating(c)); save(); render();
       const win = inWindow(c);
-      modal(`<h2>${r.yes ? 'He says yes' : 'He says no'}</h2><p class="evtext">${esc(r.line)}</p>${id === 'loan' && r.yes ? `<p>${win ? 'The window\'s open, so let\'s see who wants you.' : 'He\'ll find you a club when the next window opens.'}</p>` : ''}${id === 'minutes' && r.yes ? '<p>You\'ll get more chances over the next six weeks.</p>' : ''}${id === 'transfer' && r.yes ? '<p>You\'re on the transfer list. Expect more offers in the next window, and fewer minutes until then.</p>' : ''}<div class="endBtns">${r.raise ? '<button class="btn gold" id="talks">Talk terms</button>' : ''}${id === 'loan' && r.yes && win ? '<button class="btn gold" id="win">See loan offers</button>' : ''}<button class="btn" id="ok">Leave his office</button></div>`);
+      if (id === 'endLoan' && r.yes) { const back = endLoanNow(c); moveClub(c, back, true); c.matchday = null; save(); render(); }
+      modal(`<h2>${r.yes ? 'He says yes' : 'He says no'}</h2><p class="evtext">${esc(r.line)}</p>${id === 'loan' && r.yes ? `<p>${win ? 'The window\'s open, so let\'s see who wants you.' : 'He\'ll find you a club when the next window opens.'}</p>` : ''}${id === 'minutes' && r.yes ? '<p>You\'ll get more chances over the next six weeks.</p>' : ''}${id === 'endLoan' && r.yes ? `<p>Your loan's over. You're back at ${esc(club(c.clubId).name)}.</p>` : ''}${id === 'transfer' && r.yes ? '<p>You\'re on the transfer list. Expect more offers in the next window, and fewer minutes until then.</p>' : ''}<div class="endBtns">${r.raise ? '<button class="btn gold" id="talks">Talk terms</button>' : ''}${id === 'loan' && r.yes && win ? '<button class="btn gold" id="win">See loan offers</button>' : ''}<button class="btn" id="ok">Leave his office</button></div>`);
       $('ok').onclick = closeModal;
       if ($('talks')) $('talks').onclick = () => { closeModal(); showTalks(c, raiseOffer(c, rep()), { midSeason: !c.summer }, () => { save(); render(); }); };
       if ($('win')) $('win').onclick = () => { closeModal(); showWindow(c, { rep: rep(), age: age(c), window: win, midSeason: win === 'january' || !c.summer, onDone: () => { save(); go('hub'); } }); };

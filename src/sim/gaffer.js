@@ -10,11 +10,15 @@ export const REQUESTS = [
   { id: 'minutes', label: 'Ask for more game time', cool: 6 },
   { id: 'loan', label: 'Ask to go out on loan', cool: 10 },
   { id: 'transfer', label: 'Hand in a transfer request', cool: 16 },
+  { id: 'endLoan', label: 'Ask to cut your loan short', cool: 8 },
 ];
+/** The requests that make sense right now: on loan, you can't ask for a contract, a loan or a transfer. */
+export const requestsFor = c => REQUESTS.filter(r => c.loan ? ['minutes', 'endLoan'].includes(r.id) : r.id !== 'endLoan');
 const LINES = {
   contract: { yes: ['"Fair enough. You\'ve earned it. Don\'t tell the others, they\'ll all want one."', '"I\'ll speak to the chairman. He\'ll moan. Then he\'ll pay."', '"Go on then. Keep scoring and we\'ll keep paying."'], no: ['"A new contract? You\'ve played like a deckchair in a hurricane. Come back when you\'re scoring."', '"The chairman laughed for a full minute. Then he asked who you were."', '"Earn it first. Then we\'ll talk. Then I\'ll probably still say no."'] },
   minutes: { yes: ['"Alright. You\'ll get your chance. Don\'t waste it, I\'m not a charity."', '"Keep training like this and you\'ll play. That\'s a promise. Sort of."'], no: ['"More minutes? Show me more in training first. I\'ve seen more urgency from a sleeping cat."', '"Everyone wants game time. Not everyone deserves it. Shut the door on your way out."'] },
   loan: { yes: ['"A loan would do you good. Proper men, proper mud. I\'ll make some calls."', '"Good idea. You\'ll learn more in six months there than six years on my bench."'], no: ['"Loan? I need you here. Which is a compliment, so take it and go."', '"Nobody\'s asked for you. I\'ve checked. Twice."'] },
+  endLoan: { yes: ['"Honestly? It\'s not working for either of us. I\'ll ring your parent club. No hard feelings. Some hard feelings."'], no: ['"You signed for the season. You\'re staying for the season. Get your head down."', '"Cut it short? We\'re paying half your wages. You\'re going nowhere, son."', '"Your parent club were very clear: you stay and you learn. So stay. And learn."'] },
   transfer: { yes: ['"If that\'s how you feel, fine. I\'ll stick you on the list. Don\'t expect a leaving card."', '"Right. Noted. Very disappointing. Close the door properly this time."'], no: ['"Request denied. You\'re under contract and I like you, God help me. Get back out there."', '"You\'re going nowhere. The fans would burn my car. Again."'] },
 };
 
@@ -26,6 +30,7 @@ export function cantAsk(c, id, age) {
   if (id === 'loan' && (c.loan || age > 23)) return c.loan ? 'Already on loan' : 'Loans are for young players';
   if (id === 'transfer' && c.transferListed) return 'Already on the transfer list';
   if (id === 'transfer' && age < 17) return 'Too young';
+  if (id === 'endLoan' && !c.loan) return 'You\'re not on loan';
   return null;
 }
 /** How keen the gaffer is: his approval of you, your recent form and your season so far. */
@@ -39,10 +44,13 @@ export function ask(c, id, avg, R = Math.random) {
   if (id === 'minutes') p += .1;
   if (id === 'loan') p = clamp(1.05 - p + (c.stats.apps < 5 ? .2 : 0), .15, .9); // the less he rates you, the happier he is to loan you out
   if (id === 'transfer') p = clamp(1 - p, .2, .85);
+  // A loan only gets cut short if you've been rubbish, and even then not often.
+  if (id === 'endLoan') p = c.approval < 35 || (avg && avg < 6.0) ? .25 : .03;
   const yes = R() < p, line = pick(LINES[id][yes ? 'yes' : 'no'], R);
   if (id === 'contract') { if (yes) return { yes, line, raise: true }; applyEffects(c, { manager: -3 }); }
   if (id === 'minutes') { if (yes) c.promised = c.week + 6; else applyEffects(c, { manager: -2 }); }
   if (id === 'loan') { if (yes) c.wantLoan = true; }
+  if (id === 'endLoan') { if (yes) c.loanEndAgreed = true; else applyEffects(c, { manager: -3 }); }
   if (id === 'transfer') { applyEffects(c, yes ? { manager: -8, fans: -4, honour: -2 } : { manager: -4 }); if (yes) c.transferListed = true; }
   return { yes, line };
 }

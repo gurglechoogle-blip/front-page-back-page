@@ -177,8 +177,22 @@ export function selection(c, f, R = Math.random) {
   if (c.intlWeek === c.week) return 'none'; // away with England
   if (c.injury || c.ban > 0) return 'none';
   if (myTeamIn(c, f).endsWith('-u21')) return R() < .9 ? 'start' : 'sub';
-  // Approval matters more where there's a real pathway: at an elite academy
-  // even the gaffer's favourite kid mostly watches.
+  // A professional contract (or a loan) says what you were signed to be. That's the
+  // starting point; the gaffer's opinion of you and your form move it either way.
+  const ROLE = { 'first choice': .8, 'rotation player': .5, 'squad player': .16 }, base = ROLE[c.contract.role || c.contract.label];
+  if (base != null) {
+    let p = base + (c.approval - 55) / 130 + (c.form - 50) / 220;
+    if (f.comp !== 'league') p += ['R1', 'R2', 'G'].includes(f.round) ? .2 : .05;
+    if (c.energy < 30) p -= .15;
+    if (c.promised >= c.week) p += .2;
+    if (c.transferListed) p *= .75;
+    p = clamp(p, .04, .96);
+    const subP = clamp(.4 + base * .4 + (c.approval - 55) / 200, .2, .85), r = R();
+    if (r < p) return 'start';
+    return r < p + subP * (1 - p) ? 'sub' : 'none';
+  }
+  // Academy and scholarship deals: approval matters more where there's a real pathway.
+  // At an elite academy even the gaffer's favourite kid mostly watches.
   let p = c.contract.pathway + ((c.approval - 50) / 110 + (c.form - 50) / 220) * (.4 + c.contract.pathway);
   if (f.comp !== 'league') p += ['R1', 'R2', 'G'].includes(f.round) ? .3 : .1;
   if (c.energy < 30) p -= .15;
@@ -367,6 +381,7 @@ export function nextWeek(c, R = Math.random) {
   if (win !== 'january') c.janWindowSeen = false;
   windowWeek(c, reputation(c, skillLevelExact(), age(c)), age(c), R).forEach(o => {
     const cl = club(o.clubId), ag = agentOf(c);
+    if (c.loan) { message(c, ag ? ag.name : `${club(c.loan.parent).short} (your parent club)`, `${club(c.loan.parent).name} have had ${o.type === 'loan' ? 'a loan' : 'a transfer'} offer for you from ${cl.name}${o.type === 'loan' ? ', to replace your current loan' : ''}. ${o.role === 'squad player' ? 'They\'ve said you wouldn\'t start.' : o.role === 'first choice' ? 'They see you as a starter.' : 'You\'d be rotating.'} Accepting it ends your loan here. Football → Contract & transfers.`); return; }
     message(c, ag ? ag.name : 'The club secretary', o.type === 'loan' ? `${cl.name} want you on loan for the season. You'd be ${o.role === 'first choice' ? 'their first-choice striker' : 'in the squad'}. Have a look: Football → Contract & transfers.` : `${cl.name} have made an offer. ${o.role === 'squad player' ? 'Be warned: they\'ve been clear you wouldn\'t start.' : o.role === 'first choice' ? 'They see you as a starter.' : 'You\'d be rotating.'} Football → Contract & transfers.`);
   });
   const deadline = d => ws <= d && d <= we;
