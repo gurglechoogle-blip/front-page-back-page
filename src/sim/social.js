@@ -56,7 +56,7 @@ export function nightOut(c, id, R = Math.random) {
   const eff = {}; for (const [k, v] of Object.entries(n.effects)) { if (k.startsWith('friend:')) { const f = c.friends[k.slice(7)]; if (f) f.loyalty = clamp(f.loyalty + v, 0, 100); } else eff[k] = v; }
   const applied = applyEffects(c, eff);
   let story = null;
-  if (R() < n.risk * ((c.staff || []).includes('driver') ? .5 : 1)) { story = pick(FR.nightRisks, R); applyEffects(c, story.effects); (c.weekNews = c.weekNews || []).push({ page: 'front', headline: fill(story.headline, { NAME: surname(c) }) }); }
+  if (R() < n.risk * ((c.staff || []).includes('driver') ? .5 : 1)) { story = pick(FR.nightRisks, R); const se = Object.assign({}, story.effects); if ((c.staff || []).includes('pr')) for (const k of ['honour', 'fans']) if (se[k] < 0) se[k] = Math.round(se[k] * .6); applyEffects(c, se); (c.weekNews = c.weekNews || []).push({ page: 'front', headline: fill(story.headline, { NAME: surname(c) }) }); }
   return { ok: true, line: pick(n.lines, R), effects: applied, story };
 }
 /** A big night this week takes the edge off matchday. */

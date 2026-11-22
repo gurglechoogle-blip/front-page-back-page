@@ -170,7 +170,15 @@ const daysBetween = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5
 export const needsRest = (c, f) => !!c.lastPlayed && c.lastPlayed !== f.date && daysBetween(c.lastPlayed, f.date) < 3 && daysBetween(c.lastPlayed, f.date) >= 0 || c.lastPlayed === f.date;
 /** Chance a sub actually gets on: the gaffer's trust, your form and this week's training. */
 export const subChance = c => clamp(.5 + (c.approval - 50) / 160 + (c.form - 50) / 250 + Math.min(3, (c.weekLog || []).filter(x => x.t === 'train').length) * .05, .3, .93);
+/** Out on the town the night before this game? */
+export const nightBefore = (c, f) => (c.weekLog || []).some(e => e.t === 'night' && e.day != null && addDays(weekStart(c.week), e.day) === addDays(f.date, -1));
 export function selection(c, f, R = Math.random) {
+  const hung = nightBefore(c, f); c._hang = hung;
+  const r = pickRole(c, f, R); delete c._hang;
+  if (hung && r !== 'start' && c.matchday) (c.matchday.why = c.matchday.why || {})[f.id] = 'night';
+  return r;
+}
+function pickRole(c, f, R) {
   if (needsRest(c, f)) { if (c.matchday) (c.matchday.why = c.matchday.why || {})[f.id] = 'rest'; return 'none'; }
   if (f.comp === 'friendly') return R() < .75 ? 'start' : 'sub';
   if (f.comp === 'intl') return c.injury || c.ban > 0 ? 'none' : R() < .7 ? 'start' : 'sub';
@@ -186,8 +194,9 @@ export function selection(c, f, R = Math.random) {
     if (c.energy < 30) p -= .15;
     if (c.promised >= c.week) p += .2;
     if (c.transferListed) p *= .75;
-    p = clamp(p, .04, .96);
-    const subP = clamp(.4 + base * .4 + (c.approval - 55) / 200, .2, .85), r = R();
+    if (c._hang) p *= .35; // the gaffer heard about last night
+    p = clamp(p, .02, .96);
+    const subP = clamp(.4 + base * .4 + (c.approval - 55) / 200, .2, .85) * (c._hang ? .6 : 1), r = R();
     if (r < p) return 'start';
     return r < p + subP * (1 - p) ? 'sub' : 'none';
   }
@@ -198,11 +207,13 @@ export function selection(c, f, R = Math.random) {
   if (c.energy < 30) p -= .15;
   if (c.promised >= c.week) p += .15;
   if (c.transferListed) p *= .75;
+  if (c._hang) p *= .35;
   p = clamp(p, .02, .92);
   // Big clubs don't hand out league minutes: you have to be genuinely good enough.
   let subP = clamp(.35 + c.contract.pathway, .2, .75);
   const gap = skillLevelExact() - (LEVEL_NEEDED[club(c.clubId).league] ?? 20);
   if (gap < 0) { const k = f.comp === 'league' ? 1 : .5; p *= Math.max(.005, 1 + gap / (14 / k)); subP *= Math.max(.02, 1 + gap / (20 / k)); }
+  if (c._hang) subP *= .6;
   const r = R();
   if (r < p) return 'start';
   return r < p + subP * (1 - p) ? 'sub' : 'none';
@@ -336,7 +347,7 @@ export function finishWeek(c, R = Math.random) {
   c.lastWeekDate = weekStart(c.week);
   const [fines, fineNotes] = clauseWeek(c, (c.matchday ? c.matchday.results : []).some(r => r.role !== 'none'), R);
   fineNotes.forEach(t => notice(c, 'Contract', t));
-  const bills = [...weeklyBills(c), ...fines], out = bills.reduce((a, b) => a + b.amount, 0);
+  const bills = [...weeklyBills(c), ...fines], out = bills.reduce((a, b) => a + b.amount, 0); c._lastBills = out;
   c.bank += c.contract.wage - out;
   // Image rights and sponsorship: the more the fans love you, the more it pays.
   const cl = c.contract.clauses || {}, ag2 = agentOf(c);

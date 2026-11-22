@@ -72,13 +72,19 @@ export function fameWeek(c, matchGoals, avgRating, R = Math.random) {
   // Invitations: say no and it costs you.
   if (R() < .12) c.pending.push({ type: 'invite' });
   // Trolls after a bad week.
-  if (avgRating && avgRating < 5.6 && R() < .6) c.pending.push({ type: 'troll' });
+  if (avgRating && avgRating < 5.6 && R() < (hasStaff(c, 'pr') ? .25 : .6)) c.pending.push({ type: 'troll' });
   // Staff: perks and what can go wrong.
   if (hasStaff(c, 'nutritionist')) applyEffects(c, { energy: 3 });
   if (hasStaff(c, 'chef')) applyEffects(c, { energy: 2, partner: .3 });
   if (hasStaff(c, 'psych')) c.form = Math.max(c.form, 40);
-  if (hasStaff(c, 'nanny') && c.kids && c.kids.length) applyEffects(c, { family: .6 });
-  if (hasStaff(c, 'adviser')) for (const k in c.funds) c.funds[k] = Math.round(c.funds[k] * 1.003);
+  if (hasStaff(c, 'nanny')) applyEffects(c, c.kids && c.kids.length ? { family: .6 } : { family: .3, energy: 1 }); // no kids: they help run the house
+  if (hasStaff(c, 'adviser')) {
+    for (const k in c.funds) c.funds[k] = Math.round(c.funds[k] * 1.003);
+    // They watch the money: a warning when you're spending more than you earn, or heading for the red.
+    const bills = (c._lastBills || 0), wage = c.contract ? c.contract.wage : 0;
+    if (c.bank < wage * 2 && c.week - (c.adviserWarned || -99) >= 4) { c.adviserWarned = c.week; out.push(['Your financial adviser', `A word: your balance is down to £${Math.round(c.bank).toLocaleString('en-GB')}. That's under two weeks' wages. I'd cut back before the bank starts writing letters.`]); }
+    else if (bills > wage && c.week - (c.adviserWarned || -99) >= 6) { c.adviserWarned = c.week; out.push(['Your financial adviser', `You're spending £${Math.round(bills).toLocaleString('en-GB')} a week and earning £${wage.toLocaleString('en-GB')}. That maths only goes one way. Shall we sell something?`]); }
+  }
   for (const id of c.staff) if (R() < .015) {
     const s = L3.staff.find(x => x.id === id);
     if (s.oopsEffects) applyEffects(c, s.oopsEffects);

@@ -27,6 +27,8 @@ export function cantBuy(c, it, age) {
 export function buy(c, id, age) {
   const it = item(id), why = cantBuy(c, it, age); if (why) return { ok: false, why };
   c.bank -= it.price; if (!it.consumable) c.owned.push(it.id);
+  // Shopping record, for the achievements.
+  const sh = c.shopping = c.shopping || { spent: 0, bought: 0, gifts: [] }; sh.spent += it.price; sh.bought++; if (it.cat === 'gifts') sh.gifts.push(it.id);
   if (it.flag) c.flags[it.flag] = true;
   const effects = applyEffects(c, it.once || {});
   if (it.news) (c.weekNews = c.weekNews || []).push({ page: 'front', headline: fill(it.news, { NAME: surname(c) }) });
@@ -118,6 +120,7 @@ export function debtOptions(c) {
     const L = Object.assign({}, L0, { max: lenderMax(c, L0) });
     const ok = !L.min || Object.entries(L.min).every(([m, v]) => lenderStat(c, m) >= v);
     const owing = c.debts.some(d => d.key === key);
+    if (key === 'loanShark' && (c.staff || []).includes('adviser')) continue; // your adviser won't let you near them
     if (ok && !(owing && key !== 'loanShark')) opts.push({ rung: key === 'loanShark' ? 4 : 3, type: 'borrow', id: key, label: `Borrow from ${L.name.replace(/^Your /, "your ")}`, value: L.max, warn: L.rate ? `${Math.round(L.rate * 100)}% interest a week. Compounding.` : 'They\'ll want it back.' });
   }
   return opts.sort((a, b) => a.rung - b.rung);

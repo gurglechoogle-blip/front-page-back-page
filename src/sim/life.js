@@ -92,7 +92,8 @@ export function chooseEvent(c, id, i, R = Math.random) {
   const eff = Object.assign({}, ch.effects);
   // The fixer makes problems smaller (for a price you'll pay later).
   if (c.agent === 'grey' && eff.honour < 0) { eff.honour = Math.round(eff.honour * .6); c.flags.greyKnows = true; }
-  if (c.staff && c.staff.includes('pr') && eff.honour < 0) eff.honour = Math.round(eff.honour * .8);
+  // A PR manager spins scandals: honour and fan damage cut by 40%.
+  if (c.staff && c.staff.includes('pr')) { if (eff.honour < 0) eff.honour = Math.round(eff.honour * .6); if (eff.fans < 0) eff.fans = Math.round(eff.fans * .6); }
   if (eff.loyalty != null) { if (e.friend) eff['friend:' + e.friend] = eff.loyalty; delete eff.loyalty; }
   const effects = applyEffects(c, eff);
   if (ch.flag) c.flags[ch.flag] = true;
@@ -128,7 +129,7 @@ export function answerPress(c, item, i) {
   const quote = { week: c.week, q: item.q, a: a.text, tone: a.tone, journo: item.journo };
   c.quotes.unshift(quote); if (c.quotes.length > 60) c.quotes.length = 60;
   c.weekNews.push({ page: 'back', quote: a.text, tone: a.tone });
-  if (a.tone === 'dig') c.weekNews.push({ page: 'front', headline: fill(pick(['{NAME} IN FURIOUS OUTBURST', 'MOUTH ALMIGHTY: {NAME} LETS RIP', '{NAME} SPARKS ROW']), { NAME: surname(c) }), weak: true });
+  if (a.tone === 'dig' && !(c.staff || []).includes('pr')) c.weekNews.push({ page: 'front', headline: fill(pick(['{NAME} IN FURIOUS OUTBURST', 'MOUTH ALMIGHTY: {NAME} LETS RIP', '{NAME} SPARKS ROW']), { NAME: surname(c) }), weak: true });
   return { effects };
 }
 

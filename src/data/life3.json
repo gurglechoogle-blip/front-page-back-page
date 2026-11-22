@@ -260,7 +260,7 @@
    "id": "physio",
    "name": "Physio",
    "wage": 500,
-   "perk": "Shorter injuries",
+   "perk": "Fewer injuries, and quicker recovery when you do get one",
    "oops": "Has a theory about magnets. You're wearing 14 of them.",
    "oopsEffects": {
     "fans": -1
@@ -280,7 +280,7 @@
    "id": "pa",
    "name": "Personal assistant",
    "wage": 300,
-   "perk": "+1 time slot a week",
+   "perk": "Juggles your diary: once a week, one activity doesn't use up your day",
    "oops": "Knows all your secrets. Has started hinting about a pay rise.",
    "oopsEffects": {
     "money": -1000
@@ -290,7 +290,7 @@
    "id": "adviser",
    "name": "Financial adviser",
    "wage": 250,
-   "perk": "Savings grow, warns you about debt",
+   "perk": "Savings grow, warns you before money gets tight, keeps the loan sharks away",
    "oops": "The dodgy one runs off with your savings funds",
    "oopsFunds": true,
    "oopsNews": "ADVISER VANISHES WITH {NAME}'S SAVINGS"
@@ -299,7 +299,7 @@
    "id": "pr",
    "name": "PR manager",
    "wage": 600,
-   "perk": "Softer scandals, better press",
+   "perk": "Spins scandals (less honour and fan damage), keeps your digs out of the papers, fewer trolls",
    "oops": "Overspins a non-story into a story",
    "oopsEffects": {
     "honour": -2
@@ -320,7 +320,7 @@
    "id": "nanny",
    "name": "Nanny",
    "wage": 450,
-   "perk": "Family stays happy when you're busy",
+   "perk": "Keeps the family happy when you're busy (and helps run the house if there are no kids yet)",
    "oops": "Your partner thinks you're 'too close'. You're not. You've spoken twice.",
    "oopsEffects": {
     "partner": -8

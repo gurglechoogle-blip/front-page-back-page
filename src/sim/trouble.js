@@ -13,6 +13,7 @@ export function rollInjury(c, S, age, R = Math.random) {
   if (S.role === 'none' || c.injury) return null;
   let p = .022 + Math.max(0, 40 - c.energy) / 1200 + (age > 30 ? .012 : 0);
   if (c.rooms && c.rooms.includes('recovery')) p *= .6;
+  if (c.staff && c.staff.includes('physio')) p *= .7; // prehab: fewer injuries, and shorter ones
   if (R() > p) return null;
   const [name, a, b] = pick(L2.injuries, R); let weeks = a + Math.floor(R() * (b - a + 1));
   if (c.staff && c.staff.includes('physio')) weeks = Math.max(1, Math.round(weeks * .7));

@@ -1,8 +1,9 @@
-// The trophy cabinet: 48 achievements in three tiers. checkAchievements is
+// The trophy cabinet: 62 achievements in three tiers. checkAchievements is
 // called after each match, each week, at the end of each season, and at the
 // very end of the game; anything new is queued in c.achNew for a toast.
 import { CAL, ABROAD, club, winnerOf } from './season.js';
-import { netWorth, hasCar } from './money.js';
+import { netWorth, hasCar, item } from './money.js';
+const owns = (c, cat) => (c.owned || []).filter(id => item(id) && item(id).cat === cat).length;
 
 const CUP = ['eflcup', 'facup', 'trophy', 'natcup', 'ucl', 'uel'], EURO = ['ucl', 'uel'];
 const RANK = { PL: 1, CH: 2, L1: 3, L2: 4, NL: 5 };
@@ -64,6 +65,21 @@ export const ACH = [
   ['tycoon', 'gold', 'Tycoon', 'Net worth of £50 million', 'week', c => netWorth(c) >= 5e7],
   ['freeMan', 'gold', 'Free Man', 'Serve a prison sentence and come back to play again', 'week', c => c.flags.freeMan],
   ['teflon', 'gold', 'Teflon', 'Survive three major scandals without being sacked', 'week', c => SCANDALS.filter(f => c.flags[f]).length >= 3 && !c.flags.forcedOut],
+  // Shopping.
+  ['firstBuy', 'bronze', 'Treat Yourself', 'Buy anything from the shops', 'week', c => (c.shopping || {}).bought >= 1],
+  ['giftGiver', 'bronze', 'Mum\'s Favourite', 'Buy 3 gifts for family, friends or teammates', 'week', c => ((c.shopping || {}).gifts || []).length >= 3],
+  ['bestFriend', 'bronze', 'Best Friend', 'Own a pet', 'week', c => owns(c, 'pets') >= 1],
+  ['dressed', 'bronze', 'Dressed to Impress', 'Own 4 things from the Look shop', 'week', c => owns(c, 'look') >= 4],
+  ['petrolhead', 'silver', 'Petrolhead', 'Own 3 vehicles at once', 'week', c => (c.owned || []).filter(id => item(id) && item(id).cat === 'wheels' && id !== 'lessons').length >= 3],
+  ['blingBling', 'silver', 'Bling Bling', 'Own 4 pieces of bling', 'week', c => owns(c, 'bling') >= 4],
+  ['dolittle', 'silver', 'Doctor Dolittle', 'Own 4 pets at once', 'week', c => owns(c, 'pets') >= 4],
+  ['gadgetGeek', 'silver', 'Gadget Geek', 'Own 6 gadgets (tech or home)', 'week', c => owns(c, 'tech') + owns(c, 'home') >= 6],
+  ['bestSon', 'silver', 'Best Child Ever', 'Buy your mum a house', 'week', c => ((c.shopping || {}).gifts || []).includes('mumHouse')],
+  ['bigSpender', 'silver', 'Big Spender', 'Spend £1 million in the shops', 'week', c => (c.shopping || {}).spent >= 1e6],
+  ['jetSet', 'gold', 'Jet Set', 'Own a private jet or a superyacht', 'week', c => (c.owned || []).some(id => id === 'privateJet' || id === 'superyacht')],
+  ['islandLife', 'gold', 'Island Life', 'Own your own island', 'week', c => (c.owned || []).includes('island')],
+  ['chairman', 'gold', 'Mr Chairman', 'Buy a football club', 'week', c => (c.owned || []).includes('localClub')],
+  ['collector', 'gold', 'The Collector', 'Own 40 different things at once', 'week', c => new Set(c.owned || []).size >= 40],
   ['comingHome', 'gold', 'Football\'s Coming Home', 'Score the winner in the 2046 World Cup final', 'end', (c, x) => x && x.scoredWinner],
 ].map(([id, tier, name, how, when, test]) => ({ id, tier, name, how, when, test }));
 
