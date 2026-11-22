@@ -28,7 +28,7 @@ export function createTournamentScreen(root, go) {
     if (done) done.onclick = finishUp;
     if (play) play.onclick = () => {
       if (!T.selected) { simulateEngland(c); save(); mount(); return; }
-      go('match', { home: club(f.home), away: club(f.away), mySide: f.home === 'nat-eng' ? 'home' : 'away', cup: !!f.knockout, extraTime: true, role: T.role, stadium: f.neutral || `a stadium in ${T.hosts.split(/[,(]/)[0].replace(/ and .*/, '')}`, label: f.label, trust: .7, form: Math.max(.3, c.form / 100), playerName: c.name,
+      go('match', { home: club(f.home), away: club(f.away), mySide: f.home === 'nat-eng' ? 'home' : 'away', cup: !!f.knockout, bigGame: true, extraTime: true, role: T.role, stadium: f.neutral || `a stadium in ${T.hosts.split(/[,(]/)[0].replace(/ and .*/, '')}`, label: f.label, trust: .7, form: Math.max(.3, c.form / 100), playerName: c.name,
         onDone: S => { tournamentRecord(c, f, { hs: S.score.home, as: S.score.away, pens: S.pens ? [S.pens.home, S.pens.away] : null }); if (S.role !== 'none') { c.intl.caps.senior++; c.intl.goals.senior += S.my.goals; logApp(c, 'nat-eng', 'tourn', S); } save(); go('tournament'); } });
     };
     void surname;

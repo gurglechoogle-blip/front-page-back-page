@@ -50,7 +50,14 @@ export class MatchSim {
     this.stoppage = { '1H': 1 + Math.floor(R() * 4), '2H': 2 + Math.floor(R() * 5), 'ET1': Math.floor(R() * 3), 'ET2': 1 + Math.floor(R() * 3) };
     // Team-mates who rate you pass to you more: support (-1..1) is worth up to a chance either way.
     this.fans = opts.fans ?? 50; this.year = opts.year || 2026; this.subChance = opts.subChance ?? .78; this.unusedSub = false; this.hooked = null;
-    this.nChances = this.role === 'none' ? 0 : this.role === 'sub' ? 1 + (R() < .45 ? 1 : 0) : clamp(chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0), 3, 6);
+    // Your chances: the gaffer's trust and your form set the base; then the match itself.
+    // Against much stronger opposition you see less of the ball, against weaker sides more,
+    // a bit more at home, and big games (finals, internationals) are tighter.
+    const myStr = this[this.mySide].strength || 60, oppStr = this[this.oppSide].strength || 60;
+    const adj = clamp((myStr - oppStr) / 14, -1.6, 1.6) + (this.mySide === 'home' ? .3 : 0) - (opts.bigGame ? .4 : 0);
+    if (this.role === 'none') this.nChances = 0;
+    else if (this.role === 'sub') this.nChances = clamp(1 + (R() < .45 ? 1 : 0) + (adj >= 1 ? 1 : adj <= -1.2 ? -1 : 0), 1, 3);
+    else { const n = chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0) + adj; this.nChances = clamp(Math.round(n), 2, opts.bigGame ? 5 : 7); }
     this.subMinute = this.role === 'sub' ? 58 + Math.floor(R() * 18) : null;
     this.schedule = {};
     this.planRegulation();

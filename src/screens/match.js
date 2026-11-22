@@ -50,7 +50,7 @@ export function createMatchScreen(root, go, params) {
   // Career matches save themselves as they go (params.persist) and can be resumed (params.resume).
   const resume = params.resume || null;
   if (params.onDone && state.career) Object.assign(kits.us, lookFields(state.career, careerAge(state.career)));
-  const sim = resume ? MatchSim.restore(resume.sim) : new MatchSim({ home, away, mySide, cup: params.cup, extraTime: params.extraTime !== false, role, stadium, trust: params.trust, form: params.form, playerName: pName });
+  const sim = resume ? MatchSim.restore(resume.sim) : new MatchSim({ home, away, mySide, cup: params.cup, extraTime: params.extraTime !== false, role, stadium, trust: params.trust, form: params.form, playerName: pName, support: params.support, subChance: params.subChance, fans: params.fans, year: params.year, bigGame: params.bigGame });
   const feedLog = resume ? resume.feed.slice() : [];
   let lastPersist = 0;
   function persist(chancePending, force) {

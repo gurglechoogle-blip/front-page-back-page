@@ -219,7 +219,7 @@ export function matchParams(c, f, role) {
   const mine = myTeamIn(c, f), mySide = f.home === mine ? 'home' : 'away';
   return {
     home: club(f.home), away: club(f.away), mySide, cup: !!f.knockout, extraTime: !!f.extraTime, role,
-    stadium: f.neutral || null, label: compName(f), trust: c.approval / 100, form: effectiveForm(c), fixtureId: f.id, subChance: subChance(c),
+    stadium: f.neutral || null, label: compName(f), bigGame: f.round === 'F' || f.comp === 'intl' || f.comp === 'tourn', trust: c.approval / 100, form: effectiveForm(c), fixtureId: f.id, subChance: subChance(c),
     support: support(c), fans: c.meters.fans, year: +CAL.season.slice(0, 4),
   };
 }
