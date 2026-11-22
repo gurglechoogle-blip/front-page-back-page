@@ -118,7 +118,7 @@ export function debtOptions(c) {
     const L = Object.assign({}, L0, { max: lenderMax(c, L0) });
     const ok = !L.min || Object.entries(L.min).every(([m, v]) => lenderStat(c, m) >= v);
     const owing = c.debts.some(d => d.key === key);
-    if (ok && !(owing && key !== 'loanShark')) opts.push({ rung: key === 'loanShark' ? 4 : 3, type: 'borrow', id: key, label: `Borrow from ${L.name}`, value: L.max, warn: L.rate ? `${Math.round(L.rate * 100)}% interest a week. Compounding.` : 'They\'ll want it back.' });
+    if (ok && !(owing && key !== 'loanShark')) opts.push({ rung: key === 'loanShark' ? 4 : 3, type: 'borrow', id: key, label: `Borrow from ${L.name.replace(/^Your /, "your ")}`, value: L.max, warn: L.rate ? `${Math.round(L.rate * 100)}% interest a week. Compounding.` : 'They\'ll want it back.' });
   }
   return opts.sort((a, b) => a.rung - b.rung);
 }
