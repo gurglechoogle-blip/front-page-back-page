@@ -21,7 +21,8 @@ import { MatchSim, managerMood } from '../sim/matchSim.js';
 import { pickR } from '../sim/text.js';
 import C from '../data/commentary.json';
 import clubsData from '../data/clubs.json';
-import { state, save, skillF, playerName, addSkill } from '../state/gameState.js';
+import { state, save, skillF, playerName, addSkill, skillLevelExact } from '../state/gameState.js';
+import { matchSkillFactor } from '../sim/difficulty.js';
 import { lookFields } from '../sim/looks.js';
 import { age as careerAge } from '../sim/career.js';
 
@@ -159,7 +160,8 @@ export function createMatchScreen(root, go, params) {
   /* ---------- chances ---------- */
   function startMoment() {
     $('feed').classList.add('hidden'); phase = 'moment'; persist(true, true);
-    moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: skillF, playerName: pName, onResult: r => { chanceResult = r; if (!r.goal) sfx.groan(); } });
+    const opp = mySide === 'home' ? away : home, lvl = skillLevelExact(), msf = k => matchSkillFactor(skillF(k), lvl, opp.strength || 60);
+    moment = createMoment(chanceEvent.moment).start({ kits, skillFactor: msf, playerName: pName, onResult: r => { chanceResult = r; if (!r.goal) sfx.groan(); } });
     moment.recorder = makeRecorder(); moment.recCam = getCam().n; moment.recVenue = Object.assign({}, getVenue());
   }
   function endMoment() {
