@@ -26,12 +26,15 @@ function score5(cs) {
 export const cmp = (a, b) => { for (let i = 0; i < Math.max(a.length, b.length); i++) { const d = (a[i] || 0) - (b[i] || 0); if (d) return d; } return 0; };
 /** Best 5 of up to 7 cards. */
 export function best(cs) {
-  let top = null; const n = cs.length;
-  for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
-    const five = cs.filter((_, i) => i !== a && i !== b);
-    if (five.length !== 5) continue; const s = score5(five); if (!top || cmp(s, top) > 0) top = s;
-  }
-  return top || score5(cs);
+  if (cs.length <= 5) return score5(cs);
+  // Every way of choosing 5 cards (works for 6 cards on the turn and 7 on the river).
+  let top = null; const n = cs.length, pick = [];
+  const rec = start => {
+    if (pick.length === 5) { const sc = score5(pick.map(i => cs[i])); if (!top || cmp(sc, top) > 0) top = sc; return; }
+    for (let i = start; i <= n - (5 - pick.length); i++) { pick.push(i); rec(i + 1); pick.pop(); }
+  };
+  rec(0);
+  return top;
 }
 export const HAND_NAMES = ['High card', 'Pair', 'Two pair', 'Three of a kind', 'Straight', 'Flush', 'Full house', 'Four of a kind', 'Straight flush'];
 /** Chance of winning with these hole cards against `opp` random hands, given the board. */
