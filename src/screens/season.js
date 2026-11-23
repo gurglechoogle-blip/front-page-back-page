@@ -1,7 +1,7 @@
 import { ask } from '../engine/ask.js';
 // SEASON REVIEW: where you finished and what you did. Season two comes later.
 import { esc } from '../engine/util.js';
-import { state, save , newGame } from '../state/gameState.js';
+import { state, save, newGame, exportSave } from '../state/gameState.js';
 import { club, zone, DIVS, CAL, roundName } from '../sim/season.js';
 import { seasonSummary, rollWorld, beginSeason, age, message } from '../sim/career.js';
 import { showWindow } from './contractUI.js';
@@ -26,11 +26,13 @@ export function createSeasonScreen(root, go) {
       <h3>You</h3><div class="row"><span>Appearances</span><b>${S.stats.apps}</b></div><div class="row"><span>Goals</span><b>${S.stats.goals}</b></div><div class="row"><span>Assists</span><b>${S.stats.assists}</b></div><div class="row"><span>Average rating</span><b>${S.avg ? S.avg.toFixed(2) : '–'}</b></div><div class="row"><span>Bank balance</span><b>£${Math.round(S.bank).toLocaleString('en-GB')}</b></div>
       <h3>Cups</h3>${cups}
       <div id="cardBox"></div>
+      <div class="backupbox"><b>💾 Back up your career</b><p class="dim">The game saves in your browser, which can clear it without asking. A downloaded save file is the only copy that survives anything. ${c.lastExport ? `Last downloaded: ${esc(c.lastExport.season)}.` : 'You\'ve never downloaded one.'}</p><button class="btn gold small" id="seasonDl">Download save file</button></div>
       <p class="dim">Transfers, loans and contract talks arrive in a later update. For now your club keeps you, and the world moves on: promotions, relegations and all.</p>
       <div class="endBtns"><button class="btn gold big" id="nextSeason">START ${seasonYear() + 1}-${String(seasonYear() + 2).slice(-2)} ▶</button></div>
       <div class="endBtns"><button class="btn" id="hub">Back to the hub</button><button class="btn red" id="new">Start a new career</button></div>
     </div></div>`;
     root.querySelector('#hub').onclick = () => go('hub');
+    root.querySelector('#seasonDl').onclick = () => { exportSave(); const b = root.querySelector('#seasonDl'); b.textContent = 'Downloaded ✓'; b.disabled = true; };
     const openWindow = () => showWindow(c, { rep: reputation(c, skillLevelExact(), age(c)), age: age(c), window: 'summer', midSeason: false, onDone: () => {
       const lost = ageSkills(age(c), (c.rooms && c.rooms.includes('gym')) || (c.staff || []).includes('trainer'));
       beginSeason(c);

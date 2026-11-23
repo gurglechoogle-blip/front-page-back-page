@@ -15,11 +15,13 @@ import { createCasinoScreen } from './screens/casino.js';
 import { createTournamentScreen } from './screens/tournament.js';
 import { createFinaleScreen } from './screens/finale.js';
 import { message } from './sim/career.js';
-import { save } from './state/gameState.js';
+import { save, protectStorage, storageProtected } from './state/gameState.js';
 import { unlockAudio, startMusic, stopMusic, stopCrowd, settings, setSfx, setMusic, sfx } from './engine/audio.js';
 
 // Sound and full screen: a little control bar that's always there.
 unlockAudio();
+protectStorage(); // ask the browser to keep the save for good
+window.addEventListener('pointerdown', () => { if (!storageProtected()) protectStorage(); }, { once: true });
 const MUSIC_SCREENS = ['start', 'hub', 'week', 'season', 'tournament'];
 function controls() {
   const d = document.createElement('div'); d.className = 'gctl';

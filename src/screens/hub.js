@@ -47,7 +47,7 @@ import { fmtValue, clubBudget } from '../sim/value.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
 import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp, maybeMeet, meetScene, meetTries, tryMeet } from '../sim/partner.js';
-import { exportSave, importSave, saveOk } from '../state/gameState.js';
+import { exportSave, importSave, saveOk, storageProtected } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
@@ -108,7 +108,12 @@ export function createHubScreen(root, go, params = {}) {
     $('nextfx').onclick = e => { e.stopPropagation(); matchday(); };
     $('mclose').onclick = closeModal; $('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
     $('newCareer').onclick = e => { e.preventDefault(); modal(`<h2>Start a new career?</h2><p>This one will be gone for good. Gran will be devastated.</p><div class="endBtns"><button class="btn red" id="reallyNew">Yes, start again</button><button class="btn" id="keep">Keep this one</button></div>`); $('reallyNew').onclick = () => { newGame(); go('start'); }; $('keep').onclick = closeModal; };
-    const paintSaved = () => { const el = $('saved'); if (!el) return; const ok = saveOk(); el.textContent = ok ? 'Saved automatically' : '⚠ NOT SAVED: your browser\'s storage is full. Download your save file now!'; el.classList.toggle('bad', !ok); };
+    const paintSaved = () => {
+      const el = $('saved'); if (!el) return; const ok = saveOk(), prot = storageProtected(), ex = c.lastExport, ago = ex ? c.week - ex.week : null;
+      const backup = ex ? (ago < 1 ? 'save file downloaded this week' : `save file downloaded ${ago} week${ago === 1 ? '' : 's'} ago`) : 'never downloaded a save file';
+      el.innerHTML = ok ? `Saved automatically${prot ? ' · <span class="good" title="Your browser has agreed not to clear this game\'s storage on its own.">🔒 storage protected</span>' : prot === false ? ' · <span class="bad" title="Your browser may clear the save on its own. Download your save file regularly.">⚠ storage not protected</span>' : ''} · <span class="${!ex || ago > 26 ? 'bad' : 'dim'}">${backup}</span>` : '⚠ NOT SAVED: your browser\'s storage is full. Download your save file now!';
+      el.classList.toggle('bad', !ok);
+    };
     window.addEventListener('fpbp-save', paintSaved); paintSaved();
     if (!saveOk()) modal(`<h2>Your game isn't saving</h2><p class="evtext">Your browser has run out of room for the save. Your progress is safe while this tab stays open, but it won't survive a reload.</p><p>Download your save file now (and keep it somewhere safe). Then try clearing some old replays from your Scrapbook.</p><div class="endBtns"><button class="btn gold" id="dlNow">Download save file</button></div>`), $('dlNow').onclick = () => { exportSave(); closeModal(); };
     $('dl').onclick = e => { e.preventDefault(); exportSave(); toast('Save file downloaded. Keep it somewhere safe, like under the mattress.'); };

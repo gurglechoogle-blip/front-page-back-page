@@ -98,7 +98,19 @@ if (loadedFrom === 'backup') save(); // repair the main save straight away
 export function backup() { if (!store.set(BACKUP_KEY, JSON.stringify(state))) store.remove(BACKUP_KEY); }
 
 /** The whole save as a file to download. */
+/** Ask the browser to keep the save for good (it won't clear 'persistent' storage on its own). */
+let persisted = null;
+export const storageProtected = () => persisted;
+export async function protectStorage() {
+  try {
+    if (!navigator.storage || !navigator.storage.persist) { persisted = false; return false; }
+    persisted = await navigator.storage.persisted() || await navigator.storage.persist();
+  } catch (e) { persisted = false; }
+  window.dispatchEvent(new Event('fpbp-save'));
+  return persisted;
+}
 export function exportSave() {
+  if (state.career) { state.career.lastExport = { week: state.career.week, season: state.career.season }; save(); }
   const blob = new Blob([JSON.stringify(state)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   const who = (state.profile.name || 'player').replace(/[^\w-]+/g, '-').toLowerCase();
