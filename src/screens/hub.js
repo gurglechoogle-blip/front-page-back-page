@@ -587,7 +587,14 @@ export function createHubScreen(root, go, params = {}) {
   }
 
   /* ---------- modal / toast ---------- */
-  function modal(html, noClose) { $('mbody').innerHTML = html; $('modal').classList.remove('hidden'); $('mclose').style.display = noClose ? 'none' : ''; }
+  // Redrawing the same pop-up (after a Buy, Sell, Hire...) keeps your scroll position.
+  const modalSig = el => { const h = el.querySelector('h2'), t = el.querySelector('.tab.on'); return (h ? h.textContent : '') + '|' + (t ? t.textContent : ''); };
+  function modal(html, noClose) {
+    const box = $('mbody'), open = !$('modal').classList.contains('hidden'), before = open ? modalSig(box) : null;
+    const tops = open ? [box.scrollTop, ...[...box.querySelectorAll('.scroll')].map(x => x.scrollTop)] : null;
+    box.innerHTML = html; $('modal').classList.remove('hidden'); $('mclose').style.display = noClose ? 'none' : '';
+    if (open && tops && modalSig(box) === before) { box.scrollTop = tops[0]; [...box.querySelectorAll('.scroll')].forEach((x, i) => { if (tops[i + 1] != null) x.scrollTop = tops[i + 1]; }); }
+  }
   function closeModal() { $('modal').classList.add('hidden'); }
   let toastT = 0;
   function showAchToasts() {
