@@ -3,6 +3,7 @@
 import { esc } from '../engine/util.js';
 import { SHOP, item, home, room, cantBuy, buy, sell, cantMove, moveHome, buyRoom, roomSlots, netWorth, payIntoFund, takeFromFund, debtOptions, takeOption } from '../sim/money.js';
 import { weeklyBills } from '../sim/career.js';
+import { applyEffects } from '../sim/life.js';
 
 export const money = n => (n < 0 ? '-£' : '£') + Math.abs(Math.round(n)).toLocaleString('en-GB');
 const q = (H, s) => H.root.querySelector(s), qa = (H, s) => H.root.querySelectorAll(s);
@@ -15,9 +16,21 @@ export function showBank(H) {
     <h3>Every week</h3>${row('Wages', '+' + money(c.contract.wage))}${bills.map(b => row(esc(b.what), '-' + money(b.amount))).join('')}${row('Left over', money(c.contract.wage - out))}
     <h3>Savings funds</h3><p class="dim">Put money aside. Tempting to raid when you're skint. Family will notice.</p>
     ${SHOP.funds.map(([k, l]) => `<div class="fund"><span>${l}</span><b>${money(c.funds[k])}</b><button class="btn small" data-f="${k}" data-a="50">+£50</button><button class="btn small" data-f="${k}" data-a="500">+£500</button><button class="btn small" data-f="${k}" data-a="5000">+£5k</button><button class="btn small red" data-f="${k}" data-a="-1">Take it out</button></div>`).join('')}
-    <h3>Debts</h3>${c.debts.length ? c.debts.map(d => row(esc(d.name) + (d.rate ? ` <small>(${Math.round(d.rate * 100)}%/wk)</small>` : ''), money(d.balance))).join('') : '<p class="dim">None. Gran is proud.</p>'}
+    <h3>Debts</h3>${c.debts.length ? c.debts.map((d, i) => `<div class="fund"><span>${esc(d.name)}${d.rate ? ` <small>(${Math.round(d.rate * 100)}%/wk)</small>` : ''}</span><b>${money(d.balance)}</b>${c.bank >= Math.ceil(d.balance) ? `<button class="btn small gold" data-pay="${i}">Pay it off</button>` : c.bank > 0 ? `<button class="btn small" data-pay="${i}">Pay ${money(Math.floor(c.bank))}</button>` : '<small class="dim">Nothing to pay with</small>'}</div>`).join('') : '<p class="dim">None. Gran is proud.</p>'}
   </div>`);
-  qa(H, '.fund button').forEach(b => b.onclick = () => {
+  qa(H, '[data-pay]').forEach(b => b.onclick = () => {
+    const d = c.debts[+b.dataset.pay]; if (!d) return;
+    const amt = Math.min(Math.ceil(d.balance), Math.floor(c.bank)); if (amt <= 0) return;
+    c.bank -= amt; d.balance -= amt;
+    const cleared = d.balance <= 1; if (cleared) c.debts = c.debts.filter(x => x !== d);
+    // Paying people back early is noticed.
+    if (cleared && ['family', 'mum', 'gran'].includes(d.key)) applyEffects(c, { family: 3 });
+    else if (cleared && ['priya', 'lee', 'deano', 'stan'].includes(d.key)) applyEffects(c, { ['friend:' + d.key]: 4 });
+    else if (cleared && (d.key === 'teammate' || d.key === 'captain')) applyEffects(c, { teammates: 2 });
+    H.toast(cleared ? `${d.name}: paid off in full. What a weight off.` : `Paid ${money(amt)} off. ${money(d.balance)} to go.`);
+    H.save(); H.render(); showBank(H);
+  });
+  qa(H, '.fund button:not([data-pay])').forEach(b => b.onclick = () => {
     const k = b.dataset.f, a = +b.dataset.a;
     if (a < 0) { const v = takeFromFund(c, k, c.funds[k]); H.toast(v ? `Took ${money(v)} out. It feels like nothing. It isn't.` : 'Nothing in there.'); }
     else { const v = payIntoFund(c, k, a); H.toast(v ? `${money(v)} put away. Very grown up.` : 'You haven\'t got it to put away.'); }
