@@ -57,6 +57,16 @@ const MENUS = {
 };
 const money = n => (n < 0 ? '-£' : '£') + Math.abs(Math.round(n)).toLocaleString('en-GB');
 const oppOf = (c, f) => { const me = myTeamIn(c, f); return club(f.home === me ? f.away : f.home); };
+const ord = n => n + ((n % 100 > 10 && n % 100 < 14) ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th');
+/** Scouting line for a fixture: their power rating against yours, and where they sit in the table. */
+function scoutLine(c, f) {
+  const me = club(myTeamIn(c, f) || c.clubId), opp = oppOf(c, f);
+  let where = '';
+  if (opp.league === me.league && DIVS[opp.league]) { const t = leagueTable(c), i = t.findIndex(r => r.id === opp.id); if (i >= 0 && t[0].p) where = `${ord(i + 1)} in ${DIVS[opp.league].short}`; }
+  else if (DIVS[opp.league]) where = DIVS[opp.league].short;
+  else if (opp.league === 'INT') where = 'International';
+  return { opp: opp.strength, me: me.strength, where };
+}
 const ha = (c, f) => f.neutral ? 'N' : f.home === myTeamIn(c, f) ? 'H' : 'A';
 
 const MEDAL = { bronze: '🥉', silver: '🥈', gold: '🥇' }, TIER = { bronze: '#c98b4b', silver: '#c0c7cf', gold: '#ffc928' };
@@ -119,7 +129,7 @@ export function createHubScreen(root, go, params = {}) {
     showAchToasts();
     const nf = nextFixture(c), wf = weekFixtures(c), sl = slotsLeft(c), st = c.stats;
     $('nextfx').innerHTML = nf
-      ? `<small>${wf.length ? 'THIS WEEK' : 'NEXT FIXTURE'} · ${esc(compName(nf))}</small><b>${esc(oppOf(c, nf).name)} (${ha(c, nf)})</b><span>${prettyDate(nf.date, true)}${wf.length ? ' · <i>Play ▶</i>' : ''}</span>`
+      ? `<small>${wf.length ? 'THIS WEEK' : 'NEXT FIXTURE'} · ${esc(compName(nf))}</small><b>${esc(oppOf(c, nf).name)} (${ha(c, nf)})</b><span>${prettyDate(nf.date, true)}${wf.length ? ' · <i>Play ▶</i>' : ''}${(() => { const s = scoutLine(c, nf); return ` · <span class="pwrtag" title="Power rating: theirs v yours">⚡ ${s.opp} v ${s.me}</span>${s.where ? ' · ' + esc(s.where) : ''}`; })()}</span>`
       : `<small>NO FIXTURES LEFT</small><b>Season's done</b>`;
     { const ws = weekStart(c.week), D = ['M', 'T', 'W', 'T', 'F', 'S', 'S'], tf = todaysFixture(c), used = c.dayUsed === (c.day || 0);
       $('slots').innerHTML = `<small>${esc(prettyDate(dayDate(c), true).toUpperCase())}${isPreseason(c) ? ' · PRE-SEASON' : ''}</small><div class="days">${D.map((d, i) => { const ds = addDays(ws, i), m = weekFixtures(c).some(f => f.date === ds); return `<i class="${i < (c.day || 0) ? 'past' : i === (c.day || 0) ? 'today' : ''} ${m ? 'mday' : ''}">${m ? '⚽' : d}</i>`; }).join('')}</div>
@@ -209,7 +219,7 @@ export function createHubScreen(root, go, params = {}) {
     const role = md.sel[id] || (md.sel[id] = selection(c, f)); save();
     const mine = club(myTeamIn(c, f));
     modal(`<h2 class="ts">TEAM SHEET</h2><div class="tsfix"><small>${esc(compName(f))} · ${prettyDate(f.date, true)}${f.neutral ? ' · ' + esc(f.neutral) : ''}</small>
-      <b>${esc(club(f.home).name)} v ${esc(club(f.away).name)}</b></div>
+      <b>${esc(club(f.home).name)} v ${esc(club(f.away).name)}</b>${(() => { const s = scoutLine(c, f), d = s.opp - s.me; return `<div class="scout"><span>⚡ Power rating: <b>${esc(oppOf(c, f).short || oppOf(c, f).name)} ${s.opp}</b> v <b>you ${s.me}</b></span>${s.where ? `<span>${esc(s.where)}</span>` : ''}<span class="${d >= 8 ? 'bad' : d <= -8 ? 'good' : ''}">${d >= 15 ? 'Massive underdogs' : d >= 8 ? 'Underdogs' : d <= -15 ? 'Heavy favourites' : d <= -8 ? 'Favourites' : 'Evenly matched'}</span></div>`; })()}</div>
       <p class="tsrole ${role}">${esc((md.why || {})[id] === 'night' ? `${managerFor(myTeamIn(c, f) || c.clubId).name}: "${role === 'sub' ? 'You\'re on the bench' : 'You\'re not in the squad'}. Someone saw you out last night, the night before a game. Did you think I wouldn\'t find out? Everyone finds out."` : role === 'none' && (md.why || {})[id] === 'rest' ? `You played on ${prettyDate(c.lastPlayed, true)}. That's under 60 hours ago, so the physio has hidden your boots. You're resting this one.` : role === 'none' && c.injury ? `You're injured (${c.injury.name}).${c.cocommSeason !== c.season ? ' The club channel wants you on co-commentary.' : ' You watch from the stand with a blanket and a Bovril.'}` : role === 'none' && c.ban > 0 ? `You're banned (${c.ban} more week${c.ban > 1 ? 's' : ''}). ${c.flags.prison && !c.flags.servedBan ? 'You\'re listening on the radio in your cell.' : 'You\'re watching from your sofa.'}` : role === 'none' && c.intlWeek === c.week && f.comp !== 'intl' ? 'You\'re away with England this week.' : M.selection[role])}</p>
       ${mine.id.endsWith('-u21') ? `<p class="dim">It's the under-21s. Proper game though: the ${esc(CAL.cups.trophy.short)} puts you up against men with mortgages.</p>` : ''}
       <div class="endBtns">${role === 'none' ? `<button class="btn" id="watch">See how they get on</button>` : `<button class="btn gold" id="toMatch">TO THE MATCH ▶</button>`}</div>`, true);

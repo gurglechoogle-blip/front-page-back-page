@@ -384,3 +384,6 @@ svg.avatar{vertical-align:middle;border-radius:50%;flex:none;margin-right:2px}
 /* Any pop-up taller than the screen scrolls (debt ladder, long events...) */
 #mbody{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;overscroll-behavior:contain}
 .mbox{overflow-y:auto}
+.pwrtag{color:#ffc928;font-weight:700}.lt td.pwr{color:#ffc928;font-weight:700}
+.scout{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;font-size:13px;margin-top:6px;color:#cfd5db}.scout span{background:#14171a;border-radius:4px;padding:2px 8px}
+.tsfix .scout b{font-size:inherit;display:inline;font-family:inherit;color:#ffc928}

@@ -7,7 +7,7 @@ import { compTable } from '../sim/intlSchedule.js';
 
 const COMP = { league: 'League', facup: 'FA Cup', eflcup: 'EFL Cup', trophy: 'EFL Trophy', natcup: 'Domestic cup', ucl: 'Champions League', uel: 'Europa League', tourn: 'Summer tournament', 'intl-senior': 'Internationals', 'intl-u21': 'Internationals', 'intl-u19': 'Internationals', 'intl-u17': 'Internationals' };
 const teamName = id => id === 'nat-eng' ? 'England' : /^nat-eng-u/.test(id) ? `England ${id.slice(-3).toUpperCase()}` : club(id).name;
-const tbl = (rows, meId, zoneFn) => `<table class="lt small"><tr><th></th><th class="tn">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr>${rows.map((r, i) => `<tr class="${r.id === meId ? 'me' : ''} ${zoneFn ? 'z-' + (zoneFn(i + 1) || '') : ''}"><td>${i + 1}</td><td class="tn">${esc(club(r.id).name)}</td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf - r.ga > 0 ? '+' : ''}${r.gf - r.ga}</td><td><b>${r.pts}</b></td></tr>`).join('')}</table>`;
+const tbl = (rows, meId, zoneFn) => `<table class="lt small"><tr><th></th><th class="tn">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th><th title="Power rating">Pwr</th></tr>${rows.map((r, i) => `<tr class="${r.id === meId ? 'me' : ''} ${zoneFn ? 'z-' + (zoneFn(i + 1) || '') : ''}"><td>${i + 1}</td><td class="tn">${esc(club(r.id).name)}</td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf - r.ga > 0 ? '+' : ''}${r.gf - r.ga}</td><td><b>${r.pts}</b></td><td class="pwr">${club(r.id).strength}</td></tr>`).join('')}</table>`;
 
 export function showCompetitions(H, tab = 'league') {
   const c = H.c, tabs = [['league', 'League'], ['cups', 'Cups & Europe'], ['intl', 'International']];
