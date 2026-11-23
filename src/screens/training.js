@@ -94,7 +94,10 @@ export function createTrainingScreen(root, go, params = {}) {
     lastScore = session.score; lastGain = gained; profile.best[k] = Math.max(profile.best[k], session.score); (profile.tried = profile.tried || {})[k] = true; save();
     $('endScore').textContent = session.score + ' / 5';
     $('endTitle').innerHTML = session.score >= 4 ? 'TOP <span>DRAWER</span>' : session.score >= 2 ? 'DECENT <span>SESSION</span>' : 'BACK TO <span>BASICS</span>';
-    $('endText').textContent = '+' + gained + ' ' + title + ' skill points' + (gainMul !== 1 ? ` (coaching x${gainMul})` : '');
+    const bits = [];
+    if (career && career.contract.coaching !== 1) bits.push(`${club(career.clubId).short || club(career.clubId).name} coaching ×${(+career.contract.coaching).toFixed(2).replace(/0$/, '')}`);
+    if (career && (career.staff || []).includes('trainer')) bits.push('personal trainer ×1.15');
+    $('endText').textContent = '+' + gained + ' ' + title + ' skill points' + (bits.length ? ` (${bits.join(', ')})` : '');
     moment = null; $('quit').classList.add('hidden'); $('end').classList.remove('hidden'); renderSide();
   }
 
