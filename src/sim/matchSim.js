@@ -54,10 +54,12 @@ export class MatchSim {
     // Against much stronger opposition you see less of the ball, against weaker sides more,
     // a bit more at home, and big games (finals, internationals) are tighter.
     const myStr = this[this.mySide].strength || 60, oppStr = this[this.oppSide].strength || 60;
-    const adj = clamp((myStr - oppStr) / 14, -1.6, 1.6) + (this.mySide === 'home' ? .3 : 0) - (opts.bigGame ? .4 : 0);
+    // The strength gap scales your chances (against a much better side you barely see the ball).
+    const gapF = clamp(Math.exp((myStr - oppStr) / 24), .35, 1.5), home = this.mySide === 'home' ? .3 : 0, big = opts.bigGame ? .4 : 0;
+    const adj = clamp((myStr - oppStr) / 14, -1.6, 1.6) + home - big;
     if (this.role === 'none') this.nChances = 0;
-    else if (this.role === 'sub') this.nChances = clamp(1 + (R() < .45 ? 1 : 0) + (adj >= 1 ? 1 : adj <= -1.2 ? -1 : 0), 1, 3);
-    else { const n = chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0) + adj; this.nChances = clamp(Math.round(n), 2, opts.bigGame ? 5 : 7); }
+    else if (this.role === 'sub') this.nChances = clamp(Math.round((1 + (R() < .45 ? 1 : 0)) * gapF), adj <= -1.2 ? 0 : 1, 3);
+    else { const n = (chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0)) * gapF + home - big; this.nChances = clamp(Math.round(n), myStr - oppStr <= -15 ? 1 : 2, opts.bigGame ? 5 : 7); }
     this.subMinute = this.role === 'sub' ? 58 + Math.floor(R() * 18) : null;
     this.schedule = {};
     this.planRegulation();
@@ -85,7 +87,7 @@ export class MatchSim {
     ['home', 'away'].forEach(side => { for (let i = 0; i < 2; i++) this.add('2H:' + (58 + Math.floor(R() * 24)), { t: 'sub', side, i }); });
   }
   planGoals(slots, scale) {
-    const R = this.R, d = (this.home.strength - this.away.strength) / 60;
+    const R = this.R, d = (this.home.strength - this.away.strength) / 34; // big gaps matter: Bayern should usually beat St Pauli
     const lam = { home: 1.3 * Math.exp(d) * 1.1 * scale, away: 1.3 * Math.exp(-d) * .9 * scale };
     // Your chances are part of your team's attack, not extra to it: each one you get is
     // worth about 0.3 of a goal to a typical striker, and that comes out of the team's share.
