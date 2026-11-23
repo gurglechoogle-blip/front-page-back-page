@@ -47,7 +47,7 @@ export function showWindow(c, opts) {
   const list = have ? c.windowOffers.list : makeOffers(c, opts.rep, opts.age, opts.window);
   c.windowOffers = { window: opts.window, year, list };
   const ending = opts.window === 'summer' && contractEnding(c) && !c.loan;
-  const offers = ending ? [renewalOffer(c, opts.rep), ...list] : list;
+  const offers = ending && c.renewalWalked !== c.season ? [renewalOffer(c, opts.rep), ...list] : list;
   const ag = agentOf(c);
   const p = pop(`<h2>${opts.window === 'summer' ? 'Summer' : 'January'} transfer window</h2>
     ${c.loan ? `<p class="evtext">You're on loan at ${esc(club(c.clubId).name)}. These offers have come in to your parent club, ${esc(club(c.loan.parent).name)}. Accepting one ends your current loan.</p>` : ''}
@@ -94,7 +94,7 @@ export function showTalks(c, offer, opts, done) {
       ask = { wage: +p.$('#w').value, years: p.$('#y') ? +p.$('#y').value : 1, imageRights: p.$('#ir') ? p.$('#ir').checked : false, goalBonus: p.$('#gb') ? +p.$('#gb').value : 0, assistBonus: p.$('#ab') ? +p.$('#ab').value : 0, releaseClause: p.$('#rc') ? +p.$('#rc').value : 0, silly: p.$('#sc').value || null };
       const r = respond(offer, ask, pat, round++);
       if (r.verdict === 'accept') return deal(ask);
-      if (r.verdict === 'walk') { p.set(`<h2>They've walked away</h2><p class="evtext">"${esc(pick(['We\'re not paying that for someone who still gets his mum to iron his kit.', 'Our chairman laughed so hard he needed a sit-down.', 'We\'ll go another way. The other way is cheaper.']))}"</p><div class="endBtns"><button class="btn" id="ok">Back</button></div>`); p.$('#ok').onclick = () => { p.close(); done(false); }; return; }
+      if (r.verdict === 'walk') { if (c.windowOffers) { c.windowOffers.list = (c.windowOffers.list || []).filter(o => !(o.clubId === offer.clubId && o.type === offer.type)); (c.windowOffers.walked = c.windowOffers.walked || []).push(offer.clubId); } if (offer.type === 'renewal') c.renewalWalked = c.season; p.set(`<h2>They've walked away</h2><p class="evtext">"${esc(pick(['We\'re not paying that for someone who still gets his mum to iron his kit.', 'Our chairman laughed so hard he needed a sit-down.', 'We\'ll go another way. The other way is cheaper.']))}"</p><div class="endBtns"><button class="btn" id="ok">Back</button></div>`); p.$('#ok').onclick = () => { p.close(); done(false); }; return; }
       const k = r.counter;
       p.set(`<h2>They've come back with a counter</h2><div class="evtext">${money(k.wage)}/wk · ${k.years} year${k.years > 1 ? 's' : ''}${k.imageRights ? ' · image rights' : ''}${k.goalBonus ? ` · ${money(k.goalBonus)} a goal` : ''}${k.assistBonus ? ` · ${money(k.assistBonus)} an assist` : ''}${k.releaseClause ? ` · release clause ${money(k.releaseClause)}` : ''}${k.silly ? ` · "${esc(k.silly)}"` : ' · (no special request)'}</div><div class="endBtns"><button class="btn gold" id="take">Accept their counter</button><button class="btn" id="push">Push for more</button></div>`);
       p.$('#take').onclick = () => deal(k);

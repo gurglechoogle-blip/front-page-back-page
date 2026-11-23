@@ -103,6 +103,10 @@ export function makeOffers(c, rep, age, window, R = Math.random) {
     const k = unproven ? 1 + (R() < .6 ? 1 : 0) + (R() < .3 ? 1 : 0) : 1;
     lower.slice(0, k).forEach(id => out.unshift(Object.assign(offerFrom(c, id, rep, age, R), { type: 'loan', wage: c.contract.wage, years: 1, fee: 0, role: 'first choice' })));
   }
+  // Just signed permanently somewhere? No permanent offers for 12 months (loans are fine).
+  // And clubs that walked away from talks this window don't come back.
+  const blocked = c.permBlockUntil && weekStart(c.week) < c.permBlockUntil, walked = (c.windowOffers && c.windowOffers.walked) || [];
+  for (let i = out.length - 1; i >= 0; i--) if ((blocked && out[i].type === 'transfer') || walked.includes(out[i].clubId) || out[i].clubId === c.clubId) out.splice(i, 1);
   return out;
 }
 function offerFrom(c, id, rep, age, R) {
@@ -143,6 +147,10 @@ export function respond(offer, ask, pat, round, R = Math.random) {
 export function sign(c, offer, terms, midSeason, R = Math.random) {
   const ag = agentOf(c), until = `${seasonYear() + terms.years + (midSeason ? 0 : 1)}-06-30`;
   const prev = c.clubId; c.wantLoan = false; c.transferListed = false;
+  // The window's other offers are dealt with: a permanent move ends all permanent interest
+  // (and none for 12 months); a loan ends the other loan offers.
+  if (c.windowOffers && c.windowOffers.list) c.windowOffers.list = c.windowOffers.list.filter(o => o.clubId !== offer.clubId && (offer.type === 'loan' ? o.type !== 'loan' : o.type === 'loan'));
+  if (offer.type !== 'loan') c.permBlockUntil = addDays(weekStart(c.week), 365);
   // A new loan while already on loan still belongs to the same parent club.
   if (offer.type === 'loan') { c.loan = { parent: c.loan ? c.loan.parent : c.clubId, until: CAL.seasonEnd, prev: c.loan ? c.loan.prev : Object.assign({}, c.contract) }; }
   else if (c.loan && offer.clubId !== c.loan.parent) c.loan = null;
