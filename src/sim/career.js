@@ -164,7 +164,9 @@ export function logRest(c) { c.slotsUsed++; c.weekLog.push({ t: 'rest' }); c.ene
 /* ---------- matchday ---------- */
 /** Who picks you? Start, bench or stand. U21 and early-cup games favour the kids. */
 // How good you need to be (skill level) before a club's league side will trust you.
-const LEVEL_NEEDED = { PL: 64, ES: 62, IT: 62, DE: 62, FR: 60, CH: 44, L1: 32, L2: 22, NL: 12 };
+// Calibrated to how skill really grows (about 5-8% at 18, 12-18% at 21, 20-30% at 25).
+// League One and below: no bar at all. That's the bottom rung, where you play.
+const LEVEL_NEEDED = { PL: 22, ES: 22, IT: 22, DE: 22, FR: 20, CH: 10 };
 const daysBetween = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
 /** At least 60 hours between games: anything under three days apart, you rest. */
 export const needsRest = (c, f) => !!c.lastPlayed && c.lastPlayed !== f.date && daysBetween(c.lastPlayed, f.date) < 3 && daysBetween(c.lastPlayed, f.date) >= 0 || c.lastPlayed === f.date;
@@ -211,8 +213,8 @@ function pickRole(c, f, R) {
   p = clamp(p, .02, .92);
   // Big clubs don't hand out league minutes: you have to be genuinely good enough.
   let subP = clamp(.35 + c.contract.pathway, .2, .75);
-  const gap = skillLevelExact() - (LEVEL_NEEDED[club(c.clubId).league] ?? 20);
-  if (gap < 0) { const k = f.comp === 'league' ? 1 : .5; p *= Math.max(.005, 1 + gap / (14 / k)); subP *= Math.max(.02, 1 + gap / (20 / k)); }
+  const need = (LEVEL_NEEDED[club(c.clubId).league] ?? 0) + (club(c.clubId).strength >= 85 ? 8 : 0), gap = skillLevelExact() - need;
+  if (need && gap < 0) { const k = f.comp === 'league' ? 1 : .5; p *= Math.max(.005, 1 + gap / (8 / k)); subP *= Math.max(.02, 1 + gap / (12 / k)); }
   if (c._hang) subP *= .6;
   const r = R();
   if (r < p) return 'start';
