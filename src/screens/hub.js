@@ -46,7 +46,7 @@ import { reputation, inWindow, agentOf } from '../sim/transfers.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
 import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp, maybeMeet, meetScene, meetTries, tryMeet } from '../sim/partner.js';
-import { exportSave, importSave } from '../state/gameState.js';
+import { exportSave, importSave, saveOk } from '../state/gameState.js';
 
 const MENUS = {
   football: { label: 'Football', icon: '⚽' },
@@ -97,6 +97,9 @@ export function createHubScreen(root, go, params = {}) {
     $('nextfx').onclick = e => { e.stopPropagation(); matchday(); };
     $('mclose').onclick = closeModal; $('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
     $('newCareer').onclick = e => { e.preventDefault(); modal(`<h2>Start a new career?</h2><p>This one will be gone for good. Gran will be devastated.</p><div class="endBtns"><button class="btn red" id="reallyNew">Yes, start again</button><button class="btn" id="keep">Keep this one</button></div>`); $('reallyNew').onclick = () => { newGame(); go('start'); }; $('keep').onclick = closeModal; };
+    const paintSaved = () => { const el = $('saved'); if (!el) return; const ok = saveOk(); el.textContent = ok ? 'Saved automatically' : '⚠ NOT SAVED: your browser\'s storage is full. Download your save file now!'; el.classList.toggle('bad', !ok); };
+    window.addEventListener('fpbp-save', paintSaved); paintSaved();
+    if (!saveOk()) modal(`<h2>Your game isn't saving</h2><p class="evtext">Your browser has run out of room for the save. Your progress is safe while this tab stays open, but it won't survive a reload.</p><p>Download your save file now (and keep it somewhere safe). Then try clearing some old replays from your Scrapbook.</p><div class="endBtns"><button class="btn gold" id="dlNow">Download save file</button></div>`), $('dlNow').onclick = () => { exportSave(); closeModal(); };
     $('dl').onclick = e => { e.preventDefault(); exportSave(); toast('Save file downloaded. Keep it somewhere safe, like under the mattress.'); };
     $('ul').onclick = e => { e.preventDefault(); $('ulf').click(); };
     $('ulf').onchange = async e => { const f = e.target.files[0]; if (!f) return; const ok = await importSave(f); if (ok) location.reload(); else toast('That file isn\'t a Front Page, Back Page save.'); };
@@ -462,7 +465,7 @@ export function createHubScreen(root, go, params = {}) {
   const momentTitle = k => (MOMENTS[k] ? new MOMENTS[k]().title : k);
   function showScrapbook() {
     const sb = c.scrapbook || [];
-    modal(`<h2>Scrapbook</h2><p class="dim">Every goal you score or set up in a match. Star the best ones to keep them forever; otherwise the latest 40 stay.</p><div class="scroll shop">${sb.map((g, i) => `<div class="item"><div><b>${esc(g.msg)}</b><p>${esc(g.season)} · ${esc(g.label)} v ${esc(g.opp)}${g.minute ? ' · ' + esc(g.minute) : ''} · ${esc(momentTitle(g.key))}${g.assist ? ' (assist)' : ''}</p></div><div class="btncol"><button class="btn small gold" data-play="${i}">▶ Watch</button><button class="btn small ${g.keep ? 'on' : ''}" data-keep="${i}">${g.keep ? '★ Kept' : '☆ Keep'}</button></div></div>`).join('') || '<p class="dim">No goals yet. Get scoring.</p>'}</div>`);
+    modal(`<h2>Scrapbook</h2><p class="dim">Every goal you score or set up in a match. Star the best ones to keep them forever; otherwise the latest 25 stay.</p><div class="scroll shop">${sb.map((g, i) => `<div class="item"><div><b>${esc(g.msg)}</b><p>${esc(g.season)} · ${esc(g.label)} v ${esc(g.opp)}${g.minute ? ' · ' + esc(g.minute) : ''} · ${esc(momentTitle(g.key))}${g.assist ? ' (assist)' : ''}</p></div><div class="btncol"><button class="btn small gold" data-play="${i}">▶ Watch</button><button class="btn small ${g.keep ? 'on' : ''}" data-keep="${i}">${g.keep ? '★ Kept' : '☆ Keep'}</button></div></div>`).join('') || '<p class="dim">No goals yet. Get scoring.</p>'}</div>`);
     root.querySelectorAll('[data-play]').forEach(b => b.onclick = () => playClip(sb[+b.dataset.play]));
     root.querySelectorAll('[data-keep]').forEach(b => b.onclick = () => { const g = sb[+b.dataset.keep]; g.keep = !g.keep; save(); showScrapbook(); });
   }

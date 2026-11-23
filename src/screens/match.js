@@ -172,7 +172,7 @@ export function createMatchScreen(root, go, params) {
       c.scrapbook = c.scrapbook || [];
       c.scrapbook.unshift(Object.assign(clip, { id: Date.now(), week: c.week, season: c.season, opp: (mySide === 'home' ? away : home).name, label: params.label || '', minute: chanceEvent.label, key: r.key, msg: r.msg, q: r.q || 0, assist: ['passing', 'crossing'].includes(r.key), keep: false }));
       // Keep starred clips forever; otherwise the 40 most recent.
-      while (c.scrapbook.length > 40) { const i = c.scrapbook.map(x => x.keep).lastIndexOf(false); if (i < 0) break; c.scrapbook.splice(i, 1); }
+      while (c.scrapbook.length > 25) { const i = c.scrapbook.map(x => x.keep).lastIndexOf(false); if (i < 0) break; c.scrapbook.splice(i, 1); }
     }
     moment = null; setCam('def');
     $('feed').classList.remove('hidden');

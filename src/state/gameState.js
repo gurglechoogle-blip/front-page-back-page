@@ -71,13 +71,31 @@ export function newGame() {
   state.career = null; state.profile = normaliseProfile({ name: state.profile.name }); setWorld(null); save();
 }
 
-let lastSaved = 0;
-/** Save everything now. */
-export function save() { store.set(SAVE_KEY, state); lastSaved = Date.now(); }
+let lastSaved = 0, saveFailed = false;
+/** Trim the bulky, non-essential stuff (old replays, old papers, old diary) to make the save smaller. */
+export function compact(s = state, hard = false) {
+  const c = s.career; if (!c) return;
+  if (c.scrapbook) { const keep = c.scrapbook.filter(g => g.keep), rest = c.scrapbook.filter(g => !g.keep).slice(0, hard ? 4 : 12); c.scrapbook = [...keep.slice(0, hard ? 10 : 30), ...rest]; }
+  if (c.papers && c.papers.length > (hard ? 12 : 40)) { const framed = new Set((c.framed || []).map(f => f.n)); c.papers = c.papers.filter((p, i, a) => framed.has(p.n) || i >= a.length - (hard ? 12 : 40)); }
+  if (c.diary) { const keys = Object.keys(c.diary).sort(), cut = keys.length - (hard ? 120 : 400); keys.slice(0, Math.max(0, cut)).forEach(k => delete c.diary[k]); }
+  if (c.headlineLog) { const keys = Object.keys(c.headlineLog).sort(); keys.slice(0, Math.max(0, keys.length - 30)).forEach(k => delete c.headlineLog[k]); }
+  ['inbox', 'notices', 'chat', 'quotes', 'lifeLog'].forEach(k => { if (Array.isArray(c[k]) && c[k].length > (hard ? 20 : 50)) c[k].length = hard ? 20 : 50; });
+}
+/** Save everything now. If the browser's storage is full, make room and try again; if it still fails, say so. */
+export function save() {
+  let data; try { data = JSON.stringify(state); } catch (e) { console.warn('Save could not be written:', e); saveFailed = true; window.dispatchEvent(new Event('fpbp-save')); return false; }
+  let ok = store.set(SAVE_KEY, data);
+  if (!ok) { store.remove(BACKUP_KEY); compact(state); ok = store.set(SAVE_KEY, JSON.stringify(state)); }
+  if (!ok) { compact(state, true); ok = store.set(SAVE_KEY, JSON.stringify(state)); }
+  saveFailed = !ok; if (ok) lastSaved = Date.now();
+  window.dispatchEvent(new Event('fpbp-save'));
+  return ok;
+}
 export const lastSaveTime = () => lastSaved;
+export const saveOk = () => !saveFailed;
 if (loadedFrom === 'backup') save(); // repair the main save straight away
-/** Weekly safety copy. */
-export function backup() { store.set(BACKUP_KEY, state); }
+/** Weekly safety copy (dropped, not forced, if there isn't room for two). */
+export function backup() { if (!store.set(BACKUP_KEY, JSON.stringify(state))) store.remove(BACKUP_KEY); }
 
 /** The whole save as a file to download. */
 export function exportSave() {

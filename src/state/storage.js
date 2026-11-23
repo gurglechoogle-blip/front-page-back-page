@@ -2,6 +2,7 @@
 // mean nothing is remembered.
 export const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } },
+  /** Returns true if it really saved (false: storage full or blocked, or the data couldn't be written). */
+  set(k, v) { try { localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v)); return true; } catch (e) { console.warn('Save failed:', e && e.name); return false; } },
   remove(k) { try { localStorage.removeItem(k); } catch (e) { } },
 };
