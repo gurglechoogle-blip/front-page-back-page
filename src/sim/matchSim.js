@@ -87,7 +87,12 @@ export class MatchSim {
   planGoals(slots, scale) {
     const R = this.R, d = (this.home.strength - this.away.strength) / 60;
     const lam = { home: 1.3 * Math.exp(d) * 1.1 * scale, away: 1.3 * Math.exp(-d) * .9 * scale };
-    lam[this.mySide] *= { start: .5, sub: .75, none: 1 }[this.role]; // you take some of your side's chances yourself
+    // Your chances are part of your team's attack, not extra to it: each one you get is
+    // worth about 0.3 of a goal to a typical striker, and that comes out of the team's share.
+    if (this.role !== 'none') {
+      const yours = scale === 1 ? this.nChances * .3 : .2 * scale * 3;
+      lam[this.mySide] = Math.max(lam[this.mySide] * .1, lam[this.mySide] - yours);
+    }
     ['home', 'away'].forEach(side => { const g = poisson(lam[side], R); for (let i = 0; i < g; i++) { let k; do { k = slots[Math.floor(R() * slots.length)]; } while ((this.schedule[k] || []).some(e => e.t === 'chance')); this.add(k, { t: 'goal', side }); } });
   }
   planExtraTime() {
