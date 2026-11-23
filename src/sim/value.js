@@ -47,10 +47,12 @@ export function marketValue(p) {
 
 /** The most a club can pay in a transfer fee (its budget). */
 const TOP_MONEY = { PL: 1, ES: .9, DE: .85, IT: .8, FR: .75 };
+// Owners with bottomless pockets spend like the very richest, whatever their league.
+const RICH = { 'x-psg': 1 };
 export function clubBudget(id) {
   const cl = club(id); if (!cl || !ok(cl.strength)) return 0;
   // Top flights: about £20m at the bottom of the Premier League up to ~£150m for the elite.
-  if (TOP_MONEY[cl.league]) return niceMoney(Math.max(8e6, (20e6 + (cl.strength - 64) * 6e6) * TOP_MONEY[cl.league]));
+  if (TOP_MONEY[cl.league]) return niceMoney(Math.max(8e6, (20e6 + (cl.strength - 64) * 6e6) * (RICH[id] || TOP_MONEY[cl.league])));
   // The Football League: from a few hundred thousand in League Two to ~£20m at the top of the Championship.
   return niceMoney(Math.min(25e6, 1000 * Math.exp(cl.strength * .1423)));
 }

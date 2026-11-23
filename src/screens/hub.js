@@ -42,7 +42,8 @@ import { managerFor } from '../sim/managers.js';
 import { showTalks } from './contractUI.js';
 import { inviteText, inviteFrom, inviteData, acceptInvite, declineInvite } from '../sim/invites.js';
 import { showSocial, showTroll, showCommunity, showInvite, showStaff, showBusiness } from './fameUI.js';
-import { reputation, inWindow, agentOf } from '../sim/transfers.js';
+import { reputation, inWindow, agentOf, valueNow, freeAgent } from '../sim/transfers.js';
+import { fmtValue, clubBudget } from '../sim/value.js';
 import { skillLevelExact } from '../state/gameState.js';
 import { MOMENTS } from '../moments/index.js';
 import { PD, STAGES, candidates, startDating, date, gift, textThem, breakUp, maybeMeet, meetScene, meetTries, tryMeet } from '../sim/partner.js';
@@ -150,7 +151,7 @@ export function createHubScreen(root, go, params = {}) {
       <div class="lvl">${skillLevelText()}</div><div class="lvlcap">Skill level</div>
       <h3>Skills</h3>${SKILLS.map(([k, l]) => { const v = state.profile.skills[k]; return `<div class="row" style="border:0"><span>${l}</span><b>${v}</b></div><div class="bar"><i style="width:${Math.min(100, v / SKILL_MAX * 100)}%"></i></div>`; }).join('')}`;
     const bills = weeklyBills(c).reduce((a, b) => a + b.amount, 0), hb = honourBadge(c.honour);
-    $('right').innerHTML = `<h2>Money</h2>${row('Wages', money(c.contract.wage) + '/wk')}${row('Bills', money(bills) + '/wk')}${row('Bank balance', money(c.bank))}${row('Net worth', money(netWorth(c)))}
+    $('right').innerHTML = `<h2>Money</h2>${row('Wages', money(c.contract.wage) + '/wk')}${row('Bills', money(bills) + '/wk')}${row('Bank balance', money(c.bank))}${row('Net worth', money(netWorth(c)))}${(() => { const v = valueNow(c, age(c)), log = c.valueLog || [], prev = log.length > 4 ? log[log.length - 5].v : log.length ? log[0].v : v, d = v - prev; return row('Market value', `${fmtValue(v)}${d > 0 ? ' <span class="good">▲</span>' : d < 0 ? ' <span class="bad">▼</span>' : ''}`); })()}
       <h3>Honour</h3><div class="honour h${Math.min(4, Math.floor(c.honour / 20.01))}"><div class="medal">${Math.round(c.honour)}</div><b>${hb}</b></div>
       <h3>Relationships</h3>${c.partner ? `<div class="rel"><span>${esc(c.partner.name.split(' ')[0])}</span><div class="bar"><i class="m-family" style="width:${Math.round(c.partner.meter)}%"></i></div><b>${Math.round(c.partner.meter)}</b></div>` : ''}${METERS.map(([k, l]) => `<div class="rel"><span>${l}</span><div class="bar"><i class="m-${k}" style="width:${Math.round(meter(c, k))}%"></i></div><b>${Math.round(meter(c, k))}</b></div>`).join('')}
       <h3>Club</h3>${row('Club', esc(me.name))}${row('League', esc(DIVS[c.div].short))}${row('Position', posText())}${row('Deal', esc(c.contract.label))}`;
@@ -307,7 +308,7 @@ export function createHubScreen(root, go, params = {}) {
     const k = c.contract, star = n => '★'.repeat(n) + '☆'.repeat(5 - n), cl = k.clauses || {}, win = inWindow(c);
     const extra = `${cl.imageRights ? row('Image rights', 'Yes') : ''}${cl.appearanceFee ? row('Appearance fee', money(cl.appearanceFee)) : ''}${cl.winBonus ? row('Win bonus', money(cl.winBonus)) : ''}${cl.goalBonus ? row('Goal bonus', money(cl.goalBonus) + ' a goal') : ''}${cl.assistBonus ? row('Assist bonus', money(cl.assistBonus) + ' an assist') : ''}${cl.releaseClause ? row('Release clause', money(cl.releaseClause)) : ''}${cl.silly ? row('Special request', esc(cl.silly)) : ''}${c.loan ? row('On loan from', esc(club(c.loan.parent).name)) : ''}${(cl.club || []).length ? `<div class="smallprint"><b>The small print (the club will hold you to it)</b>${cl.club.map(id => `<div>• ${esc(clause(id).text)}</div>`).join('')}</div>` : ''}`;
     if (age(c) >= 17 || c.week > 60) {
-      modal(`<h2>Contract & transfers</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind))}${row('Wages', money(k.wage) + ' a week')}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${extra}${row('Reputation', Math.round(rep()) + '/100')}
+      modal(`<h2>Contract & transfers</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind))}${row('Wages', money(k.wage) + ' a week')}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${extra}${row('Reputation', Math.round(rep()) + '/100')}${row('Market value', fmtValue(valueNow(c, age(c))))}${row('Your club\'s budget', fmtValue(clubBudget(c.clubId)))}
         <h3>Transfers</h3>${win ? `<p>The ${win} window is open.</p><div class="endBtns"><button class="btn gold" id="offers">See offers</button></div>` : '<p class="dim">Windows: summer (June to 1 September) and January (to 2 February). Offers depend on your reputation, and your agent.</p>'}`);
       if (win) $('offers').onclick = () => { closeModal(); showWindow(c, { rep: rep(), age: age(c), window: win, midSeason: win === 'january' || !c.summer, onDone: () => { save(); go('hub'); } }); };
       return;

@@ -8,7 +8,7 @@ import {
   setWorld, firstWeek, seasonYear,
 } from './season.js';
 import { endSeason } from './world.js';
-import { endLoan, agentOf, inWindow, reputation, windowWeek } from './transfers.js';
+import { endLoan, agentOf, inWindow, reputation, windowWeek, setValueSkillSource, valueNow } from './transfers.js';
 import { initIntl, maybeCallUp, recordIntl, LEVELS } from './international.js';
 import { buildIntlSeason, intlWeek, linkResult } from './intlSchedule.js';
 import { initLook, lookFields } from './looks.js';
@@ -19,7 +19,7 @@ import { initInvites, inviteWeek, makeSquad } from './invites.js';
 import { matchPay, gafferVerdict, clauseWeek, clauseSummer } from './contracts.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
-export function setSkillSource(fn) { skillLevelExact = fn; }
+export function setSkillSource(fn) { skillLevelExact = fn; setValueSkillSource(fn); }
 import { initMoney, moneyBills, moneyWeek, hasCar, netWorth as worth } from './money.js';
 import { initPartner, partnerWeek } from './partner.js';
 import { archiveWeek } from './calendar.js';
@@ -347,6 +347,8 @@ export function finishWeek(c, R = Math.random) {
   if (ABROAD.includes(c.div)) { c.meters.family = clamp(c.meters.family - .8, 0, 100); if (c.partner) c.partner.meter = clamp(c.partner.meter - .6, 0, 100); } partnerWeek(c, age(c), R);
   // Money.
   c.lastWeekDate = weekStart(c.week);
+  // Market value, once a week, for the trend.
+  { const v = valueNow(c, age(c)); if (Number.isFinite(v)) { c.valueLog = (c.valueLog || []).concat({ d: weekStart(c.week), v }); if (c.valueLog.length > 52) c.valueLog = c.valueLog.slice(-52); } }
   const [fines, fineNotes] = clauseWeek(c, (c.matchday ? c.matchday.results : []).some(r => r.role !== 'none'), R);
   fineNotes.forEach(t => notice(c, 'Contract', t));
   const bills = [...weeklyBills(c), ...fines], out = bills.reduce((a, b) => a + b.amount, 0); c._lastBills = out;

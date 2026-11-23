@@ -4,6 +4,7 @@ import { esc } from '../engine/util.js';
 import { club, CAL, DIVS, zone, table, roundName } from '../sim/season.js';
 import { leagueTable, myFixtures, resultFor } from '../sim/career.js';
 import { compTable } from '../sim/intlSchedule.js';
+import { fmtValue } from '../sim/value.js';
 
 const COMP = { league: 'League', facup: 'FA Cup', eflcup: 'EFL Cup', trophy: 'EFL Trophy', natcup: 'Domestic cup', ucl: 'Champions League', uel: 'Europa League', tourn: 'Summer tournament', 'intl-senior': 'Internationals', 'intl-u21': 'Internationals', 'intl-u19': 'Internationals', 'intl-u17': 'Internationals' };
 const teamName = id => id === 'nat-eng' ? 'England' : /^nat-eng-u/.test(id) ? `England ${id.slice(-3).toUpperCase()}` : club(id).name;
@@ -53,6 +54,7 @@ export function showMyStats(H, season = 'all') {
   H.modal(`<h2>My stats</h2><div class="tabs"><button class="tab ${season === 'all' ? 'on' : ''}" data-ss="all">Career</button>${seasons.map(s => `<button class="tab ${s === season ? 'on' : ''}" data-ss="${s}">${s}</button>`).join('')}</div>
     <div class="scroll"><table class="lt small mystats"><tr><th class="tn"></th><th>Apps</th><th>Goals</th><th>Assists</th><th>Avg</th></tr>${rows || '<tr><td colspan="5" class="dim">No competitive games yet.</td></tr>'}
     ${log.length ? line('Club total', clubTotal, 'tot') + (intlTotal.n ? line('International total', intlTotal, 'tot') : '') + line('All competitions', sum(log), 'tot') : ''}</table>
+    ${(c.valueLog || []).length ? `<h3>Market value</h3><div class="vchart">${(() => { const L = c.valueLog, max = Math.max(...L.map(x => x.v)) || 1; return L.map(x => `<i style="height:${Math.max(3, Math.round(x.v / max * 100))}%" title="${esc(x.d)}: ${fmtValue(x.v)}"></i>`).join(''); })()}</div><p class="dim small">Last ${c.valueLog.length} weeks · now ${fmtValue(c.valueLog[c.valueLog.length - 1].v)} · peak ${fmtValue(Math.max(...c.valueLog.map(x => x.v)))}</p>` : ''}
     ${season === 'all' && older.length ? `<h3>Earlier seasons (before stats were split)</h3>${older.map(h => `<div class="row"><span>${esc(h.season)} · ${esc(club(h.club).name)}</span><b>${h.apps} apps · ${h.goals} goals · ${h.assists} assists</b></div>`).join('')}` : ''}</div>`);
   H.root.querySelectorAll('[data-ss]').forEach(b => b.onclick = () => showMyStats(H, b.dataset.ss));
 }
