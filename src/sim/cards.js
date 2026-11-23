@@ -52,21 +52,25 @@ export function equity(hole, board, opp, iters = 120, R = Math.random) {
 }
 
 const RN = { 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: 'Jack', 12: 'Queen', 13: 'King', 14: 'Ace' };
-const pl = r => (r === 6 ? 'Sixes' : RN[r] + (r > 10 ? 's' : 's'));
+const pl = r => RN[r] + 's';
 /** Plain-English name of your best hand so far, e.g. "Three of a kind, 7s". */
 export function describe(cs) {
   if (cs.length < 5) { const [a, b] = cs.map(c => c.r).sort((x, y) => y - x); return a === b ? `Pair of ${pl(a)}` : `${RN[a]} high`; }
-  const s = best(cs), n = HAND_NAMES[s[0]];
+  return describeScore(best(cs));
+}
+const KN = { 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: 'jack', 12: 'queen', 13: 'king', 14: 'ace' };
+/** Plain-English name for a scored hand, with the kicker where it decides things. */
+export function describeScore(s) {
+  const k = r => `${KN[r]} kicker`;
   switch (s[0]) {
     case 8: return s[1] === 14 ? 'Royal flush!' : `Straight flush, ${RN[s[1]]} high`;
-    case 7: return `Four of a kind, ${pl(s[1])}`;
+    case 7: return `Four of a kind, ${pl(s[1])}, ${k(s[2])}`;
     case 6: return `Full house, ${pl(s[1])} over ${pl(s[2])}`;
     case 5: return `Flush, ${RN[s[1]]} high`;
     case 4: return `Straight, ${RN[s[1]]} high`;
-    case 3: return `Three of a kind, ${pl(s[1])}`;
-    case 2: return `Two pair, ${pl(s[1])} and ${pl(s[2])}`;
-    case 1: return `Pair of ${pl(s[1])}`;
+    case 3: return `Three of a kind, ${pl(s[1])}, ${k(s[2])}`;
+    case 2: return `Two pair, ${pl(s[1])} and ${pl(s[2])}, ${k(s[3])}`;
+    case 1: return `Pair of ${pl(s[1])}, ${k(s[2])}`;
     default: return `${RN[s[1]]} high`;
   }
-  void n;
 }

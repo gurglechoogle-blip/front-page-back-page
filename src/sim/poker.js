@@ -1,5 +1,5 @@
 // No-limit Texas Hold'em: you against three characters. Pure logic.
-import { deck, shuffle, best, cmp, equity, HAND_NAMES } from './cards.js';
+import { deck, shuffle, best, cmp, equity, HAND_NAMES, describeScore } from './cards.js';
 
 const r2 = v => Math.round(v * 100) / 100;
 
@@ -79,14 +79,14 @@ export class Poker {
       if (!elig.length) { pots[pots.length - 1].amount += amount; continue; }
       const scored = elig.map(p => ({ p, s: best(p.hole.concat(this.board)) }));
       const top = scored.reduce((a, b) => cmp(b.s, a.s) > 0 ? b : a).s;
-      pots.push({ amount: r2(amount), winners: scored.filter(x => cmp(x.s, top) === 0).map(x => x.p), hand: HAND_NAMES[top[0]] });
+      pots.push({ amount: r2(amount), winners: scored.filter(x => cmp(x.s, top) === 0).map(x => x.p), hand: describeScore(top) });
     }
     this.players.filter(p => !p.folded).forEach(p => p.shown = true);
     this.award(pots, true);
   }
   award(pots, showdown) {
     this.street = 'done'; this.toAct = -1; const lines = [];
-    pots.forEach(pt => { const share = r2(pt.amount / pt.winners.length); pt.winners.forEach(w => { w.stack = r2(w.stack + share); w.won = r2((w.won || 0) + share); }); lines.push(`${pt.winners.map(w => w.name).join(' and ')} win${pt.winners.length === 1 ? 's' : ''} ${fmt(pt.amount)}${showdown && pt.hand ? ' with ' + pt.hand.toLowerCase() : ''}.`); });
+    pots.forEach(pt => { const share = r2(pt.amount / pt.winners.length); pt.winners.forEach(w => { w.stack = r2(w.stack + share); w.won = r2((w.won || 0) + share); }); lines.push(`${pt.winners.map(w => w.name).join(' and ')} win${pt.winners.length === 1 ? 's' : ''} ${fmt(pt.amount)}${showdown && pt.hand ? ' with ' + pt.hand.charAt(0).toLowerCase() + pt.hand.slice(1) : ''}.`); });
     lines.forEach(l => this.say(l)); this.result = { lines, showdown, youWon: this.you.won || 0 };
   }
   /** The computer player to act makes a decision. */
