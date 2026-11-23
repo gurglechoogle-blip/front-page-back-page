@@ -17,7 +17,7 @@ const SEEDS = (process.argv[3] || '12345,777,4242').split(',').map(Number);
 const DRILLS = ['volley', 'snapshot', 'header', 'overhead', 'penalty', 'freekick', 'turn', 'passing', 'crossing'];
 
 const init = seed => {
-  let a = seed; window.__reseed = s => { a = s; }; Math.random = function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  let a = seed; window.__prototypeTiming = true; window.__reseed = s => { a = s; }; Math.random = function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
   let T = 0, q = [];
   performance.now = () => T;
   window.requestAnimationFrame = cb => { q.push(cb); return q.length; };

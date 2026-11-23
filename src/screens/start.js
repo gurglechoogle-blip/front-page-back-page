@@ -20,10 +20,10 @@ export function createStartScreen(root, go) {
     if (!boyhood) boyhood = state.profile.boyhood;
     if (!boyhood) { const all = allClubs().filter(x => x.league !== 'NL'); boyhood = all[Math.floor(Math.random() * all.length)].id; state.profile.boyhood = boyhood; save(); }
     $('sp').innerHTML = `<h1>FRONT PAGE, <span>BACK PAGE</span></h1>
-      <div class="sub">Summer 2026. You're 16, you're English, you're a striker, and the scouts have been watching.</div>
+      <div class="sub">Summer 2026. You're 16, you're English, you're a striker, and the League Two scouts have been watching.</div>
       <div class="namebox">Your name <input id="nm" maxlength="16" placeholder="Surname works best" value="${esc(state.profile.name)}"></div>
       <div class="namebox">Boyhood club <select id="boy">${['PL', 'CH', 'L1', 'L2', 'NL'].map(d => `<optgroup label="${DIVS[d].short}">${allClubs().filter(x => x.league === d).map(x => `<option value="${x.id}"${x.id === boyhood ? ' selected' : ''}>${esc(x.name)}</option>`).join('')}</optgroup>`).join('')}</select></div>
-      <p class="prenote">Scout report: <b>${sc.toFixed(1)} / 5</b> (your best score in each training drill, averaged). That decides who comes calling.${sc < 2.5 ? ' Want bigger clubs? Show them some quality at the training ground first.' : ' Some big clubs have noticed.'}</p>
+      <p class="prenote">Scout report: <b>${sc.toFixed(1)} / 5</b> (your best score in each training drill, averaged). That decides who comes calling.${sc < 2.5 ? ' Everyone starts in League Two. Impress the scouts and the bigger League Two clubs will come for you.' : ' The bigger League Two clubs have noticed.'}</p>
       ${todo.length ? `<p class="bad">The scouts won't come until they've seen you try every drill. Still to do: <b>${todo.map(([, , t]) => esc(t)).join(', ')}</b>.</p><div class="endBtns"><button class="btn gold big" id="tg2">TO THE TRAINING GROUND ▶</button></div>` : '<div class="endBtns"><button class="btn gold big" id="go">FIND ME A CLUB ▶</button></div>'}
       <div class="hint"><a href="#" id="tg">Training ground (free practice)</a></div>`;
     if ($('tg2')) $('tg2').onclick = () => { const n = $('nm').value.trim(); if (n) { state.profile.name = n; save(); } go('training'); };

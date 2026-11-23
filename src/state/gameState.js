@@ -136,7 +136,10 @@ export function importSave(file) {
  * sessions all career. A 16-year-old sits at a few %. */
 export const SKILL_MAX = 20000;
 /** Timing windows widen with skill, up to 1.5x at the maximum. */
-export const skillF = k => 1 + Math.min(state.profile.skills[k], SKILL_MAX) / (2 * SKILL_MAX);
+// Every moment except passing and crossing is 8% tighter than the original prototype.
+// (window.__prototypeTiming switches that off, for the frame-by-frame check against the prototype.)
+const HARDER = k => (k === 'passing' || k === 'crossing' || (typeof window !== 'undefined' && window.__prototypeTiming)) ? 1 : .92;
+export const skillF = k => (1 + Math.min(state.profile.skills[k], SKILL_MAX) / (2 * SKILL_MAX)) * HARDER(k);
 /** Add points earned in a drill or a match; returns what was actually added. */
 export function addSkill(k, raw, mul = 1) {
   const s = state.profile.skills[k], g = Math.max(0, Math.round(raw * .18 * mul / (1 + s / 5000)));

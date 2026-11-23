@@ -173,7 +173,7 @@ npm run dev              # in another terminal
 node tools/compare.mjs   # optional: node tools/compare.mjs <url> <seed,seed,...>
 ```
 
-Every frame should come back identical, except where the mechanics were deliberately changed after Stage 3: volleys only miss on a bad click or when the ball leaves the screen, and the penalty keeper saves about 1 in 5.
+Every frame should come back identical, except where the mechanics were deliberately changed after Stage 3: volleys only miss on a bad click or when the ball leaves the screen, and the penalty keeper saves about 1 in 5. Since then every moment except passing and crossing has 8% tighter timing windows (`HARDER` in `src/state/gameState.js`); `tools/compare.mjs` sets `window.__prototypeTiming` to switch that off so the frame check still means something.
 
 ### Honour, relationships and the newspaper
 

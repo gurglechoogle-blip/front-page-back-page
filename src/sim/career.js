@@ -35,12 +35,13 @@ export const ACADEMY = academies.types;
 /* ---------- academy offers ---------- */
 /** 3 offers, or 4 if the scouts rate you (average best drill score, 0-5). */
 export function academyOffers(scout, R = Math.random) {
-  const tier = scout >= academies.minScoutForHigh ? 'high' : 'low', used = new Set();
-  const types = ['elite', 'pathway', 'money', 'family'];
-  if (scout < academies.minScoutForFour) types.splice(1 + Math.floor(R() * 3), 1); // only three clubs come calling
-  return types.map(t => {
+  // Everyone starts at the bottom: three League Two clubs come calling. A better scout
+  // report gets you the bigger clubs in the division.
+  const used = new Set(), l2 = divisionClubs('L2').slice().sort((a, b) => club(b).strength - club(a).strength);
+  const pool = scout >= academies.minScoutForHigh ? l2.slice(0, 10) : scout >= academies.minScoutForFour ? l2.slice(0, 16) : l2;
+  return ['pathway', 'money', 'family'].map(t => {
     const A = ACADEMY[t]; let id; let tries = 0;
-    do { id = pickR(A[tier], R); } while (used.has(id) && tries++ < 20);
+    do { id = pickR(pool, R); } while (used.has(id) && tries++ < 30);
     used.add(id);
     return { type: t, clubId: id, pitch: pickR(A.pitch, R) };
   });
