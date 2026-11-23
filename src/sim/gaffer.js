@@ -27,6 +27,7 @@ export function cantAsk(c, id, age) {
   const r = REQUESTS.find(x => x.id === id), last = (c.asked || {})[id];
   if (last != null && c.week - last < r.cool) return `Asked ${c.week - last} week${c.week - last === 1 ? '' : 's'} ago. Give it ${r.cool - (c.week - last)} more.`;
   if (id === 'contract' && (age < 17 || c.loan)) return age < 17 ? 'You\'re still on a scholarship' : 'You\'re on loan';
+  if (id === 'contract' && c.contractAsk && c.contractAsk.season === c.season && c.contractAsk.club === c.clubId) return 'Already asked this season. Try again next season';
   if (id === 'loan' && (c.loan || age > 23)) return c.loan ? 'Already on loan' : 'Loans are for young players';
   if (id === 'transfer' && c.transferListed) return 'Already on the transfer list';
   if (id === 'transfer' && age < 17) return 'Too young';
@@ -40,6 +41,7 @@ export function odds(c, avg) {
 /** Make the request. Returns { yes, line, offer? }. */
 export function ask(c, id, avg, R = Math.random) {
   (c.asked = c.asked || {})[id] = c.week;
+  if (id === 'contract') c.contractAsk = { season: c.season, club: c.clubId }; // once a season, per club
   let p = odds(c, avg);
   if (id === 'minutes') p += .1;
   if (id === 'loan') p = clamp(1.05 - p + (c.stats.apps < 5 ? .2 : 0), .15, .9); // the less he rates you, the happier he is to loan you out
