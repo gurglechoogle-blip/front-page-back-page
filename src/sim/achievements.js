@@ -53,11 +53,11 @@ export const ACH = [
   ['comeback', 'silver', 'Comeback Kid', 'Recover from rock-bottom honour', 'week', c => c.ach.rockBottom && c.honour >= 55],
 
   ['millionaire', 'gold', 'Millionaire', 'Net worth of £1 million', 'week', c => netWorth(c) >= 1e6],
-  ['goldenBoot', 'gold', 'Golden Boot', 'Top scorer in the Premier League', 'season', (c, x) => x.div === 'PL' && c.stats.goals >= 22],
+  ['goldenBoot', 'gold', 'Golden Boot', 'Top scorer in the Premier League', 'season', c => { const A = (c.awards || {})[CAL.season]; return !!(A && A.goldenBoot && A.div === 'PL'); }],
   ['champion', 'gold', 'Champion', 'Win a league title', 'season', (c, x) => x.pos === 1],
   ['bigEars', 'gold', 'Big Ears', 'Win the Champions League', 'season', c => won(c, 'ucl')],
   ['dreamMove', 'gold', 'Dream Move', 'Transfer to the club you supported as a boy', 'week', c => c.flags.dreamMove],
-  ['ballon', 'gold', 'Ballon d\'Or', 'Be named the world\'s best player', 'season', (c, x) => (x.div === 'PL' || ABROAD.includes(x.div)) && c.stats.goals >= 28 && x.avg >= 7.4],
+  ['ballon', 'gold', 'Ballon d\'Or', 'Be named the world\'s best player', 'season', c => { const A = (c.awards || {})[CAL.season]; return !!(A && A.ballonWon); }],
   ['centurion', 'gold', 'Centurion', '100 England caps', 'week', c => c.intl && c.intl.caps.senior >= 100],
   ['oneClub', 'gold', 'One-Club Legend', 'Spend 10+ seasons at one club', 'season', c => seasonsAtClub(c) >= 10],
   ['happily', 'gold', 'Happily Ever After', 'Still married at the end of the game', 'end', c => c.partner && c.partner.stage === 'married'],

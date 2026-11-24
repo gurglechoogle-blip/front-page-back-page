@@ -13,6 +13,7 @@ import { seasonYear } from '../sim/season.js';
 import { tournamentFor, createTournament, levelFor } from '../sim/international.js';
 import { qualifiedFor } from '../sim/intlSchedule.js';
 import { playoffEligible, setupPlayoffs } from '../sim/playoffs.js';
+import { computeAwards } from '../sim/awards.js';
 import { leagueTable } from '../sim/career.js';
 
 export function createSeasonScreen(root, go) {
@@ -58,6 +59,29 @@ export function createSeasonScreen(root, go) {
     }
     // Retirement is your choice, from 33.
     if (age(c) >= 33 && !c.retired) { const d = document.createElement('div'); d.className = 'endBtns'; d.innerHTML = '<button class="btn red" id="retire">Hang up your boots</button>'; root.querySelector('.wpanel').appendChild(d); root.querySelector('#retire').onclick = () => ask('Retire? Your playing days end here. The phone may ring again one day...', 'Retire', 'Not yet').then(ok => { if (ok) { c.retired = true; c.retiredAt = age(c); rollWorld(c); c.summer = null; save(); go('finale'); } }); }
+    // Awards night: once per season, before the review.
+    if (!c.summer) {
+      const A = computeAwards(c, age(c)); save();
+      const ord = n => n + ((n % 100 > 10 && n % 100 < 14) ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th');
+      const who = w => w === 'you' ? `<b class="good">You!</b>` : esc(w);
+      const html = `<div class="awards"><h1>AWARDS <span>NIGHT</span></h1><div class="sub">${esc(CAL.season)} · a function room above a carpet shop. There's a buffet.</div>
+        <h3>${esc(club(c.clubId).name)} awards</h3>
+        <div class="row"><span>🏆 Player of the Season</span><b>${who(A.clubAwards.pots)}</b></div>
+        <div class="row"><span>🌱 Young Player of the Season</span><b>${who(A.clubAwards.young)}</b></div>
+        <div class="row"><span>⚽ Top scorer</span><b>${who(A.clubAwards.top || '–')}</b></div>
+        <h3>${esc(A.divName)} top scorers</h3><table class="lt small"><tr><th></th><th class="tn">Player</th><th class="tn">Club</th><th>Goals</th></tr>${A.scorers.map((s, i) => `<tr class="${s.you ? 'me' : ''}"><td>${i + 1}</td><td class="tn">${esc(s.name)}${i === 0 ? ' 👟' : ''}</td><td class="tn">${esc(club(s.club).short || club(s.club).name)}</td><td><b>${s.goals}</b></td></tr>`).join('')}</table>
+        ${A.myRank > 10 ? `<p class="dim">You: ${ord(A.myRank)} with ${A.me.goals}.</p>` : ''}${A.goldenBoot ? '<p class="good">👟 The Golden Boot is yours.</p>' : ''}
+        <h3>${esc(A.divName)} Team of the Year</h3>${A.toty ? '<p class="good">You\'re in it! Mum has already ordered the frame.</p>' : '<p class="dim">Not this year. Your name was mentioned. In the "also played" bit.</p>'}
+        <p class="dim small">${A.totyOthers.map(o => esc(o.name) + ' (' + esc(club(o.club).short || '') + ')').join(' · ')}</p>
+        <h3>Ballon d'Or</h3><table class="lt small"><tr><th></th><th class="tn">Player</th><th class="tn">Club</th></tr>${A.ballon.map((s, i) => `<tr class="${s.you ? 'me' : ''}"><td>${i + 1}</td><td class="tn">${esc(s.name)}${i === 0 ? ' 🏅' : ''}</td><td class="tn">${esc(club(s.club).short || club(s.club).name)}</td></tr>`).join('')}</table>
+        <p class="${A.ballonWon ? 'good' : 'dim'}">${A.ballonWon ? 'You are the best player in the world. Gran says she always knew. She did not.' : A.ballonRank ? `You finished ${ord(A.ballonRank)} in the voting.` : 'You weren\'t on the shortlist. The voters haven\'t heard of you yet.'}</p>
+        <div class="endBtns"><button class="btn gold big" id="awOk">On to the season review ▶</button></div></div>`;
+      const ov = document.createElement('div'); ov.className = 'modal'; ov.innerHTML = `<div class="mbox">${html}</div>`;
+      if (c.awardsSeen !== CAL.season) { document.body.appendChild(ov); ov.querySelector('#awOk').onclick = () => { c.awardsSeen = CAL.season; save(); ov.remove(); }; }
+      const again = document.createElement('div'); again.className = 'endBtns'; again.innerHTML = '<button class="btn" id="awAgain">🏆 Awards night</button>';
+      root.querySelector('.wpanel').insertBefore(again, root.querySelector('#cardBox'));
+      root.querySelector('#awAgain').onclick = () => { document.body.appendChild(ov); ov.querySelector('#awOk').textContent = 'Close'; ov.querySelector('#awOk').onclick = () => ov.remove(); };
+    }
     // Play-offs first, if you finished in the places.
     const POnow = c.playoff && c.playoff.season === c.season ? c.playoff : null, needPO = !c.summer && (playoffEligible(c, S.pos) || (POnow && !POnow.done));
     if (POnow && POnow.done) root.querySelector('.verdict').textContent = POnow.winner === c.clubId ? 'PROMOTED VIA THE PLAY-OFFS! Wembley. Bedlam. Mum cried.' : POnow.result === 'Lost the play-off final' ? 'Lost the play-off final. Wembley heartbreak. Gran blames the referee.' : 'Out in the play-off semi-finals. So close.';

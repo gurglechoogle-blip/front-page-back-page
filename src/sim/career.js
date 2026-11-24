@@ -18,6 +18,7 @@ import { initAch, checkAchievements } from './achievements.js';
 import { initInvites, inviteWeek, makeSquad } from './invites.js';
 import { matchPay, gafferVerdict, clauseWeek, clauseSummer } from './contracts.js';
 import { playoffOverride } from './playoffs.js';
+import { computeAwards } from './awards.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; setValueSkillSource(fn); }
@@ -411,6 +412,7 @@ export const seasonWeek = c => c.week - firstWeek() + 1;
 
 /** Summer, part 1: wrap up the season and move the world on a year. */
 export function rollWorld(c, R = Math.random) {
+  computeAwards(c, age(c)); // the season's awards, before the books close
   const S = seasonSummary(c), oldClub = club(c.clubId);
   c.history.push({ season: CAL.season, club: c.clubId, div: c.div, pos: S.pos, apps: c.stats.apps, u21: c.stats.u21 || 0, goals: c.stats.goals, assists: c.stats.assists, avg: S.avg, cups: Object.fromEntries(Object.entries(c.cups).map(([k, v]) => [k, v.won ? 'won' : v.round])) });
   ['apps', 'goals', 'assists'].forEach(k => c.totals[k] += c.stats[k]); c.totals.seasons++;
