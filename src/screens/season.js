@@ -15,7 +15,7 @@ import { qualifiedFor } from '../sim/intlSchedule.js';
 
 export function createSeasonScreen(root, go) {
   const c = state.career, S = seasonSummary(c), z = zone(c.div, S.pos, S.of);
-  const verdict = { champ: 'CHAMPIONS!', europe: 'Europe next season.', promo: 'PROMOTED!', playoff: 'Into the play-offs. (Play-offs coming soon: Dennis says you\'d have won.)', releg: 'Relegated. Mum says it\'s not your fault. Gran disagrees.' }[z] || 'Mid-table. Steady. Like a nice cup of tea.';
+  const verdict = { champ: 'CHAMPIONS!', europe: 'Europe next season.', promo: 'PROMOTED!', playoff: 'Into the play-offs!', releg: 'Relegated. Mum says it\'s not your fault. Gran disagrees.' }[z] || 'Mid-table. Steady. Like a nice cup of tea.';
   const sfx = n => (n % 100 > 10 && n % 100 < 14) ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th';
   function mount() {
     const cups = Object.entries(c.cups).map(([k, v]) => `<div class="row"><span>${esc(v.cupName || CAL.cups[k].short)}</span><b>${v.won ? 'WINNERS' : v.alive ? 'still going' : 'out in the ' + (v.round === 'G' ? 'group stage' : roundName({ comp: k, round: v.round }))}</b></div>`).join('');
@@ -27,7 +27,7 @@ export function createSeasonScreen(root, go) {
       <h3>Cups</h3>${cups}
       <div id="cardBox"></div>
       <div class="backupbox"><b>💾 Back up your career</b><p class="dim">The game saves in your browser, which can clear it without asking. A downloaded save file is the only copy that survives anything. ${c.lastExport ? `Last downloaded: ${esc(c.lastExport.season)}.` : 'You\'ve never downloaded one.'}</p><button class="btn gold small" id="seasonDl">Download save file</button></div>
-      <p class="dim">Transfers, loans and contract talks arrive in a later update. For now your club keeps you, and the world moves on: promotions, relegations and all.</p>
+      <p class="dim">Next: the summer transfer window, where offers, loans and contract talks happen. Then a new season, with all the promotions and relegations settled.</p>
       <div class="endBtns"><button class="btn gold big" id="nextSeason">START ${seasonYear() + 1}-${String(seasonYear() + 2).slice(-2)} ▶</button></div>
       <div class="endBtns"><button class="btn" id="hub">Back to the hub</button><button class="btn red" id="new">Start a new career</button></div>
     </div></div>`;

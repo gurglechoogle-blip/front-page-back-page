@@ -319,7 +319,7 @@ export function createHubScreen(root, go, params = {}) {
       return;
     }
     modal(`<h2>Contract</h2>${row('Club', esc(me.name))}${row('Deal', esc(k.kind) + ' · ' + esc(k.label))}${row('Wages', money(k.wage) + ' a week')}${row('Signing-on fee', money(k.signingFee))}${row('Runs until', prettyDate(k.until) + ' ' + k.until.slice(0, 4))}${row('Coaching', 'x' + k.coaching)}${row('Prestige', star(k.prestige))}${row('Housing', k.housing ? 'Club digs, free' : 'At home with Mum')}
-      <h3>Transfers</h3><p class="dim">You're 16. Nobody's buying yet. Loans, first pro contracts and transfers are coming in a later update.</p>`);
+      <h3>Transfers</h3><p class="dim">You're 16, so clubs can't sign you yet and you're staying put. From 17, whenever a transfer window's open, you'll hear about loans and transfers here and on your phone.</p>`);
   }
   function showPhone(tab = 'msgs') {
     const fname = id => (friend(id) || { name: id }).name;
