@@ -20,6 +20,8 @@ Then open the URL Vite prints (normally http://localhost:5173).
 
 - `npm run build`: production build into `dist/`
 - `npm run preview`: serve the production build
+- `npm test`: the automatic checks (cards, money, selection, matches, transfers, play-offs, awards, saves, and three 20-year careers). GitHub runs these before every deploy, and a failure stops the deploy.
+- `npm run test:long`: the same, with two 20-year careers per kind of player, printing each season
 
 ## How the code is organised
 
@@ -181,7 +183,7 @@ Honour is public; the meters are private: manager (approval), teammates, fans an
 
 ### Life between matches
 
-The career rolls on past the first season: every summer all five divisions finish, play-offs are played, clubs go up and down, and you age (a first pro contract arrives at 18). Things open up with age: friends, dating, house parties, Gran's 2p poker and modest shopping from 16; driving lessons and a first car at 17; pubs and clubs, the casino, moving out and the flash stuff at 18; houses with rooms that do something as the money grows. If you go overdrawn you work down the debt ladder: sell things, raid the savings funds, borrow from people close to you, then the loan sharks. Your rival from the academy runs a career alongside yours, the team group chat leaks, and every goal you score in a match is saved to the scrapbook to watch again.
+The career rolls on past the first season: every summer all five divisions finish, play-offs are played (your own, two legs and a Wembley final, if your club makes them), the awards night hands out the club awards, Golden Boot, Team of the Year and Ballon d'Or, clubs go up and down, and you age (a first pro contract arrives at 18). Things open up with age: friends, dating, house parties, Gran's 2p poker and modest shopping from 16; driving lessons and a first car at 17; pubs and clubs, the casino, moving out and the flash stuff at 18; houses with rooms that do something as the money grows. If you go overdrawn you work down the debt ladder: sell things, raid the savings funds, borrow from people close to you, then the loan sharks. Your rival from the academy runs a career alongside yours, the team group chat leaks, and every goal you score in a match is saved to the scrapbook to watch again.
 
 ### Fame, achievements and the end
 
@@ -197,6 +199,7 @@ The buttons in the bottom-right corner toggle full screen, sound effects and mus
 
 Everything (training profile and career) lives in one state object (`src/state/gameState.js`), saved to `localStorage` under `fpbp_save_v1` after every action: each drill, rest, team sheet, match event and week. Reloading picks up exactly where you were, including halfway through a match (the match sim snapshots itself as it goes). Leaving in the middle of a chance counts as a miss, so a reload can't buy you a second go.
 
+- Saves are packed with lz-string (`src/state/pack.js`, tagged `LZ1:`), so they take about a tenth of the space. Unpacked saves from before still load. Downloaded save files stay as plain JSON.
 - A backup copy is kept each week (`fpbp_save_backup`). If the main save is ever unreadable, the backup loads and repairs it.
 - Saves carry a version number and pass through `migrate()` on load, so older saves keep working.
 - The hub footer can download the save as a file and load it back, for moving between computers.

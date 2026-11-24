@@ -1,4 +1,5 @@
-# Builds the game and publishes it to GitHub Pages on every push to main.
+# Checks the game (npm test), then builds it and publishes it to GitHub Pages on
+# every push to main. If any check fails, nothing is published: the live game stays as it was.
 name: Deploy to GitHub Pages
 
 on:
@@ -25,6 +26,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm test
       - run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
