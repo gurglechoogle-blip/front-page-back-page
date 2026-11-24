@@ -17,6 +17,7 @@ import { initFame, staffBills, fameWeek, hasStaff } from './fame.js';
 import { initAch, checkAchievements } from './achievements.js';
 import { initInvites, inviteWeek, makeSquad } from './invites.js';
 import { matchPay, gafferVerdict, clauseWeek, clauseSummer } from './contracts.js';
+import { playoffOverride } from './playoffs.js';
 // The training profile's skill level is handed in by the app (keeps this module DOM-free).
 let skillLevelExact = () => 30;
 export function setSkillSource(fn) { skillLevelExact = fn; setValueSkillSource(fn); }
@@ -413,7 +414,7 @@ export function rollWorld(c, R = Math.random) {
   const S = seasonSummary(c), oldClub = club(c.clubId);
   c.history.push({ season: CAL.season, club: c.clubId, div: c.div, pos: S.pos, apps: c.stats.apps, u21: c.stats.u21 || 0, goals: c.stats.goals, assists: c.stats.assists, avg: S.avg, cups: Object.fromEntries(Object.entries(c.cups).map(([k, v]) => [k, v.won ? 'won' : v.round])) });
   ['apps', 'goals', 'assists'].forEach(k => c.totals[k] += c.stats[k]); c.totals.seasons++;
-  const { world, moves } = endSeason(c.div, c.fixtures, R);
+  const { world, moves } = endSeason(c.div, c.fixtures, R, playoffOverride(c));
   c.world = world; setWorld(world);
   c.div = club(c.clubId).league;
   const mv = moves.find(m => m.id === c.clubId), news = oldClub.short + ' News';

@@ -19,7 +19,7 @@ function playoffs(ids, R) {
 }
 
 /** Work out the new world. Returns { world, moves: [{id, from, to, why}], tables }. */
-export function endSeason(myDiv, myFixtures, R = Math.random) {
+export function endSeason(myDiv, myFixtures, R = Math.random, playoffWinners = {}) {
   const old = getWorld(), leagues = Object.assign({}, old.leagues), strength = Object.assign({}, old.strength), moves = [], tables = {};
   ORDER.forEach(d => { tables[d] = finalTable(d, myDiv, myFixtures, R).map(r => r.id); });
   ABROAD.forEach(d => { tables[d] = finalTable(d, myDiv, myFixtures, R).map(r => r.id); });
@@ -30,7 +30,7 @@ export function endSeason(myDiv, myFixtures, R = Math.random) {
   for (let i = 0; i < ORDER.length - 1; i++) {
     const up = ORDER[i + 1], down = ORDER[i], P = DIVS[up].places, t = tables[up], above = tables[down];
     const auto = t.slice(0, P.promotion), po = t.slice(P.playoffs[0] - 1, P.playoffs[1]);
-    const poWinner = playoffs(po, R);
+    const poWinner = playoffWinners[up] && po.includes(playoffWinners[up]) ? playoffWinners[up] : playoffs(po, R); // yours, if you played them
     [...auto, poWinner].forEach(id => move(id, down, id === poWinner ? 'play-offs' : 'promoted'));
     above.slice(-DIVS[down].places.relegation).forEach(id => move(id, up, 'relegated'));
   }

@@ -12,6 +12,8 @@ import { applyEffects, surname } from '../sim/life.js';
 import { seasonYear } from '../sim/season.js';
 import { tournamentFor, createTournament, levelFor } from '../sim/international.js';
 import { qualifiedFor } from '../sim/intlSchedule.js';
+import { playoffEligible, setupPlayoffs } from '../sim/playoffs.js';
+import { leagueTable } from '../sim/career.js';
 
 export function createSeasonScreen(root, go) {
   const c = state.career, S = seasonSummary(c), z = zone(c.div, S.pos, S.of);
@@ -56,7 +58,11 @@ export function createSeasonScreen(root, go) {
     }
     // Retirement is your choice, from 33.
     if (age(c) >= 33 && !c.retired) { const d = document.createElement('div'); d.className = 'endBtns'; d.innerHTML = '<button class="btn red" id="retire">Hang up your boots</button>'; root.querySelector('.wpanel').appendChild(d); root.querySelector('#retire').onclick = () => ask('Retire? Your playing days end here. The phone may ring again one day...', 'Retire', 'Not yet').then(ok => { if (ok) { c.retired = true; c.retiredAt = age(c); rollWorld(c); c.summer = null; save(); go('finale'); } }); }
-    root.querySelector('#nextSeason').onclick = () => {
+    // Play-offs first, if you finished in the places.
+    const POnow = c.playoff && c.playoff.season === c.season ? c.playoff : null, needPO = !c.summer && (playoffEligible(c, S.pos) || (POnow && !POnow.done));
+    if (POnow && POnow.done) root.querySelector('.verdict').textContent = POnow.winner === c.clubId ? 'PROMOTED VIA THE PLAY-OFFS! Wembley. Bedlam. Mum cried.' : POnow.result === 'Lost the play-off final' ? 'Lost the play-off final. Wembley heartbreak. Gran blames the referee.' : 'Out in the play-off semi-finals. So close.';
+    if (needPO) { const b = root.querySelector('#nextSeason'); b.textContent = POnow ? 'BACK TO THE PLAY-OFFS ▶' : 'TO THE PLAY-OFFS ▶'; b.onclick = () => { if (!POnow) setupPlayoffs(c, leagueTable(c).map(r => r.id)); save(); go('playoffs'); }; }
+    else root.querySelector('#nextSeason').onclick = () => {
       rollWorld(c);
       // Tournament summer? England first, then the window.
       // Summer 2046: the end of the story.

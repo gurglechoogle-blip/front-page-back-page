@@ -5,7 +5,7 @@ import { CAL, ABROAD, club, winnerOf } from './season.js';
 import { netWorth, hasCar, item } from './money.js';
 const owns = (c, cat) => (c.owned || []).filter(id => item(id) && item(id).cat === cat).length;
 
-const CUP = ['eflcup', 'facup', 'trophy', 'natcup', 'ucl', 'uel'], EURO = ['ucl', 'uel'];
+const CUP = ['eflcup', 'facup', 'trophy', 'natcup', 'ucl', 'uel', 'playoff'], EURO = ['ucl', 'uel'];
 const RANK = { PL: 1, CH: 2, L1: 3, L2: 4, NL: 5 };
 const SCANDALS = ['affair', 'bookieDebt', 'cheated', 'fixed1', 'leaked', 'tapped', 'prison', 'fixingBan', 'mpScandal'];
 const careerGoals = c => c.totals.goals + c.stats.goals;

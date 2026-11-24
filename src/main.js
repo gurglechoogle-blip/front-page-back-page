@@ -14,6 +14,7 @@ import { createSeasonScreen } from './screens/season.js';
 import { createCasinoScreen } from './screens/casino.js';
 import { createTournamentScreen } from './screens/tournament.js';
 import { createFinaleScreen } from './screens/finale.js';
+import { createPlayoffsScreen } from './screens/playoffs.js';
 import { message } from './sim/career.js';
 import { save, protectStorage, storageProtected } from './state/gameState.js';
 import { unlockAudio, startMusic, stopMusic, stopCrowd, settings, setSfx, setMusic, sfx } from './engine/audio.js';
@@ -50,7 +51,7 @@ controls();
 document.addEventListener('click', e => { if (e.target.closest && e.target.closest('button.btn')) sfx.tick(); });
 
 const root = document.getElementById('root');
-const SCREENS = { start: createStartScreen, hub: createHubScreen, week: createWeekScreen, season: createSeasonScreen, casino: createCasinoScreen, tournament: createTournamentScreen, finale: createFinaleScreen, training: createTrainingScreen, setup: createMatchSetupScreen, match: createMatchScreen };
+const SCREENS = { start: createStartScreen, hub: createHubScreen, week: createWeekScreen, season: createSeasonScreen, casino: createCasinoScreen, tournament: createTournamentScreen, finale: createFinaleScreen, playoffs: createPlayoffsScreen, training: createTrainingScreen, setup: createMatchSetupScreen, match: createMatchScreen };
 /** Switch screen: go('match', { ...params }). */
 function go(name, params) {
   stopCrowd(); if (MUSIC_SCREENS.includes(name)) startMusic(); else stopMusic();

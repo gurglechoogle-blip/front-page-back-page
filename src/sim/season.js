@@ -120,7 +120,7 @@ export function leagueFixtures(div, R = Math.random) {
 
 /* ---------- cups ---------- */
 const CUP_NAMES = { league: null, friendly: 'Friendly', eflcup: cal.cups.eflcup.short, facup: cal.cups.facup.short, trophy: cal.cups.trophy.short };
-export const compName = f => f.comp === 'intl' || f.comp === 'tourn' ? f.label : f.comp === 'natcup' ? `${f.cupName || 'Cup'} ${roundName(f)}` : f.comp === 'league' ? DIVS[f.div].short : f.comp === 'friendly' ? 'Pre-season friendly' : `${CUP_NAMES[f.comp] || (cal.cups[f.comp] || {}).short || f.comp} ${roundName(f)}`;
+export const compName = f => f.comp === 'intl' || f.comp === 'tourn' || f.comp === 'playoff' ? f.label : f.comp === 'natcup' ? `${f.cupName || 'Cup'} ${roundName(f)}` : f.comp === 'league' ? DIVS[f.div].short : f.comp === 'friendly' ? 'Pre-season friendly' : `${CUP_NAMES[f.comp] || (cal.cups[f.comp] || {}).short || f.comp} ${roundName(f)}`;
 export function roundName(f) { if (f.round === 'G') return 'group stage'; if (f.round === 'L') return 'league phase'; const r = cal.cups[f.comp].rounds.find(x => x.id === f.round); return r ? r.name : f.round; }
 const europeClubs = () => divisionClubs('PL').map(club).sort((a, b) => b.strength - a.strength).slice(0, DIVS.PL.europeSpots).map(c => c.id);
 function trophyU21s() { return [...divisionClubs('PL'), ...divisionClubs('CH')].map(club).sort((a, b) => b.strength - a.strength).slice(0, 16).map(c => c.id + '-u21'); }
