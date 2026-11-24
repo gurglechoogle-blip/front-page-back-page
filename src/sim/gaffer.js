@@ -2,6 +2,7 @@
 // transfer. Whether he says yes depends on how much he rates you (approval)
 // and how you've been playing. Each kind of request has a cooldown.
 import { applyEffects } from './life.js';
+import { marketWage } from './transfers.js';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const pick = (a, R) => a[Math.floor(R() * a.length)];
@@ -58,6 +59,6 @@ export function ask(c, id, avg, R = Math.random) {
 }
 /** A renewal offer that reflects how well you're doing. */
 export function raiseOffer(c, rep) {
-  const w = Math.round((c.contract.wage * (1.2 + Math.max(0, c.approval - 60) / 100) + rep * 10) / 10) * 10;
-  return { type: 'renewal', clubId: c.clubId, wage: Math.max(c.contract.wage + 50, w), years: 3, role: 'your current role', fee: 0, clubClauses: [] };
+  const w = Math.round(c.contract.wage * (1.15 + Math.max(0, c.approval - 60) / 100) / 10) * 10;
+  return { type: 'renewal', clubId: c.clubId, wage: Math.max(w, Math.round(marketWage(c.clubId, rep, c.contract.role || c.contract.label) * 1.1 / 10) * 10), years: 3, role: 'your current role', fee: 0, clubClauses: [] };
 }

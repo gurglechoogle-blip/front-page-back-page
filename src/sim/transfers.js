@@ -109,18 +109,34 @@ export function makeOffers(c, rep, age, window, R = Math.random) {
   for (let i = out.length - 1; i >= 0; i--) if ((blocked && out[i].type === 'transfer') || walked.includes(out[i].clubId) || out[i].clubId === c.clubId) out.splice(i, 1);
   return out;
 }
+/**
+ * The going weekly wage at a club: about £1k in League Two, £2k in League One, £6k
+ * in the Championship, £20-80k in the Premier League. Players with a bigger
+ * reputation than the club usually signs get more (stars at the elite, £150k+);
+ * the role you're signed for matters too.
+ */
+const ROLE_PAY = { 'first choice': 1.25, 'rotation player': 1, 'squad player': .75 };
+export function marketWage(id, rep, role, R = () => .5) {
+  const cl = club(id), r = Number.isFinite(rep) ? rep : 40;
+  const going = 900 * Math.exp((cl.strength - 40) * .09);
+  const standing = clamp(1 + (r - (cl.strength - 28) / .68) / 45, .55, 2.2);
+  const w = going * standing * (ROLE_PAY[role] || 1) * (.85 + R() * .35) * (ABROAD.includes(cl.league) ? 1.1 : 1);
+  return Math.round(w / (w >= 10e3 ? 500 : 10)) * (w >= 10e3 ? 500 : 10);
+}
 function offerFrom(c, id, rep, age, R) {
-  const cl = club(id), base = Math.round((cl.strength ** 2.6) / 60 + rep * 18);
-  const wage = Math.max(c.contract.wage + 50, Math.round(base * (.8 + R() * .5) * (ABROAD.includes(cl.league) ? 1.3 : 1) / 10) * 10);
+  const cl = club(id);
   let role = cl.strength > targetStrength(rep) + 6 ? 'squad player' : cl.strength < targetStrength(rep) - 6 ? 'first choice' : 'rotation player';
   // Two or more levels above what you've proven: you're a squad player, full stop.
   const steps = clubTier(id) - Math.max(0, provenTier(c)), dev = steps >= 3;
   if (steps >= 2) role = 'squad player';
+  // A move up pays at least a bit more than now; a move down can mean a pay cut.
+  const now = c.contract.wage, up = cl.strength >= club(c.clubId).strength;
+  const wage = Math.max(Math.round(now * (up ? 1.1 : .8) / 10) * 10, marketWage(id, rep, role, R));
   return { type: 'transfer', clubId: id, wage, years: 2 + Math.floor(R() * 3), role, fee: feeFor(c, age, R), dream: id === c.boyhood, clubClauses: clubClauses(R), dev };
 }
 /** Your own club offers a new deal when yours is running down. */
 export function renewalOffer(c, rep) {
-  return { type: 'renewal', clubId: c.clubId, wage: Math.max(c.contract.wage, Math.round((c.contract.wage * 1.15 + rep * 8) / 10) * 10), years: 3, role: 'your current role', fee: 0, clubClauses: clubClauses() };
+  return { type: 'renewal', clubId: c.clubId, wage: Math.max(Math.round(c.contract.wage * 1.1 / 10) * 10, marketWage(c.clubId, rep, c.contract.role || c.contract.label)), years: 3, role: 'your current role', fee: 0, clubClauses: clubClauses() };
 }
 export const contractEnding = c => c.contract.until <= addDays(CAL.seasonEnd, 40);
 

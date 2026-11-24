@@ -70,6 +70,7 @@ export function longRun(test, ok, noBadNumbers, setSkill, perProfile = 1) {
       ok(c.intl.caps.senior <= 160, `${c.intl.caps.senior} England caps`);
       const peakWage = Math.max(...rows.map(r => r.wage));
       if (P.name === 'casual') ok(peakWage < 120e3, `a casual player peaked on £${peakWage}/wk`);
+      if (P.name === 'grinder') ok(peakWage >= 50e3, `a grinder peaked on only £${peakWage}/wk`);
       if (P.name === 'grinder') ok(rows.some(r => ['CH', 'PL', 'ES', 'IT', 'DE', 'FR'].includes(r.div)), 'a grinder never got above League One');
     });
   }

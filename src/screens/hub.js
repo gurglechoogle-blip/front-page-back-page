@@ -334,8 +334,8 @@ export function createHubScreen(root, go, params = {}) {
       const acceptedFrom = c.invites[+b.dataset.acc].from, r = acceptInvite(c, +b.dataset.acc); save(); render();
       if (r.venue) { const v = CZ.venues.find(x => x.id === r.venue); if (v.needs) c.flags[v.needs] = true; save(); return showVenue(v); }
       if (afterOuting(['shaz', 'ty', 'lee', 'deano'].includes(acceptedFrom) ? 'party' : 'social')) return;
-      modal(`<div class="evvia">📱 Invitation</div><p class="evtext">${esc(r.line)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="ok">Back to the phone</button></div>`);
-      $('ok').onclick = () => showPhone();
+      modal(`<div class="evvia">📱 Invitation</div><p class="evtext">${esc(r.line)}</p><p class="effects">${fmtEffects(r.effects)}</p><div class="endBtns"><button class="btn gold" id="ok">Back to the phone</button><button class="btn" id="grind">Back to the grind</button></div>`);
+      $('ok').onclick = () => showPhone(); $('grind').onclick = () => closeModal();
     });
     root.querySelectorAll('[data-dec]').forEach(b => b.onclick = () => { declineInvite(c, +b.dataset.dec); save(); render(); showPhone(); toast('Maybe next time. (They\'ll remember.)'); });
     c.inbox.forEach(m => m.read = true); c.invites.forEach(v => v.seen = true); save(); render();
