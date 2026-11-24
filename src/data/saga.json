@@ -1,0 +1,124 @@
+{
+  "_note": "The Weekly Splash's long-running local stories, in order, five a season for twenty seasons. y = season (0 = 2026-27). w = who's pictured: loveday, carr, clint or all.",
+  "episodes": [
+    { "y": 0, "w": "loveday", "h": "LOCAL MAN STUCK IN BOLLARD FOR NINE HOURS", "sub": "J.A. Loveday says he was \"checking it was hollow\". It was not. Firefighters used butter, then a crowbar, then more butter." },
+    { "y": 0, "w": "carr", "h": "DASHING NEW SOLICITOR OPENS ON HIGH STREET", "sub": "Joseph Carr, Esq. promises \"justice for all, at very reasonable hourly rates\". His first client was a man recently stuck in a bollard." },
+    { "y": 0, "w": "clint", "h": "GINGER CAT STEALS ENTIRE SALMON FROM FISHMONGER", "sub": "Witnesses say the cat, known locally as Clint, \"looked straight at the CCTV and winked\". The fishmonger has not slept since." },
+    { "y": 0, "w": "loveday", "h": "BOLLARD MAN SENT £4,000 LEGAL BILL FOR 'BOLLARD ADVICE'", "sub": "Joseph Carr, Esq. says the advice (\"don't\") was \"worth every penny\". J.A. Loveday is paying it off in instalments of 40p." },
+    { "y": 0, "w": "clint", "h": "FISHMONGER'S SHOP MYSTERIOUSLY CATCHES FIRE", "sub": "Fire crews found the blaze started near a tin of cat treats. Nearby, a ginger cat was seen \"warming its paws, smugly\"." },
+
+    { "y": 1, "w": "loveday", "h": "PRIZE MARROW EXPLODES AT VILLAGE SHOW", "sub": "J.A. Loveday had been \"feeding it Red Bull for extra size\". The judges are recovering. The marrow is not." },
+    { "y": 1, "w": "carr", "h": "SOLICITOR SUES MARROW", "sub": "Joseph Carr, Esq. is suing the remains of the marrow for damages on behalf of the judges, and separately on behalf of himself, \"for the shock\"." },
+    { "y": 1, "w": "clint", "h": "MAYOR'S PINT KNOCKED OVER 'DELIBERATELY' BY CAT", "sub": "The cat held eye contact for eleven seconds before pushing the glass off the table. Experts call it \"a message\"." },
+    { "y": 1, "w": "loveday", "h": "HOMEMADE HOT AIR BALLOON REACHES HEIGHT OF 4 FEET", "sub": "J.A. Loveday's balloon, made from bin bags and a hairdryer, drifted into the duck pond. The ducks have filed a complaint through Mr Carr." },
+    { "y": 1, "w": "all", "h": "READER'S LETTER: 'WHY IS THAT CAT AT EVERY DISASTER?'", "sub": "Mrs D. of the Close has noticed a ginger cat in the background of every photo we've printed this year. We've checked. She's right. We're scared." },
+
+    { "y": 2, "w": "carr", "h": "CARR TO STAND FOR MAYOR: 'I AM THE PEOPLE'S SOLICITOR'", "sub": "His manifesto promises lower taxes for people called Joseph and \"a great big statue of someone handsome\"." },
+    { "y": 2, "w": "loveday", "h": "CAMPAIGN MANAGER GLUES HIMSELF TO PODIUM", "sub": "J.A. Loveday, hired by Mr Carr for \"no money, but exposure\", was trying to stick up a poster. He remained attached for the whole debate." },
+    { "y": 2, "w": "clint", "h": "CAT SPOTTED AT ELECTION COUNT", "sub": "Officials found ginger fur in three ballot boxes and a dead mouse wearing a rosette." },
+    { "y": 2, "w": "carr", "h": "CARR WINS MAYORAL RACE BY ONE VOTE", "sub": "The deciding ballot was signed with a paw print. Mr Carr calls the result \"the will of the people, broadly\"." },
+    { "y": 2, "w": "loveday", "h": "LOVEDAY FINALLY UNSTUCK FROM PODIUM, STICKS TO MAYOR", "sub": "The new mayor's inauguration photos show J.A. Loveday firmly attached to his left leg. Mr Carr has billed him for the trousers." },
+
+    { "y": 3, "w": "carr", "h": "MAYOR UNVEILS 30-FOOT GOLD STATUE OF HIMSELF", "sub": "Paid for out of the library budget. \"People can read my face instead,\" said Mayor Carr." },
+    { "y": 3, "w": "loveday", "h": "MAN FALLS OFF MAYOR'S STATUE WHILE POLISHING ITS NOSE", "sub": "J.A. Loveday volunteered to clean the statue. He was found hanging from its golden ear by his braces." },
+    { "y": 3, "w": "clint", "h": "PAW PRINT FOUND ON STATUE'S PLANNING PERMISSION", "sub": "The document was approved at 3am by \"C. Cat, Head of Planning\". The council has no Head of Planning." },
+    { "y": 3, "w": "carr", "h": "MAYOR SUES VILLAGE IDIOT FOR DAMAGE TO MAYOR'S NOSE", "sub": "Joseph Carr, Esq. represented the claimant (himself) and the judge (his cousin). J.A. Loveday represented himself and lost to himself." },
+    { "y": 3, "w": "loveday", "h": "LOVEDAY ORDERED TO PAY DAMAGES IN JAM", "sub": "He now owes the mayor 600 jars. He's started making it. Early batches have been described as \"structural\"." },
+
+    { "y": 4, "w": "loveday", "h": "LOVEDAY WINS £10 ON SCRATCHCARD, BUYS LLAMA", "sub": "\"It was on offer,\" he explained. The llama has already eaten his front door." },
+    { "y": 4, "w": "clint", "h": "LLAMA AND CAT IN STAND-OFF OUTSIDE POST OFFICE", "sub": "Eyewitnesses describe \"forty minutes of silent staring\". The post office closed early. Nobody won. Everyone lost." },
+    { "y": 4, "w": "loveday", "h": "LLAMA ELECTED TO PARISH COUNCIL", "sub": "It joins the dog elected last year. J.A. Loveday, its campaign manager, glued himself to the ballot box again." },
+    { "y": 4, "w": "carr", "h": "MAYOR: 'LLAMAS HAVE NO PLACE IN POLITICS'", "sub": "Mayor Carr then hired the llama as his chief of staff for a reported £80,000 a year. \"It knows things,\" he said." },
+    { "y": 4, "w": "clint", "h": "LLAMA RESIGNS AFTER 'TERRIFYING' NIGHT-TIME VISIT", "sub": "The llama was found shaking in a hedge. Its office had been ransacked. On the desk: one ginger hair and a note reading \"next time\"." },
+
+    { "y": 5, "w": "clint", "h": "FTSE PLUNGES AFTER CAT WALKS ACROSS TRADER'S KEYBOARD", "sub": "The City lost £4 billion in nine seconds. The trader's cat, ginger, was \"not his\", and \"just turned up one day\"." },
+    { "y": 5, "w": "carr", "h": "CARR TAKES ON MYSTERY CAT AS CLIENT. FEE: TUNA", "sub": "\"Every creature deserves the finest legal representation money, or fish, can buy,\" said Joseph Carr, Esq., smelling faintly of the sea." },
+    { "y": 5, "w": "loveday", "h": "LOVEDAY ATTEMPTS CITIZEN'S ARREST OF CAT, GETS STUCK IN CAT FLAP", "sub": "\"I had him,\" said J.A. Loveday, from inside the cat flap, for six hours. The cat watched from the sofa, eating his crisps." },
+    { "y": 5, "w": "carr", "h": "CARR SUES LOVEDAY FOR 'HARASSMENT OF A CAT'", "sub": "J.A. Loveday has been banned from coming within 50 yards of any cat, any tin of tuna, or Mr Carr's car park space." },
+    { "y": 5, "w": "clint", "h": "CAT SEEN BOARDING PLANE TO SWITZERLAND", "sub": "Airport staff say he had a passport, a tiny briefcase and \"a business-class attitude\". A Swiss bank has since opened an account in the name of Mr C. Lint." },
+
+    { "y": 6, "w": "loveday", "h": "LOVEDAY ON TV BAKING SHOW: TENT DESTROYED", "sub": "His showstopper, a self-raising soufflé, was \"slightly too self-raising\". The tent is now in Belgium." },
+    { "y": 6, "w": "carr", "h": "CARR SUES TENT, BELGIUM", "sub": "\"I have nothing against Belgium,\" said Joseph Carr, Esq. \"I simply want all of its money.\"" },
+    { "y": 6, "w": "clint", "h": "CAT IN TINY HARD HAT SEEN AT SECRET BUILDING SITE", "sub": "A huge structure is going up under the village hall. Planning permission was signed by C. Cat, Head of Planning. Again." },
+    { "y": 6, "w": "loveday", "h": "LOVEDAY BANNED FROM ALL TELEVISION, FOREVER", "sub": "Ofcom's ruling also covers radio, carrier pigeon and \"shouting through windows\"." },
+    { "y": 6, "w": "all", "h": "BAKE-OFF BLAST 'NOT AN ACCIDENT', SAYS LOVEDAY", "sub": "He claims a ginger paw swapped his flour for gunpowder. Mr Carr, representing the paw, called the claim \"slanderous and broadly accurate, but unprovable\"." },
+
+    { "y": 7, "w": "loveday", "h": "LOVEDAY FALLS INTO SECRET UNDERGROUND LAIR", "sub": "He was looking for his keys. He found a vast cavern with a big chair, a map of the world and 4,000 laser pointers. Then he found his keys." },
+    { "y": 7, "w": "clint", "h": "'THERE IS NO LAIR,' SAYS COUNCIL", "sub": "A spokesman confirmed the hole under the village hall is \"a regular cellar, for regular things, like world maps\". The spokesman was ginger and furry." },
+    { "y": 7, "w": "carr", "h": "CARR GETS LOVEDAY SECTIONED FOR 'LAIR TALK'", "sub": "\"The man claims a cat is planning to take over the world,\" said Mr Carr. \"That is clearly mad. Also, I represent the cat.\"" },
+    { "y": 7, "w": "loveday", "h": "LOVEDAY ESCAPES HOSPITAL IN LAUNDRY BASKET, POSTED TO WALES", "sub": "He arrived in Aberystwyth three days later, folded. He describes Wales as \"nice, but I was folded\"." },
+    { "y": 7, "w": "clint", "h": "LAIR BRICKED UP. CAT SEEN SMILING", "sub": "Builders say a ginger cat \"supervised the whole job, from a tiny chair\". It is not known where the 4,000 laser pointers went." },
+
+    { "y": 8, "w": "carr", "h": "CARR SELLS LOVEDAY'S HOUSE TO HIMSELF WHILE LOVEDAY IS IN WALES", "sub": "\"It's all perfectly legal,\" said Joseph Carr, Esq., waving a contract signed with a crayon." },
+    { "y": 8, "w": "loveday", "h": "LOVEDAY NOW LIVING IN WHEELIE BIN", "sub": "\"It's cosy,\" he says. On Tuesdays it is collected by the council. He has been to the tip eleven times." },
+    { "y": 8, "w": "clint", "h": "GINGER CAT MOVES INTO LOVEDAY'S OLD HOUSE", "sub": "Mr Carr is renting it to the cat for one sardine a month. The cat has installed a hot tub and a moat." },
+    { "y": 8, "w": "loveday", "h": "LOVEDAY'S BIN WINS 'BEST KEPT GARDEN'", "sub": "Judges admired the \"brave, minimalist design\". He fell in the trophy." },
+    { "y": 8, "w": "all", "h": "THE CAT, THE LAWYER AND THE MAN IN THE BIN", "sub": "Our three most famous residents met at the village fête. Mr Carr sued the bin, the cat ate the cake stall, and J.A. Loveday came third in the egg and spoon. He didn't enter." },
+
+    { "y": 9, "w": "clint", "h": "CAT ATTENDS G7 SUMMIT ON PRIME MINISTER'S LAP", "sub": "World leaders say the summit \"went strangely\". Five countries now have a ginger national animal. None of them can remember voting for it." },
+    { "y": 9, "w": "carr", "h": "CARR: 'MY CLIENT IS A CAT AND THEREFORE CANNOT BE GUILTY'", "sub": "The Hague is considering the argument. Joseph Carr, Esq. has invoiced The Hague for considering it." },
+    { "y": 9, "w": "loveday", "h": "LOVEDAY SNEAKS INTO G7 DISGUISED AS A POT PLANT", "sub": "He was watered, moved to a sunny spot and \"quite enjoyed it\", then forgot why he'd come." },
+    { "y": 9, "w": "clint", "h": "WORLD'S TUNA PRICE TREBLES OVERNIGHT", "sub": "Economists are baffled. One shipping container of tuna was traced to a moat in our village." },
+    { "y": 9, "w": "carr", "h": "CARR NAMED 'MOST HANDSOME SOLICITOR' FOR NINTH YEAR", "sub": "He was the only entrant, the only judge and the only person in the room. \"A worthy winner,\" he said." },
+
+    { "y": 10, "w": "loveday", "h": "LOVEDAY BUILDS SPACE ROCKET FROM GARDEN SHED", "sub": "\"I just want to be somewhere the cat isn't,\" he explained. The shed reached an altitude of 12 feet and landed in the duck pond. The ducks have moved to Spain." },
+    { "y": 10, "w": "clint", "h": "CAT LAUNCHES OWN SPACE PROGRAMME", "sub": "Clint Aerospace Ltd has bought a satellite. Its only job, sources say, is to shine a red dot on the Earth." },
+    { "y": 10, "w": "carr", "h": "CARR BUYS THE MOON", "sub": "\"Nobody else had a deed for it,\" said Joseph Carr, Esq. He is now charging the tide rent." },
+    { "y": 10, "w": "loveday", "h": "LOVEDAY STILL IN DUCK POND, THREE WEEKS LATER", "sub": "\"I'm not coming out until the cat's gone,\" he says. Locals bring him sandwiches. A duck came back from Spain to look after him." },
+    { "y": 10, "w": "clint", "h": "RED DOT SEEN FROM SPACE, CATS WORLDWIDE GO BERSERK", "sub": "Every cat on Earth chased it for nine hours. In the chaos, a ginger cat quietly bought the Bank of England." },
+
+    { "y": 11, "w": "clint", "h": "MYSTERY GINGER CHAIRMAN BUYS NON-LEAGUE FOOTBALL CLUB", "sub": "His first act was to replace the dugouts with cardboard boxes. The players have never been happier." },
+    { "y": 11, "w": "carr", "h": "CARR APPOINTED CLUB SOLICITOR, SUES REFEREE", "sub": "Joseph Carr, Esq. has sued every referee in the league for \"emotional distress caused by fairness\"." },
+    { "y": 11, "w": "loveday", "h": "LOVEDAY HIRED AS KIT MAN, LOSES ALL THE KITS", "sub": "The team played their first home game in J.A. Loveday's spare pyjamas. They won 4-0. Dennis the kit man is said to be \"furious\"." },
+    { "y": 11, "w": "clint", "h": "CAT CHAIRMAN SACKS MANAGER FOR 'NOT BEING A CAT'", "sub": "The new manager is a slightly larger cat. Results have, worryingly, improved." },
+    { "y": 11, "w": "loveday", "h": "KIT MAN SENT OFF FROM TOUCHLINE FOR TRIPPING OVER HIMSELF", "sub": "He somehow did it three times in one throw-in. The referee called it \"the most impressive thing I've seen in football\", then booked him." },
+
+    { "y": 12, "w": "loveday", "h": "HERO! LOVEDAY STOPS RUNAWAY MILK FLOAT", "sub": "In the finest moment of his life, J.A. Loveday stopped a milk float hurtling towards a primary school. By standing in front of it. By accident. He was looking for a bus." },
+    { "y": 12, "w": "loveday", "h": "LOVEDAY FALLS IN RIVER DURING OWN MEDAL CEREMONY", "sub": "He stepped back for a photo. The medal sank. He went in after it. He found the medal. He lost his trousers." },
+    { "y": 12, "w": "carr", "h": "CARR INVOICES LOVEDAY FOR MEDAL", "sub": "\"It was council property,\" said Mayor Carr, who melted it down into a small statue of himself." },
+    { "y": 12, "w": "clint", "h": "POLICE: MILK FLOAT'S BRAKES 'NIBBLED'", "sub": "Forensics found tiny teeth marks and a single ginger whisker. Detectives are \"keeping an open mind\" and \"also a closed door\"." },
+    { "y": 12, "w": "all", "h": "THE MILK FLOAT FILES: WHO WANTED THE SCHOOL DESTROYED?", "sub": "The school was due to vote on a ban on cats in the playground. Mr Carr says the timing is \"a coincidence, and also I'll sue you\"." },
+
+    { "y": 13, "w": "clint", "h": "'OPERATION LASER DOT': LEAKED DOCUMENTS SHOCK THE WORLD", "sub": "The 600-page plan, written in paw prints, shows a scheme to make every human on Earth \"a comfy lap\". Page 412 is just a drawing of a fish." },
+    { "y": 13, "w": "carr", "h": "CARR: 'DOCUMENTS ARE FAKE AND I WROTE THEM'", "sub": "Under questioning, Joseph Carr, Esq. admitted typing the plan up \"for a client, at a reasonable rate\"." },
+    { "y": 13, "w": "loveday", "h": "LOVEDAY READS ALL 600 PAGES, UNDERSTANDS PAGE 412", "sub": "\"It's a fish,\" he told a press conference. It's the first time anyone has listened to him. He was so surprised he fell off the stage." },
+    { "y": 13, "w": "clint", "h": "EUROPE RUNS OUT OF TUNA", "sub": "Every tin on the continent has been bought by a company called Definitely Not A Cat Ltd. Its registered office is a moat." },
+    { "y": 13, "w": "carr", "h": "CARR NOW RICHEST MAN IN BRITAIN", "sub": "He invested heavily in tuna the week before the shortage. \"Pure luck,\" he said, fishing a whisker out of his coffee." },
+
+    { "y": 14, "w": "all", "h": "LAWYER AND CAT IN BLAZING ROW OVER FEES", "sub": "Mr Carr wanted 10%. The cat paid him in dead mice, left on his pillow at 4am. \"This is not legal tender,\" said Mr Carr. \"Unless I say it is.\"" },
+    { "y": 14, "w": "carr", "h": "CROWN JEWELS STOLEN", "sub": "The Tower of London is in chaos. The only clue: muddy paw prints leading out of the vault, then a pair of very expensive brogues." },
+    { "y": 14, "w": "carr", "h": "CROWN JEWELS FOUND IN CARR'S BRIEFCASE", "sub": "Joseph Carr, Esq. was arrested at his office. \"I've been framed,\" he said. \"By a cat. Which, legally, I've argued can't be guilty. Oh no.\"" },
+    { "y": 14, "w": "clint", "h": "CAT GIVES EVIDENCE AT CARR TRIAL", "sub": "It sat in the witness box and licked itself for forty minutes. The jury found this \"very convincing\"." },
+    { "y": 14, "w": "carr", "h": "CARR JAILED FOR 30 YEARS, SUES PRISON", "sub": "Within an hour of arriving, he had sued his cell, his bunk and the concept of Tuesdays." },
+
+    { "y": 15, "w": "loveday", "h": "LOVEDAY ONLY VISITOR AT CARR'S PRISON", "sub": "\"Everyone deserves a friend,\" said J.A. Loveday, who brought a cake with a file in it. It was a lever arch file. Of his own unpaid legal bills." },
+    { "y": 15, "w": "carr", "h": "CARR TO LOVEDAY: 'I MAY HAVE BEEN WRONG ABOUT YOU'", "sub": "\"You're still an idiot,\" he added. \"But you're MY idiot.\" Prison guards say both men cried. Then Loveday locked himself in a cell by mistake." },
+    { "y": 15, "w": "clint", "h": "CAT SWORN IN AS MAYOR", "sub": "With Mr Carr in jail, the cat won the by-election unopposed. Its first act: making laps compulsory. Its second: a 24-hour red dot on the town hall." },
+    { "y": 15, "w": "loveday", "h": "LOVEDAY SPENDS THREE MONTHS IN PRISON 'BY ACCIDENT'", "sub": "Staff say he was a \"model prisoner\" who \"kept asking when visiting time ended\". He also accidentally solved the prison's damp problem." },
+    { "y": 15, "w": "all", "h": "UNLIKELIEST FRIENDSHIP IN BRITISH HISTORY", "sub": "Inside, the lawyer and the village idiot have been seen drawing up plans. Guards report the words \"cat\", \"revenge\" and \"we'll need a bigger net\"." },
+
+    { "y": 16, "w": "carr", "h": "CARR ESCAPES PRISON THROUGH 'LEGAL TECHNICALITY'", "sub": "He argued that a prison is just a large house, and he had sold it to himself. The judge, worryingly, agreed." },
+    { "y": 16, "w": "all", "h": "THE ODD COUPLE: LAWYER AND IDIOT MOVE INTO WHEELIE BIN", "sub": "\"It's a temporary base of operations,\" said Mr Carr. \"Also it's all we've got.\" J.A. Loveday has put up a little curtain." },
+    { "y": 16, "w": "loveday", "h": "TRAINING MONTAGE GOES BADLY WRONG", "sub": "Mr Carr is training J.A. Loveday for \"the final confrontation\". So far he has fallen off a step, a kerb, and a photograph of a step." },
+    { "y": 16, "w": "clint", "h": "MAYOR CAT DECLARES 'NO DOGS, NO HUMANS, NO EXCEPTIONS'", "sub": "The dog on the parish council has fled to Norfolk. The llama is in hiding. The pigeon who runs the bus station is \"keeping a low profile\"." },
+    { "y": 16, "w": "carr", "h": "CARR WRITES 400-PAGE BATTLE PLAN. LOVEDAY LOSES IT", "sub": "It was last seen being eaten by the llama. \"It had my best work in it,\" said Mr Carr. \"Page 211 was just a drawing of me looking handsome.\"" },
+
+    { "y": 17, "w": "clint", "h": "CAT CROWNS HIMSELF 'EMPEROR OF THE NORTHERN HEMISPHERE'", "sub": "The ceremony took place on the Prime Minister's lap. The crown is the Crown Jewels. Nobody dared ask for them back." },
+    { "y": 17, "w": "clint", "h": "ARMY OF 10,000 CATS SEEN MARCHING ON THE M6", "sub": "The Highways Agency has closed the motorway. Not for safety. The cats asked them to." },
+    { "y": 17, "w": "all", "h": "THE LLAMA RETURNS! 'I HAVE A SCORE TO SETTLE'", "sub": "The former parish councillor has joined Loveday and Carr. Witnesses say it walked into the wheelie bin and spat on a map of the cat's lair. Accurately." },
+    { "y": 17, "w": "all", "h": "PIGEON, DOG AND SEAGULL GANG JOIN THE RESISTANCE", "sub": "The bus station pigeon, the dog from the parish council and the seagull gang from the seafront have all signed up. Mr Carr has had them sign a contract. In crumbs." },
+    { "y": 17, "w": "loveday", "h": "LOVEDAY APPOINTED LEADER OF THE RESISTANCE", "sub": "Nobody else wanted it. He celebrated by walking into the door of the wheelie bin. Wheelie bins don't have doors. Experts are amazed." },
+
+    { "y": 18, "w": "all", "h": "THE INCREDIBLY AVERAGE ALLIANCE IS FORMED", "sub": "A lawyer, an idiot, a llama, a dog, a pigeon and some seagulls. \"We are humanity's last hope,\" said Mr Carr. Humanity was not consulted." },
+    { "y": 18, "w": "clint", "h": "CAT EMPEROR DEMANDS SURRENDER: 'OR NO MORE LAPS. EVER'", "sub": "The ultimatum, delivered by a hairball on the steps of Parliament, gives the Alliance until the end of next season." },
+    { "y": 18, "w": "carr", "h": "CARR SERVES CAT WITH 10,000-PAGE INJUNCTION", "sub": "The cat sat on it. \"That,\" admitted Joseph Carr, Esq., \"is a fair response to most of my paperwork.\"" },
+    { "y": 18, "w": "loveday", "h": "LOVEDAY ACCIDENTALLY INFILTRATES CAT ARMY", "sub": "He went to buy milk and came back wearing ears and a tail, with the rank of sergeant. He has learned one secret: the cats' giant laser has a plug." },
+    { "y": 18, "w": "all", "h": "BOTH SIDES PREPARE FOR 'THE BATTLE OF THE VILLAGE GREEN'", "sub": "Next summer, on the green, by the duck pond. Bring a flask. Bring a coat. Bring a fish, just in case." },
+
+    { "y": 19, "w": "all", "h": "THE BATTLE OF THE VILLAGE GREEN BEGINS", "sub": "10,000 cats on one side. A lawyer, an idiot, a llama, a dog, a pigeon and the seagull gang on the other. The ducks are back from Spain to watch." },
+    { "y": 19, "w": "carr", "h": "CARR SUES THE CATS. ALL OF THEM. AT ONCE", "sub": "The cats are bogged down in paperwork. Two hundred of them have been found asleep on the claim forms. \"Paperwork,\" said Mr Carr, \"is a weapon.\"" },
+    { "y": 19, "w": "loveday", "h": "LOVEDAY TRIPS OVER GIANT LASER'S PLUG, SAVES WORLD", "sub": "He was running away. He caught his foot in the cable. The laser swung skyward and fired its red dot at the moon, which Mr Carr owns. Every cat on Earth stopped, looked up, and is still looking." },
+    { "y": 19, "w": "clint", "h": "CAT EMPEROR DEFEATED, CHASES DOT INTO SPACE", "sub": "The Emperor leapt into his Clint Aerospace rocket to catch the dot. The rocket was last seen heading for the moon. Mr Carr has already charged him parking." },
+    { "y": 19, "w": "all", "h": "LOVEDAY KNIGHTED. FALLS OFF STAGE. SOMEWHERE, A CAT SMILES", "sub": "Sir J.A. Loveday stood up to be cheered and fell into the orchestra pit. Mr Carr billed him for the trumpet. And in the corner of the photo, if you look closely, there's a small ginger cat boarding a ferry, smiling." }
+  ]
+}

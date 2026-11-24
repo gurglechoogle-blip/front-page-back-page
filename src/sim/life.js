@@ -3,6 +3,7 @@
 import E from '../data/events.json';
 import PR from '../data/press.json';
 import NP from '../data/newspaper.json';
+import SAGA from '../data/saga.json';
 import { club, compName, prettyDate, weekStart, CAL, DIVS } from './season.js';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -189,15 +190,26 @@ export function makePaper(c, R = Math.random) {
   // Front page: the biggest life story, or something daft if you behaved.
   const fronts = c.weekNews.filter(n => n.page === 'front' && n.headline);
   const frontStory = fronts.find(n => !n.weak) || fronts[0];
-  let frontHead, frontSub;
-  if (frontStory) { frontHead = frontStory.headline; frontSub = c.honour >= 65 ? `Friends insist the ${pick(NP.tone.good, R).toLowerCase()} is "a lovely lad really".` : c.honour <= 35 ? `Latest chapter in the ${pick(NP.tone.bad, R).toLowerCase()}'s rollercoaster year.` : 'Club refuse to comment. Gran refuses to stop commenting.'; }
+  let frontHead, frontSub, series = null, sagaPhoto = null;
+  // The village's long-running story (J.A. Loveday, Joseph Carr Esq. and Clint the cat):
+  // five episodes a season, in order, a few weeks apart. A big scandal of yours comes first,
+  // unless the story has fallen well behind.
+  c.saga = c.saga || { i: 0, last: -99 };
+  const sagaAvail = SAGA.episodes.filter(e => e.y <= +CAL.season.slice(0, 4) - 2026).length, sagaBehind = sagaAvail - c.saga.i;
+  const sagaDue = sagaBehind > 0 && (c.week - c.saga.last >= 6 || sagaBehind >= 3) && (!frontStory || frontStory.weak || sagaBehind >= 3);
+  if (sagaDue) {
+    const ep = SAGA.episodes[c.saga.i++]; c.saga.last = c.week;
+    frontHead = ep.h; frontSub = ep.sub; sagaPhoto = 'saga-' + ep.w;
+    series = c.saga.i === SAGA.episodes.length ? 'THE FINAL CHAPTER' : `VILLAGE LIFE · PART ${c.saga.i}`;
+  }
+  else if (frontStory) { frontHead = frontStory.headline; frontSub = c.honour >= 65 ? `Friends insist the ${pick(NP.tone.good, R).toLowerCase()} is "a lovely lad really".` : c.honour <= 35 ? `Latest chapter in the ${pick(NP.tone.bad, R).toLowerCase()}'s rollercoaster year.` : 'Club refuse to comment. Gran refuses to stop commenting.'; }
   else if (c.honour >= 80) { frontHead = fill(pick(['{NAME}: NICEST LAD IN FOOTBALL?', 'SAINT {NAME}? FANS SAY YES']), vars); frontSub = 'Our reporters searched for dirt for a whole week. They found a parking ticket. He paid it.'; }
   else if (+CAL.season.slice(0, 4) >= 2030 && R() < .3) { const yr = +CAL.season.slice(0, 4), fut = NP.future.filter(([y]) => y <= yr + 1); frontHead = pick(fut, R)[1]; frontSub = 'Meanwhile, the beautiful game continues to evolve. Gran is not impressed.'; }
   else if (R() < .55) { frontHead = fill(pick(NP.sightings, R), vars); frontSub = 'Our photographer has been following him all week. It\'s been a long week.'; }
   else { frontHead = fill(pick(NP.frontFillers, R), vars); frontSub = 'Nothing scandalous about ' + NAME.charAt(0) + NAME.slice(1).toLowerCase() + ' this week. We checked. Twice.'; }
   const paper = {
     n: c.papers.length + 1, week: c.week, date: weekStart(c.week), price: pick(NP.price, R), masthead: NP.masthead,
-    front: { headline: frontHead, sub: frontSub, photo: frontStory ? 'scandal' : 'filler' },
+    front: { headline: frontHead, sub: frontSub, photo: sagaPhoto || (frontStory ? 'scandal' : 'filler'), series },
     back: { headline: backHead, sub: backSub, quote: quote ? quote.quote : null, photo: key, pos: L ? L.pos : null, div: DIVS[c.div].short, rival: (c.weekNews.find(n => n.rival) || {}).rival || null },
     dennis: pick(NP.dennis, R), gran: c.granBet ? 'Gran\'s tip of the week: you to score. She\'s already spent the winnings.' : 'Gran\'s tip of the week: the 3.40 at Kempton. Don\'t ask why.',
     kit: myClub.home,

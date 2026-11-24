@@ -66,6 +66,7 @@ export function longRun(test, ok, noBadNumbers, setSkill, perProfile = 1) {
         ok(r.wage > 0 && r.wage < 1e6, `${r.season}: wage £${r.wage}/wk`);
         ok(r.bank > -2e6 && r.bank < 1e9, `${r.season}: bank £${r.bank}`);
       }
+      ok(c.saga && c.saga.i === 100, `only ${c.saga ? c.saga.i : 0} of the 100 village-life episodes were printed`);
       ok((c.transfers || []).length <= 14, `${c.transfers.length} moves in 20 years`);
       ok(c.intl.caps.senior <= 160, `${c.intl.caps.senior} England caps`);
       const peakWage = Math.max(...rows.map(r => r.wage));

@@ -185,6 +185,10 @@ Honour is public; the meters are private: manager (approval), teammates, fans an
 
 The career rolls on past the first season: every summer all five divisions finish, play-offs are played (your own, two legs and a Wembley final, if your club makes them), the awards night hands out the club awards, Golden Boot, Team of the Year and Ballon d'Or, clubs go up and down, and you age (a first pro contract arrives at 18). Things open up with age: friends, dating, house parties, Gran's 2p poker and modest shopping from 16; driving lessons and a first car at 17; pubs and clubs, the casino, moving out and the flash stuff at 18; houses with rooms that do something as the money grows. If you go overdrawn you work down the debt ladder: sell things, raid the savings funds, borrow from people close to you, then the loan sharks. Your rival from the academy runs a career alongside yours, the team group chat leaks, and every goal you score in a match is saved to the scrapbook to watch again.
 
+### Village life
+
+The Weekly Splash runs one long local story across all twenty seasons (`src/data/saga.json`): J.A. Loveday, the village idiot; Joseph Carr, Esq., the handsome and entirely evil solicitor; and Clint the cat, mastermind of every evil in the world. Five episodes a season, in order, a few weeks apart on the front page, building to the Battle of the Village Green in 2045-46.
+
 ### Fame, achievements and the end
 
 Social media followers grow towards a ceiling set by how famous you are (the fans meter and the size of your league), with posts, sponsored posts and the odd troll. Community work and charity use time slots and rebuild honour. Staff cost wages and each does something (a PA adds a time slot, a driver halves night-out trouble, a trainer boosts training) with a small chance of going wrong. A merch line and investments make (or lose) money. There are 48 achievements in a trophy cabinet (Fame → Achievements), checked after each match, each week, each season and at the end.
