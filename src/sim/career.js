@@ -236,9 +236,12 @@ export function matchParams(c, f, role) {
   return {
     home: club(f.home), away: club(f.away), mySide, cup: !!f.knockout, extraTime: !!f.extraTime, role,
     stadium: f.neutral || null, label: compName(f), bigGame: f.round === 'F' || f.comp === 'intl' || f.comp === 'tourn', trust: c.approval / 100, form: effectiveForm(c), fixtureId: f.id, subChance: subChance(c),
-    support: support(c), fans: c.meters.fans, year: +CAL.season.slice(0, 4),
+    support: support(c), fans: c.meters.fans, conv: finishing(c), year: +CAL.season.slice(0, 4),
   };
 }
+/** How well you've been finishing lately: goals and assists per chance (starts at about 40%). */
+export const finishing = c => { const f = c.finish || { ch: 0, g: 0 }; return (f.g + 1.6) / (f.ch + 4); };
+function trackFinishing(c, S) { if (!S || !S.my || !S.my.chances) return; const f = c.finish || { ch: 0, g: 0 }; c.finish = { ch: f.ch * .9 + S.my.chances, g: f.g * .9 + S.my.goals + S.my.assists }; }
 /** Play a match nobody's watching (you're not in the squad). */
 export function playHeadless(c, f) {
   const p = matchParams(c, f, 'none'); const sim = new MatchSim(Object.assign({}, p, { playerName: c.name }));
@@ -256,7 +259,7 @@ export function recordMatch(c, f, S, R = Math.random) {
   if (S.pens) f.pens = [S.pens.home, S.pens.away];
   const played = S.role === 'start' || S.role === 'sub';
   const res = { id: f.id, role: S.role, rating: played ? S.rating : null, goals: S.my.goals, assists: S.my.assists, headline: S.headline, unused: !!S.unusedSub, hooked: S.hooked || null, verdict: S.gafferLine || gafferVerdict(S, R) };
-  if (played) c.lastPlayed = f.date;
+  if (played) { c.lastPlayed = f.date; trackFinishing(c, S); }
   if (f.date === dayDate(c)) { consumeDays(c); c.dayUsed = c.day; } // a match day is a match day
   if (played && f.comp !== 'friendly') logApp(c, myTeamIn(c, f) || c.clubId, f.comp === 'intl' ? 'intl-' + (f.level || 'senior') : f.comp, S);
   { const mt = myTeamIn(c, f) || c.clubId, opp = club(f.home === mt ? f.away : f.home), us = f.home === mt ? S.score.home : S.score.away, them = f.home === mt ? S.score.away : S.score.home;

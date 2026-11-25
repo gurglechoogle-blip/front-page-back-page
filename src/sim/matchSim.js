@@ -59,7 +59,18 @@ export class MatchSim {
     const adj = clamp((myStr - oppStr) / 14, -1.6, 1.6) + home - big;
     if (this.role === 'none') this.nChances = 0;
     else if (this.role === 'sub') this.nChances = clamp(Math.round((1 + (R() < .45 ? 1 : 0)) * gapF), adj <= -1.2 ? 0 : 1, 3);
-    else { const n = (chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0)) * gapF + home - big; this.nChances = clamp(Math.round(n), myStr - oppStr <= -15 ? 1 : 2, opts.bigGame ? 5 : 7); }
+    else {
+      // Trust, form, support and the opposition set the average (about 3 in an even game);
+      // each match then rolls around it. About 1 game in 8 the ball just never comes to you
+      // (more often away and against good sides, but it can happen against anyone).
+      const base = (chancesFor(opts.trust ?? .5, opts.form ?? .5, R) + Math.round(opts.support || 0)) * gapF + home - big;
+      const mean = Math.max(1.4, base * .56), dryP = clamp(.125 * Math.sqrt(1 / gapF) * (home ? .85 : 1.2) * (opts.bigGame ? 1.2 : 1), .06, .3);
+      this.dry = R() < dryP;
+      this.nChances = this.dry ? (R() < .55 ? 0 : 1) : clamp(Math.round(mean + (R() + R() + R() - 1.5) * 2.4), 2, opts.bigGame ? 5 : 7);
+    }
+    // How well you really finish (goals and assists per chance lately): your chances take
+    // that much off what your team-mates would have scored, so you replace goals, not add them.
+    this.conv = clamp(opts.conv ?? .4, .15, .85);
     this.subMinute = this.role === 'sub' ? 58 + Math.floor(R() * 18) : null;
     this.schedule = {};
     this.planRegulation();
@@ -80,6 +91,7 @@ export class MatchSim {
     // Your chances, spread out (after you come on, if you're a sub).
     const mine = this.subMinute ? slots.filter(k => k.startsWith('2H:') && +k.split(':')[1] > this.subMinute + 1) : slots;
     const n = this.nChances, seg = mine.length / Math.max(1, n);
+    if (this.dry && this.role === 'start') this.add('2H:' + (66 + Math.floor(R() * 10)), { t: 'dry' });
     for (let i = 0; i < n; i++) this.add(mine[Math.floor(i * seg + R() * seg * .8 + seg * .1)], { t: 'chance' });
     if (this.subMinute) this.add('2H:' + this.subMinute, { t: 'subOn' });
     this.planGoals(slots, 1);
@@ -92,8 +104,9 @@ export class MatchSim {
     // Your chances are part of your team's attack, not extra to it: each one you get is
     // worth about 0.3 of a goal to a typical striker, and that comes out of the team's share.
     if (this.role !== 'none') {
-      const yours = scale === 1 ? this.nChances * .3 : .2 * scale * 3;
-      lam[this.mySide] = Math.max(lam[this.mySide] * .1, lam[this.mySide] - yours);
+      const yours = scale === 1 ? this.nChances * (this.conv ?? .4) : .2 * scale * 3;
+      // Team-mates always keep at least 40%: even the best striker is one of eleven.
+      lam[this.mySide] = Math.max(lam[this.mySide] * .4, lam[this.mySide] - yours);
     }
     ['home', 'away'].forEach(side => { const g = poisson(lam[side], R); for (let i = 0; i < g; i++) { let k; do { k = slots[Math.floor(R() * slots.length)]; } while ((this.schedule[k] || []).some(e => e.t === 'chance')); this.add(k, { t: 'goal', side }); } });
   }
@@ -149,7 +162,8 @@ export class MatchSim {
     this.possTicks++; const homeBall = this.R() < this.possession; if (homeBall) this.homePossTicks++;
     const planned = this.schedule[key] || [];
     for (const e of planned) {
-      if (e.t === 'goal') out.push(...this.teamGoal(e.side));
+      if (e.t === 'goal') { if (e.punish) out.push(this.ev(`${this.name(e.side)} break straight up the other end...`, 'info', e.side)); out.push(...this.teamGoal(e.side)); }
+      else if (e.t === 'dry' && this.onPitch) out.push(this.ev(pickR([`${this.me} has barely had a kick. Their centre-half has been glued to ${this.me} all afternoon.`, `Nothing's dropping for ${this.me} today. Feeding on scraps up top.`, `${this.me} is starved of service. The midfield seem to have forgotten he's there.`, `${this.me} drops deep looking for the ball. It's that kind of day.`], this.R), 'info', this.mySide));
       else if (e.t === 'subOn' && this.R() >= this.subChance) { this.unusedSub = true; out.push(this.ev(`${this.name(this.mySide)} make their changes. ${this.me} stays on the bench, bib still on, gently dying inside.`, 'info', this.mySide)); }
       else if (e.t === 'subOn') { const off = this.squads[this.mySide].fwd[1]; this.onPitch = true; out.push(this.ev(`SUBSTITUTION: ${off} off, ${this.me} ON for ${this.name(this.mySide)}. Here we go.`, 'chance', this.mySide)); out[out.length - 1].kind = 'subOn'; }
       else if (e.t === 'sub') { const sq = this.squads[e.side]; const off = sq.mid[e.i] || sq.def[e.i], on = sq.subs[e.i]; if (off && on) { out.push(this.ev(this.line('sub', e.side, { player: off, player2: on }), 'info', e.side)); sq.mid[e.i] = on; } }
@@ -240,6 +254,11 @@ export class MatchSim {
       this.bump(d);
       if (d < 0 && this.R() < .6) text += ' ' + fill(pickR(C.chanceMissFlavour, this.R), v);
       out.push({ label: P.label, text, kind: 'result', side, mine: true });
+      // Punished: now and then a miss turns into a break the other way (about 1 in 25, as in real football).
+      if (!assist && this.period && PERIODS[this.period] && this.R() < .04) {
+        const m = this.minute + 1 + Math.floor(this.R() * 3), [, end] = PERIODS[this.period];
+        if (m <= end + this.stoppage[this.period]) this.add(this.period + ':' + m, { t: 'goal', side: this.oppSide, punish: true });
+      }
     }
     this.my.log.push({ key: result.key, outcome: o, goal: result.goal, label: P.label });
     return out;
